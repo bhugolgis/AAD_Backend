@@ -74,7 +74,10 @@ class CustomUser(AbstractUser, PermissionsMixin):
     otpChecked = models.BooleanField(default=False)
     supervisor = models.ForeignKey('CustomUser',related_name="supervisorId",on_delete=models.CASCADE,null=True,blank=True)
     section = models.ForeignKey(section , related_name="section_name" , on_delete=models.SET_NULL , blank = True , null = True )
+    ward = models.ForeignKey(ward , related_name="wardAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
+    health_Post = models.ForeignKey(healthPost , related_name="healthpostAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
     area = models.ForeignKey(area , related_name="areaAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True ) # By area we can find the health post , dispensary and Ward 
+    dispensary = models.ForeignKey(dispensary , related_name="dispensary_name" , on_delete=models.SET_NULL , blank = True , null = True )
     PrimaryHealthCare = models.ForeignKey(PrimaryHealthCareCenters,related_name="PrimaryHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
     SpecialityHealthCare = models.ForeignKey(SpecialityHealthCareCenters,related_name="SpecialityHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
     MedicalCollegeHealthCare = models.ForeignKey(MedicalCollegeHealthCareCenters,related_name="MedicalCollegeHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
