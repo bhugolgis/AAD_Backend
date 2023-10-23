@@ -49,7 +49,7 @@ class resendOtpSerializer(serializers.Serializer):
 
 class VerifyOTPSerializer(serializers.Serializer):
     transactionId = serializers.CharField(max_length=100, required=True)
-    value = serializers.CharField(max_length=100 , required=True)
+    value = serializers.CharField(max_length=1000 , required=True)
 
 
 class Abha_Adress_suggestionsSerializer(serializers.Serializer):

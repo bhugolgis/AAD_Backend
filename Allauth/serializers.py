@@ -138,7 +138,7 @@ class healthPostSerializer(serializers.ModelSerializer):
 class AreaSerialzier(serializers.ModelSerializer):
 	class Meta:
 		model = area
-		fields = ("areas",)
+		fields = ("id","areas",)
 
 class sectionSerializer(serializers.ModelSerializer):
 	class Meta:
