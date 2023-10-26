@@ -2,6 +2,15 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    
+        # Public Keys for API's
+        path('v1/phr/public/v1certificate' , v1Certificate.as_view() , name = 'GetGatewaySessionTokenAPI'),
+        path('v2/public/v2certificate' , v2Certificate.as_view() , name = 'GetGatewaySessionTokenAPI'),
+
+        # Search APi's 
+        path('v1/search/searchByHealthId' , searchByHealthId.as_view() , name = 'GetGatewaySessionTokenAPI'),
+        path('v1/search/searchByMobile' , searchByMobile.as_view() , name = 'GetGatewaySessionTokenAPI'),
+        
         # ABHA ID Creation By Aadhar
         path('GetGatewaySessionTokenAPI' , GetGatewaySessionTokenAPI.as_view() , name = 'GetGatewaySessionTokenAPI'),
         path('generateAadharOtpAPI' , generateAadharOtpAPI.as_view() , name = 'generateAadharOtpAPI'),
@@ -32,9 +41,9 @@ urlpatterns = [
         path('v1/auth/confirmWithAadhaarOtp' , confirmWithAadhaarOtp.as_view() , name = 'confirmWithAadhaarOtp'),
         path('v1/auth/resendAuthOTP' , resendAuthOTP.as_view() , name = 'resendAuthOTP'),
 
+      #  Download ABHA Card And Qrcode 
 
-        #  Download ABHA Card And Qrcode 
-
+  
         path('v1/account/getqrCode' , DownloadQrcodeAPI.as_view() , name = 'DownloadQrcodeAPI'),
         path('v1/account/getCard' , DownloadCardAPI.as_view() , name = 'DownloadCardAPI'),
 

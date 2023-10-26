@@ -4,9 +4,55 @@ from .serializers import *
 import json
 import requests
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
 
+# Public Keys API's 
+class v1Certificate(APIView):
+    def get(self, request, *args, **kwargs):
+        # try:
+        url = "https://phrsbx.abdm.gov.in/api/v1/phr/public/certificate"
+
+        headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json',
+            # 'Authorization': f"{request.headers.get('Authorization')}"
+        }
+
+        # params = {
+        #     'phrAddress': request.GET.get('phrAddress')
+        # }
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            return Response(response.content, status=200)
+        else:
+            return Response("Failed to fetch data" , status=response.status_code)
+
+
+class v2Certificate(APIView):
+    def get(self, request, *args, **kwargs):
+        # try:
+        url = "https://healthidsbx.abdm.gov.in/api/v2/auth/cert"
+
+        headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json',
+            # 'Authorization': f"{request.headers.get('Authorization')}"
+        }
+
+        # params = {
+        #     'phrAddress': request.GET.get('phrAddress')
+        # }
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            return Response(response.content, status=200)
+        else:
+            return Response("Failed to fetch data" , status=response.status_code)
 
 
 # Create your views here.
@@ -544,3 +590,62 @@ class DownloadCardAPI(APIView):
             return Response(json.loads(response.content), status=200)
         else:
             return Response("Failed to fetch data", status=response.status_code)
+
+
+# Search API's 
+
+
+class searchByHealthId(generics.GenericAPIView):
+    serializer_class = searchByHealthIdSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid():
+            url= "https://healthidsbx.abdm.gov.in/api/v1/search/searchByHealthId"
+
+            headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json',
+            'Authorization': f"{request.headers.get('Authorization')}" }
+
+            payload = json.dumps({
+            "healthId": serializer.validated_data.get('healthId'),
+            })
+            
+            response = requests.request("POST", url, headers=headers, data=payload)
+            
+            return Response(json.loads(response.content) , status=response.status_code)
+        else:
+            return Response({'message': serializer.errors , 
+                             "status": "error" } , status=400)
+
+
+
+class searchByMobile(generics.GenericAPIView):
+    serializer_class = searchByMobileSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid():
+            url= "https://healthidsbx.abdm.gov.in/api/v1/search/searchByMobile"
+            
+            headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json',
+            'Authorization': f"{request.headers.get('Authorization')}" }
+
+            payload = json.dumps({
+            "gender": serializer.validated_data.get('gender'),
+            "mobile": serializer.validated_data.get('mobile'),
+            "name": serializer.validated_data.get('name'),
+            "yearOfBirth": serializer.validated_data.get('yearOfBirth'),
+            })
+            
+            response = requests.request("POST", url, headers=headers, data=payload)
+            
+            return Response(json.loads(response.content) , status=response.status_code)
+        else:
+            return Response({'message': serializer.errors , 
+                             "status": "error" } , status=400)

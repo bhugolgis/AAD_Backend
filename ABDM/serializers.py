@@ -70,3 +70,15 @@ class LinkHID_to_AddressSerializer(serializers.Serializer):
     choice = [('LINK' , 'LINK'), ('DELINK' , 'DELINK')]
     transactionId = serializers.CharField(max_length=100 , required=True)
     action = serializers.ChoiceField(choices=choice , required=True)
+
+
+class searchByHealthIdSerializer(serializers.Serializer):
+    healthId = serializers.CharField(max_length=17 , required=True)
+
+
+    
+class searchByMobileSerializer(serializers.Serializer):
+    gender = serializers.CharField(max_length=10 , required=True)
+    mobile = serializers.IntegerField( required=True)
+    name = serializers.CharField(max_length= 100 , required=True)
+    yearOfBirth = serializers.IntegerField(required = True )

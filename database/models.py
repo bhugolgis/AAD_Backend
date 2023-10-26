@@ -125,7 +125,6 @@ class familyHeadDetails(models.Model):
 
    
     
-
 class familyMembers(models.Model):
     bloodCollectionLocation_choices = [
          ("Home" , "Home"),
@@ -140,6 +139,7 @@ class familyMembers(models.Model):
     mobileNo  = models.BigIntegerField(blank = True , null = True)
     familyHead = models.ForeignKey(familyHeadDetails,related_name="family_head_member",on_delete=models.CASCADE,null=True,blank=True)
     familySurveyor = models.ForeignKey(CustomUser,related_name="familysurveyor",on_delete=models.CASCADE,null=True,blank=True)
+    area = models.ForeignKey(area , related_name="familymembers_area" , on_delete=models.CASCADE, blank = True , null = True  )
     aadharCard = models.BigIntegerField(blank = True , null = True)
     abhaId = models.CharField(max_length=100 , blank= True , null = True )
     pulse = models.CharField(max_length=50 , blank = True , null = True)

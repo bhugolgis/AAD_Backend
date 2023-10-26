@@ -8,7 +8,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     # familyHead = serializers.IntegerField(required = True ) 
     class Meta:
         model = familyMembers
-        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
+        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
                   'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' )
 
@@ -22,7 +22,7 @@ class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
 class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
-        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
+        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
                   'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' )
 
@@ -99,14 +99,14 @@ class GetFamilyHeadListSerialzier(serializers.ModelSerializer):
         fields = ('id','familyId','name' , 'mobileNo' , 'plotNo',
                   'address' ,  'pincode' ,'totalFamilyMembers' ,
                    'partialSubmit' , 'member')
-        # depth = 1
+      
 
 
 
 class GetCitizenListSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
-        fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
+        fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
                   'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' )
 
