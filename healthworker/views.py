@@ -155,7 +155,7 @@ class PostFamilyDetails(generics.GenericAPIView):
 # The class `GetFamilyMembersDetails` is a generic ListAPIView that retrieves details of family
 # members and allows filtering based on family ID, mobile number, and name.
 class GetFamilyMembersDetails(generics.ListAPIView):
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , )
     serializer_class = GetFamilyMemberDetailSerializer  
     filter_backends = (filters.SearchFilter,)
     search_fields = ['familyHead__familyId' , 'familyHead__mobileNo' , 'familyHead__name' , 'memberId'  ]

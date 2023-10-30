@@ -112,7 +112,7 @@ class familyHeadDetails(models.Model):
     address = models.CharField(max_length=500,blank=True,null=True)
     # addressLine2 = models.CharField(max_length=500,blank=True,null=True)
     pincode = models.IntegerField(blank=True,null=True)
-    area = models.CharField(max_length=255 ,blank= True , null= True )
+    area = models.ForeignKey(area, related_name="familyheaddeatils_area" , on_delete=models.CASCADE , blank= True , null= True )
     totalFamilyMembers = models.IntegerField(default=0)
     location = models.PointField(blank= True , null= True )
     created_datetime = models.DateTimeField(auto_now_add=True)

@@ -803,7 +803,6 @@ class LoginView(generics.GenericAPIView):
                             'Group': group}, status=200)
             
             else:
-                
                 key, value = list(serializer.errors.items())[0]
                 error_message = value[0]
                 return Response({'message': error_message, 
