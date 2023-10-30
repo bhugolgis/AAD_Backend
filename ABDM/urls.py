@@ -47,6 +47,10 @@ urlpatterns = [
         path('v1/account/getqrCode' , DownloadQrcodeAPI.as_view() , name = 'DownloadQrcodeAPI'),
         path('v1/account/getCard' , DownloadCardAPI.as_view() , name = 'DownloadCardAPI'),
 
-        
+        #for Xtoken login urls
+        path('v1/auth/init' , prfileLogin.as_view() , name = 'prfileLogin'),
+        path('v1/auth/confirmWithAadhaarOtp' , confirmWithAadhaarOtp.as_view() , name = 'prfileLogin'),
+
+
 
 ]

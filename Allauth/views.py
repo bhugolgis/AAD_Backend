@@ -50,10 +50,10 @@ class GetLabTestDashboardCount(generics.GenericAPIView):
         today = datetime.now().date()
 
         # Count familyHeadDetails objects for today
-        testOpintmentDaily = PatientsPathlab.objects.filter(created_date__date=today,PatientSampleTaken=False).count()        # data = area.objects.filter(healthPost__id= id )
-        dailyTestReceived = PatientsPathlab.objects.filter(created_date__date=today).count()        # data = area.objects.filter(healthPost__id= id )
-        testResultAwaited = PatientsPathlab.objects.filter(created_date__date=today,PatientSampleTaken=True,isCompleted=False).count()        # data = area.objects.filter(healthPost__id= id )
-        citizenRejectedLabTestCount = PatientsPathlab.objects.filter(citizenRejectedLabTest=True,isCompleted=False).count()        # data = area.objects.filter(healthPost__id= id )
+        testOpintmentDaily = PatientPathlab.objects.filter(created_date__date=today,PatientSampleTaken=False).count()        # data = area.objects.filter(healthPost__id= id )
+        dailyTestReceived = PatientPathlab.objects.filter(created_date__date=today).count()        # data = area.objects.filter(healthPost__id= id )
+        testResultAwaited = PatientPathlab.objects.filter(created_date__date=today,PatientSampleTaken=True,isCompleted=False).count()        # data = area.objects.filter(healthPost__id= id )
+        citizenRejectedLabTestCount = PatientPathlab.objects.filter(citizenRejectedLabTest=True,isCompleted=False).count()        # data = area.objects.filter(healthPost__id= id )
 
 
 
@@ -868,8 +868,7 @@ class LoginView(generics.GenericAPIView):
                             'healthPostName' : user_data.section.healthPost.healthPostName,
                             'healthPostID' : user_data.section.healthPost.id,
                             'Group': group
-                        }, status=200)
-                    
+                        }, status=200)                 
                     elif group == "phlebotomist":
                         return Response({
                             'message': 'Login successful',
@@ -879,8 +878,7 @@ class LoginView(generics.GenericAPIView):
                             'name' : user_data.name,         
                             'username': user_data.username,
                             'phoneNumber' : user_data.phoneNumber,
-                            'Group': group}, status=200)
-                    
+                            'Group': group}, status=200)                   
                     elif group == "supervisor":
                         return Response({
                             'message': 'Login successful',
@@ -890,8 +888,7 @@ class LoginView(generics.GenericAPIView):
                             'name' : user_data.name,         
                             'username': user_data.username,
                             'phoneNumber' : user_data.phoneNumber,
-                            'Group': group}, status=200)
-                        
+                            'Group': group}, status=200)                     
                     elif group == "amo":
                         return Response({
                             'message': 'Login successful',

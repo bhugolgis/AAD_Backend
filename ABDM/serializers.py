@@ -82,3 +82,10 @@ class searchByMobileSerializer(serializers.Serializer):
     mobile = serializers.IntegerField( required=True)
     name = serializers.CharField(max_length= 100 , required=True)
     yearOfBirth = serializers.IntegerField(required = True )
+
+
+
+class prfileLoginSerializer(serializers.Serializer):
+    choices = [('MOBILE_OTP' , 'MOBILE_OTP') , ('AADHAAR_OTP' , 'AADHAAR_OTP')]
+    authMethod = serializers.ChoiceField(choices=choices ,required=True)
+    healthid = serializers.CharField(max_length=17, required=True)
