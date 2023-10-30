@@ -106,8 +106,9 @@ class FamilyHeadDetailsSerializer(serializers.ModelSerializer):
 
 class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
     # family_head_member = FamilyMemberDetailsSerializer(many=True, read_only=True)
+    HealthPostName = serializers.CharField(source='familyhealthPost.healthPostName', read_only=True)
 
 
     class Meta:
         model = familyHeadDetails
-        fields = ('familyId','name','totalFamilyMembers','mobileNo','famarea','familyhealthPost__healthPostName','created_datetime','partialSubmit')
+        fields = ('id','familyId','name','totalFamilyMembers','mobileNo','area','HealthPostName','created_datetime','partialSubmit')

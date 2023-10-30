@@ -131,7 +131,7 @@ DATABASES = {
    'default': {
        'ENGINE': 'django.contrib.gis.db.backends.postgis',
     #    'NAME': 'DemoNbr',
-       'NAME':'TestArogyaDB',
+       'NAME':'Bkdb',
        'USER': 'postgres',
        'PASSWORD':'password',
     #    'HOST' : '10.202.100.7',
