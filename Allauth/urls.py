@@ -18,6 +18,11 @@ urlpatterns = [
         path('InsertAmoAPI' , InsertAmoAPI.as_view() , name = 'InsertAmoAPI'),
         path('InsertMoAPI' , InsertMoAPI.as_view() , name = 'InsertMoAPI'),
 
+        # path('InsertPrimaryHealthCareDoctorAPI' , InsertPrimaryHealthCareDoctorAPI.as_view() , name = 'InsertPrimaryHealthCareDoctorAPI'),
+        # path('InsertSpecialityHealthCareDoctorAPI' , InsertSpecialityHealthCareDoctorAPI.as_view() , name = 'InsertSpecialityHealthCareDoctorAPI'),
+        # path('InsertMedicalCollegeHealthCareDoctorAPI' , InsertMedicalCollegeHealthCareDoctorAPI.as_view() , name = 'InsertMedicalCollegeHealthCareDoctorAPI'),
+
+
         path('InsertHealthWorkerAPI' , InsertHealthWorkerAPI.as_view() , name = 'InsertHealthWorkerAPI'),
         path('InsertPhlebotomistAPI' , InsertPhlebotomistAPI.as_view() , name = 'InsertPhlebotomistAPI'),
         path('usersList', UserGroupFilterView.as_view(), name='user-list'),
@@ -29,6 +34,12 @@ urlpatterns = [
         
         
 
+        # path('phc/', PrimaryHealthCareCentersView.as_view(), name='phc-list'),
+        # path('phc/<int:pk>/', PrimaryHealthCareCentersDetailView.as_view(), name='phc-detail'),
+        # path('shc/', SpecialityHealthCareCentersView.as_view(), name='shc-list'),
+        # path('shc/<int:pk>/', SpecialityHealthCareCentersDetailView.as_view(), name='shc-detail'),
+        # path('mchc/', MedicalCollegeHealthCareCentersView.as_view(), name='mchc-list'),
+        # path('mchc/<int:pk>/', MedicalCollegeHealthCareCentersDetailView.as_view(), name='mchc-detail'),
 
 
 

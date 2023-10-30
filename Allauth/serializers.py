@@ -32,7 +32,10 @@ class InsertAmoSerializer(serializers.ModelSerializer):
 class InsertMoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
-		fields = ("id","name","username","password","emailId","phoneNumber","healthPost","dispensary")
+		fields = ("id","name","username","password","emailId","phoneNumber","dispensary")
+
+
+
 
 
 class ViewAmoSerializer(serializers.ModelSerializer):
@@ -71,7 +74,7 @@ class ViewMoSerializer(serializers.ModelSerializer):
 	# ward = serializers.SerializerMethodField()
 	class Meta:
 		model = CustomUser
-		fields = ("id","name","username","emailId","phoneNumber" ,"healthPost","dispensary" )
+		fields = ("id","name","username","emailId","phoneNumber" ,"dispensary" )
 		depth = 3
 	
 	# def get_ward(self , data):
@@ -87,7 +90,7 @@ class ViewMoSerializer(serializers.ModelSerializer):
 			sectionName = ''
 		return sectionName
 
-	def get_healthPost(self , data):
+	# def get_healthPost(self , data):
 		try:
 			health_Post = data.health_Post.healthPostName
 		except:
@@ -205,7 +208,7 @@ class MoRegisterSerializer(serializers.ModelSerializer):
 	# section = serializers.CharField(max_length = 255 , required = True)
 	class Meta:
 		model = CustomUser
-		fields = ("name","username", "password", "phoneNumber", "emailId" , "dispensary","health_Post")
+		fields = ("name","username", "password", "phoneNumber", "emailId" , "dispensary")
 		extra_kwargs = {'password':{'write_only':True}}
 		
 	def create(self,validated_data):
@@ -232,6 +235,68 @@ class AMoRegisterSerializer(serializers.ModelSerializer):
 		return customuser
 
 
+class PrimaryHealthCareRegisterSerializer(serializers.ModelSerializer):
+	# ward = serializers.CharField(max_length = 255 , required = True)
+	# healthPostName = serializers.CharField(max_length = 255 , required = True)
+	# section = serializers.CharField(max_length = 255 , required = True)
+	class Meta:
+		model = CustomUser
+		fields = ("name","username", "password", "phoneNumber", "emailId" ,"PrimaryHealthCare")
+		extra_kwargs = {'password':{'write_only':True}}
+		
+	def create(self,validated_data):
+		# ward = validated_data.pop("ward")
+		# healthPostName = validated_data.pop("healthPostName")
+		customuser = CustomUser.objects.create_user(**validated_data)
+		
+		return customuser
+
+class ViewPrimaryHealthCareSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = CustomUser
+		fields = ("id","name","username","password","emailId","phoneNumber","PrimaryHealthCare")
+
+
+
+class MedicalCollegeHealthCareRegisterSerializer(serializers.ModelSerializer):
+	# ward = serializers.CharField(max_length = 255 , required = True)
+	# healthPostName = serializers.CharField(max_length = 255 , required = True)
+	# section = serializers.CharField(max_length = 255 , required = True)
+	class Meta:
+		model = CustomUser
+		fields = ("name","username", "password", "phoneNumber", "emailId" ,"MedicalCollegeHealthCare")
+		extra_kwargs = {'password':{'write_only':True}}
+		
+	def create(self,validated_data):
+		# ward = validated_data.pop("ward")
+		# healthPostName = validated_data.pop("healthPostName")
+		customuser = CustomUser.objects.create_user(**validated_data)
+		
+		return customuser
+
+class ViewMedicalCollegeSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = CustomUser
+		fields = ("id","name","username","password","emailId","phoneNumber","MedicalCollegeHealthCare")
+
+
+
+class SpecialityHealthCareRegisterSerializer(serializers.ModelSerializer):
+	# ward = serializers.CharField(max_length = 255 , required = True)
+	# healthPostName = serializers.CharField(max_length = 255 , required = True)
+	# section = serializers.CharField(max_length = 255 , required = True)
+	class Meta:
+		model = CustomUser
+		fields = ("name","username", "password", "phoneNumber", "emailId" ,"SpecialityHealthCare")
+		extra_kwargs = {'password':{'write_only':True}}
+		
+	def create(self,validated_data):
+		# ward = validated_data.pop("ward")
+		# healthPostName = validated_data.pop("healthPostName")
+		customuser = CustomUser.objects.create_user(**validated_data)
+		
+		return customuser
+
 	# def validate(self, data):
 	# 	if data["name"]=="":
 	# 		msg = "Must include username and bankAccountNo"
@@ -246,6 +311,13 @@ class AMoRegisterSerializer(serializers.ModelSerializer):
 	# 		msg = "Aadhar Number Already Exists"
 	# 		raise serializers.ValidationError(msg)
 	# 	return data
+
+
+class ViewSpecialHealthCareSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = CustomUser
+		fields = ("id","name","username","password","emailId","phoneNumber","SpecialityHealthCare")
+
 
 
 class LoginSerializer(serializers.Serializer):
@@ -316,3 +388,39 @@ class AddAreaSerializer(serializers.ModelSerializer):
 		model = area
 		fields = '__all__'
 
+
+
+# class DispensaryHealthPostAssociationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = DispensaryHealthPostAssociation
+#         fields = '__all__'
+
+# class DispensarySerializer(serializers.ModelSerializer):
+#     health_post_ids = serializers.ListField(write_only=True, required=False)
+
+#     class Meta:
+#         model = dispensary
+#         fields = '__all__'
+
+#     def create(self, validated_data):
+#         health_post_ids = validated_data.pop('health_post_ids', [])
+#         disp = super().create(validated_data)
+#         disp.health_posts.set(health_post_ids)
+#         return disp
+    
+
+
+class HealthCareCentersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HealthCareCenters
+        fields = '__all__'
+
+# class SpecialityHealthCareCentersSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = SpecialityHealthCareCenters
+#         fields = '__all__'
+
+# class MedicalCollegeHealthCareCentersSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = MedicalCollegeHealthCareCenters
+#         fields = '__all__'

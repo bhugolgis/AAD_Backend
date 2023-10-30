@@ -15,7 +15,7 @@ from rest_framework import filters
 from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework.permissions import IsAuthenticated , AllowAny
+from rest_framework.permissions import IsAuthenticated , AllowAny,IsAdminUser
 from django.contrib.auth.models import Group
 from django.contrib.auth.hashers import check_password
 from drf_extra_fields.fields import Base64ImageField
@@ -160,6 +160,121 @@ class InsertAmoAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+class InsertPrimaryHealthCareDoctorAPI(generics.GenericAPIView):
+    serializer_class = PrimaryHealthCareRegisterSerializer
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # print(request.data["name"], request.data)
+        
+        try:
+            if serializer.is_valid():
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = ViewPrimaryHealthCareSerializer(customuser, context=self.get_serializer_context()).data
+
+                group = Group.objects.get(name='PrimaryHealthCareDoctor')
+                user.groups.add(group)
+
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Registered.",
+                    "data": data,
+                })
+            else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class InsertSpecialityHealthCareDoctorAPI(generics.GenericAPIView):
+    serializer_class = SpecialityHealthCareRegisterSerializer
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # print(request.data["name"], request.data)
+        
+        try:
+            if serializer.is_valid():
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = ViewSpecialHealthCareSerializer(customuser, context=self.get_serializer_context()).data
+
+                group = Group.objects.get(name='SpecialityHealthCareDoctor')
+                user.groups.add(group)
+
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Registered.",
+                    "data": data,
+                })
+            else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+class InsertMedicalCollegeHealthCareDoctorAPI(generics.GenericAPIView):
+    serializer_class = MedicalCollegeHealthCareRegisterSerializer
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # print(request.data["name"], request.data)
+        
+        try:
+            if serializer.is_valid():
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = ViewMedicalCollegeSerializer(customuser, context=self.get_serializer_context()).data
+
+                group = Group.objects.get(name='MedicalCollegeHealthCareDoctor')
+                user.groups.add(group)
+
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Registered.",
+                    "data": data,
+                })
+            else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
 
 class InsertMoAPI(generics.GenericAPIView):
     serializer_class = MoRegisterSerializer
@@ -578,13 +693,24 @@ class CustomLoginAPI(generics.GenericAPIView):
                 data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
                 data["user_group"] = "healthworker"
                 
-            if groups[0] =="amo":
+            elif groups[0] =="amo":
                 data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
                 data["user_group"] = "amo"
-            if groups[0] =="mo":
+            elif groups[0] =="mo":
                 data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
                 data["user_group"] = "mo"
 
+            elif groups[0] =="PrimaryHealthCareDoctor":
+                data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
+                data["user_group"] = "PrimaryHealthCareDoctor"
+                
+            elif groups[0] =="SpecialityHealthCareDoctor":
+                data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
+                data["user_group"] = "SpecialityHealthCareDoctor"
+
+            elif groups[0] =="MedicalCollegeHealthCareDoctor":
+                data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
+                data["user_group"] = "MedicalCollegeHealthCareDoctor"
             # elif groups[0] =="regionalManager":
             #     data = RmSerializer(customuser,context=self.get_serializer_context()).data
             #     data["user_group"] = "regionalManager"
@@ -794,10 +920,10 @@ class LoginView(generics.GenericAPIView):
                             'username': user_data.username,
                             'phoneNumber' : user_data.phoneNumber,
                             # 'ward' : user_data.section.healthPost.ward.wardName ,
-                            'healthPostName' : user_data.health_Post.healthPostName,
-                            'healthPostID' : user_data.health_Post.id,
-                            # 'dispensaryId':user_data.dispensary.id,
-                            # 'dispensaryName':user_data.dispensary.dispensaryName,
+                            # 'healthPostName' : user_data.health_Post.healthPostName,
+                            # 'healthPostID' : user_data.health_Post.id,
+                            'dispensaryId':user_data.dispensary.id,
+                            'dispensaryName':user_data.dispensary.dispensaryName,
                             # 'sectionId':user_data.section.id,
                             # 'sectionName':user_data.section.sectionName,
                             'Group': group}, status=200)
@@ -813,5 +939,39 @@ class LoginView(generics.GenericAPIView):
                 'status': 'failed'}, status=400)
             
             
+            
+            
+            
+            
+# class PrimaryHealthCareCentersView(generics.ListCreateAPIView):
+#     queryset = PrimaryHealthCareCenters.objects.all()
+#     serializer_class = PrimaryHealthCareCentersSerializer
+#     permission_classes = [IsAdminUser]
+
+# class PrimaryHealthCareCentersDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = PrimaryHealthCareCenters.objects.all()
+#     serializer_class = PrimaryHealthCareCentersSerializer
+#     permission_classes = [IsAdminUser]
+
+# class SpecialityHealthCareCentersView(generics.ListCreateAPIView):
+#     queryset = SpecialityHealthCareCenters.objects.all()
+#     serializer_class = SpecialityHealthCareCentersSerializer
+#     permission_classes = [IsAdminUser]
+
+# class SpecialityHealthCareCentersDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = SpecialityHealthCareCenters.objects.all()
+#     serializer_class = SpecialityHealthCareCentersSerializer
+#     permission_classes = [IsAdminUser]
+
+# class MedicalCollegeHealthCareCentersView(generics.ListCreateAPIView):
+#     queryset = MedicalCollegeHealthCareCenters.objects.all()
+#     serializer_class = MedicalCollegeHealthCareCentersSerializer
+#     permission_classes = [IsAdminUser]
+
+# class MedicalCollegeHealthCareCentersDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = MedicalCollegeHealthCareCenters.objects.all()
+#     serializer_class = MedicalCollegeHealthCareCentersSerializer
+#     permission_classes = [IsAdminUser]
+
          
             

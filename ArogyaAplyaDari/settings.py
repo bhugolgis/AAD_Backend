@@ -120,12 +120,25 @@ DATABASES = {
        'NAME':'Arogya_Aplya_Daari',
        'USER': 'postgres',
        'PASSWORD':'admin',
-       'HOST' : '10.202.100.7',
+       'HOST' : '10.202.100.7',    
     #    'HOST' : 'localhost',
        'PORT': '5432',
    }
 }
 
+#20589533
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+#     #    'NAME': 'DemoNbr',
+#        'NAME':'TestArogyaDB',
+#        'USER': 'postgres',
+#        'PASSWORD':'admin',
+#        'HOST' : '10.202.100.7',
+#     #    'HOST' : 'localhost',
+#        'PORT': '5432',
+#    }
+# }
 
 
 # DATABASES = {

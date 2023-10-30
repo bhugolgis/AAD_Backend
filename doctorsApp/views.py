@@ -3,14 +3,19 @@ from rest_framework import generics, permissions
 # Create your views here.
 from rest_framework import generics
 from rest_framework.response import Response
-from database.models import PatientPathlab
-from doctorsApp.serializers import PatientsPathlabSerializer,ListPatientsPathlabSerializer
+from database.models import *
+from doctorsApp.serializers import *
 from rest_framework.permissions import IsAuthenticated , AllowAny
 
 from rest_framework.pagination import PageNumberPagination
 
+
+from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+
 class IsAllowedGroup(permissions.BasePermission):
-    allowed_groups = ['AMO', 'MO']  # Replace with the names of your allowed groups
+    allowed_groups = ['amo', 'mo']  # Replace with the names of your allowed groups
 
 
 
@@ -85,3 +90,65 @@ class ListPatientsPathlabView(generics.ListAPIView):
 
     def get_queryset(self):
         return PatientPathlab.objects.all()
+    
+    
+    
+    
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def FamilyHeadList(request):
+    pagination = PageNumberPagination()
+    pagination.page_size = 10
+
+    group = request.user.groups.values_list("name", flat=True)[0]
+    print(group)
+    
+    if group =="amo":
+        comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id)
+    elif group =="mo":
+        comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id)
+    else:
+        comDet = familyHeadDetails.objects.all()
+                
+    # Paginate the queryset
+    page_queryset = pagination.paginate_queryset(comDet, request)
+    
+    # Serialize the paginated queryset
+    serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
+    
+    # Return the paginated response
+    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})
+
+
+
+
+from django.shortcuts import get_object_or_404
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def ViewFamilyDetails(request, pk):
+    comDet = get_object_or_404(familyHeadDetails, id=int(pk))
+    serializer = FamilyHeadDetailsSerializer(comDet)
+    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def PatientsForPrimaryDoctorList(request):
+    pagination = PageNumberPagination()
+    pagination.page_size = 10
+    
+    comDet = familyHeadDetails.objects.filter(user__health_Post=request.user.health_Post)
+
+    # Paginate the queryset
+    page_queryset = pagination.paginate_queryset(comDet, request)
+    
+    # Serialize the paginated queryset
+    serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
+    
+    # Return the paginated response
+    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})
+
+    
+    

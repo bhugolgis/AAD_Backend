@@ -7,30 +7,14 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
 
 
-class PrimaryHealthCareCenters(models.Model):
-    PHCName = models.CharField(max_length=255, blank = True , null = True)
-    PHCAddress= models.CharField(max_length=500, blank = True , null = True)
-    PHCContactNumber= models.CharField(max_length=500, blank = True , null = True)
-    PHCType= models.CharField(max_length=500, blank = True , null = True)
+class HealthCareCenters(models.Model):
+    healthCareName = models.CharField(max_length=255, blank = True , null = True)
+    HhealthcareAddress= models.CharField(max_length=500, blank = True , null = True)
+    healthCareContactNumber= models.CharField(max_length=500, blank = True , null = True)
+    healthCareType= models.CharField(max_length=500, blank = True , null = True)
     def __str__(self) -> str:
          return self.PHCName
 
-
-class SpecialityHealthCareCenters(models.Model):
-    SHCName = models.CharField(max_length=255, blank = True , null = True)
-    SHCAddress= models.CharField(max_length=500, blank = True , null = True)
-    SHCContactNumber= models.CharField(max_length=500, blank = True , null = True)
-    SHCType= models.CharField(max_length=500, blank = True , null = True)
-    def __str__(self) -> str:
-         return self.SHCName
-
-class MedicalCollegeHealthCareCenters(models.Model):
-    MCHCName = models.CharField(max_length=255, blank = True , null = True)
-    MCHCAddress= models.CharField(max_length=500, blank = True , null = True)
-    MCHCContactNumber= models.CharField(max_length=500, blank = True , null = True)
-    MCHCType= models.CharField(max_length=500, blank = True , null = True)
-    def __str__(self) -> str:
-         return self.MCHCName
 
 class ward(models.Model):
     wardName = models.CharField(max_length=255 ,unique= True , blank = True , null = True)
@@ -78,9 +62,9 @@ class CustomUser(AbstractUser, PermissionsMixin):
     health_Post = models.ForeignKey(healthPost , related_name="healthpostAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
     area = models.ForeignKey(area , related_name="areaAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True ) # By area we can find the health post , dispensary and Ward 
     dispensary = models.ForeignKey(dispensary , related_name="dispensary_name" , on_delete=models.SET_NULL , blank = True , null = True )
-    PrimaryHealthCare = models.ForeignKey(PrimaryHealthCareCenters,related_name="PrimaryHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
-    SpecialityHealthCare = models.ForeignKey(SpecialityHealthCareCenters,related_name="SpecialityHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
-    MedicalCollegeHealthCare = models.ForeignKey(MedicalCollegeHealthCareCenters,related_name="MedicalCollegeHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
+    HealthCareCenters = models.ForeignKey(HealthCareCenters,related_name="HealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
+    # SpecialityHealthCare = models.ForeignKey(SpecialityHealthCareCenters,related_name="SpecialityHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
+    # MedicalCollegeHealthCare = models.ForeignKey(MedicalCollegeHealthCareCenters,related_name="MedicalCollegeHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
 
 
     USERNAME_FIELD = 'phoneNumber'

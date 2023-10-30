@@ -33,7 +33,7 @@ urlpatterns = [
         
         path('v1/phr/login/init/transaction' , GenerateOTP.as_view() , name = 'GenrateOTP'),
         path('v1/phr/login/mobileEmail/preVerification' , VerifymobileAadharOTP.as_view() , name = 'GenrateOTP'),
-        path('v1/phr/profile/link/hid' , VerifymobileAadharOTP.as_view() , name = 'GenrateOTP'),
+        path('v1/phr/profile/link/hid' , LinkHID_to_Address.as_view() , name = 'GenrateOTP'),
 
 
         # Authentication Using adhar and Mobile Number

@@ -68,11 +68,7 @@ class GetPatientsDetailsAPI(generics.GenericAPIView):
     # queryset = PatientsPathlab.objects.filter(patientFamilyMember =  )
     search_fields = ['patientFamilyMember__mobileNo' ,'patientFamilyMember__name' , 'patientFamilyMember__memberId' , 
                      'patientFamilyMember__id' , 'bookingVisitID' , 'patientID']
-    # def get_queryset(self , id ):
-    #     # Filter the queryset based on the currently logged-in user
-    #     queryset = PatientsPathlab.objects.filter(patientFamilyMember = id )
-    #     return queryset
-    
+
     def get(self , request, id):
         try:
             instance = PatientPathlab.objects.get(patientFamilyMember__id=id)
