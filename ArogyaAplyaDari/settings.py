@@ -141,6 +141,20 @@ DATABASES = {
 # }
 
 
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.contrib.gis.db.backends.postgis',
+    #    'NAME': 'DemoNbr',
+       'NAME':'TestArogyaDB',
+       'USER': 'postgres',
+       'PASSWORD':'password',
+    #    'HOST' : '10.202.100.7',
+       'HOST' : 'localhost',
+       'PORT': '5432',
+   }
+}
+
+
 # DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.contrib.gis.db.backends.postgis',

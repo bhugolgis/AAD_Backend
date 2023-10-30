@@ -100,25 +100,27 @@ def FamilyHeadList(request):
     pagination = PageNumberPagination()
     pagination.page_size = 10
 
-    group = request.user.groups.values_list("name", flat=True)[0]
-    print(group)
-    
-    if group =="amo":
+    # Determine user's group (if authenticated)
+    group = None
+    if request.user.is_authenticated:
+        group = request.user.groups.values_list("name", flat=True).first()
+
+    # Filter family head details based on user's group (if authenticated)
+    if group == "amo" and request.user.is_authenticated:
         comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id)
-    elif group =="mo":
+    elif group == "mo" and request.user.is_authenticated:
         comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id)
     else:
         comDet = familyHeadDetails.objects.all()
-                
+
     # Paginate the queryset
     page_queryset = pagination.paginate_queryset(comDet, request)
-    
+
     # Serialize the paginated queryset
     serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
-    
-    # Return the paginated response
-    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})
 
+    # Return the paginated response
+    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
 
 
 
