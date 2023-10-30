@@ -8,28 +8,39 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser
 from .pagination import LimitsetPagination
 from rest_framework import status
+from healthworker.permissions import Isphlebotomist
 
 
 
 
 class GetCitizenBasicDetailsAPI(generics.ListAPIView):
-    # pagination_class = LimitsetPagination
-    permission_classes = [IsAuthenticated]
+    pagination_class = LimitsetPagination
+    permission_classes = (IsAuthenticated , Isphlebotomist )
     serializer_class = GetCitizenBasicDetailsSerializer
-    queryset = familyMembers.objects.filter( bloodCollectionLocation = "Center")
     filter_backends = (filters.SearchFilter,)
     search_fields = ['mobileNo' ,'name' , 'memberId']
+
+    def get_queryset(self):
+        queryset = familyMembers.objects.filter(area__healthPost_id = self.request.user.health_Post.id  , bloodCollectionLocation__in = ["center", "Home"])
     
+        return queryset 
+  
+
 
 
 # Create your views here.
 class GetPhleboFamilyMembersDetails(generics.ListAPIView):
-    # pagination_class = LimitsetPagination
-    permission_classes = [IsAuthenticated]
-    queryset = familyMembers.objects.filter( bloodCollectionLocation = "Center")
+    pagination_class = LimitsetPagination
+    permission_classes = (IsAuthenticated , Isphlebotomist )
+    # queryset = familyMembers.objects.filter( bloodCollectionLocation = "Center")
     serializer_class = GetPhleboFamilyMemberDetailSerializer  
     filter_backends = (filters.SearchFilter,)
     search_fields = ['mobileNo' ,'name' , 'memberId' , 'id' ]
+
+    def get_queryset(self):
+        queryset = familyMembers.objects.filter(area__healthPost_id = self.request.user.health_Post.id ,  bloodCollectionLocation__in = ["center", "Home"])
+    
+        return queryset 
 
 
 # class PostBloodTestReport(generics.GenericAPIView):
@@ -74,8 +85,10 @@ class GetPatientsDetailsAPI(generics.GenericAPIView):
                         'data' : serializer}, status=status.HTTP_200_OK)
 
 
+
+
 class PostResponseLIMSAPI(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated , Isphlebotomist]
     serializer_class = PostResponseLIMSAPISerialzier
     parser_classes = [MultiPartParser]
     def patch(self , request , id ):

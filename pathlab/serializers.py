@@ -5,7 +5,7 @@ class GetCitizenBasicDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = ('id','memberId' , 'name', 'gender', 'age' , 'mobileNo' , 'aadharCard' , 'abhaId' , 
-                  'isLabTestAdded' , 'isSampleCollected' , 'isLabTestReportGenerated' )
+                  'isLabTestAdded' , 'isSampleCollected' , 'isLabTestReportGenerated' , 'area' , 'bloodCollectionLocation' )
 
 
 class GetPhleboFamilyMemberDetailSerializer(serializers.ModelSerializer):
@@ -41,3 +41,4 @@ class GetPatientsDetailsAPISerialzier(serializers.ModelSerializer):
     class Meta:
         model = PatientPathlab
         fields = '__all__'
+        # depth = 1 
