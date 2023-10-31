@@ -50,6 +50,8 @@ urlpatterns = [
         #for Xtoken login urls
         path('v1/auth/init' , prfileLogin.as_view() , name = 'prfileLogin'),
         path('v1/auth/confirmWithAadhaarOtp' , confirmWithAadhaarOtp.as_view() , name = 'prfileLogin'),
+        path('v1/auth/authWithMobile' , authWithMobile.as_view() , name = 'prfileLogin'),
+        path('v1/auth/confirmWithMobileOTP' , confirmWithMobileOTP.as_view() , name = 'prfileLogin'),
 
 
 

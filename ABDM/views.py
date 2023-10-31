@@ -594,7 +594,6 @@ class DownloadCardAPI(APIView):
 
 # Search API's 
 
-
 class searchByHealthId(generics.GenericAPIView):
     serializer_class = searchByHealthIdSerializer
 
@@ -651,6 +650,10 @@ class searchByMobile(generics.GenericAPIView):
                              "status": "error" } , status=400)
         
 
+
+# Login For X token access for user account
+
+
 class prfileLogin(generics.GenericAPIView):
     serializer_class = prfileLoginSerializer
 
@@ -687,6 +690,62 @@ class confirmWithAadhaarOtp(generics.GenericAPIView):
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             url= "https://healthidsbx.abdm.gov.in/api/v1/auth/confirmWithAadhaarOtp"
+            
+            headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json',
+            'Authorization': f"{request.headers.get('Authorization')}"
+              }
+
+            payload = json.dumps({
+            "otp": serializer.validated_data.get('otp'),
+            "txnId": serializer.validated_data.get('txnId'),
+            })
+            
+            response = requests.request("POST", url, headers=headers, data=payload)
+            
+            return Response(json.loads(response.content) , status=response.status_code)
+        else:
+            return Response({'message': serializer.errors , 
+                             "status": "error" } , status=400)
+
+
+class authWithMobile(generics.GenericAPIView):
+    serializer_class = AuthByAadharSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid():
+            url= "https://healthidsbx.abdm.gov.in/api/v1/auth/authWithMobile"
+            
+            headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json',
+            'Authorization': f"{request.headers.get('Authorization')}"
+              }
+
+            payload = json.dumps({
+            "healthid": serializer.validated_data.get('healthid'),
+            })
+            
+            response = requests.request("POST", url, headers=headers, data=payload)
+            
+            return Response(json.loads(response.content) , status=response.status_code)
+        else:
+            return Response({'message': serializer.errors , 
+                             "status": "error" } , status=400)
+
+
+
+class confirmWithMobileOTP(generics.GenericAPIView):
+    serializer_class = verifyAadharOTPSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid():
+            url= "https://healthidsbx.abdm.gov.in/api/v1/auth/confirmWithMobileOTP"
             
             headers = {
             'accept': '*/*',
