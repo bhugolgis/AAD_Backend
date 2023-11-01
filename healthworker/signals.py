@@ -22,6 +22,9 @@ def create_new_user_for_familyHead(sender, instance,created , **kwargs):
         if new_instance:
             group = Group.objects.get(name = 'Family Head')
             new_instance.groups.add(group )
+          
+
+
          
 
 
@@ -42,12 +45,3 @@ def Update_Partial_Submit_Field(sender, instance, created , **kwargs):
         if citizen_count == instance.familyHead.totalFamilyMembers:
             instance.familyHead.partialSubmit = False
             instance.familyHead.save()
-
-         
-        
-      
-
-
-
-
-

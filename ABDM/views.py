@@ -5,7 +5,7 @@ import json
 import requests
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.http import HttpResponse
 # Public Keys API's 
 class v1Certificate(APIView):
     def get(self, request, *args, **kwargs):
@@ -568,7 +568,10 @@ class DownloadQrcodeAPI(APIView):
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
-            return Response(json.loads(response.content), status=200)
+            pdf_content = response.content
+            response = HttpResponse(pdf_content, content_type='image/png')
+            response['Content-Disposition'] = 'inline; filename="Qrcode.png"'
+            return response
         else:
             return Response("Failed to fetch data", status=response.status_code)
         
@@ -587,7 +590,10 @@ class DownloadCardAPI(APIView):
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
-            return Response(json.loads(response.content), status=200)
+            pdf_content = response.content
+            response = HttpResponse(pdf_content, content_type='application/pdf')
+            response['Content-Disposition'] = 'inline; filename="downloaded_card.pdf"'
+            return response
         else:
             return Response("Failed to fetch data", status=response.status_code)
 

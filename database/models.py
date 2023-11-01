@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser,BaseUserManager,PermissionsM
 from .managers import CustomUserManager
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
-
+# from .models import familyHeadDetails
 
 class HealthCareCenters(models.Model):
     healthCareName = models.CharField(max_length=255, blank = True , null = True)
@@ -63,6 +63,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     area = models.ForeignKey(area , related_name="areaAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True ) # By area we can find the health post , dispensary and Ward 
     dispensary = models.ForeignKey(dispensary , related_name="dispensary_name" , on_delete=models.SET_NULL , blank = True , null = True )
     HealthCareCenters = models.ForeignKey(HealthCareCenters,related_name="HealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
+
     # SpecialityHealthCare = models.ForeignKey(SpecialityHealthCareCenters,related_name="SpecialityHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
     # MedicalCollegeHealthCare = models.ForeignKey(MedicalCollegeHealthCareCenters,related_name="MedicalCollegeHealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
 
