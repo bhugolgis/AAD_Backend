@@ -61,6 +61,7 @@ class GetPhleboFamilyMembersDetails(generics.ListAPIView):
 #                              "message" : error_message}, status= 400)
         
 
+
 class GetPatientsDetailsAPI(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]  
     filter_backends = (filters.SearchFilter,)
@@ -79,7 +80,6 @@ class GetPatientsDetailsAPI(generics.GenericAPIView):
         return Response({'status' :'success', 
                         'message' : 'data fetched successfully', 
                         'data' : serializer}, status=status.HTTP_200_OK)
-
 
 
 

@@ -97,7 +97,7 @@ class generateAadharOtpAPI(generics.GenericAPIView):
             payload = json.dumps({
             "aadhaar": serializer.validated_data.get('aadhaar'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            
+            print(response.content)
             return Response(json.loads(response.content) , status=response.status_code)
         else:
             return Response({'message': serializer.errors , 
@@ -121,7 +121,7 @@ class verifyAadharOTP(generics.GenericAPIView):
             "otp": serializer.validated_data.get('otp'),
             "txnId": serializer.validated_data.get('txnId'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            
+            print(response.content)
             return Response(json.loads(response.content) , status=response.status_code)
         else:
             return Response({'message': serializer.errors , 
@@ -146,7 +146,7 @@ class checkAndGenerateMobileOTP(generics.GenericAPIView):
             "mobile": serializer.validated_data.get('mobile'),
             "txnId": serializer.validated_data.get('txnId'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            
+            print(response.content)
             return Response(json.loads(response.content) , status=response.status_code)
         else:
             return Response({'message': serializer.errors , 
@@ -172,7 +172,7 @@ class createHealthIdByAdhaarAPI(generics.GenericAPIView):
             "consentVersion" : serializer.validated_data.get('consentVersion'),
             "txnId": serializer.validated_data.get('txnId'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            
+            print(response.content)
             return Response(json.loads(response.content) , status=response.status_code)
         else:
             return Response({'message': serializer.errors , 
@@ -198,7 +198,7 @@ class verifyMobileOTP(generics.GenericAPIView):
             "txnId": serializer.validated_data.get('txnId'),})
             
             response = requests.request("POST", url, headers=headers, data=payload)
-            
+            print(response.content)
             return Response(json.loads(response.content) , status=response.status_code)
         else:
             return Response({'message': serializer.errors , 
@@ -620,7 +620,7 @@ class searchByHealthId(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            return Response(response.content, status=response.status_code)
         else:
             return Response({'message': serializer.errors , 
                              "status": "error" } , status=400)

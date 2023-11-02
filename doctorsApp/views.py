@@ -24,6 +24,8 @@ class LabTestSuggestedCreateView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated, IsAllowedGroup)
     # permission_classes = [IsAuthenticated]
 
+
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         data = {}

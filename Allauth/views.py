@@ -572,15 +572,12 @@ class LoginWithOtp(generics.GenericAPIView):
                     return Response({
                     "status":"error",
                     "message":"Invalid Otp."
-                
                     })
 
             else:
-
                 return Response({
                     "status":"error",
                     "message":"User Not Found."
-                
                     })
         else:
 
@@ -620,9 +617,7 @@ class ChangePasswordView(generics.UpdateAPIView):
                 'status': 'success',
                 'code': status.HTTP_200_OK,
                 'message': 'Password updated successfully'
-                
             }
-
             return Response(response)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
