@@ -23,6 +23,13 @@ class InsertSupervisorSerializer(serializers.ModelSerializer):
 		fields = ("id","name","username","password","emailId","phoneNumber")
 
 
+class HealthCareCentersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HealthCareCenters
+        fields = '__all__'
+
+
+
 
 class InsertAmoSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -218,6 +225,33 @@ class MoRegisterSerializer(serializers.ModelSerializer):
 		
 		return customuser
 
+
+class HccRegisterSerializer(serializers.ModelSerializer):
+	# ward = serializers.CharField(max_length = 255 , required = True)
+	# healthPostName = serializers.CharField(max_length = 255 , required = True)
+	# section = serializers.CharField(max_length = 255 , required = True)
+	class Meta:
+		model = CustomUser
+		fields = ("name","username", "password", "phoneNumber", "emailId" , "HealthCareCenters")
+		extra_kwargs = {'password':{'write_only':True}}
+		
+	def create(self,validated_data):
+		# ward = validated_data.pop("ward")
+		# healthPostName = validated_data.pop("healthPostName")
+		customuser = CustomUser.objects.create_user(**validated_data)
+		
+		return customuser
+
+class ViewPrimaryHealthCareSerializer(serializers.ModelSerializer):
+    # HealthCareDoctor = HealthCareCentersSerializer(many=True, read_only=True)
+    class Meta:
+        model = CustomUser
+        fields = ("id","name","username","password","emailId","phoneNumber","HealthCareCenters_id")
+
+
+
+
+
 class AMoRegisterSerializer(serializers.ModelSerializer):
 	# ward = serializers.CharField(max_length = 255 , required = True)
 	# healthPostName = serializers.CharField(max_length = 255 , required = True)
@@ -251,10 +285,10 @@ class PrimaryHealthCareRegisterSerializer(serializers.ModelSerializer):
 		
 		return customuser
 
-class ViewPrimaryHealthCareSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = CustomUser
-		fields = ("id","name","username","password","emailId","phoneNumber","PrimaryHealthCare")
+# class ViewPrimaryHealthCareSerializer(serializers.ModelSerializer):
+# 	class Meta:
+# 		model = CustomUser
+# 		fields = ("id","name","username","password","emailId","phoneNumber","PrimaryHealthCare")
 
 
 
@@ -365,6 +399,12 @@ class LoginWithOtpSerializer(serializers.Serializer):
         raise serializers.ValidationError("Incorrect Credentials")
 
 
+
+class HealthCareCentersSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = HealthCareCenters
+		fields = '__all__'
+
 class AddwardSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ward
@@ -410,10 +450,7 @@ class AddAreaSerializer(serializers.ModelSerializer):
     
 
 
-class HealthCareCentersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HealthCareCenters
-        fields = '__all__'
+
 
 # class SpecialityHealthCareCentersSerializer(serializers.ModelSerializer):
 #     class Meta:

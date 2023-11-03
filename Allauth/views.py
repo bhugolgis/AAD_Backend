@@ -23,6 +23,11 @@ from datetime import datetime, timedelta
 from django.db.models import Count
 
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
+
 class GetDailyCountOfSurvey(generics.GenericAPIView):
     # serializer_class = AreaSerialzier
     # permission_classes = [IsAuthenticated]
@@ -310,6 +315,117 @@ class InsertMoAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class InsertphccAPI(generics.GenericAPIView):
+    serializer_class = HccRegisterSerializer
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # print(request.data["name"], request.data)
+        
+        try:
+            if serializer.is_valid():
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = ViewPrimaryHealthCareSerializer(customuser, context=self.get_serializer_context()).data
+
+                group = Group.objects.get(name='phcc')
+                user.groups.add(group)
+
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Registered.",
+                    "data": data,
+                })
+            else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class InsertshccAPI(generics.GenericAPIView):
+    serializer_class = HccRegisterSerializer
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # print(request.data["name"], request.data)
+        
+        try:
+            if serializer.is_valid():
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = ViewPrimaryHealthCareSerializer(customuser, context=self.get_serializer_context()).data
+
+                group = Group.objects.get(name='shcc')
+                user.groups.add(group)
+
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Registered.",
+                    "data": data,
+                })
+            else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+class InsertthccAPI(generics.GenericAPIView):
+    serializer_class = HccRegisterSerializer
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # print(request.data["name"], request.data)
+        
+        try:
+            if serializer.is_valid():
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = ViewPrimaryHealthCareSerializer(customuser, context=self.get_serializer_context()).data
+
+                group = Group.objects.get(name='thcc')
+                user.groups.add(group)
+
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Registered.",
+                    "data": data,
+                })
+            else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 
@@ -855,6 +971,7 @@ class LoginView(generics.GenericAPIView):
                             'message': 'Login successful',
                             'Token': token,
                             'status': 'success',
+                            'id': user_data.id,
                             'email': user_data.emailId,
                             'name' : user_data.name,         
                             'username': user_data.username,
@@ -869,6 +986,7 @@ class LoginView(generics.GenericAPIView):
                             'message': 'Login successful',
                             'Token': token,
                             'status': 'success',
+                            'id': user_data.id,
                             'email': user_data.emailId,
                             'name' : user_data.name,         
                             'username': user_data.username,
@@ -879,6 +997,7 @@ class LoginView(generics.GenericAPIView):
                             'message': 'Login successful',
                             'Token': token,
                             'status': 'success',
+                            'id': user_data.id,
                             'email': user_data.emailId,
                             'name' : user_data.name,         
                             'username': user_data.username,
@@ -889,6 +1008,7 @@ class LoginView(generics.GenericAPIView):
                             'message': 'Login successful',
                             'Token': token,
                             'status': 'success',
+                            'id': user_data.id,
                             'email': user_data.emailId,
                             'name' : user_data.name,         
                             'username': user_data.username,
@@ -907,6 +1027,7 @@ class LoginView(generics.GenericAPIView):
                             'message': 'Login successful',
                             'Token': token,
                             'status': 'success',
+                            'id': user_data.id,
                             # 'email': user_data.emailId,
                             'name' : user_data.name,         
                             'username': user_data.username,
@@ -920,6 +1041,74 @@ class LoginView(generics.GenericAPIView):
                             # 'sectionName':user_data.section.sectionName,
                             'Group': group}, status=200)
             
+                    elif group == "phcc":
+                        return Response({
+                            'message': 'Login successful',
+                            'Token': token,
+                            'status': 'success',
+                            'id': user_data.id,
+                            'name' : user_data.name,         
+                            'username': user_data.username,
+                            'phoneNumber' : user_data.phoneNumber,
+                            # 'ward' : user_data.section.healthPost.ward.wardName ,
+                            # 'healthPostName' : user_data.health_Post.healthPostName,
+                            # 'healthPostID' : user_data.health_Post.id,
+                            # 'dispensaryId':user_data.dispensary.id,
+                            'healthCareName':user_data.HealthCareCenters.healthCareName,
+                            'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
+                            'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
+                            'healthCareType':user_data.HealthCareCenters.healthCareType[0],
+
+                            # 'sectionId':user_data.section.id,
+                            # 'sectionName':user_data.section.sectionName,
+                            'Group': group}, status=200)
+            
+                    elif group == "shcc":
+                        return Response({
+                            'message': 'Login successful',
+                            'Token': token,
+                            'status': 'success',
+                            'id': user_data.id,
+                            'name' : user_data.name,         
+                            'username': user_data.username,
+                            'phoneNumber' : user_data.phoneNumber,
+                            # 'ward' : user_data.section.healthPost.ward.wardName ,
+                            # 'healthPostName' : user_data.health_Post.healthPostName,
+                            # 'healthPostID' : user_data.health_Post.id,
+                            # 'dispensaryId':user_data.dispensary.id,
+                            'healthCareName':user_data.HealthCareCenters.healthCareName,
+                            'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
+                            'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
+                            'healthCareType':user_data.HealthCareCenters.healthCareType[0],
+
+                            # 'sectionId':user_data.section.id,
+                            # 'sectionName':user_data.section.sectionName,
+                            'Group': group}, status=200)
+
+                    elif group == "thcc":
+                        return Response({
+                            'message': 'Login successful',
+                            'Token': token,
+                            'status': 'success',
+                            'id': user_data.id,
+                            'name' : user_data.name,         
+                            'username': user_data.username,
+                            'phoneNumber' : user_data.phoneNumber,
+                            # 'ward' : user_data.section.healthPost.ward.wardName ,
+                            # 'healthPostName' : user_data.health_Post.healthPostName,
+                            # 'healthPostID' : user_data.health_Post.id,
+                            # 'dispensaryId':user_data.dispensary.id,
+                            'healthCareName':user_data.HealthCareCenters.healthCareName,
+                            'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
+                            'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
+                            'healthCareType':user_data.HealthCareCenters.healthCareType[0],
+
+                            # 'sectionId':user_data.section.id,
+                            # 'sectionName':user_data.section.sectionName,
+                            'Group': group}, status=200)
+
+
+
             else:
                 key, value = list(serializer.errors.items())[0]
                 error_message = value[0]
@@ -966,4 +1155,51 @@ class LoginView(generics.GenericAPIView):
 #     permission_classes = [IsAdminUser]
 
          
+            
+
+class HealthCareCentersList(APIView):
+    # @swagger_auto_schema(
+    #     request_body=HealthCareCentersSerializer,
+    #     responses={200: HealthCareCentersSerializer(many=True)}
+    # )
+    def get(self, request):
+        healthcare_centers = HealthCareCenters.objects.all()
+        serializer = HealthCareCentersSerializer(healthcare_centers, many=True)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=HealthCareCentersSerializer,
+        responses={201: HealthCareCentersSerializer()}
+    )
+    def post(self, request):
+        serializer = HealthCareCentersSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class HealthCareCentersDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return HealthCareCenters.objects.get(pk=pk)
+        except HealthCareCenters.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        healthcare_center = self.get_object(pk)
+        serializer = HealthCareCentersSerializer(healthcare_center)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        healthcare_center = self.get_object(pk)
+        serializer = HealthCareCentersSerializer(healthcare_center, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        healthcare_center = self.get_object(pk)
+        healthcare_center.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT) 
             

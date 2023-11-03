@@ -18,10 +18,18 @@ urlpatterns = [
         path('InsertAmoAPI' , InsertAmoAPI.as_view() , name = 'InsertAmoAPI'),
         path('InsertMoAPI' , InsertMoAPI.as_view() , name = 'InsertMoAPI'),
 
+
+        path('InsertphccAPI' , InsertphccAPI.as_view() , name = 'InsertphccAPI'),
+        path('InsertshccAPI' , InsertshccAPI.as_view() , name = 'InsertshccAPI'),
+        path('InsertthccAPI' , InsertthccAPI.as_view() , name = 'InsertthccAPI'),
+
+
         # path('InsertPrimaryHealthCareDoctorAPI' , InsertPrimaryHealthCareDoctorAPI.as_view() , name = 'InsertPrimaryHealthCareDoctorAPI'),
         # path('InsertSpecialityHealthCareDoctorAPI' , InsertSpecialityHealthCareDoctorAPI.as_view() , name = 'InsertSpecialityHealthCareDoctorAPI'),
         # path('InsertMedicalCollegeHealthCareDoctorAPI' , InsertMedicalCollegeHealthCareDoctorAPI.as_view() , name = 'InsertMedicalCollegeHealthCareDoctorAPI'),
 
+        path('healthcarecenters', HealthCareCentersList.as_view(), name='healthcare-centers-list'),
+        path('healthcarecenters/<int:pk>/', HealthCareCentersDetail.as_view(), name='healthcare-centers-detail'),
 
         path('InsertHealthWorkerAPI' , InsertHealthWorkerAPI.as_view() , name = 'InsertHealthWorkerAPI'),
         path('InsertPhlebotomistAPI' , InsertPhlebotomistAPI.as_view() , name = 'InsertPhlebotomistAPI'),

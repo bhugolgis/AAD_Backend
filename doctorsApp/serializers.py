@@ -19,10 +19,10 @@ class PatientsPathlabSerializer(serializers.ModelSerializer):
         
 
 class ListPatientsPathlabSerializer(serializers.ModelSerializer):
-    patientFamilyMember_FArea = serializers.CharField(source='patientFamilyMember.family_head_member.FArea', read_only=True)
-    patientFamilyMember_pincode = serializers.IntegerField(source='patientFamilyMember.family_head_member.pincode', read_only=True)
-    patientFamilyMember_address = serializers.CharField(source='patientFamilyMember.family_head_member.address', read_only=True)
-    patientFamilyMember_plotNo = serializers.CharField(source='patientFamilyMember.family_head_member.plotNo', read_only=True)
+    # patientFamilyMember_FArea = serializers.CharField(source='patientFamilyMember.family_head_member.FArea', read_only=True)
+    # patientFamilyMember_pincode = serializers.IntegerField(source='patientFamilyMember.family_head_member.pincode', read_only=True)
+    # patientFamilyMember_address = serializers.CharField(source='patientFamilyMember.family_head_member.address', read_only=True)
+    # patientFamilyMember_plotNo = serializers.CharField(source='patientFamilyMember.family_head_member.plotNo', read_only=True)
 
     class Meta:
         model = PatientPathlab
@@ -30,10 +30,10 @@ class ListPatientsPathlabSerializer(serializers.ModelSerializer):
             'patientFamilyMember_id',
             'LabTestSuggested',
             'suggested_by_doctor_id',
-            'patientFamilyMember_FArea',
-            'patientFamilyMember_pincode',
-            'patientFamilyMember_address',
-            'patientFamilyMember_plotNo',
+            # 'patientFamilyMember_FArea',
+            # 'patientFamilyMember_pincode',
+            # 'patientFamilyMember_address',
+            # 'patientFamilyMember_plotNo',
         ]
 
 
@@ -46,6 +46,26 @@ class MedicalOfficerConsultancySerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalOfficerConsultancy
         fields = '__all__'
+
+class MedicalOfficerAdviceSerializer(serializers.ModelSerializer):
+    # patientsId = serializers.IntegerField()
+    # ModoctorRemarks = serializers.CharField(max_length=250)
+    # # referedTo = serializers.IntegerField()
+    # isCompleted = serializers.BooleanField(default=False)
+    class Meta:
+        model = MedicalOfficerConsultancy
+        fields =('ModoctorRemarks','isCompleted')
+
+
+class MedicalOfficerReferalAdviceSerializer(serializers.Serializer):
+    patientsPathLabReport = serializers.IntegerField(required=True)
+    PriDoctor_name = serializers.CharField(max_length=250,default="Test Doctor Name")
+    Prispecialization = serializers.CharField(max_length=250,default="Test Specialization")
+    referedTo = serializers.IntegerField(required=True)
+    # isCompleted = serializers.BooleanField(default=False)
+    class Meta:
+        # model = MedicalOfficerConsultancy
+        fields =('referedTo','PriDoctor_name','patientsPathLabReport','Prispecialization')
 
 class PrimaryConsultancySerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,15 +86,39 @@ class TertiaryConsultancySerializer(serializers.ModelSerializer):
 
 
 class ListPrimaryConsultancyPatientsSerializer(serializers.ModelSerializer):
-    patientFamilyMember_FArea = serializers.CharField(source='patientFamilyMember.family_head_member.FArea', read_only=True)
-    patientFamilyMember_pincode = serializers.IntegerField(source='patientFamilyMember.family_head_member.pincode', read_only=True)
-    patientFamilyMember_address = serializers.CharField(source='patientFamilyMember.family_head_member.address', read_only=True)
-    patientFamilyMember_plotNo = serializers.CharField(source='patientFamilyMember.family_head_member.plotNo', read_only=True)
+    # patientFamilyMember_FArea = serializers.CharField(source='patientFamilyMember.family_head_member.FArea', read_only=True)
+    # patientFamilyMember_pincode = serializers.IntegerField(source='patientFamilyMember.family_head_member.pincode', read_only=True)
+    # patientFamilyMember_address = serializers.CharField(source='patientFamilyMember.family_head_member.address', read_only=True)
+    # patientFamilyMember_plotNo = serializers.CharField(source='patientFamilyMember.family_head_member.plotNo', read_only=True)
 
     class Meta:
         model = PrimaryConsultancy
-        fields = '__all__'
+        fields = ('PriPatientsConsultancy_id','PriPatientsConsultancy__memberId','PriPatientsConsultancy__name','PriPatientsConsultancy__gender','PriPatientsConsultancy__age','PriPatientsConsultancy__aadharCard','PriPatientsConsultancy__abhaId','PriPatientsConsultancy__isLabTestAdded','PriPatientsConsultancy__isSampleCollected','PriPatientsConsultancy__isLabTestReportGenerated')
 
+
+
+class ListSecondaryConsultancyPatientsSerializer(serializers.ModelSerializer):
+    # patientFamilyMember_FArea = serializers.CharField(source='patientFamilyMember.family_head_member.FArea', read_only=True)
+    # patientFamilyMember_pincode = serializers.IntegerField(source='patientFamilyMember.family_head_member.pincode', read_only=True)
+    # patientFamilyMember_address = serializers.CharField(source='patientFamilyMember.family_head_member.address', read_only=True)
+    # patientFamilyMember_plotNo = serializers.CharField(source='patientFamilyMember.family_head_member.plotNo', read_only=True)
+
+    class Meta:
+        model = SecondaryConsultancy
+        fields = ('SecPatientsConsultancy_id','SecPatientsConsultancy__memberId','SecPatientsConsultancy__name','SecPatientsConsultancy__gender','SecPatientsConsultancy__age','SecPatientsConsultancy__aadharCard','SecPatientsConsultancy__abhaId','SecPatientsConsultancy__isLabTestAdded','SecPatientsConsultancy__isSampleCollected','SecPatientsConsultancy__isLabTestReportGenerated')
+
+
+
+
+class ListTertiaryConsultancyPatientsSerializer(serializers.ModelSerializer):
+    # patientFamilyMember_FArea = serializers.CharField(source='patientFamilyMember.family_head_member.FArea', read_only=True)
+    # patientFamilyMember_pincode = serializers.IntegerField(source='patientFamilyMember.family_head_member.pincode', read_only=True)
+    # patientFamilyMember_address = serializers.CharField(source='patientFamilyMember.family_head_member.address', read_only=True)
+    # patientFamilyMember_plotNo = serializers.CharField(source='patientFamilyMember.family_head_member.plotNo', read_only=True)
+
+    class Meta:
+        model = TertiaryConsultancy
+        fields = ('TerPatientsConsultancy_id','TerPatientsConsultancy__memberId','TerPatientsConsultancy__name','TerPatientsConsultancy__gender','TerPatientsConsultancy__age','TerPatientsConsultancy__aadharCard','TerPatientsConsultancy__abhaId','TerPatientsConsultancy__isLabTestAdded','TerPatientsConsultancy__isSampleCollected','TerPatientsConsultancy__isLabTestReportGenerated')
 
 
 
@@ -84,15 +128,34 @@ class ListPrimaryConsultancyPatientsSerializer(serializers.ModelSerializer):
 
 
 class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
-    pathlab_reports = PatientPathlabSerializer(many=True, read_only=True)
-    medicalOfficerconsultancy = MedicalOfficerConsultancySerializer(many=True, read_only=True)
-    primaryConsultancy = PrimaryConsultancySerializer(many=True, read_only=True)
-    secondaryConsultancy = SecondaryConsultancySerializer(many=True, read_only=True)
-    tertiaryConsultancy = TertiaryConsultancySerializer(many=True, read_only=True)
+    # pathlab_reports = PatientPathlabSerializer(many=True)
+    # medicalOfficerconsultancy = MedicalOfficerConsultancySerializer(many=True)
+    # primaryConsultancy = PrimaryConsultancySerializer(many=True)
+    # secondaryConsultancy = SecondaryConsultancySerializer(many=True)
+    # tertiaryConsultancy = TertiaryConsultancySerializer(many=True, read_only=True)
 
     class Meta:
         model = familyMembers
-        fields = '__all__'
+        fields = ('id','memberId','name','gender','age','mobileNo','familyHead','familySurveyor','area','aadharCard','abhaId','pulse','bloodPressure','weight',
+        'height','BMI','Questionnaire','bloodCollectionLocation','questionsConsent','aadharAndAbhaConsent','demandLetter','bloodConsent','cbacScore',
+        'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated')
+
+
+
+# class ViewFamilyMemberDetailsSerializer(serializers.ModelSerializer):
+#     pathlab_reports = PatientPathlabSerializer(many=True)
+#     medicalOfficerconsultancy = MedicalOfficerConsultancySerializer(many=True)
+#     primaryConsultancy = PrimaryConsultancySerializer(many=True)
+#     secondaryConsultancy = SecondaryConsultancySerializer(many=True)
+#     tertiaryConsultancy = TertiaryConsultancySerializer(many=True, read_only=True)
+
+#     class Meta:
+#         model = familyMembers
+#         fields = ('id','memberId','name','gender','age','mobileNo','familyHead','familySurveyor','area','aadharCard','abhaId','pulse','bloodPressure','weight',
+#         'height','BMI','Questionnaire','bloodCollectionLocation','questionsConsent','aadharAndAbhaConsent','demandLetter','bloodConsent','cbacScore',
+#         'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated','pathlab_reports','medicalOfficerconsultancy','primaryConsultancy','secondaryConsultancy','tertiaryConsultancy')
+
+
 
 class FamilyHeadDetailsSerializer(serializers.ModelSerializer):
     family_head_member = FamilyMemberDetailsSerializer(many=True, read_only=True)

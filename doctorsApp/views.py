@@ -9,10 +9,14 @@ from rest_framework.permissions import IsAuthenticated , AllowAny
 
 from rest_framework.pagination import PageNumberPagination
 
+from rest_framework import status
 
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 
 class IsAllowedGroup(permissions.BasePermission):
     allowed_groups = ['amo', 'mo']  # Replace with the names of your allowed groups
@@ -44,6 +48,10 @@ class LabTestSuggestedCreateView(generics.GenericAPIView):
                 })
 
             # Create a new instance of PatientsPathlab
+            updateFmailyMember = familyMembers.objects.filter(id = patient_family_member_id)
+            updateFmailyMember.update(isLabTestAdded = True)
+            # updateFamilyHead = familyHeadDetails.objects.filter(id =updateFmailyMember[0].familyHead_id ).update(isLabTestAdded = True)
+            
             insert_lab_test = PatientPathlab.objects.create(
                 patientFamilyMember_id=patient_family_member_id,
                 LabTestSuggested=lab_test_suggested,
@@ -91,9 +99,36 @@ class ListPatientsPathlabView(generics.ListAPIView):
     fields = ['patientFamilyMember__familyHead__area', 'suggested_by_doctor', 'LabTestSuggested', 'PatientSampleTaken', 'PathLab', 'ReportCheckByDoctor', 'LabTestReport', 'doctorRemarks', 'PathLabRemarks', 'response_date', 'created_date', 'isCompleted']
 
     def get_queryset(self):
-        return PatientPathlab.objects.all()
+        # queryset = PatientPathlab.objects.select_related('patientFamilyMember__family_head_member')
+        # return PatientPathlab.objects.all()
+        return PatientPathlab.objects.select_related('patientFamilyMember__familyHead')
     
     
+from django.shortcuts import get_object_or_404
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def ViewPatientsLabTestViewDetails(request, pk):
+    comDet = get_object_or_404(PatientPathlab, patientFamilyMember_id=int(pk))
+    serializer = PatientPathlabSerializer(comDet)
+    testData  = serializer.data
+
+    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def ViewPatientsMedicalOffConsultancyView(request, pk):
+    comDet = get_object_or_404(MedicalOfficerConsultancy, MoPatientsConsultancy_id=int(pk))
+    serializer = MedicalOfficerConsultancySerializer(comDet)
+    testData  = serializer.data
+
+    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+
+
+
     
     
 @permission_classes((IsAuthenticated,))
@@ -122,7 +157,7 @@ def FamilyHeadList(request):
     serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
 
     # Return the paginated response
-    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+    return pagination.get_paginated_response(serializer.data)
 
 
 
@@ -133,7 +168,89 @@ from django.shortcuts import get_object_or_404
 def ViewFamilyDetails(request, pk):
     comDet = get_object_or_404(familyHeadDetails, id=int(pk))
     serializer = FamilyHeadDetailsSerializer(comDet)
+    testData  = serializer.data
+    testData["family_head_member"][0]["test"]="45646546546456"
+    print(testData["family_head_member"][0]["test"])
     return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+
+@swagger_auto_schema(
+    method='post',
+    request_body=MedicalOfficerAdviceSerializer,
+    manual_parameters=[
+        openapi.Parameter(
+            'patients_id',
+            openapi.IN_PATH,
+            description='Patient ID',
+            type=openapi.TYPE_INTEGER,
+            required=True
+        ),
+    ]
+)
+@permission_classes((IsAuthenticated,))
+@api_view(['POST'])
+def medicalOfficerAdviceView(request, patients_id):
+    
+        # Retrieve the instance you want to update
+    medical_officer_consultancy = MedicalOfficerConsultancy.objects.filter(MoPatientsConsultancy_id=patients_id,isCompleted=True)
+    if medical_officer_consultancy.exists():
+        
+        return Response({"error": "Patient Already Attended"}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'POST':
+        # Deserialize the data from the request
+        serializer = MedicalOfficerAdviceSerializer(instance=medical_officer_consultancy, data=request.data)
+
+        if serializer.is_valid():
+            # Save the updated data
+            serializer.save()
+            # addInPrimary = PrimaryConsultancy(PriPatientsConsultancy_id = patients_id,ReferByMedicalOfficer_id = request.user.id)
+            # addInPrimary.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@swagger_auto_schema(
+    method='post',
+    request_body=MedicalOfficerReferalAdviceSerializer,
+    manual_parameters=[
+        openapi.Parameter(
+            'patients_id',
+            openapi.IN_PATH,
+            description='Patient ID',
+            type=openapi.TYPE_INTEGER,
+            required=True
+        ),
+    ]
+)
+@permission_classes((IsAuthenticated,))
+@api_view(['POST'])
+def medicalOfficerReferalAdviceView(request, patients_id):
+    
+        # Retrieve the instance you want to update
+    medical_officer_consultancy = MedicalOfficerConsultancy.objects.filter(MoPatientsConsultancy_id=patients_id,isCompleted=True)
+    if medical_officer_consultancy.exists():
+        
+        return Response({"error": "Patient Already Attended"}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'POST':
+        patientsPathLabReport = request.data["patientsPathLabReport"]
+        PriDoctor_name = request.data["PriDoctor_name"]
+        referedTo = request.data["referedTo"]
+        Prispecialization = request.data["Prispecialization"]
+
+        addInPrimary = PrimaryConsultancy(PriassignedDoctor_id = referedTo ,PriPatientsConsultancy_id = patients_id,ReferByMedicalOfficer_id = request.user.id,PriPatientsPathReport_id =patientsPathLabReport,PriDoctor_name = PriDoctor_name,Prispecialization=Prispecialization,  )
+        addInPrimary.save()
+        updateStatus = MedicalOfficerConsultancy.objects.filter(MoPatientsConsultancy_id=patients_id).update(isCompleted=True)
+
+        return Response({"status": "success","message":"Successfully Patient Refer to Primary Health Care Doctor."}, status=status.HTTP_200_OK)
+
+
+
+
 
 
 
@@ -156,3 +273,112 @@ def PatientsForPrimaryDoctorList(request):
 
     
     
+    
+    
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def ViewFamilyMemberView(request, pk):
+    comDet = get_object_or_404(familyMembers, id=int(pk))
+    serializer = FamilyMemberDetailsSerializer(comDet)
+    testData  = serializer.data
+
+    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def ViewMedicalOfficerConsaltancyView(request, patients_id):
+    comDet = get_object_or_404(MedicalOfficerConsultancy, MoPatientsConsultancy_id=int(patients_id))
+    serializer = MedicalOfficerConsultancySerializer(comDet)
+    testData  = serializer.data
+
+    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def ViewPrimaryConsultancyView(request, patients_id):
+    comDet = get_object_or_404(PrimaryConsultancy, PriPatientsConsultancy_id=int(patients_id))
+    serializer = PrimaryConsultancySerializer(comDet)
+    testData  = serializer.data
+
+    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def ViewSecondaryConsultancyView(request, patients_id):
+    comDet = get_object_or_404(SecondaryConsultancy, SecPatientsConsultancy_id=int(patients_id))
+    serializer = SecondaryConsultancySerializer(comDet)
+    testData  = serializer.data
+
+    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def ViewTertiaryConsultancyView(request, patients_id):
+    comDet = get_object_or_404(TertiaryConsultancy, TerPatientsConsultancy_id=int(patients_id))
+    serializer = TertiaryConsultancySerializer(comDet)
+    testData  = serializer.data
+
+    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+
+
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def PatientsForPrimaryDoctorList(request):
+    pagination = PageNumberPagination()
+    pagination.page_size = 10
+    
+    comDet = PrimaryConsultancy.objects.filter(PriassignedDoctor_id=request.user.id)
+
+    # Paginate the queryset
+    page_queryset = pagination.paginate_queryset(comDet, request)
+    
+    # Serialize the paginated queryset
+    serializer = ListPrimaryConsultancyPatientsSerializer(page_queryset, many=True)
+    
+    # Return the paginated response
+    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def PatientsForSecondaryDoctorList(request):
+    pagination = PageNumberPagination()
+    pagination.page_size = 10
+    
+    comDet = SecondaryConsultancy.objects.filter(SecSecassignedDoctor_id=request.user.id)
+
+    # Paginate the queryset
+    page_queryset = pagination.paginate_queryset(comDet, request)
+    
+    # Serialize the paginated queryset
+    serializer = ListSecondaryConsultancyPatientsSerializer(page_queryset, many=True)
+    
+    # Return the paginated response
+    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})
+
+
+
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def PatientsForTertairyDoctorList(request):
+    pagination = PageNumberPagination()
+    pagination.page_size = 10
+    
+    comDet = TertiaryConsultancy.objects.filter(TerassignedDoctor_id=request.user.id)
+
+    # Paginate the queryset
+    page_queryset = pagination.paginate_queryset(comDet, request)
+    
+    # Serialize the paginated queryset
+    serializer = ListTertiaryConsultancyPatientsSerializer(page_queryset, many=True)
+    
+    # Return the paginated response
+    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})

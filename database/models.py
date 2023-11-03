@@ -8,12 +8,19 @@ from django.contrib.postgres.fields import ArrayField
 # from .models import familyHeadDetails
 
 class HealthCareCenters(models.Model):
+    CenterTypeChoices = [
+         ("PHCC" , "Primary Health Care Center"),
+         ("SHCC" , "Secondary Health Care Center") ,
+         ("THCC" , "Tertiary Health Care Center"),
+    ]
     healthCareName = models.CharField(max_length=255, blank = True , null = True)
     HhealthcareAddress= models.CharField(max_length=500, blank = True , null = True)
     healthCareContactNumber= models.CharField(max_length=500, blank = True , null = True)
-    healthCareType= models.CharField(max_length=500, blank = True , null = True)
+    healthCareType = ArrayField(models.CharField(max_length=255 , choices=CenterTypeChoices ,default=list ) , blank = True , null = True )
+
+
     def __str__(self) -> str:
-         return self.PHCName
+         return self.healthCareName
 
 
 class ward(models.Model):
@@ -214,6 +221,8 @@ class MedicalOfficerConsultancy(models.Model):
     ModoctorRemarks = models.CharField(max_length=500,blank=True,null=True)
     MofileUpload = models.FileField(upload_to='doctorFolder',blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
+    referedToPrimaryConsultancy = models.BooleanField(default=False)
+
     isCompleted = models.BooleanField(default=False)
 
 
@@ -228,6 +237,9 @@ class PrimaryConsultancy(models.Model):
     PridoctorRemarks = models.CharField(max_length=500,blank=True,null=True)
     fileUpload = models.FileField(upload_to='doctorFolder',blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
+
+    referedToSecondaryConsultancy = models.BooleanField(default=False)
+
     isCompleted = models.BooleanField(default=False)
 
 
@@ -256,4 +268,6 @@ class TertiaryConsultancy(models.Model):
     TerdoctorRemarks = models.CharField(max_length=500,blank=True,null=True)
     fileUpload = models.FileField(upload_to='doctorFolder',blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
+    referedToTertiaryConsultancy = models.BooleanField(default=False)
+
     isCompleted = models.BooleanField(default=False)
