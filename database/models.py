@@ -106,6 +106,7 @@ class familyHeadDetails(models.Model):
     pincode = models.IntegerField(blank=True,null=True)
     area = models.ForeignKey(area, related_name="familyheaddeatils_area" , on_delete=models.CASCADE , blank= True , null= True )
     totalFamilyMembers = models.IntegerField(default=0)
+    pendingMembers = models.IntegerField(default=0)
     location = models.PointField(blank= True , null= True )
     created_datetime = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(CustomUser,related_name="surveyDoneBy", on_delete=models.CASCADE,null=True,blank=True)

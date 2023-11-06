@@ -18,11 +18,6 @@ class v1Certificate(APIView):
             'Content-Type': 'application/json',
             # 'Authorization': f"{request.headers.get('Authorization')}"
         }
-
-        # params = {
-        #     'phrAddress': request.GET.get('phrAddress')
-        # }
-
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
@@ -42,11 +37,6 @@ class v2Certificate(APIView):
             'Content-Type': 'application/json',
             # 'Authorization': f"{request.headers.get('Authorization')}"
         }
-
-        # params = {
-        #     'phrAddress': request.GET.get('phrAddress')
-        # }
-
         response = requests.get(url, headers=headers)
 
         if response.status_code == 200:
@@ -97,8 +87,14 @@ class generateAadharOtpAPI(generics.GenericAPIView):
             payload = json.dumps({
             "aadhaar": serializer.validated_data.get('aadhaar'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            print(response.content)
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 400:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == range(500 , 599):
+                return Response(response.content , status=response.status_code)
+
         else:
             return Response({'message': serializer.errors , 
                              "status": "error" } , status=400)
@@ -121,8 +117,13 @@ class verifyAadharOTP(generics.GenericAPIView):
             "otp": serializer.validated_data.get('otp'),
             "txnId": serializer.validated_data.get('txnId'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            print(response.content)
-            return Response(json.loads(response.content) , status=response.status_code)
+
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 400:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == range(500 , 599):
+                return Response(response.content , status=response.status_code)
         else:
             return Response({'message': serializer.errors , 
                              "status": "error" } , status=400)
