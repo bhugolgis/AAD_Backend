@@ -174,4 +174,4 @@ class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = familyHeadDetails
-        fields = ('id','familyId','name','totalFamilyMembers','mobileNo','HealthPostName','created_datetime','partialSubmit')
+        fields = ('id','familyId','name','totalFamilyMembers','mobileNo','HealthPostName','created_datetime', 'pendingMembers', 'partialSubmit')
