@@ -131,11 +131,45 @@ def ViewPatientsMedicalOffConsultancyView(request, pk):
 
     
     
+# @permission_classes((IsAuthenticated,))
+# @api_view(['GET'])
+# def FamilyHeadList(request):
+#     pagination = PageNumberPagination()
+#     pagination.page_size = 10
+
+#     # Determine user's group (if authenticated)
+#     group = None
+#     if request.user.is_authenticated:
+#         group = request.user.groups.values_list("name", flat=True).first()
+
+#     # Filter family head details based on user's group (if authenticated)
+#     if group == "amo" and request.user.is_authenticated:
+#         comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id)
+#     elif group == "mo" and request.user.is_authenticated:
+#         comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id)
+#     else:
+#         comDet = familyHeadDetails.objects.all()
+
+#     # Paginate the queryset
+#     page_queryset = pagination.paginate_queryset(comDet, request)
+
+#     # Serialize the paginated queryset
+#     serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
+#     data = {'status': 'success',
+#         'message': 'Successfully Feteched',
+        
+#         'data': serializer.data  # Include serialized data in the response
+#     }
+
+
+#     # Return the paginated response
+#     return pagination.get_paginated_response(data)
+
 @permission_classes((IsAuthenticated,))
 @api_view(['GET'])
 def FamilyHeadList(request):
     pagination = PageNumberPagination()
-    pagination.page_size = 10
+    pagination.page_size = 2
 
     # Determine user's group (if authenticated)
     group = None
@@ -156,8 +190,32 @@ def FamilyHeadList(request):
     # Serialize the paginated queryset
     serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
 
-    # Return the paginated response
-    return pagination.get_paginated_response(serializer.data)
+    # Manually create the paginated response data
+    paginated_data = serializer.data
+
+    # Manually create the response data
+    data = {
+        'status': 'success',
+        'message': 'Successfully Fetched',
+        'count': comDet.count(),  # Total number of objects (not just the paginated ones)
+        'next': pagination.get_next_link(),  # Link to the next page (if applicable)
+        'previous': pagination.get_previous_link(),  # Link to the previous page (if applicable)
+        'data': paginated_data,  # Include serialized data for the current page
+
+    }
+
+    # Return the response
+    return Response(data)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -169,9 +227,12 @@ def ViewFamilyDetails(request, pk):
     comDet = get_object_or_404(familyHeadDetails, id=int(pk))
     serializer = FamilyHeadDetailsSerializer(comDet)
     testData  = serializer.data
-    testData["family_head_member"][0]["test"]="45646546546456"
-    print(testData["family_head_member"][0]["test"])
-    return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
+    # Create a new dictionary with "status" key at the beginning
+    response_data = {'status': 'success',"message":"Successfully Feteched."}
+
+    # Update the dictionary with the serialized data
+    response_data.update(serializer.data)
+    return Response(response_data)
 
 
 
@@ -382,3 +443,26 @@ def PatientsForTertairyDoctorList(request):
     
     # Return the paginated response
     return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})
+
+
+
+@api_view(['GET'])
+def labTestsList(request):
+    # Get the 'testName' parameter from the query string, if provided
+    test_name = request.GET.get('testName', None)
+
+    # Filter lab tests based on the provided 'testName'
+    if test_name:
+        lab_tests = LabTests.objects.filter(testName__icontains=test_name)
+    else:
+        lab_tests = LabTests.objects.all()
+
+    # Serialize the queryset
+    serializer = LabTestsSerializer(lab_tests, many=True)
+    
+    responsedata = {"status":"success","message":"Successfully Fetched"}
+    responsedata["data"]=serializer.data    
+    
+
+    # Return the serialized data as the API response
+    return Response(responsedata)

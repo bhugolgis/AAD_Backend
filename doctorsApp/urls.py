@@ -23,7 +23,7 @@ urlpatterns = [
     path('PatientsForSecondaryDoctorList', views.PatientsForSecondaryDoctorList, name='PatientsForSecondaryDoctorList'),
     path('PatientsForTertairyDoctorList', views.PatientsForTertairyDoctorList, name='PatientsForTertairyDoctorList'),
 
-
+    path('labTestsList/', labTestsList, name='labTestsList'),
 
 
 

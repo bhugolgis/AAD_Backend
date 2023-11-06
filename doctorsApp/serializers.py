@@ -84,6 +84,11 @@ class TertiaryConsultancySerializer(serializers.ModelSerializer):
 
 
 
+class LabTestsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LabTests
+        fields = '__all__'
+
 
 class ListPrimaryConsultancyPatientsSerializer(serializers.ModelSerializer):
     # patientFamilyMember_FArea = serializers.CharField(source='patientFamilyMember.family_head_member.FArea', read_only=True)

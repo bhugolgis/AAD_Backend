@@ -271,3 +271,14 @@ class TertiaryConsultancy(models.Model):
     referedToTertiaryConsultancy = models.BooleanField(default=False)
 
     isCompleted = models.BooleanField(default=False)
+    
+    
+    
+    
+class LabTests(models.Model):
+    testName = models.CharField(max_length=500,blank=True,null=True) 
+    description = models.CharField(max_length=500,blank=True,null=True) 
+    created_date = models.DateTimeField(auto_now_add=True)
+    isActive = models.BooleanField(default=True)
+    def __str__(self) -> str:
+         return self.testName
