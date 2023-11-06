@@ -5,20 +5,47 @@ class GetGatewaySessionTokenSerializer(serializers.Serializer):
     clientId = serializers.CharField(max_length=100 , required=True)
     clientSecret = serializers.CharField(max_length=100 , required=True)
 
+    def validate(self, data):
+        if 'clientId' not in data or data["clientId"] == '':
+            raise serializers.ValidationError('clientId can not be empty !!')
+        if 'clientSecret' not in data or data["clientSecret"] == '':
+            raise serializers.ValidationError('clientSecret can not be empty !!')
+        return data
 
 class generateAadharOtpSerializer(serializers.Serializer):
     aadhaar = serializers.CharField(max_length=1000, required=True)
+    
+    def validate(self, data):
+       
+        if 'aadhaar' not in data or data["aadhaar"] == '':
+                raise serializers.ValidationError('aadhaar can not be empty !!')
+        return data 
 
 
 class verifyAadharOTPSerializer(serializers.Serializer):
     otp = serializers.CharField(max_length=1000, required=True)
     txnId = serializers.CharField(max_length=1000, required=True)
 
-
+    def validate(self, data):
+       
+        if 'otp' not in data or data["otp"] == '':
+                raise serializers.ValidationError('otp can not be empty !!')
+        if 'txnId' not in data or data["txnId"] == '':
+                raise serializers.ValidationError('txnId can not be empty !!')
+        return data 
+    
 
 class checkAndGenerateMobileOTPSerializer(serializers.Serializer):
     mobile = serializers.IntegerField( required=True)
     txnId = serializers.CharField(max_length=1000, required=True)
+
+    def validate(self, data):
+       
+        if 'mobile' not in data or data["mobile"] == '':
+                raise serializers.ValidationError('mobile can not be empty !!')
+        if 'txnId' not in data or data["txnId"] == '':
+                raise serializers.ValidationError('txnId can not be empty !!')
+        return data 
 
 
 class createHealthIdByAdhaarSerializer(serializers.Serializer):
@@ -27,10 +54,24 @@ class createHealthIdByAdhaarSerializer(serializers.Serializer):
     txnId = serializers.CharField(max_length=1000, required=True)
     
 
+    def validate(self, data):
+        if 'consent' not in data or data["consent"] == '':
+                raise serializers.ValidationError('consent can not be empty !!')
+        if 'txnId' not in data or data["txnId"] == '':
+                raise serializers.ValidationError('txnId can not be empty !!')
+        return data
+
+
 class verifyMobileOTPSerializer(serializers.Serializer):
     otp = serializers.IntegerField(required=True)
     txnId = serializers.CharField(max_length=1000, required=True)
 
+    def validate(self, data):
+        if 'otp' not in data or data["otp"] == '':
+                raise serializers.ValidationError('otp can not be empty !!')
+        if 'txnId' not in data or data["txnId"] == '':
+                raise serializers.ValidationError('txnId can not be empty !!')
+        return data
 
 class SearchAuthMethodsSerializer(serializers.Serializer):
     healhtIdNumber = serializers.CharField(max_length=17, required=True)

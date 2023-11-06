@@ -11,8 +11,21 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
                   'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' )
+    
 
-   
+    def validate(self, data):
+        if 'name' not in data or data["name"] == '':
+            raise serializers.ValidationError('name can not be empty !!')
+        if 'gender' not in data  or data['gender'] == '' :
+            raise serializers.ValidationError('gender can not be empty !!')
+        if 'age' not in data  or data['age'] == '' :
+            raise serializers.ValidationError('age can not be empty !!')
+        if 'mobileNo' not in data or data['mobileNo'] =='':
+            raise serializers.ValidationError('mobileNo can not be empty !!')
+        return data
+
+
+
 class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
@@ -86,7 +99,6 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
         for family in familyMembers_details:
             member_id = str(head.familyId) + '-' + str(member_id_counter).zfill(2)
             member_id_counter += 1
-    
             familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
         return head
     
@@ -97,7 +109,7 @@ class GetFamilyHeadListSerialzier(serializers.ModelSerializer):
     class Meta:
         model = familyHeadDetails
         fields = ('id','familyId','name' , 'mobileNo' , 'plotNo',
-                  'address' ,  'pincode' ,'totalFamilyMembers' ,
+                  'address' ,  'pincode' ,'totalFamilyMembers' , 'pendingMembers' ,
                    'partialSubmit' , 'member')
       
 

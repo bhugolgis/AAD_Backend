@@ -133,11 +133,9 @@ class PostFamilyDetails(generics.GenericAPIView):
                 last_member_id = get_last_memberId.memberId
                 last_member_id_parts = last_member_id.split("-")
                 
-                # Extract the numeric part of the member ID and increment it by 1
                 numeric_part = int(last_member_id_parts[-1])
                 new_numeric_part = numeric_part + 1
 
-                # Construct the new member ID with the incremented numeric part
                 new_member_id = "-".join(last_member_id_parts[:-1]) + "-" + str(new_numeric_part).zfill(2)
                 print(new_member_id)
             else:
@@ -228,7 +226,7 @@ class GetCitizenList(generics.ListAPIView):
     permission_classes = (IsAuthenticated , IsHealthworker)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['familyHead__familyId' , 'familyHead__mobileNo' , 'familyHead__name' , 'memberId' , 'name' , 'mobileNo' ]
-    paginate_by = 100
+
     def get_queryset(self ):
         """
         The function returns a queryset of all objects ordered by their created date in descending order.
@@ -274,6 +272,7 @@ class GetFamilyList(generics.ListAPIView):
     filter_backends = (filters.SearchFilter,)
     search_fields = ['familyHead__familyId' , 'familyHead__mobileNo' , 'familyHead__name' , 'memberId' , 'name' , 'mobileNo' ]
     paginate_by = 100
+
     def get_queryset(self ):
         queryset = self.model.objects.all()
         return queryset.order_by('-created_date')
@@ -304,6 +303,7 @@ class GetFamilyList(generics.ListAPIView):
             serializer = self.get_serializer(total_list , many = True ).data
             return Response( serializer , status= status.HTTP_200_OK)
         
+
 
 # The above class is a generic ListAPIView that retrieves blood collection details for family members,
 # with search functionality based on the blood collection location.
