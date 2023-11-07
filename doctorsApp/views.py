@@ -165,7 +165,7 @@ def ViewPatientsMedicalOffConsultancyView(request, pk):
 @api_view(['GET'])
 def FamilyHeadList(request):
     pagination = PageNumberPagination()
-    pagination.page_size = 2
+    pagination.page_size = 150
 
     # Determine user's group (if authenticated)
     group = None
