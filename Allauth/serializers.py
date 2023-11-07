@@ -461,3 +461,9 @@ class AddAreaSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = MedicalCollegeHealthCareCenters
 #         fields = '__all__'
+
+
+class Addlabtestserializer(serializers.ModelSerializer):
+	class Meta:
+		model = LabTests
+		fields = ('testName' , 'description' , 'testId' )

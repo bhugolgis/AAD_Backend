@@ -152,46 +152,13 @@ class familyMembers(models.Model):
     isSampleCollected = models.BooleanField(default=False)
     isLabTestReportGenerated = models.BooleanField(default=False)
 
-
 # class PatientsPathlab(models.Model):  
 class PatientPathlab(models.Model): 
-    testChoices = [
-         ('HB' , 'HB') , 
-         ('CBC' , 'CBC') , 
-         ('Platelet Count' , 'Platelet Count') , 
-         ('PT/INR' , 'PT/INR') , 
-         ('RBS' , 'RBS') , 
-         ('S. Total Bilirubin' , 'S. Total BilirubinB') , 
-         ('S. Direct Bilirubin' , 'S. Direct Bilirubin') , 
-         ('SGPT/ALT' , 'SGPT/ALT') , 
-         ('SGOT/AST' , 'SGOT/AST') , 
-         ('Urea / BUN' , 'Urea / BUN') , 
-         ('S. Creatinine' , 'S. Creatinine') , 
-         ('ALP' , 'ALP') , 
-         ('S. Total Proteins' , 'S. Total Proteins') , 
-         ('S. Albumin' , 'S. Albumin') , 
-         ('S. Total Calcium' , 'S. Total Calcium') , 
-         ('S. Uric Acid' , 'S. Uric Acid') , 
-         ('S. Cholesterol' , 'S. Cholesterol') , 
-         ('S. Triglycerides ' , 'S. Triglycerides ') , 
-         ('S. HDL (Direct)' , 'S. HDL (Direct)') , 
-         ('LDL' , 'LDL') , 
-         ('VLDL' , 'VLDL') , 
-         ('Amylase' , 'Amylase') , 
-         ('T3' , 'T3') , 
-         ('T4' , 'T4') , 
-         ('HbA1C' , 'HbA1C') , 
-         ('S. Electrolytes' , 'S. Electrolytes') , 
-         ('S. TIBC' , 'S. TIBC') , 
-         ('LDH' , 'LDH') , 
-         ('Vit. D' , 'Vit. D') , 
-         ('Vit. B12' , 'Vit. B12') , 
-         ('Immunoassays' , 'Immunoassays') ,]
     
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
     suggested_by_doctor = models.ForeignKey(CustomUser , related_name='suggested_by_doctor' , on_delete=models.SET_NULL ,  blank = True , null = True  )
     suggested_date = models.DateTimeField(auto_now=True)
-    LabTestSuggested = ArrayField(models.CharField(max_length=255 , choices=testChoices ,default=list ) , blank = True , null = True )
+    LabTestSuggested = ArrayField(models.CharField(max_length=255 ,default=list ) , blank = True , null = True )
     PatientSampleTaken = models.BooleanField(default=False)
     # pathLabPatient = models.ForeignKey(CustomUser,related_name="phlebotomist_user",on_delete=models.CASCADE,null=True,blank=True)
     PathLab = models.ForeignKey(CustomUser,related_name="PathLab",on_delete=models.CASCADE,null=True,blank=True)
@@ -208,10 +175,6 @@ class PatientPathlab(models.Model):
     patientID =models.CharField(max_length=255 , blank = True, null=True )
     citizenRejectedLabTest = models.BooleanField(default=False)
 
-
-
-
-
 class MedicalOfficerConsultancy(models.Model):
     #patientLabTest to patientTest
     MoPatientsPathReport = models.ForeignKey(PatientPathlab,related_name="moPatientsPathReport",on_delete=models.CASCADE,null=True,blank=True)
@@ -223,9 +186,7 @@ class MedicalOfficerConsultancy(models.Model):
     MofileUpload = models.FileField(upload_to='doctorFolder',blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     referedToPrimaryConsultancy = models.BooleanField(default=False)
-
     isCompleted = models.BooleanField(default=False)
-
 
 class PrimaryConsultancy(models.Model):
     #patientLabTest to patientTest
@@ -242,8 +203,6 @@ class PrimaryConsultancy(models.Model):
     referedToSecondaryConsultancy = models.BooleanField(default=False)
 
     isCompleted = models.BooleanField(default=False)
-
-
 
 class SecondaryConsultancy(models.Model):
     #patientLabTest to patientTest
@@ -274,12 +233,12 @@ class TertiaryConsultancy(models.Model):
     isCompleted = models.BooleanField(default=False)
     
     
-    
-    
 class LabTests(models.Model):
     testName = models.CharField(max_length=500,blank=True,null=True) 
+    testId = models.CharField(max_length=200 , unique= True ,  blank = True , null = True )
     description = models.CharField(max_length=500,blank=True,null=True) 
     created_date = models.DateTimeField(auto_now_add=True)
     isActive = models.BooleanField(default=True)
+    
     def __str__(self) -> str:
          return self.testName

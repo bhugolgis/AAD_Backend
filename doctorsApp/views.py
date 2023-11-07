@@ -35,13 +35,13 @@ class LabTestSuggestedCreateView(generics.GenericAPIView):
             lab_test_suggested = request.data.get('LabTestSuggested')
 
             # Check if lab tests already added for the patient
-            check_user_exists = PatientPathlab.objects.filter(patientFamilyMember_id=patient_family_member_id)
+            check_user_exists = PatientPathlab.objects.filter(patientFamilyMember_id= patient_family_member_id)
             
             if check_user_exists:
                 return Response({
                     "status": "success",
                     "message": "Already added lab tests for the patient.",
-                })
+                } , status=status.HTTP_400_BAD_REQUEST)
 
             # Create a new instance of PatientsPathlab
             updateFmailyMember = familyMembers.objects.filter(id = patient_family_member_id)
@@ -202,16 +202,6 @@ def FamilyHeadList(request):
 
     # Return the response
     return Response(data)
-
-
-
-
-
-
-
-
-
-
 
 
 

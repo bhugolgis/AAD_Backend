@@ -92,7 +92,25 @@ class GetDashboardThree(generics.GenericAPIView):
                 "data":{"PrimaryConsultancyCount":PrimaryConsultancyCount,"SecondaryConsultancyCount":SecondaryConsultancyCount,"TertiaryConsultancyCount":TertiaryConsultancyCount}} , status= 200)
 
 
+class AddlabtestdeatilsAPI(generics.GenericAPIView):
+    serializer_class = Addlabtestserializer
+    parser_classes = [MultiPartParser]
 
+    def post(self , request):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                    "status": "success",
+                    "message": "Successfully added.",
+                    "data": serializer.data,
+                })
+        else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetWardListAPI(generics.ListAPIView):
@@ -1106,8 +1124,18 @@ class LoginView(generics.GenericAPIView):
                             # 'sectionId':user_data.section.id,
                             # 'sectionName':user_data.section.sectionName,
                             'Group': group}, status=200)
-
-
+                    elif group == "Family Head":
+                         return Response({
+                            'message': 'Login successful',
+                            'Token': token,
+                            'status': 'success',
+                            'id': user_data.id,
+                            'name' : user_data.name,         
+                            'username': user_data.username,
+                            'phoneNumber' : user_data.phoneNumber,
+                             'Group': group
+                            
+                         })
 
             else:
                 key, value = list(serializer.errors.items())[0]

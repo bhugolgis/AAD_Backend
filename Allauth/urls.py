@@ -30,6 +30,8 @@ urlpatterns = [
 
         path('healthcarecenters', HealthCareCentersList.as_view(), name='healthcare-centers-list'),
         path('healthcarecenters/<int:pk>/', HealthCareCentersDetail.as_view(), name='healthcare-centers-detail'),
+        
+        path('AddlabtestdeatilsAPI', AddlabtestdeatilsAPI.as_view(), name='healthcare-centers-detail'),
 
         path('InsertHealthWorkerAPI' , InsertHealthWorkerAPI.as_view() , name = 'InsertHealthWorkerAPI'),
         path('InsertPhlebotomistAPI' , InsertPhlebotomistAPI.as_view() , name = 'InsertPhlebotomistAPI'),
