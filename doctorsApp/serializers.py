@@ -138,6 +138,7 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     # primaryConsultancy = PrimaryConsultancySerializer(many=True)
     # secondaryConsultancy = SecondaryConsultancySerializer(many=True)
     # tertiaryConsultancy = TertiaryConsultancySerializer(many=True, read_only=True)
+    area = serializers.SerializerMethodField()
 
     class Meta:
         model = familyMembers
@@ -145,6 +146,21 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
         'height','BMI','Questionnaire','bloodCollectionLocation','questionsConsent','aadharAndAbhaConsent','demandLetter','bloodConsent','cbacScore',
         'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated')
 
+    def get_area(self , area):
+        try:
+            area_name = area.areas
+            print(area_name)
+        except:
+            area_name = ''
+            return area_name
+
+       
+    # def get_ward(self , data):
+	# 	try:
+	# 		sectionName = data.section.healthPost.ward.wardName
+	# 	except:
+	# 		sectionName = ''
+	# 	return sectionName
 
 
 # class ViewFamilyMemberDetailsSerializer(serializers.ModelSerializer):
