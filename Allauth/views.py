@@ -520,6 +520,44 @@ class InsertHealthWorkerAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class InsertCHV_ASHA_API(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated,]
+    serializer_class = RegisterSerializer
+    parser_classes = [MultiPartParser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # print(request.data["name"], request.data)
+        
+        try:
+            if serializer.is_valid():
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
+
+                group = Group.objects.get(name='CHV/ASHA')
+                user.groups.add(group)
+                addSupervisor = CustomUser.objects.filter(id= user.id).update(supervisor_id = request.user.id)
+
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Inserted.",
+                    "data": data,
+                })
+            else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class InsertPhlebotomistAPI(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated,]

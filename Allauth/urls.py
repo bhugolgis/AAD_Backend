@@ -34,6 +34,7 @@ urlpatterns = [
         path('AddlabtestdeatilsAPI', AddlabtestdeatilsAPI.as_view(), name='healthcare-centers-detail'),
 
         path('InsertHealthWorkerAPI' , InsertHealthWorkerAPI.as_view() , name = 'InsertHealthWorkerAPI'),
+        path('InsertCHV_ASHA_API' , InsertCHV_ASHA_API.as_view() , name = 'InsertHealthWorkerAPI'),
         path('InsertPhlebotomistAPI' , InsertPhlebotomistAPI.as_view() , name = 'InsertPhlebotomistAPI'),
         path('usersList', UserGroupFilterView.as_view(), name='user-list'),
         path('SendOtp',views.SendOtp),
