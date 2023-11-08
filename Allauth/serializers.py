@@ -28,7 +28,31 @@ class HealthCareCentersSerializer(serializers.ModelSerializer):
         model = HealthCareCenters
         fields = '__all__'
 
+def get_group_choice():
+	"""
+	The function "get_group_choice" returns all the available group names in the database as a tuple of
+	tuples.
+	:return: a tuple of tuples, where each inner tuple contains a group name as both the key and the
+	value.
+	"""
+	group_names = Group.objects.values_list("name",flat=True)
+	# group_names.remove("admin")
+	# group_names.remove("supervisor")
+	return tuple((i,i) for i in group_names)
 
+
+class AddUserSerializer(serializers.ModelSerializer):
+	password=serializers.CharField(max_length=20)
+	groups = serializers.ChoiceField(choices = get_group_choice(),required = False)
+	class Meta:
+		model=CustomUser
+		fields=["name","username","password","email","phone_number","groups"]
+		extra_kwargs={"password": {"write_only": True}}
+
+# The UserRegisterSerializer class extends the AddUserSerializer class and adds a group field with a
+# choice of options.
+# class UserRegisterSerializer(AddUserSerializer):
+# 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 
 
 class InsertAmoSerializer(serializers.ModelSerializer):
@@ -197,6 +221,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 	# ward = serializers.CharField(max_length = 255 , required = True)
 	# healthPostName = serializers.CharField(max_length = 255 , required = True)
 	# section = serializers.CharField(max_length = 255 , required = True)
+	
 	class Meta:
 		model = CustomUser
 		fields = ("name","username", "password", "phoneNumber", "emailId" , "section")
@@ -209,6 +234,22 @@ class RegisterSerializer(serializers.ModelSerializer):
 		
 		return customuser
 
+
+class AddUserSerializer(serializers.ModelSerializer):
+	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
+
+	class Meta:
+		model = CustomUser
+		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
+					 "dispensary" , "HealthCareCenters" ,"section" , "group")
+		extra_kwargs = {'password':{'write_only':True}}
+		
+	def create(self,validated_data):
+		group = validated_data.pop("group")
+		# healthPostName = validated_data.pop("healthPostName")
+		customuser = CustomUser.objects.create_user(**validated_data)
+		
+		return customuser
 class MoRegisterSerializer(serializers.ModelSerializer):
 	# ward = serializers.CharField(max_length = 255 , required = True)
 	# healthPostName = serializers.CharField(max_length = 255 , required = True)
@@ -313,8 +354,6 @@ class ViewMedicalCollegeSerializer(serializers.ModelSerializer):
 		model = CustomUser
 		fields = ("id","name","username","password","emailId","phoneNumber","MedicalCollegeHealthCare")
 
-
-
 class SpecialityHealthCareRegisterSerializer(serializers.ModelSerializer):
 	# ward = serializers.CharField(max_length = 255 , required = True)
 	# healthPostName = serializers.CharField(max_length = 255 , required = True)
@@ -345,7 +384,6 @@ class SpecialityHealthCareRegisterSerializer(serializers.ModelSerializer):
 	# 		msg = "Aadhar Number Already Exists"
 	# 		raise serializers.ValidationError(msg)
 	# 	return data
-
 
 class ViewSpecialHealthCareSerializer(serializers.ModelSerializer):
 	class Meta:

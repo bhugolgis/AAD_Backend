@@ -42,6 +42,7 @@ urlpatterns = [
         path('LoginWithOtp',LoginWithOtp.as_view(),name="LoginWithOtp"),
         path('changePassword', ChangePasswordView.as_view(), name='change-password'),
         path('logout', LogoutView.as_view(), name='knox_logout'),
+        path('InsertUsers', InsertUsers.as_view(), name='knox_logout'),
         
         
 

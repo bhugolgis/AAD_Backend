@@ -184,9 +184,6 @@ class InsertAmoAPI(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-
-
 class InsertPrimaryHealthCareDoctorAPI(generics.GenericAPIView):
     serializer_class = PrimaryHealthCareRegisterSerializer
     parser_classes = [MultiPartParser]
@@ -221,8 +218,6 @@ class InsertPrimaryHealthCareDoctorAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 
 class InsertSpecialityHealthCareDoctorAPI(generics.GenericAPIView):
     serializer_class = SpecialityHealthCareRegisterSerializer
@@ -259,8 +254,6 @@ class InsertSpecialityHealthCareDoctorAPI(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-
 class InsertMedicalCollegeHealthCareDoctorAPI(generics.GenericAPIView):
     serializer_class = MedicalCollegeHealthCareRegisterSerializer
     parser_classes = [MultiPartParser]
@@ -295,9 +288,6 @@ class InsertMedicalCollegeHealthCareDoctorAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
 
 class InsertMoAPI(generics.GenericAPIView):
     serializer_class = MoRegisterSerializer
@@ -334,7 +324,6 @@ class InsertMoAPI(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
 class InsertphccAPI(generics.GenericAPIView):
     serializer_class = HccRegisterSerializer
     parser_classes = [MultiPartParser]
@@ -369,7 +358,6 @@ class InsertphccAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 class InsertshccAPI(generics.GenericAPIView):
     serializer_class = HccRegisterSerializer
@@ -406,9 +394,6 @@ class InsertshccAPI(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-
-
 class InsertthccAPI(generics.GenericAPIView):
     serializer_class = HccRegisterSerializer
     parser_classes = [MultiPartParser]
@@ -444,10 +429,6 @@ class InsertthccAPI(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-
-
-
 class InsertSupervisorAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
     parser_classes = [MultiPartParser]
@@ -482,7 +463,6 @@ class InsertSupervisorAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 class InsertHealthWorkerAPI(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated,]
@@ -521,7 +501,6 @@ class InsertHealthWorkerAPI(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
 class InsertCHV_ASHA_API(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated,]
     serializer_class = RegisterSerializer
@@ -595,6 +574,69 @@ class InsertPhlebotomistAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class InsertUsers(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated,]
+    serializer_class = AddUserSerializer
+    parser_classes = [MultiPartParser]
+
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        # print(request.data["name"], request.data)
+        
+        try:
+            if serializer.is_valid():
+                group = Group.objects.get(name=serializer.validated_data.get("group"))
+                
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
+                user.groups.add(group)
+                
+                addSupervisor = CustomUser.objects.filter(id= user.id).update(supervisor_id = request.user.id)
+
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Inserted.",
+                    "data": data,
+                })
+            else:
+                return Response({
+                    "status": "error",
+                    "message": "Validation error",
+                    "errors": serializer.errors,
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 phoneregex = r'^[6-9]\d{9}$'
