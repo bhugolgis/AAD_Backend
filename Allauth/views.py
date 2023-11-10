@@ -576,7 +576,7 @@ class InsertPhlebotomistAPI(generics.GenericAPIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class InsertUsers(generics.GenericAPIView):
-    permission_classes = [permissions.IsAuthenticated,]
+    # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserSerializer
     parser_classes = [MultiPartParser]
 
@@ -613,26 +613,6 @@ class InsertUsers(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -679,8 +659,8 @@ def SendOtp(request):
             userdata["name"] = chkemailExist[0].name
             userdata["phoneNumber"] = chkemailExist[0].phoneNumber
             import string
-            from random import choice
-            chars = string.digits
+           
+
             random = "0000"
             # random =  ''.join(choice(chars) for _ in range(4))
             userdata["otp"] = random
@@ -696,12 +676,9 @@ def SendOtp(request):
                 # otpsendstatus = ForgotPasswordEmail(userdata)
                 return Response({"status":"sucess","message":"OTP Sent on Registered Phone Number."})
 
-            return Response({"status":"sucess","message":"OTP Sent on Registered Phone Number."})
-
         else:
             return Response({"status":"error","message":"User Not Registered With this Phone Number."})
 
-        return Response({"status":"sucess","message":"OTP Sent on Registered Phone Number."})
 
     else:
         # if checkphone(chkString):
@@ -1206,6 +1183,18 @@ class LoginView(generics.GenericAPIView):
                             'Group': group}, status=200)
                     elif group == "Family Head":
                          return Response({
+                            'message': 'Login successful',
+                            'Token': token,
+                            'status': 'success',
+                            'id': user_data.id,
+                            'name' : user_data.name,         
+                            'username': user_data.username,
+                            'phoneNumber' : user_data.phoneNumber,
+                             'Group': group
+                            
+                         })
+                    elif group == "admin":
+                        return Response({
                             'message': 'Login successful',
                             'Token': token,
                             'status': 'success',

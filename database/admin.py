@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+
 # Register your models here.
 
 
@@ -13,4 +14,7 @@ admin.site.register(familyMembers)
 # admin.site.register(phlebotomist)
 # admin.site.register(TestTube)
 admin.site.register(PatientPathlab)
-# admin.site.register(dispensary)
+admin.site.register(LabTests)
+
+
+

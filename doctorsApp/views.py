@@ -197,7 +197,6 @@ def FamilyHeadList(request):
         'next': pagination.get_next_link(),  # Link to the next page (if applicable)
         'previous': pagination.get_previous_link(),  # Link to the previous page (if applicable)
         'data': paginated_data,  # Include serialized data for the current page
-
     }
 
     # Return the response
@@ -242,13 +241,10 @@ def medicalOfficerAdviceView(request, patients_id):
         # Retrieve the instance you want to update
     medical_officer_consultancy = MedicalOfficerConsultancy.objects.filter(MoPatientsConsultancy_id=patients_id,isCompleted=True)
     if medical_officer_consultancy.exists():
-        
         return Response({"error": "Patient Already Attended"}, status=status.HTTP_404_NOT_FOUND)
-
     if request.method == 'POST':
         # Deserialize the data from the request
         serializer = MedicalOfficerAdviceSerializer(instance=medical_officer_consultancy, data=request.data)
-
         if serializer.is_valid():
             # Save the updated data
             serializer.save()
@@ -316,7 +312,9 @@ def PatientsForPrimaryDoctorList(request):
     serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
     
     # Return the paginated response
-    return pagination.get_paginated_response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})
+    return pagination.get_paginated_response({"status": "success",
+                                               "message": "Successfully Fetched",
+                                                "data": serializer.data})    # return Response({"status":"success","message":"Successfully Fetched","data":serializer.data})
 
     
     
@@ -446,9 +444,9 @@ def labTestsList(request):
     # Serialize the queryset
     serializer = LabTestsSerializer(lab_tests, many=True)
     
-    responsedata = {"status":"success","message":"Successfully Fetched"}
+    responsedata = {"status":"success",
+                    "message":"Successfully Fetched"}
     responsedata["data"]=serializer.data    
     
-
     # Return the serialized data as the API response
     return Response(responsedata)

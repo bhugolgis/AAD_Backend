@@ -35,9 +35,11 @@ def get_group_choice():
 	:return: a tuple of tuples, where each inner tuple contains a group name as both the key and the
 	value.
 	"""
-	group_names = Group.objects.values_list("name",flat=True)
-	# group_names.remove("admin")
-	# group_names.remove("supervisor")
+	group_names = list(Group.objects.values_list("name",flat=True))
+	# print(group_names.remove('admin'))
+	group_names.remove("admin")
+	group_names.remove("supervisor")
+
 	return tuple((i,i) for i in group_names)
 
 
@@ -48,11 +50,6 @@ class AddUserSerializer(serializers.ModelSerializer):
 		model=CustomUser
 		fields=["name","username","password","email","phone_number","groups"]
 		extra_kwargs={"password": {"write_only": True}}
-
-# The UserRegisterSerializer class extends the AddUserSerializer class and adds a group field with a
-# choice of options.
-# class UserRegisterSerializer(AddUserSerializer):
-# 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 
 
 class InsertAmoSerializer(serializers.ModelSerializer):
