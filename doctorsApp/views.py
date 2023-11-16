@@ -507,3 +507,9 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
                     return Response(json.loads(response.content) , status=response.status_code)
             else:
                 return Response(json.loads(response.content) , status=response.status_code) 
+            
+        else:
+            key, value = list(serializer.errors.items())[0]
+            error_message = value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
