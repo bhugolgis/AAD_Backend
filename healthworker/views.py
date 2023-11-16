@@ -339,8 +339,8 @@ class DumpExcelInsertxlsx(generics.GenericAPIView):
                 if already_exist:
                     continue
                 user = CustomUser.objects.create_user(name = row[0] , username=row[1],
-                                                      password=row[2], phoneNumber=row[3],section_id=row[4] )
-                group = Group.objects.get(name = 'healthworker')
+                                                      password=row[2], phoneNumber=row[3],section_id=row[4])
+                group = Group.objects.get(name = 'CHV/ASHA')
                 user.groups.add(group)
                         
             return Response({'message' : 'File Uploaded Successfully and users created !!' , 

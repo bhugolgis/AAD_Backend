@@ -813,16 +813,6 @@ class ChangePasswordView(generics.UpdateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# class UserGroupFilterView(generics.ListAPIView):
-#     serializer_class = ViewSupervisorSerializer
-    
-#     def get_queryset(self):
-#         group_name = self.request.query_params.get('group')
-#         if group_name:
-#             return CustomUser.objects.filter(groups__name=group_name)
-#         return CustomUser.objects.all()
-
 class UserGroupFilterView(generics.ListAPIView):
     """
     Retrieve a list of users based on their group membership.
@@ -897,38 +887,6 @@ class CustomLoginAPI(generics.GenericAPIView):
             elif groups[0] =="MedicalCollegeHealthCareDoctor":
                 data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
                 data["user_group"] = "MedicalCollegeHealthCareDoctor"
-            # elif groups[0] =="regionalManager":
-            #     data = RmSerializer(customuser,context=self.get_serializer_context()).data
-            #     data["user_group"] = "regionalManager"
-            # elif groups[0] =="cgm":
-            #     verticalId = Verticals.objects.filter(VerticalName = customuser.departmenName)
-            #     print(customuser.departmenName,"********")
-
-            #     data = RmSerializer(customuser,context=self.get_serializer_context()).data
-            #     data["user_group"] = "cgm"
-            #     data["VerticalId"] = verticalId[0].id
-            
-            # elif groups[0] =="scrutinyClerk":
-            #     data = ListScrutinyClerkregisterSerializer(customuser,context=self.get_serializer_context()).data
-            #     data["user_group"] = "scrutinyClerk"
-
-            # elif groups[0] =="bankOfficial":
-            #     data = ListbankOfficialSerializer(customuser,context=self.get_serializer_context()).data
-            #     data["user_group"] = "bankOfficial"
-
-            # elif groups[0] =="MahaPreitOfficeAdmin":
-            #     data = ListMahaPreitOfficeAdminSerializer(customuser,context=self.get_serializer_context()).data
-            #     data["user_group"] = "MahaPreitOfficeAdmin"
-
-            # elif groups[0] =="MPBCDCOfficeAdmin":
-            #     data = ListMPBCDCOfficeAdminSerializer(customuser,context=self.get_serializer_context()).data
-            #     data["user_group"] = "MPBCDCOfficeAdmin"
-
-
-            # elif groups[0] =="MPBCDC_MD":
-            #     data = ListmpbcdcMDSerializer(customuser,context=self.get_serializer_context()).data
-            #     data["user_group"] = "MPBCDC_MD"
-
 
             else:
 
@@ -1114,8 +1072,7 @@ class LoginView(generics.GenericAPIView):
                             'dispensaryName':user_data.dispensary.dispensaryName,
                             # 'sectionId':user_data.section.id,
                             # 'sectionName':user_data.section.sectionName,
-                            'Group': group}, status=200)
-            
+                            'Group': group}, status=200)            
                     elif group == "phcc":
                         return Response({
                             'message': 'Login successful',
