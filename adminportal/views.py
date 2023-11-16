@@ -15,8 +15,16 @@ from rest_framework.permissions import IsAuthenticated
 
 class UserCountsAPI(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
-        ANM_count = CustomUser.objects.all().query
-        ANM_count.group_by("CHV/ASHA")
+        all = CustomUser.objects.all()
+        CHV_ASHA_count = all.filter(groups__name='CHV/ASHA').count()
+        MO_count = all.filter(groups__name='mo').count()
+        ANM_count = all.filter(groups__name='healthworker').count()
+        return Response({
+            'CHV_ASHA_count' : CHV_ASHA_count , 
+            'MO_count' : MO_count , 
+            'ANM_count' : ANM_count
+        } , status = 200)
+        
 
 
 class InsertUsers(generics.GenericAPIView):

@@ -175,6 +175,7 @@ class PatientPathlab(models.Model):
     patientID =models.CharField(max_length=255 , blank = True, null=True )
     citizenRejectedLabTest = models.BooleanField(default=False)
 
+
 class MedicalOfficerConsultancy(models.Model):
     #patientLabTest to patientTest
     MoPatientsPathReport = models.ForeignKey(PatientPathlab,related_name="moPatientsPathReport",on_delete=models.CASCADE,null=True,blank=True)

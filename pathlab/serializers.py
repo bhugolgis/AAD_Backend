@@ -32,9 +32,10 @@ class GetPhleboFamilyMemberDetailSerializer(serializers.ModelSerializer):
 
 
 class PostResponseLIMSAPISerialzier(serializers.ModelSerializer):
+    LabTestSuggested = serializers.ListField(write_only=True , required = True)
     class Meta:
         model = PatientPathlab
-        fields = ( 'id' , 'CentreID' , 'bookingVisitID' , 'puid' , 'patientID' )
+        fields = ( 'patientFamilyMember' ,'CentreID' , 'bookingVisitID' , 'puid' , 'patientID' , 'LabTestSuggested' )
 
 
 class GetPatientsDetailsAPISerialzier(serializers.ModelSerializer):
