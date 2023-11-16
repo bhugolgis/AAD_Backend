@@ -575,46 +575,44 @@ class InsertPhlebotomistAPI(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class InsertUsers(generics.GenericAPIView):
-    # permission_classes = [permissions.IsAuthenticated,]
-    serializer_class = AddUserSerializer
-    parser_classes = [MultiPartParser]
+# class InsertUsers(generics.GenericAPIView):
+#     # permission_classes = [permissions.IsAuthenticated,]
+#     serializer_class = AddUserSerializer
+#     parser_classes = [MultiPartParser]
 
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        # print(request.data["name"], request.data)
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.data)
+#         # print(request.data["name"], request.data)
         
-        try:
-            if serializer.is_valid():
-                group = Group.objects.get(name=serializer.validated_data.get("group"))
+#         try:
+#             if serializer.is_valid():
+#                 group = Group.objects.get(name=serializer.validated_data.get("group"))
                 
-                user = serializer.save()
-                customuser = serializer.validated_data
-                data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
-                user.groups.add(group)
+#                 user = serializer.save()
+#                 customuser = serializer.validated_data
+#                 data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
+#                 user.groups.add(group)
                 
-                addSupervisor = CustomUser.objects.filter(id= user.id).update(supervisor_id = request.user.id)
+#                 addSupervisor = CustomUser.objects.filter(id= user.id).update(supervisor_id = request.user.id)
 
-                return Response({
-                    "status": "success",
-                    "message": "Successfully Inserted.",
-                    "data": data,
-                })
-            else:
-                return Response({
-                    "status": "error",
-                    "message": "Validation error",
-                    "errors": serializer.errors,
-                }, status=status.HTTP_400_BAD_REQUEST)
+#                 return Response({
+#                     "status": "success",
+#                     "message": "Successfully Inserted.",
+#                     "data": data,
+#                 })
+#             else:
+#                 return Response({
+#                     "status": "error",
+#                     "message": "Validation error",
+#                     "errors": serializer.errors,
+#                 }, status=status.HTTP_400_BAD_REQUEST)
 
-        except Exception as ex:
-            return Response({
-                "status": "error",
-                "message": "Error in Field " + str(ex),
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
+#         except Exception as ex:
+#             return Response({
+#                 "status": "error",
+#                 "message": "Error in Field " + str(ex),
+#             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
@@ -1257,3 +1255,12 @@ class HealthCareCentersDetail(APIView):
         healthcare_center.delete()
         return Response(status=status.HTTP_204_NO_CONTENT) 
             
+
+
+
+# Admin Portal API's
+
+
+
+
+

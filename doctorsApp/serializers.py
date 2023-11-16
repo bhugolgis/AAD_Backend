@@ -198,3 +198,29 @@ class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
         model = familyHeadDetails
         fields = ('id','familyId','name','totalFamilyMembers','area', 'address','mobileNo','HealthPostName','created_datetime', 'pendingMembers', 'partialSubmit')
         depth = 1
+
+
+class BookPatientSerializer(serializers.Serializer):
+    # authKey = serializers.CharField(max_length=100 , default = "05436EFE3826447DBE720525F78A9EEDBMC")
+    # CentreID = serializers.CharField (max_length=100 , default ="112084")
+    id = serializers.IntegerField()
+    RegisteredDate= serializers.CharField(max_length=100)
+    PRNNo= serializers.CharField(max_length=100)
+    PatientCategory= serializers.CharField(max_length=100)
+    PatientType= serializers.CharField(max_length=100)
+    RefDrCode= serializers.CharField(max_length=100)
+    refDrName= serializers.CharField(max_length=100)
+    RefLabCode= serializers.CharField(max_length=100)
+    PatientName= serializers.CharField(max_length=100)
+    Age= serializers.IntegerField()
+    BirthDate= serializers.CharField(max_length=100)
+    PaymentAmount= serializers.IntegerField()
+    CreatedBy= serializers.CharField(max_length=100)
+    AgeUnit= serializers.CharField(max_length=100)
+    Gender= serializers.CharField(max_length=100)
+    PatientAddress= serializers.CharField(max_length=100)
+    IdentityNumber= serializers.CharField(max_length=100)
+    MobileNumber= serializers.CharField(max_length=100)
+    HisUniquePatientCode= serializers.CharField(max_length=100)
+    HisHospitalRefNo= serializers.CharField(max_length=100)
+    Booking_TestDetails= serializers.ListField(child=serializers.JSONField(),write_only=True , required = True)

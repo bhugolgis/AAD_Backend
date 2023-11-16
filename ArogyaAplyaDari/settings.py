@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'pathlab',
     'seniorcitizen',
     'Allauth',
+    'adminportal',
     'knox',
     'drf_yasg',
     'django_crontab',
@@ -108,6 +109,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
 #    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
 #     'PAGE_SIZE': 100
+    'DATETIME_INPUT_FORMATS': ["%d-%m-%Y %H:%M:%S %p" , "%d/%m/%Y %H:%M:%S"],
+    'DATE_INPUT_FORMATS': ["%d/%m/%Y" , "%d-%m-%Y", "%Y-%m-%d"],
 }
 
 # Database

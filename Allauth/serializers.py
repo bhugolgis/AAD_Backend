@@ -43,13 +43,13 @@ def get_group_choice():
 	return tuple((i,i) for i in group_names)
 
 
-class AddUserSerializer(serializers.ModelSerializer):
-	password=serializers.CharField(max_length=20)
-	groups = serializers.ChoiceField(choices = get_group_choice(),required = False)
-	class Meta:
-		model=CustomUser
-		fields=["name","username","password","email","phone_number","groups"]
-		extra_kwargs={"password": {"write_only": True}}
+# class AddUserSerializer(serializers.ModelSerializer):
+# 	password=serializers.CharField(max_length=20)
+# 	groups = serializers.ChoiceField(choices = get_group_choice(),required = False)
+# 	class Meta:
+# 		model=CustomUser
+# 		fields=["name","username","password","email","phoneNumber","groups"]
+# 		extra_kwargs={"password": {"write_only": True}}
 
 
 class InsertAmoSerializer(serializers.ModelSerializer):
@@ -232,21 +232,21 @@ class RegisterSerializer(serializers.ModelSerializer):
 		return customuser
 
 
-class AddUserSerializer(serializers.ModelSerializer):
-	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
+# class AddUserSerializer(serializers.ModelSerializer):
+# 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 
-	class Meta:
-		model = CustomUser
-		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
-					 "dispensary" , "HealthCareCenters" ,"section" , "group")
-		extra_kwargs = {'password':{'write_only':True}}
+# 	class Meta:
+# 		model = CustomUser
+# 		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
+# 					 "dispensary" , "HealthCareCenters" ,"section" , "group")
+# 		extra_kwargs = {'password':{'write_only':True}}
 		
-	def create(self,validated_data):
-		group = validated_data.pop("group")
-		# healthPostName = validated_data.pop("healthPostName")
-		customuser = CustomUser.objects.create_user(**validated_data)
+# 	def create(self,validated_data):
+# 		group = validated_data.pop("group")
+# 		# healthPostName = validated_data.pop("healthPostName")
+# 		customuser = CustomUser.objects.create_user(**validated_data)
 		
-		return customuser
+# 		return customuser
 class MoRegisterSerializer(serializers.ModelSerializer):
 	# ward = serializers.CharField(max_length = 255 , required = True)
 	# healthPostName = serializers.CharField(max_length = 255 , required = True)
@@ -502,3 +502,10 @@ class Addlabtestserializer(serializers.ModelSerializer):
 	class Meta:
 		model = LabTests
 		fields = ('testName' , 'description' , 'testId' )
+
+
+class UpdateUserDetailsSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = CustomUser
+		fields = ("name" , "username" , "emailId" , "phoneNumber" , "supervisor" , 
+			"section" , "ward" , "health_Post" , "area" , "dispensary"  )

@@ -12,7 +12,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-
+import json
+import requests
+from rest_framework.parsers import MultiPartParser
+from pathlab.serializers import PostResponseLIMSAPISerialzier
 
 class IsAllowedGroup(permissions.BasePermission):
     allowed_groups = ['amo', 'mo']  # Replace with the names of your allowed groups
@@ -450,3 +453,57 @@ def labTestsList(request):
     
     # Return the serialized data as the API response
     return Response(responsedata)
+
+
+
+class LIMSBookPatientAPI(generics.GenericAPIView):
+    serializer_class = BookPatientSerializer
+    # parser_classes = [MultiPartParser]
+
+    def post(self, request):
+        serializer = self.get_serializer(data = request.data)
+        print(request.data["id"])
+        try:
+            instance = PatientPathlab.objects.get(pk=request.data["id"])
+        except:
+            return Response({'status': 'error',
+                            'message': 'Family Member deatils not found'}, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            url= "http://ilis.krsnaadiagnostics.com/api/KDL_LIS_APP_API/BookPatient"
+            headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json'}
+
+            payload = json.dumps({
+                "authKey": "05436EFE3826447DBE720525F78A9EEDBMC",
+                "CentreID": "112084",
+                "RegisteredDate": serializer.validated_data.get('RegisteredDate'),
+                "PRNNo": serializer.validated_data.get('PRNNo'),
+                "PatientCategory": serializer.validated_data.get('PatientCategory'),
+                "PatientType": serializer.validated_data.get('PatientType'),
+                "RefDrCode": serializer.validated_data.get('RefDrCode'),
+                "refDrName":serializer.validated_data.get('refDrName'),
+                "RefLabCode": serializer.validated_data.get('RefLabCode'),
+                "PatientName": serializer.validated_data.get('PatientName'),
+                "Age": serializer.validated_data.get('Age'),
+                "BirthDate": serializer.validated_data.get('BirthDate'),
+                "PaymentAmount":serializer.validated_data.get('PaymentAmount'),
+                "CreatedBy": serializer.validated_data.get('CreatedBy'),
+                "AgeUnit": serializer.validated_data.get('AgeUnit'),
+                "Gender": serializer.validated_data.get('Gender'),
+                "PatientAddress": serializer.validated_data.get('PatientAddress'),
+                "IdentityNumber": serializer.validated_data.get('IdentityNumber'),
+                "MobileNumber":serializer.validated_data.get('MobileNumber'),
+                "HisUniquePatientCode": serializer.validated_data.get('HisUniquePatientCode'),
+                "HisHospitalRefNo":serializer.validated_data.get('HisHospitalRefNo'),
+                "Booking_TestDetails":serializer.validated_data.get('Booking_TestDetails'),})
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+            if response.status_code == 200:
+                pathlab_serializer = PostResponseLIMSAPISerialzier(instance, data = json.loads(response.content) ,  partial = True )
+                if pathlab_serializer.is_valid():
+                    pathlab_serializer.save()
+                    return Response(json.loads(response.content) , status=response.status_code)
+            else:
+                return Response(json.loads(response.content) , status=response.status_code) 

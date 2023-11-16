@@ -42,5 +42,6 @@ urlpatterns = [
     path('allauth/api/' , include('Allauth.urls')),
     path('phlebo/api/' , include('pathlab.urls')),
     path('doctor/api/' , include('doctorsApp.urls')),
+     path('adminportal/api/' , include('adminportal.urls')),
 
 ]

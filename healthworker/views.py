@@ -137,7 +137,7 @@ class PostFamilyDetails(generics.GenericAPIView):
                 new_numeric_part = numeric_part + 1
 
                 new_member_id = "-".join(last_member_id_parts[:-1]) + "-" + str(new_numeric_part).zfill(2)
-                print(new_member_id)
+                # print(new_member_id)
             else:
                 new_member_id = "F-F/S-7145623-01"  
             serializer.save(familySurveyor = request.user  , memberId = new_member_id)
@@ -349,4 +349,4 @@ class DumpExcelInsertxlsx(generics.GenericAPIView):
         except Exception as e:
             return Response({'message' : 'Something Went wrong please check you File', 
                              'error' : str(e),
-                            'status' :"success"} , status= status.HTTP_400_BAD_REQUEST)
+                            'status' :"error"} , status= status.HTTP_400_BAD_REQUEST)
