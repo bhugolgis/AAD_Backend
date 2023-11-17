@@ -462,12 +462,22 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
 
     def post(self, request):
         serializer = self.get_serializer(data = request.data)
-        print(request.data["id"])
         try:
             instance = familyMembers.objects.get(pk=request.data["id"])
         except:
             return Response({'status': 'error',
                             'message': 'Family Member deatils not found'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            pathlab_instance = PatientPathlab.objects.filter(patientFamilyMember=request.data["id"]).exists()
+            if pathlab_instance:
+                return Response({'status': 'error', 
+                                 'message': "paitent already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'status': 'error',
+                            'message': 'Family Member deatils not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+
         if serializer.is_valid():
             url= "http://ilis.krsnaadiagnostics.com/api/KDL_LIS_APP_API/BookPatient"
             headers = {
@@ -517,9 +527,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
                     # key, value =list(serializer.errors.items())[0]
                     # error_message = key+" , "+ value[0]
                     return Response({"status" : "error" ,
-                                    "message" : pathlab_serializer.errors}, status= 400)
-                  
-                  
+                                    "message" : pathlab_serializer.errors}, status= 400) 
             else:
                 return Response(json.loads(response.content) , status=response.status_code) 
             

@@ -57,8 +57,7 @@ def Update_Pending_Members_count(sender, instance, created , **kwargs):
 
     if created: 
         citizen_count = familyMembers.objects.filter(familyHead_id = instance.familyHead).count()
-        print(citizen_count)
-        print(instance.familyHead.totalFamilyMembers)
+        
         pending = instance.familyHead.totalFamilyMembers - citizen_count
         instance.familyHead.pendingMembers = pending
         instance.familyHead.save()
