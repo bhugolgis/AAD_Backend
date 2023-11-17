@@ -16,6 +16,7 @@ import json
 import requests
 from rest_framework.parsers import MultiPartParser
 from pathlab.serializers import PostResponseLIMSAPISerialzier
+from .permissions import IsMO
 
 class IsAllowedGroup(permissions.BasePermission):
     allowed_groups = ['amo', 'mo']  # Replace with the names of your allowed groups
@@ -459,6 +460,7 @@ def labTestsList(request):
 class LIMSBookPatientAPI(generics.GenericAPIView):
     serializer_class = BookPatientSerializer
     # parser_classes = [MultiPartParser]
+    permission_classes = [IsAuthenticated ,IsMO]
 
     def post(self, request):
         serializer = self.get_serializer(data = request.data)
