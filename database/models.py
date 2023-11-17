@@ -152,7 +152,7 @@ class familyMembers(models.Model):
     isSampleCollected = models.BooleanField(default=False)
     isLabTestReportGenerated = models.BooleanField(default=False)
 
-# class PatientsPathlab(models.Model):  
+ 
 class PatientPathlab(models.Model): 
     
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
@@ -175,6 +175,11 @@ class PatientPathlab(models.Model):
     patientID =models.CharField(max_length=255 , blank = True, null=True )
     citizenRejectedLabTest = models.BooleanField(default=False)
 
+class PatientPathLabReports(models.Model):
+    patientPathLab = models.ForeignKey(PatientPathlab , related_name="patientPathLabReports" , on_delete=models.CASCADE)
+    pdfResult = models.FileField(upload_to='patientPathLabResults' )
+    jsonResult = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class MedicalOfficerConsultancy(models.Model):
     #patientLabTest to patientTest
