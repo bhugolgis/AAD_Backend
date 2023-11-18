@@ -35,7 +35,7 @@ class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
 class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
-        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
+        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
                   'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' )
 
