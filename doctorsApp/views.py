@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from database.models import *
 from doctorsApp.serializers import *
-from rest_framework.permissions import IsAuthenticated , AllowAny
+from rest_framework.permissions import IsAuthenticated 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -14,20 +14,20 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import json
 import requests
-from rest_framework.parsers import MultiPartParser
 from pathlab.serializers import PostResponseLIMSAPISerialzier
 from .permissions import IsMO
+from django_filters.rest_framework import DjangoFilterBackend
+
+
 
 class IsAllowedGroup(permissions.BasePermission):
     allowed_groups = ['amo', 'mo']  # Replace with the names of your allowed groups
-
 
 
 class LabTestSuggestedCreateView(generics.GenericAPIView):
     serializer_class = PatientsPathlabSerializer
     permission_classes = (IsAuthenticated, IsAllowedGroup)
     # permission_classes = [IsAuthenticated]
-
 
 
     def post(self, request, *args, **kwargs):
@@ -88,7 +88,7 @@ class LabTestSuggestedCreateView(generics.GenericAPIView):
 #             queryset = queryset.filter(patientFamilyMember_id=patient_family_member_id)
 
 #         return queryset
-from django_filters.rest_framework import DjangoFilterBackend
+
 
 
 class ListPatientsPathlabView(generics.ListAPIView):
@@ -112,7 +112,6 @@ def ViewPatientsLabTestViewDetails(request, pk):
     comDet = get_object_or_404(PatientPathlab, patientFamilyMember_id=int(pk))
     serializer = PatientPathlabSerializer(comDet)
     testData  = serializer.data
-
     return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
 
 
@@ -126,10 +125,6 @@ def ViewPatientsMedicalOffConsultancyView(request, pk):
     return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
 
 
-
-
-
-    
     
 # @permission_classes((IsAuthenticated,))
 # @api_view(['GET'])
@@ -474,7 +469,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             pathlab_instance = PatientPathlab.objects.filter(patientFamilyMember=request.data["id"]).exists()
             if pathlab_instance:
                 return Response({'status': 'error', 
-                                 'message': "paitent already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
+                                 'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response({'status': 'error',
                             'message': 'Family Member deatils not found'}, status=status.HTTP_400_BAD_REQUEST)

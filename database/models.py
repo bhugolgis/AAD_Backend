@@ -7,6 +7,9 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
 # from .models import familyHeadDetails
 
+
+
+
 class HealthCareCenters(models.Model):
     CenterTypeChoices = [
          ("PHCC" , "Primary Health Care Center"),
@@ -78,7 +81,6 @@ class CustomUser(AbstractUser, PermissionsMixin):
     USERNAME_FIELD = 'phoneNumber'
     REQUIRED_FIELDS = []
  
-        
     objects = CustomUserManager()
 
     def __str__(self) -> str:
@@ -151,6 +153,7 @@ class familyMembers(models.Model):
     isLabTestAdded = models.BooleanField(default=False)
     isSampleCollected = models.BooleanField(default=False)
     isLabTestReportGenerated = models.BooleanField(default=False)
+    generalStatus = models.CharField(max_length=100 , default = 'Survey Completed' )
 
  
 class PatientPathlab(models.Model): 
@@ -177,8 +180,8 @@ class PatientPathlab(models.Model):
 
 class PatientPathLabReports(models.Model):
     patientPathLab = models.ForeignKey(PatientPathlab , related_name="patientPathLabReports" , on_delete=models.CASCADE)
-    pdfResult = models.FileField(upload_to='patientPathLabResults' )
-    jsonResult = models.JSONField()
+    pdfResult = models.FileField(upload_to='patientPathLabResults'  , blank = True , null = True)
+    jsonResult = models.JSONField(blank = True , null = True )
     created_at = models.DateTimeField(auto_now_add=True)
 
 class MedicalOfficerConsultancy(models.Model):

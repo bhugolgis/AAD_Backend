@@ -9,10 +9,16 @@ def update_isLabTestAdded_check(sender, instance , created, **kwargs):
     print("Created")
     if created:
         family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
-        print(family)
         family.isLabTestAdded = True 
+        family.generalStatus = 'Appointment Booked' 
         family.save()
 
 
 
 
+@receiver(post_save , sender=PatientPathLabReports)  
+def update_general_status(sender, instance , created, **kwargs):
+    if created:
+        family = familyMembers.objects.get(pk=instance.patientPathLab.patientFamilyMember.id)
+        family.generalStatus = 'Report generated' 
+        family.save()
