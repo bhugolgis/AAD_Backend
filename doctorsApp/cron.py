@@ -55,17 +55,10 @@ def AddTestReport():
             'SOAPAction': 'http://tempuri.org/Get_LIS_PatientReportURL'
         }
         post_params = {
-<<<<<<< HEAD
             'authKey': auth_key,
             'PUID': puid,
             'BookingVisitId': booking_visit_id,
             'patientId': patient_id,
-=======
-            'authKey': "05436EFE3826447DBE720525F78A9EEDBMC",
-            'PUID': labTest.puid,
-            'BookingVisitId': labTest.bookingVisitID,
-            'patientId': labTest.patientID,
->>>>>>> ed1cf0fcae8c4a4403f6703e50e5d0eaecc98087
         }
 
         # Send a POST request to the URL to get the PDF file
