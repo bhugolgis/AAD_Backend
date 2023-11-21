@@ -1278,3 +1278,5 @@ class GetCHV_ASHA_list(generics.GenericAPIView):
                 'status': 'success' ,
                 'message' : 'data fetched successfully',
                 'data': serializer} , status=status.HTTP_200_OK)
+    
+

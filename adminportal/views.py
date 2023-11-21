@@ -29,15 +29,6 @@ class UserCountsAPI(APIView):
         } , status = 200)
         
 
-
-# class GetASHA_CHV(APIView):
-#     def get(self, request):
-#         all = CustomUser.objects.all()
-#         CHV_ASHA_count = all.filter(groups__name__in= ['CHV/ASHA' , 'healthworker'] )
-#         serializer = CustomUserSerializer(CHV_ASHA_count , many = True)
-#         print(CHV_ASHA_count)
-#         return Response(serializer.data)
-
 class InsertUsers(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserSerializer
@@ -77,8 +68,6 @@ class InsertUsers(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
-
 class UpdateUserDetails(generics.GenericAPIView):
     serializer_class  = UpdateUserDetailsSerializer
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor)
@@ -102,7 +91,6 @@ class UpdateUserDetails(generics.GenericAPIView):
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
         
-
 class deleteUser(generics.GenericAPIView):
     serializer_class = DeleteUserSerializer
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor)
@@ -150,11 +138,7 @@ class AdminChangePasswordView(generics.UpdateAPIView):
             }
             return Response(response)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-# class GetUserList(generics.GenericAPIView):
-#     serializer_class = CustomUserSerializer
-#     def get(self, request, search, *args, **kwargs):
-#         user_list = CustomUser.objects.filter()
-#         serializer = self.get_serializer()
+
 
 
 class userListAPI(generics.ListAPIView):

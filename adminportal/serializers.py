@@ -37,6 +37,7 @@ class AddUserSerializer(serializers.ModelSerializer):
 
 
 class UpdateUserDetailsSerializer(serializers.ModelSerializer):
+	username = serializers.CharField(max_length=200 , required = False)
 	class Meta:
 		model = CustomUser
 		fields = ("name" , "username" ,"emailId" , "phoneNumber" , "supervisor" , 

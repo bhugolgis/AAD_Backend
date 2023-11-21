@@ -514,3 +514,4 @@ class UpdateUserDetailsSerializer(serializers.ModelSerializer):
 		model = CustomUser
 		fields = ("name" , "username" , "emailId" , "phoneNumber" , "supervisor" , 
 			"section" , "ward" , "health_Post" , "area" , "dispensary"  )
+		
