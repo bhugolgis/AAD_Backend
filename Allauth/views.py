@@ -21,7 +21,7 @@ from django.contrib.auth.hashers import check_password
 from drf_extra_fields.fields import Base64ImageField
 from datetime import datetime, timedelta
 from django.db.models import Count
-
+from adminportal.serializers import *
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -808,7 +808,6 @@ class ChangePasswordView(generics.UpdateAPIView):
                 'message': 'Password updated successfully'
             }
             return Response(response)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserGroupFilterView(generics.ListAPIView):
@@ -1264,4 +1263,9 @@ class HealthCareCentersDetail(APIView):
 
 
 
-
+class GetCHV_ASHA_list(generics.GenericAPIView):
+    serializer_class = CHV_ASHA_Serializer
+    def get(self , request , section):
+        user_list = CustomUser.objects.filter(section = section , groups__name = 'CHV/ASHA')
+        serializer = self.get_serializer(user_list , many = True).data
+        return Response(serializer)

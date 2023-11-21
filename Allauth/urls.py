@@ -8,6 +8,7 @@ urlpatterns = [
         # path('CustomLoginAPI' , CustomLoginAPI.as_view() , name = 'CustomLoginAPI'),
         path('AddWardAPI', AddWardAPI.as_view(), name='AddWardAPI'),
         path('AddHealthPostAPI', AddHealthPostAPI.as_view(), name='AddHealthPostAPI'),
+        path('GetCHV_ASHA_list/<int:section>', GetCHV_ASHA_list.as_view(), name='AddHealthPostAPI'),
         path('AddsectionAPI', AddsectionAPI.as_view(), name='AddsectionAPI'),
         path('AddAreaAPI', AddAreaAPI.as_view(), name='AddAreaAPI'),
         # path('InsertUsers', InsertUsers.as_view(), name='knox_logout'),
@@ -16,6 +17,7 @@ urlpatterns = [
         re_path(r'^GetWardListAPI', GetWardListAPI.as_view(), name='GetWardListAPI'),
         re_path(r'^GethealthPostNameList', GethealthPostNameListAPI.as_view(), name='GethealthPostNameList'),
         re_path(r'^GetSectionListAPI', GetSectionListAPI.as_view(), name='GetSectionListAPI'),
+                
         path('healthcarecenters', HealthCareCentersList.as_view(), name='healthcare-centers-list'),
         path('healthcarecenters/<int:pk>/', HealthCareCentersDetail.as_view(), name='healthcare-centers-detail'),
         path('AddlabtestdeatilsAPI', AddlabtestdeatilsAPI.as_view(), name='healthcare-centers-detail'),

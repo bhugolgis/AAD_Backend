@@ -223,4 +223,4 @@ class BookPatientSerializer(serializers.Serializer):
     MobileNumber= serializers.CharField(max_length=100 , required = False) 
     HisUniquePatientCode= serializers.CharField(max_length=100)
     HisHospitalRefNo= serializers.CharField(max_length=100)
-    Booking_TestDetails= serializers.ListField(child=serializers.JSONField(),write_only=True , required = True)
+    Booking_TestDetails= serializers.JSONField(write_only=True , required = True)

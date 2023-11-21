@@ -29,13 +29,13 @@ class UserCountsAPI(APIView):
         
 
 
-class GetASHA_CHV(APIView):
-    def get(self, request):
-        all = CustomUser.objects.all()
-        CHV_ASHA_count = all.filter(groups__name__in= ['CHV/ASHA' , 'healthworker'] )
-        serializer = CustomUserSerializer(CHV_ASHA_count , many = True)
-        print(CHV_ASHA_count)
-        return Response(serializer.data)
+# class GetASHA_CHV(APIView):
+#     def get(self, request):
+#         all = CustomUser.objects.all()
+#         CHV_ASHA_count = all.filter(groups__name__in= ['CHV/ASHA' , 'healthworker'] )
+#         serializer = CustomUserSerializer(CHV_ASHA_count , many = True)
+#         print(CHV_ASHA_count)
+#         return Response(serializer.data)
 
 class InsertUsers(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
@@ -130,18 +130,18 @@ class userListAPI(generics.ListAPIView):
     filter_backends = (filters.SearchFilter,)
     search_fields = ['name' , 'username' , 'phoneNumber' , 'ward__wardName' , 'health_Post__healthPostName' ]
 
-    def get_queryset(self ):
+    def get_queryset(self):
         """
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
-        group = self.request.query_params.get('group')
-        print(group)
+
+        group = self.kwargs.get('group')
+      
         queryset = self.model.objects.filter(groups__name = group)
         return queryset
     
     def get(self, request, *args, **kwargs):
-        print(self.request.data)
-        # queryset = DumpExcel.objects.filter(actualRegistrationDate__range= '2022')
+
         queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
 

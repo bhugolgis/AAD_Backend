@@ -161,7 +161,7 @@ class PatientPathlab(models.Model):
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
     suggested_by_doctor = models.ForeignKey(CustomUser , related_name='suggested_by_doctor' , on_delete=models.SET_NULL ,  blank = True , null = True  )
     suggested_date = models.DateTimeField(auto_now=True)
-    LabTestSuggested = ArrayField(models.CharField(max_length=255 ,default=list ) , blank = True , null = True )
+    LabTestSuggested = models.JSONField( blank = True , null = True)  
     PatientSampleTaken = models.BooleanField(default=False)
     # pathLabPatient = models.ForeignKey(CustomUser,related_name="phlebotomist_user",on_delete=models.CASCADE,null=True,blank=True)
     PathLab = models.ForeignKey(CustomUser,related_name="PathLab",on_delete=models.CASCADE,null=True,blank=True)
