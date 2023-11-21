@@ -15,6 +15,7 @@ admin.site.register(familyMembers)
 # admin.site.register(TestTube)
 admin.site.register(PatientPathlab)
 admin.site.register(LabTests)
+admin.site.register(PatientPathLabReports)
 
 
 

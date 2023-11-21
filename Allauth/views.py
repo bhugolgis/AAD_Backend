@@ -21,7 +21,7 @@ from django.contrib.auth.hashers import check_password
 from drf_extra_fields.fields import Base64ImageField
 from datetime import datetime, timedelta
 from django.db.models import Count
-
+from adminportal.serializers import *
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -808,7 +808,6 @@ class ChangePasswordView(generics.UpdateAPIView):
                 'message': 'Password updated successfully'
             }
             return Response(response)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserGroupFilterView(generics.ListAPIView):
@@ -977,15 +976,13 @@ class AddAreaAPI(generics.GenericAPIView):
             } , status=400)  
 
 
-
-
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     parser_classes = [MultiPartParser]
     permission_classes = [AllowAny]
 
     def post(self, request):
-        try:
+        # try:
             serializer = LoginSerializer(data=request.data)
             if serializer.is_valid():
                 user_data = serializer.validated_data
@@ -998,6 +995,8 @@ class LoginView(generics.GenericAPIView):
                         pass
                     _, token = AuthToken.objects.create(serializer.validated_data)
                     if group == 'healthworker':
+                        chv_list = CustomUser.objects.filter(section = user_data.section).exclude(groups__name = 'healthworker')
+                        chv_serializer = CHV_ASHA_Serializer(chv_list , many = True)
                         return Response({
                             'message': 'Login successful',
                             'Token': token,
@@ -1010,6 +1009,7 @@ class LoginView(generics.GenericAPIView):
                             'ward' : user_data.section.healthPost.ward.wardName ,
                             'healthPostName' : user_data.section.healthPost.healthPostName,
                             'healthPostID' : user_data.section.healthPost.id,
+                            'ASHA/CHV_list' : chv_serializer.data, 
                             'Group': group
                         }, status=200)                 
                     elif group == "phlebotomist":
@@ -1166,10 +1166,10 @@ class LoginView(generics.GenericAPIView):
                 error_message = value[0]
                 return Response({'message': error_message, 
                                 'status' : 'error'}, status=400)
-        except:
-            return Response({
-                'message': 'Invalid Credentials',
-                'status': 'failed'}, status=400)
+        # except:
+        #     return Response({
+        #         'message': 'Invalid Credentials',
+        #         'status': 'failed'}, status=400)
             
             
             
@@ -1263,4 +1263,20 @@ class HealthCareCentersDetail(APIView):
 
 
 
+class GetCHV_ASHA_list(generics.GenericAPIView):
+    serializer_class = CHV_ASHA_Serializer
+    def get(self , request , section):
+        try:
+            user_list = CustomUser.objects.filter(section = section , groups__name = 'CHV/ASHA')
+        except:
+            return Response({
+                'status': 'error' ,
+                'message' : 'section ID is not found'
+            } , status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(user_list , many = True).data
+        return Response({
+                'status': 'success' ,
+                'message' : 'data fetched successfully',
+                'data': serializer} , status=status.HTTP_200_OK)
+    
 

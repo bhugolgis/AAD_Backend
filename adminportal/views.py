@@ -9,11 +9,14 @@ from Allauth.serializers import RegisterSerializer
 from rest_framework import status
 from .permissions import *
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.views import APIView
+from rest_framework import filters
+from rest_framework.pagination import LimitOffsetPagination
+from Allauth.serializers import *
 # Create your views here.
 
 
-class UserCountsAPI(generics.GenericAPIView):
+class UserCountsAPI(APIView):
     def get(self, request, *args, **kwargs):
         all = CustomUser.objects.all()
         CHV_ASHA_count = all.filter(groups__name='CHV/ASHA').count()
@@ -25,7 +28,6 @@ class UserCountsAPI(generics.GenericAPIView):
             'ANM_count' : ANM_count
         } , status = 200)
         
-
 
 class InsertUsers(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
@@ -48,7 +50,6 @@ class InsertUsers(generics.GenericAPIView):
                 user.groups.add(group)
                 
                 addSupervisor = CustomUser.objects.filter(id= user.id).update(supervisor_id = request.user.id)
-
                 return Response({
                     "status": "success",
                     "message": "Successfully Inserted.",
@@ -67,8 +68,6 @@ class InsertUsers(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
-
 class UpdateUserDetails(generics.GenericAPIView):
     serializer_class  = UpdateUserDetailsSerializer
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor)
@@ -92,7 +91,6 @@ class UpdateUserDetails(generics.GenericAPIView):
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
         
-
 class deleteUser(generics.GenericAPIView):
     serializer_class = DeleteUserSerializer
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor)
@@ -105,5 +103,74 @@ class deleteUser(generics.GenericAPIView):
             return Response({'status': 'error',
                             'message': 'deatils not found'}, status=400)
     
+class AdminChangePasswordView(generics.UpdateAPIView):
+    """
+    An endpoint for changing password.
+    """
+    serializer_class = ChangePasswordSerializer
+    # model = CustomUser
+    # permission_classes = (IsAuthenticated)
+    def get_object(self, queryset=None):
+        id = self.kwargs.get('id')
+        obj = CustomUser.objects.get(id = id)
+        return obj
 
+    def update(self , request, *args, **kwargs):
+        # try:
+        #     obj = CustomUser.objects.get(id = id)
+        # except:
+        #     return Response({'status':'error',
+        #                      'message' : 'user id not found'}, status=status.HTTP_400_BAD_REQUEST)
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("newpassword"))
+            self.object.save()
+
+            # sendOtp.objects.filter(registerUser_id = self.request.user.id).delete()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully'
+            }
+            return Response(response)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class userListAPI(generics.ListAPIView):
+    pagination_class = LimitOffsetPagination
+    serializer_class = CustomUserSerializer
+    model = serializer_class.Meta.model
+    # permission_classes = (IsAuthenticated , IsAdmin)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ['name' , 'username' , 'phoneNumber' , 'ward__wardName' , 'health_Post__healthPostName' ]
+
+    def get_queryset(self):
+        """
+        The function returns a queryset of all objects ordered by their created date in descending order.
+        """
+
+        group = self.kwargs.get('group')
+      
+        queryset = self.model.objects.filter(groups__name = group)
+        return queryset
     
+    def get(self, request, *args, **kwargs):
+
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success',
+                        'message': 'Data fetched successfully',
+                        'data': serializer.data})

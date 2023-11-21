@@ -3,6 +3,8 @@ from database.models import *
 from drf_extra_fields.fields import Base64ImageField
 
 
+# The below class is a serializer in Python that is used to validate and serialize data for a family
+# member detail.
 class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     demandLetter = Base64ImageField(required=False)
     # familyHead = serializers.IntegerField(required = True ) 
@@ -10,7 +12,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
-                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' )
+                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' , 'created_date' )
     
 
     def validate(self, data):
@@ -35,9 +37,9 @@ class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
 class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
-        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
+        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
-                  'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' )
+                  'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' )
 
 
     def validate(self, data):
@@ -120,8 +122,8 @@ class GetCitizenListSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
-                  'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' )
+                  'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' )
 
 
 class DumpExcelSerializer(serializers.Serializer):
-    excel_file = serializers.FileField(required=True)
+    excel_file = serializers.FileField(required=True) 

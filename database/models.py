@@ -7,6 +7,9 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
 # from .models import familyHeadDetails
 
+
+
+
 class HealthCareCenters(models.Model):
     CenterTypeChoices = [
          ("PHCC" , "Primary Health Care Center"),
@@ -78,7 +81,6 @@ class CustomUser(AbstractUser, PermissionsMixin):
     USERNAME_FIELD = 'phoneNumber'
     REQUIRED_FIELDS = []
  
-        
     objects = CustomUserManager()
 
     def __str__(self) -> str:
@@ -147,10 +149,11 @@ class familyMembers(models.Model):
     demandLetter = models.ImageField(upload_to='demand letter' , blank = True , null = True )
     bloodConsent = models.BooleanField(default= False)
     cbacScore = models.IntegerField(default=0)
-    created_date= models.DateTimeField(auto_now= True)
+    created_date = models.DateTimeField(auto_now= True)
     isLabTestAdded = models.BooleanField(default=False)
     isSampleCollected = models.BooleanField(default=False)
     isLabTestReportGenerated = models.BooleanField(default=False)
+    generalStatus = models.CharField(max_length=100 , default = 'Survey Completed' )
 
  
 class PatientPathlab(models.Model): 
@@ -158,7 +161,7 @@ class PatientPathlab(models.Model):
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
     suggested_by_doctor = models.ForeignKey(CustomUser , related_name='suggested_by_doctor' , on_delete=models.SET_NULL ,  blank = True , null = True  )
     suggested_date = models.DateTimeField(auto_now=True)
-    LabTestSuggested = ArrayField(models.CharField(max_length=255 ,default=list ) , blank = True , null = True )
+    LabTestSuggested = models.JSONField(default=dict)  
     PatientSampleTaken = models.BooleanField(default=False)
     # pathLabPatient = models.ForeignKey(CustomUser,related_name="phlebotomist_user",on_delete=models.CASCADE,null=True,blank=True)
     PathLab = models.ForeignKey(CustomUser,related_name="PathLab",on_delete=models.CASCADE,null=True,blank=True)
@@ -177,8 +180,8 @@ class PatientPathlab(models.Model):
 
 class PatientPathLabReports(models.Model):
     patientPathLab = models.ForeignKey(PatientPathlab , related_name="patientPathLabReports" , on_delete=models.CASCADE)
-    pdfResult = models.FileField(upload_to='patientPathLabResults' )
-    jsonResult = models.JSONField()
+    pdfResult = models.FileField(upload_to='patientPathLabResults'  , blank = True , null = True)
+    jsonResult = models.JSONField(blank = True , null = True )
     created_at = models.DateTimeField(auto_now_add=True)
 
 class MedicalOfficerConsultancy(models.Model):

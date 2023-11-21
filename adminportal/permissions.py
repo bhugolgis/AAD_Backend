@@ -33,9 +33,6 @@ class IsAdmin(BasePermission):
         return request.user and has_group_permission
 
 
-
-
-
 class IsSupervisor(BasePermission):
     required_group = ["supervisor"]
     """

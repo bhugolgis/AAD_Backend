@@ -37,9 +37,10 @@ class AddUserSerializer(serializers.ModelSerializer):
 
 
 class UpdateUserDetailsSerializer(serializers.ModelSerializer):
+	username = serializers.CharField(max_length=200 , required = False)
 	class Meta:
 		model = CustomUser
-		fields = ("name" , "username" , "emailId" , "phoneNumber" , "supervisor" , 
+		fields = ("name" , "username" ,"emailId" , "phoneNumber" , "supervisor" , 
 			"section" , "ward" , "health_Post" , "area" , "dispensary")
 		
 
@@ -49,3 +50,8 @@ class DeleteUserSerializer(serializers.ModelSerializer):
 		fields = ("name" , "username" , "emailId" , "phoneNumber" , "supervisor" , 
 			"section" , "ward" , "health_Post" , "area" , "dispensary")
 		
+
+class CustomUserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = CustomUser
+		fields = '__all__'
