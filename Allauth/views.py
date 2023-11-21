@@ -982,7 +982,7 @@ class LoginView(generics.GenericAPIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        try:
+        # try:
             serializer = LoginSerializer(data=request.data)
             if serializer.is_valid():
                 user_data = serializer.validated_data
@@ -1166,10 +1166,10 @@ class LoginView(generics.GenericAPIView):
                 error_message = value[0]
                 return Response({'message': error_message, 
                                 'status' : 'error'}, status=400)
-        except:
-            return Response({
-                'message': 'Invalid Credentials',
-                'status': 'failed'}, status=400)
+        # except:
+        #     return Response({
+        #         'message': 'Invalid Credentials',
+        #         'status': 'failed'}, status=400)
             
             
             

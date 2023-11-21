@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import filters
 from rest_framework.pagination import LimitOffsetPagination
+from Allauth.serializers import *
 # Create your views here.
 
 
@@ -114,7 +115,41 @@ class deleteUser(generics.GenericAPIView):
             return Response({'status': 'error',
                             'message': 'deatils not found'}, status=400)
     
+class AdminChangePasswordView(generics.UpdateAPIView):
+    """
+    An endpoint for changing password.
+    """
+    serializer_class = ChangePasswordSerializer
+    # model = CustomUser
+    # permission_classes = (IsAuthenticated)
+    def get_object(self, queryset=None):
+        id = self.kwargs.get('id')
+        obj = CustomUser.objects.get(id = id)
+        return obj
 
+    def update(self , request, *args, **kwargs):
+        # try:
+        #     obj = CustomUser.objects.get(id = id)
+        # except:
+        #     return Response({'status':'error',
+        #                      'message' : 'user id not found'}, status=status.HTTP_400_BAD_REQUEST)
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("newpassword"))
+            self.object.save()
+
+            # sendOtp.objects.filter(registerUser_id = self.request.user.id).delete()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully'
+            }
+            return Response(response)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # class GetUserList(generics.GenericAPIView):
 #     serializer_class = CustomUserSerializer
 #     def get(self, request, search, *args, **kwargs):

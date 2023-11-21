@@ -39,12 +39,8 @@ class AddUserSerializer(serializers.ModelSerializer):
 class UpdateUserDetailsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
-		fields = ("name" , "username" , 'password' ,"emailId" , "phoneNumber" , "supervisor" , 
+		fields = ("name" , "username" ,"emailId" , "phoneNumber" , "supervisor" , 
 			"section" , "ward" , "health_Post" , "area" , "dispensary")
-		
-		extra_kwargs = {
-            "password": {"write_only": True},
-        }
 		
 
 class DeleteUserSerializer(serializers.ModelSerializer):

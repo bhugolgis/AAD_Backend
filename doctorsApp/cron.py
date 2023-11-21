@@ -3,7 +3,7 @@ import requests
 from database.models import *
 
 def AddTestReport():
-    
+    print("add test report running")
     #Check for FamilyMember LabTest Added
     checkLabTestAdded = PatientPathlab.objects.filter(patientFamilyMember__isLabTestAdded = True,
                                                       patientFamilyMember__isSampleCollected =True,
