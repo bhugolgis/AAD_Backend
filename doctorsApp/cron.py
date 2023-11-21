@@ -2,7 +2,9 @@ import os
 import requests
 from database.models import *
 import re
-
+import logging
+from datetime import datetime
+logger = logging.getLogger(__name__)
 
 def getPdfUrl(response_string):
     
@@ -21,6 +23,8 @@ def getPdfUrl(response_string):
         
         
 def AddTestReport():
+    logger.warning("add test report running")
+
     print("add test report running")
     #Check for FamilyMember LabTest Added
     checkLabTestAdded = PatientPathlab.objects.filter(patientFamilyMember__isLabTestAdded = True,
