@@ -5,7 +5,9 @@ from database.models import *
 def AddTestReport():
     
     #Check for FamilyMember LabTest Added
-    checkLabTestAdded = PatientPathlab.objects.filter(patientFamilyMember__isLabTestAdded = True,patientFamilyMember__isSampleCollected =True,patientFamilyMember__isLabTestReportGenerated = False)
+    checkLabTestAdded = PatientPathlab.objects.filter(patientFamilyMember__isLabTestAdded = True,
+                                                      patientFamilyMember__isSampleCollected =True,
+                                                      patientFamilyMember__isLabTestReportGenerated = False)
 
     for labTest in checkLabTestAdded:
         # if checkLabTestAdded.exists():
@@ -22,8 +24,6 @@ def AddTestReport():
         response = requests.post(url1, data=post_params)
         responseJson = requests.post(url2, data=post_params)
             
-            
-
         if response.status_code == 200 and responseJson.status_code == 200:
             # Specify the folder where you want to save the PDF file temporarily
             temp_folder = os.path.join('media', 'patientPathLabResults')

@@ -21,6 +21,12 @@ class GetCitizenBasicDetailsAPI(generics.ListAPIView):
     search_fields = ['mobileNo' ,'name' , 'memberId']
 
     def get_queryset(self):
+        """
+        The function `get_queryset` filters the `familyMembers` objects based on the health post and
+        blood collection location.
+        :return: a queryset of family members who belong to the health post of the currently logged in
+        user and whose blood collection location is either "center" or "Home".
+        """
         queryset = familyMembers.objects.filter(area__healthPost_id = self.request.user.health_Post.id  , bloodCollectionLocation__in = ["center", "Home"])
     
         return queryset 
@@ -38,6 +44,12 @@ class GetPhleboFamilyMembersDetails(generics.ListAPIView):
     search_fields = ['mobileNo' ,'name' , 'memberId' , 'id' ]
 
     def get_queryset(self):
+        """
+        The function `get_queryset` filters the `familyMembers` objects based on the health post and
+        blood collection location.
+        :return: a queryset of family members who belong to a specific health post and have their blood
+        collection location set to either "center" or "Home".
+        """
         queryset = familyMembers.objects.filter(area__healthPost_id = self.request.user.health_Post.id ,  bloodCollectionLocation__in = ["center", "Home"])
     
         return queryset 
@@ -71,6 +83,11 @@ class GetPatientsDetailsAPI(generics.GenericAPIView):
                      'patientFamilyMember__id' , 'bookingVisitID' , 'patientID']
 
     def get(self , request, id):
+        """
+        The function retrieves a PatientPathlab instance based on the provided id and returns a response
+        with the serialized data.
+        
+        """
         try:
             instance = PatientPathlab.objects.get(patientFamilyMember__id=id)
         except:
@@ -88,6 +105,12 @@ class PostResponseLIMSAPI(generics.GenericAPIView):
     serializer_class = PostResponseLIMSAPISerialzier
     parser_classes = [MultiPartParser]
     def patch(self , request , id ):
+        """
+        The function `patch` updates a specific instance of the `PatientPathlab` model with the provided
+        data and returns a success message if the update is successful, or an error message if there are
+        any validation errors.
+    
+        """
         try:
             instance = PatientPathlab.objects.get(pk=id)
         except:

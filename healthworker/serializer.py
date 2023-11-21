@@ -3,6 +3,8 @@ from database.models import *
 from drf_extra_fields.fields import Base64ImageField
 
 
+# The below class is a serializer in Python that is used to validate and serialize data for a family
+# member detail.
 class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     demandLetter = Base64ImageField(required=False)
     # familyHead = serializers.IntegerField(required = True ) 

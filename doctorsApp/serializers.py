@@ -144,7 +144,7 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('id','memberId','name','gender','age','mobileNo','familyHead','familySurveyor','area','aadharCard','abhaId','pulse','bloodPressure','weight',
         'height','BMI','Questionnaire','bloodCollectionLocation','questionsConsent','aadharAndAbhaConsent','demandLetter','bloodConsent','cbacScore',
-        'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated')
+        'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated' , 'generalStatus')
         depth = 1
 
     # def get_area(self , area):
@@ -206,21 +206,21 @@ class BookPatientSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     RegisteredDate= serializers.CharField(max_length=100)
     PRNNo= serializers.CharField(max_length=100)
-    PatientCategory= serializers.CharField(max_length=100)
+    PatientCategory= serializers.CharField(max_length=100 ,)
     PatientType= serializers.CharField(max_length=100)
     RefDrCode= serializers.CharField(max_length=100)
     refDrName= serializers.CharField(max_length=100)
     RefLabCode= serializers.CharField(max_length=100)
     PatientName= serializers.CharField(max_length=100)
     Age= serializers.IntegerField()
-    BirthDate= serializers.CharField(max_length=100)
-    PaymentAmount= serializers.IntegerField()
+    BirthDate= serializers.CharField(max_length=100 , required = False)
+    PaymentAmount= serializers.IntegerField(default = 0 , required = False)
     CreatedBy= serializers.CharField(max_length=100)
     AgeUnit= serializers.CharField(max_length=100)
     Gender= serializers.CharField(max_length=100)
-    PatientAddress= serializers.CharField(max_length=100)
-    IdentityNumber= serializers.CharField(max_length=100)
-    MobileNumber= serializers.CharField(max_length=100)
+    PatientAddress= serializers.CharField(max_length=100 , required = False)
+    IdentityNumber= serializers.CharField(max_length=100 , required = False)
+    MobileNumber= serializers.CharField(max_length=100 , required = False) 
     HisUniquePatientCode= serializers.CharField(max_length=100)
     HisHospitalRefNo= serializers.CharField(max_length=100)
     Booking_TestDetails= serializers.ListField(child=serializers.JSONField(),write_only=True , required = True)

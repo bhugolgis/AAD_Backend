@@ -977,8 +977,6 @@ class AddAreaAPI(generics.GenericAPIView):
             } , status=400)  
 
 
-
-
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     parser_classes = [MultiPartParser]
@@ -998,6 +996,8 @@ class LoginView(generics.GenericAPIView):
                         pass
                     _, token = AuthToken.objects.create(serializer.validated_data)
                     if group == 'healthworker':
+                        chv_list = CustomUser.objects.filter(section = user_data.section).exclude(groups__name = 'healthworker')
+                        chv_serializer = CHV_ASHA_Serializer(chv_list , many = True)
                         return Response({
                             'message': 'Login successful',
                             'Token': token,
@@ -1010,6 +1010,7 @@ class LoginView(generics.GenericAPIView):
                             'ward' : user_data.section.healthPost.ward.wardName ,
                             'healthPostName' : user_data.section.healthPost.healthPostName,
                             'healthPostID' : user_data.section.healthPost.id,
+                            'ASHA/CHV_list' : chv_serializer.data, 
                             'Group': group
                         }, status=200)                 
                     elif group == "phlebotomist":

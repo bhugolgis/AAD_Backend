@@ -149,7 +149,7 @@ class familyMembers(models.Model):
     demandLetter = models.ImageField(upload_to='demand letter' , blank = True , null = True )
     bloodConsent = models.BooleanField(default= False)
     cbacScore = models.IntegerField(default=0)
-    created_date= models.DateTimeField(auto_now= True)
+    created_date = models.DateTimeField(auto_now= True)
     isLabTestAdded = models.BooleanField(default=False)
     isSampleCollected = models.BooleanField(default=False)
     isLabTestReportGenerated = models.BooleanField(default=False)

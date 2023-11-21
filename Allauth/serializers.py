@@ -433,6 +433,11 @@ class LoginWithOtpSerializer(serializers.Serializer):
             return customuser
         raise serializers.ValidationError("Incorrect Credentials")
 
+class CHV_ASHA_Serializer(serializers.ModelSerializer):
+	class Meta:
+		model = CustomUser
+		fields = ['id','name' , 'username' , 'phoneNumber' , 'section']
+		depth = 1
 
 
 class HealthCareCentersSerializer(serializers.ModelSerializer):

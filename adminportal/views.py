@@ -9,11 +9,13 @@ from Allauth.serializers import RegisterSerializer
 from rest_framework import status
 from .permissions import *
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.views import APIView
+from rest_framework import filters
+from rest_framework.pagination import LimitOffsetPagination
 # Create your views here.
 
 
-class UserCountsAPI(generics.GenericAPIView):
+class UserCountsAPI(APIView):
     def get(self, request, *args, **kwargs):
         all = CustomUser.objects.all()
         CHV_ASHA_count = all.filter(groups__name='CHV/ASHA').count()
@@ -26,6 +28,14 @@ class UserCountsAPI(generics.GenericAPIView):
         } , status = 200)
         
 
+
+class GetASHA_CHV(APIView):
+    def get(self, request):
+        all = CustomUser.objects.all()
+        CHV_ASHA_count = all.filter(groups__name__in= ['CHV/ASHA' , 'healthworker'] )
+        serializer = CustomUserSerializer(CHV_ASHA_count , many = True)
+        print(CHV_ASHA_count)
+        return Response(serializer.data)
 
 class InsertUsers(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
@@ -48,7 +58,6 @@ class InsertUsers(generics.GenericAPIView):
                 user.groups.add(group)
                 
                 addSupervisor = CustomUser.objects.filter(id= user.id).update(supervisor_id = request.user.id)
-
                 return Response({
                     "status": "success",
                     "message": "Successfully Inserted.",
@@ -106,4 +115,43 @@ class deleteUser(generics.GenericAPIView):
                             'message': 'deatils not found'}, status=400)
     
 
+# class GetUserList(generics.GenericAPIView):
+#     serializer_class = CustomUserSerializer
+#     def get(self, request, search, *args, **kwargs):
+#         user_list = CustomUser.objects.filter()
+#         serializer = self.get_serializer()
+
+
+class userListAPI(generics.ListAPIView):
+    pagination_class = LimitOffsetPagination
+    serializer_class = CustomUserSerializer
+    model = serializer_class.Meta.model
+    # permission_classes = (IsAuthenticated , IsAdmin)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ['name' , 'username' , 'phoneNumber' , 'ward__wardName' , 'health_Post__healthPostName' ]
+
+    def get_queryset(self ):
+        """
+        The function returns a queryset of all objects ordered by their created date in descending order.
+        """
+        group = self.request.query_params.get('group')
+        print(group)
+        queryset = self.model.objects.filter(groups__name = group)
+        return queryset
     
+    def get(self, request, *args, **kwargs):
+        print(self.request.data)
+        # queryset = DumpExcel.objects.filter(actualRegistrationDate__range= '2022')
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success',
+                        'message': 'Data fetched successfully',
+                        'data': serializer.data})

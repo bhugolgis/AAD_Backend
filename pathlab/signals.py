@@ -14,9 +14,6 @@ def update_Appoinment_schedule_check(sender, instance , created, **kwargs):
         family.save()
       
 
-
-        
-      
 @receiver(post_save , sender=PatientPathlab)  
 def update_isLabTestAdded_check(sender, instance , created, **kwargs):
     print("Created")

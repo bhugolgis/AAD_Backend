@@ -19,6 +19,18 @@ from django.contrib.auth.models import Group
 class verifyMobileNumber(APIView):
     permission_classes = (IsAuthenticated , IsHealthworker)
     def get(self , request ,mobileNo):
+        """
+        The function checks if a given mobile number already exists in the database and returns a
+        response indicating whether it exists or not.
+        
+        :param request: The request object contains information about the current HTTP request, such as
+        the headers, body, and method
+        :param mobileNo: The mobileNo parameter is the mobile number that is being checked for existence
+        in the familyHeadDetails and CustomUser models
+        :return: a Response object with a status and message. If the mobile number already exists in
+        either the familyHeadDetails or CustomUser models, it returns an error message with a status
+        code of 400. Otherwise, it returns a success message with a status code of 200.
+        """
         family_head = familyHeadDetails.objects.filter( mobileNo = mobileNo).exists()
         user = CustomUser.objects.filter(phoneNumber = mobileNo).exists()
         if family_head or user:
@@ -31,6 +43,20 @@ class verifyMobileNumber(APIView):
 class veirfyaadharCard(APIView):
     permission_classes = (IsAuthenticated, IsHealthworker)
     def get(self , request ,aadharCard):
+        """
+        The function checks if a given Aadhar Card number already exists in the database and returns a
+        response accordingly.
+        
+        :param request: The request object contains information about the current HTTP request, such as
+        the headers, method, and body
+        :param aadharCard: The parameter "aadharCard" is the Aadhar card number that is being passed to
+        the function. It is used to check if a family member with the same Aadhar card number already
+        exists in the database
+        :return: The code is returning a response in the form of a dictionary. If the data exists, it
+        returns a response with a status of 'error' and a message stating that the Aadhar Card already
+        exists. If the data does not exist, it returns a response with a status of 'success' and a
+        message stating that the verification was successful.
+        """
         data = familyMembers.objects.filter( aadharCard = aadharCard).exists()
         if data:
             return Response({'status' : 'error' ,
@@ -42,6 +68,11 @@ class veirfyaadharCard(APIView):
 class verifyabhaId(APIView):
     permission_classes = (IsAuthenticated , IsHealthworker)
     def get(self , request ,abhaId):
+        """
+        The function checks if a given abhaId already exists in the familyMembers table and returns a
+        response indicating whether it exists or not.
+        
+        """
         data = familyMembers.objects.filter( abhaId = abhaId).exists()
         if data:
             return Response({'status' : 'error' ,
@@ -316,11 +347,30 @@ class GetBloodCollectionDetail(generics.ListAPIView):
 
 
 
+# The `DumpExcelInsertxlsx` class is a view in a Django REST framework API that handles the uploading
+# of an Excel file, parses the data, and creates users in the database based on the data in the Excel
+# file.
 class DumpExcelInsertxlsx(generics.GenericAPIView):
     parser_classes = [MultiPartParser]
     serializer_class = DumpExcelSerializer
 
     def post(self, request, format=None):
+        """
+        The above function is a Django view that handles the uploading of an Excel file, reads the data
+        from the file, and creates user objects in the database based on the data.
+        
+        :param request: The `request` parameter is an object that contains information about the current
+        HTTP request. It includes details such as the request method (GET, POST, etc.), headers, body,
+        and any uploaded files
+        :param format: The `format` parameter is used to specify the desired format of the response. In
+        this case, it is set to `None`, which means that the format will be determined automatically
+        based on the request
+        :return: The code is returning a response object with a JSON payload. The payload contains a
+        "message" field indicating the status of the operation ("File Uploaded Successfully and users
+        created !!" or "Something Went wrong please check you File"), an "error" field containing the
+        error message if an exception occurred, and a "status" field indicating the status of the
+        operation ("success" or "error"). The status
+        """
         try:
             if 'excel_file' not in request.FILES:
                 return Response({"status": "error", "message": "No file uploaded."}, status=400)
