@@ -14,7 +14,7 @@ def AddTestReport():
         url1 ="http://ilis.krsnaadiagnostics.com/services/KDL_LIS_Report_APPService.asmx"
         url2 = "http://ilis.krsnaadiagnostics.com/api/KDL_LIS_APP_API/Patient_Results_Data"
         post_params = {
-            'authKey': "auth_key",
+            'authKey': "05436EFE3826447DBE720525F78A9EEDBMC",
             'PUID': labTest.puid,
             'BookingVisitId': labTest.bookingVisitID,
             'patientId': labTest.patientID,
