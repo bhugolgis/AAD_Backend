@@ -1266,6 +1266,15 @@ class HealthCareCentersDetail(APIView):
 class GetCHV_ASHA_list(generics.GenericAPIView):
     serializer_class = CHV_ASHA_Serializer
     def get(self , request , section):
-        user_list = CustomUser.objects.filter(section = section , groups__name = 'CHV/ASHA')
+        try:
+            user_list = CustomUser.objects.filter(section = section , groups__name = 'CHV/ASHA')
+        except:
+            return Response({
+                'status': 'error' ,
+                'message' : 'section ID is not found'
+            } , status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(user_list , many = True).data
-        return Response(serializer)
+        return Response({
+                'status': 'success' ,
+                'message' : 'data fetched successfully',
+                'data': serializer} , status=status.HTTP_200_OK)
