@@ -10,7 +10,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     # familyHead = serializers.IntegerField(required = True ) 
     class Meta:
         model = familyMembers
-        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
+        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
                   'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' , 'created_date' )
     
@@ -38,7 +38,7 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
-                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
+                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV',
                   'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' )
 
 
@@ -65,7 +65,7 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyHeadDetails
         fields = ( 'area','name' , 'mobileNo' , 'plotNo',
-                  'address' , 'pincode' ,'totalFamilyMembers' ,
+                  'address' , 'pincode' ,'totalFamilyMembers' , 'ASHA_CHV',
                  'latitude' , 'longitude'  , 'familyMembers_details' , 'partialSubmit')
         
     def validate(self, data):
@@ -111,7 +111,7 @@ class GetFamilyHeadListSerialzier(serializers.ModelSerializer):
     class Meta:
         model = familyHeadDetails
         fields = ('id','familyId','name' , 'mobileNo' , 'plotNo',
-                  'address' ,  'pincode' ,'totalFamilyMembers' , 'pendingMembers' ,
+                  'address' ,  'pincode' ,'totalFamilyMembers' , 'pendingMembers' , 'ASHA_CHV',
                    'partialSubmit' , 'member')
       
 
@@ -120,7 +120,7 @@ class GetFamilyHeadListSerialzier(serializers.ModelSerializer):
 class GetCitizenListSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
-        fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
+        fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead','ASHA_CHV' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
                   'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' )
 

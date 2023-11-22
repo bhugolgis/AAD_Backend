@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from rest_framework import filters
 from rest_framework.pagination import LimitOffsetPagination
 from Allauth.serializers import *
+from django.db.models import Q
 # Create your views here.
 
 
@@ -153,12 +154,21 @@ class userListAPI(generics.ListAPIView):
         """
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
-
         group = self.kwargs.get('group')
-      
         queryset = self.model.objects.filter(groups__name = group)
+
+        search_terms = self.request.query_params.get('search', None)
+        if search_terms:
+            queryset = queryset.filter(
+                Q(name__icontains=search_terms) |
+                Q(username__icontains=search_terms) |
+                Q(phoneNumber__icontains=search_terms) |
+                Q(ward__wardName__icontains=search_terms) |
+                Q(health_Post__healthPostName__icontains=search_terms)
+            )
+
         return queryset
-    
+     
     def get(self, request, *args, **kwargs):
 
         queryset = self.get_queryset()

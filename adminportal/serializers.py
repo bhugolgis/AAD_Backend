@@ -52,6 +52,43 @@ class DeleteUserSerializer(serializers.ModelSerializer):
 		
 
 class CustomUserSerializer(serializers.ModelSerializer):
+	section = serializers.SerializerMethodField()
+	ward = serializers.SerializerMethodField()
+	health_Post = serializers.SerializerMethodField()
+	# area = serializers.SerializerMethodField()
+	dispensary = serializers.SerializerMethodField()
 	class Meta:
 		model = CustomUser
-		fields = '__all__'
+		fields = ("name" , "username" ,"emailId" , "phoneNumber" , 
+			"section" , "ward" , "health_Post" , "area" , "dispensary")
+		
+
+	def get_ward(self , data):
+		try:
+			Ward_Name = data.section.healthPost.ward.wardName
+		except:
+			Ward_Name = ''
+		return Ward_Name
+	
+	def get_section(self , data):
+		try:
+			sectionName = data.section.sectionName
+		except:
+			sectionName = ''
+		return sectionName
+	
+	def get_health_Post(self , data):
+		try:
+			healthPostName = data.section.healthPost.healthPostName
+		except:
+			healthPostName = ''
+		return healthPostName
+	
+	def get_dispensary(self , data):
+		try:
+			dispensaryName = data.dispensary.dispensaryName
+		except:
+			dispensaryName = ''
+		return dispensaryName
+	
+
