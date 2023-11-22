@@ -57,12 +57,16 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	health_Post = serializers.SerializerMethodField()
 	# area = serializers.SerializerMethodField()
 	dispensary = serializers.SerializerMethodField()
+	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 	class Meta:
 		model = CustomUser
 		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
-			"section" , "ward" , "health_Post" , "area" , "dispensary")
+			"section" , "ward" , "health_Post" , "area" , "dispensary" , "group")
 		
-
+	def validate(self, attrs):
+		group = attrs.pop("group")
+		return attrs 
+	
 	def get_ward(self , data):
 		try:
 			Ward_Name = data.section.healthPost.ward.wardName
