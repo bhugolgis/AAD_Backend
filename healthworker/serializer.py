@@ -12,7 +12,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
-                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' , 'created_date' )
+                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' )
     
 
     def validate(self, data):
@@ -38,7 +38,7 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
-                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV',
+                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV', 'cbacRequired',
                   'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' )
 
 
@@ -121,7 +121,7 @@ class GetCitizenListSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead','ASHA_CHV' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
-                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
+                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'cbacRequired',
                   'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' )
 
 

@@ -156,7 +156,7 @@ class familyMembers(models.Model):
     isSampleCollected = models.BooleanField(default=False)
     isLabTestReportGenerated = models.BooleanField(default=False)
     generalStatus = models.CharField(max_length=100 , default = 'Survey Completed' )
-
+    cbacRequired = models.BooleanField()
  
 class PatientPathlab(models.Model): 
     

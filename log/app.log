@@ -28,3 +28,5 @@ Traceback (most recent call last):
 AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
 Not Found: /media/consent_audios/audio.mp3
 [33mHTTP GET /media/consent_audios/audio.mp3 404 [0.04, 127.0.0.1:50761][0m
+Unauthorized: /abdm/api/v1/account/getCard
+[31;1mHTTP GET /abdm/api/v1/account/getCard 401 [0.25, 127.0.0.1:53567][0m
