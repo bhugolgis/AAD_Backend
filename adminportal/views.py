@@ -29,7 +29,6 @@ class UserCountsAPI(APIView):
             'ANM_count' : ANM_count
         } , status = 200)
         
-
 class InsertUsers(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserSerializer
@@ -139,8 +138,6 @@ class AdminChangePasswordView(generics.UpdateAPIView):
             }
             return Response(response)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 class userListAPI(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
