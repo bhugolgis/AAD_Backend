@@ -13,7 +13,7 @@ def get_group_choice():
 	"""
 	group_names = list(Group.objects.values_list("name",flat=True))
 	# print(group_names.remove('admin'))
-	group_names.remove("admin")
+	# group_names.remove("admin")
 	group_names.remove("supervisor")
 
 	return tuple((i,i) for i in group_names)
@@ -59,7 +59,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	dispensary = serializers.SerializerMethodField()
 	class Meta:
 		model = CustomUser
-		fields = ("name" , "username" ,"emailId" , "phoneNumber" , 
+		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
 			"section" , "ward" , "health_Post" , "area" , "dispensary")
 		
 

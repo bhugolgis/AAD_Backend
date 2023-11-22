@@ -113,15 +113,15 @@ class AdminChangePasswordView(generics.UpdateAPIView):
     # permission_classes = (IsAuthenticated)
     def get_object(self, queryset=None):
         id = self.kwargs.get('id')
-        obj = CustomUser.objects.get(id = id)
+        try:
+            obj = CustomUser.objects.get(id = id)
+        except:
+            return Response({'status': 'error',
+                'message': 'user details not found'
+            }, status= status.HTTP_400_BAD_REQUEST)
         return obj
 
     def update(self , request, *args, **kwargs):
-        # try:
-        #     obj = CustomUser.objects.get(id = id)
-        # except:
-        #     return Response({'status':'error',
-        #                      'message' : 'user id not found'}, status=status.HTTP_400_BAD_REQUEST)
         self.object = self.get_object()
         serializer = self.get_serializer(data=request.data)
 
