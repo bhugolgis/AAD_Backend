@@ -30,7 +30,7 @@ def AddTestReport():
     print("add test report running")
     #Check for FamilyMember LabTest Added
     checkLabTestAdded = PatientPathlab.objects.filter(patientFamilyMember__isLabTestAdded = True,
-                                                    #   patientFamilyMember__isSampleCollected =True,
+                                                      patientFamilyMember__isSampleCollected =True,
                                                       patientFamilyMember__isLabTestReportGenerated = False)
     logger.warning(checkLabTestAdded)
     for labTest in checkLabTestAdded:
