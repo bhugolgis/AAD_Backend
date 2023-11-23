@@ -56,10 +56,12 @@ class InsertUsers(generics.GenericAPIView):
                     "data": data,
                 })
             else:
+                key, value = list(serializer.errors.items())[0]
+                error_message = value[0]
                 return Response({
                     "status": "error",
                     "message": "Validation error",
-                    "errors": serializer.errors,
+                    "errors": error_message,
                 }, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as ex:
@@ -163,9 +165,7 @@ class userListAPI(generics.ListAPIView):
                 Q(phoneNumber__icontains=search_terms) |
                 Q(ward__wardName__icontains=search_terms) |
                 Q(health_Post__healthPostName__icontains=search_terms) |
-                Q(section__healthPost__healthPostName__icontains=search_terms)
-                
-
+                Q(section__healthPost__healthPostName__icontains=search_terms)  
             )
 
         return queryset
