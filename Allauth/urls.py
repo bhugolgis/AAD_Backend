@@ -10,6 +10,7 @@ urlpatterns = [
         path('AddHealthPostAPI', AddHealthPostAPI.as_view(), name='AddHealthPostAPI'),
         path('GetCHV_ASHA_list/<int:section>', GetCHV_ASHA_list.as_view(), name='AddHealthPostAPI'),
         path('AddsectionAPI', AddsectionAPI.as_view(), name='AddsectionAPI'),
+        path('AddDispensaryAPI', AddDispensaryAPI.as_view(), name='AddDispensaryAPI'),
         path('AddAreaAPI', AddAreaAPI.as_view(), name='AddAreaAPI'),
         # path('InsertUsers', InsertUsers.as_view(), name='knox_logout'),
         path('login', LoginView.as_view(), name='login'),

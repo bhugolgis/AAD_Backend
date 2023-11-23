@@ -923,6 +923,24 @@ class AddWardAPI(generics.GenericAPIView):
                 'message': serializer.errors,
                 'status': 'error' ,
             } , status=400)
+        
+
+class AddDispensaryAPI(generics.GenericAPIView):
+    serializer_class = AddDispensarySerializer
+    parser_classes = [MultiPartParser]
+    def post(self , request):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'message': 'Saved successfully',
+                'status': 'success',
+            } ,status=201)
+        else:
+            return Response({
+                'message': serializer.errors,
+                'status': 'error' ,
+            } , status=400)
 
 class AddHealthPostAPI(generics.GenericAPIView):
     serializer_class = AddHealthPostSerializer

@@ -474,3 +474,8 @@ class UpdateUserDetailsSerializer(serializers.ModelSerializer):
 		fields = ("name" , "username" , "emailId" , "phoneNumber" , "supervisor" , 
 			"section" , "ward" , "health_Post" , "area" , "dispensary"  )
 		
+
+class AddDispensarySerializer(serializers.ModelSerializer):
+	class Meta:
+		model = dispensary
+		fields = ("ward", 	"dispensaryName")
