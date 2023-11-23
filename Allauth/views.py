@@ -149,6 +149,14 @@ class GetSectionListAPI(generics.ListAPIView):
     search_fields = ("healthPost__id", "sectionName")
 
 
+class GetDispensaryListAPI(generics.ListAPIView):
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
+    serializer_class = getDispensarySerializer
+    queryset = dispensary.objects.all()
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ("ward__wardName", "dispensaryName")
+
+
 
 class InsertAmoAPI(generics.GenericAPIView):
     serializer_class = AMoRegisterSerializer

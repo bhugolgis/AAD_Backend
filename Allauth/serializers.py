@@ -479,3 +479,10 @@ class AddDispensarySerializer(serializers.ModelSerializer):
 	class Meta:
 		model = dispensary
 		fields = ("ward", 	"dispensaryName")
+
+
+
+class getDispensarySerializer(serializers.ModelSerializer):
+	class Meta:
+		model = dispensary
+		fields = ("id","ward", 	"dispensaryName")
