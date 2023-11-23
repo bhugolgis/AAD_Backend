@@ -71,17 +71,17 @@ def AddTestReport():
         }
         # Send a POST request to the URL to get the PDF file
         response = requests.post(url1, headers=headers, data=payload)
-        # responseJson = requests.post(url2, headers=jsonheaders, data=post_params)
+        responseJson = requests.post(url2, headers=jsonheaders, data=post_params)
         logger.warning(response.content) 
         # logger.warning(responseJson.content)
-        if response.status_code == 200:
+        if response.status_code == 200 and responseJson.status_code == 200:
             # Specify the folder where you want to save the PDF file temporarily
             temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')
             logger.warning(temp_folder)
             # os.makedirs(temp_folder, exist_ok=True)
 
             # Extract the file name from the URL
-            file_name =str(labTest.patientFamilyMember.id)+str(labTest.patientID) + '.pdf'
+            file_name =str(labTest.patientFamilyMember.name.strip())+str(labTest.patientID) + '.pdf'
 
             # Save the PDF file temporarily
             temp_file_path = os.path.join(temp_folder, file_name)
@@ -95,7 +95,7 @@ def AddTestReport():
             logger.warning(temp_file_path)
             # logger.warning(pdfResponse.content)
             # Create a PatientPathLabReports instance and save the file in the model's FileField
-            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id ,pdfResult= temp_file_path )
+            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id ,pdfResult= temp_file_path , jsonResult = json.loads(responseJson.content)  )
             pdf_file_instance.save()
 
             # Clean up: remove the temporary file
