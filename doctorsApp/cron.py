@@ -4,6 +4,7 @@ from database.models import *
 import re
 import logging
 from datetime import datetime
+import json
 logger = logging.getLogger(__name__)
 
 def getPdfUrl(response_string):
@@ -64,28 +65,30 @@ def AddTestReport():
             'BookingVisitId': booking_visit_id,
             'patientId': patient_id,
         }
-
+        jsonheaders = {
+        'Content-Type': 'application/json'
+        }
         # Send a POST request to the URL to get the PDF file
         response = requests.post(url1, headers=headers, data=payload)
-        responseJson = requests.post(url2, data=post_params)
+        responseJson = requests.post(url2, headers= jsonheaders , data=post_params)
             
         if response.status_code == 200 and responseJson.status_code == 200:
             # Specify the folder where you want to save the PDF file temporarily
-            temp_folder = os.path.join('media', 'patientPathLabResults')
-            os.makedirs(temp_folder, exist_ok=True)
+            # temp_folder = os.path.join('media', 'patientPathLabResults')
+            # os.makedirs(temp_folder, exist_ok=True)
 
-            # Extract the file name from the URL
-            file_name = str(labTest.patientFamilyMember.name)+str(labTest.patientFamilyMember.patientID)
+            # # Extract the file name from the URL
+            # file_name = str(labTest.patientFamilyMember.name)+str(labTest.patientFamilyMember.patientID)
 
-            # Save the PDF file temporarily
-            temp_file_path = os.path.join(temp_folder, file_name)
+            # # Save the PDF file temporarily
+            # temp_file_path = os.path.join(temp_folder, file_name)
             pdfurl  = getPdfUrl(response.text)
-            pdfResponse = requests.get(pdfurl)
-            with open(temp_file_path, 'wb') as temp_pdf_file:
-                temp_pdf_file.write(pdfResponse.content)
+            # pdfResponse = requests.get(pdfurl)
+            # with open(temp_file_path, 'wb') as temp_pdf_file:
+            #     temp_pdf_file.write(pdfResponse.content)
 
             # Create a PatientPathLabReports instance and save the file in the model's FileField
-            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id ,pdfResult=temp_file_path,jsonResult=responseJson)
+            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id , pdfUrl =pdfurl ,jsonResult=json.dumps(responseJson.content))
             pdf_file_instance.save()
 
             # Clean up: remove the temporary file
