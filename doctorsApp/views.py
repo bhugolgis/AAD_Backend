@@ -453,6 +453,7 @@ def labTestsList(request):
 
 
 class LIMSBookPatientAPI(generics.GenericAPIView):
+
     serializer_class = BookPatientSerializer
     # parser_classes = [MultiPartParser]
     permission_classes = [IsAuthenticated ,IsMO]
@@ -533,3 +534,6 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             error_message = value[0]
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
+        
+
+# class GetPaientresult():

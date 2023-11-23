@@ -5,6 +5,7 @@ import re
 import logging
 from datetime import datetime
 import json
+from ArogyaAplyaDari.settings import MEDIA_ROOT
 logger = logging.getLogger(__name__)
 
 def getPdfUrl(response_string):
@@ -30,8 +31,8 @@ def AddTestReport():
     #Check for FamilyMember LabTest Added
     checkLabTestAdded = PatientPathlab.objects.filter(patientFamilyMember__isLabTestAdded = True,
                                                       patientFamilyMember__isSampleCollected =True,
-                                                      patientFamilyMember__isLabTestReportGenerated = False)
-
+                                                      patientFamilyMember__isLabTestReportGenerated = True)
+    logger.warning(checkLabTestAdded)
     for labTest in checkLabTestAdded:
         # if checkLabTestAdded.exists():
         url1 ="http://ilis.krsnaadiagnostics.com/services/KDL_LIS_Report_APPService.asmx"
@@ -66,31 +67,36 @@ def AddTestReport():
             'patientId': patient_id,
         }
         jsonheaders = {
-        'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
         # Send a POST request to the URL to get the PDF file
         response = requests.post(url1, headers=headers, data=payload)
-        responseJson = requests.post(url2, headers= jsonheaders , data=post_params)
-            
-        if response.status_code == 200 and responseJson.status_code == 200:
+        # responseJson = requests.post(url2, headers=jsonheaders, data=post_params)
+        logger.warning(response.content) 
+        # logger.warning(responseJson.content)
+        if response.status_code == 200:
             # Specify the folder where you want to save the PDF file temporarily
-            # temp_folder = os.path.join('media', 'patientPathLabResults')
+            temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')
+            logger.warning(temp_folder)
             # os.makedirs(temp_folder, exist_ok=True)
 
-            # # Extract the file name from the URL
-            # file_name = str(labTest.patientFamilyMember.name)+str(labTest.patientFamilyMember.patientID)
+            # Extract the file name from the URL
+            file_name =str(labTest.patientFamilyMember.id)+str(labTest.patientID) + '.pdf'
 
-            # # Save the PDF file temporarily
-            # temp_file_path = os.path.join(temp_folder, file_name)
+            # Save the PDF file temporarily
+            temp_file_path = os.path.join(temp_folder, file_name)
+            
+            logger.warning(temp_file_path)
             pdfurl  = getPdfUrl(response.text)
-            # pdfResponse = requests.get(pdfurl)
-            # with open(temp_file_path, 'wb') as temp_pdf_file:
-            #     temp_pdf_file.write(pdfResponse.content)
-
+            pdfResponse = requests.get(pdfurl)
+            with open(temp_file_path, 'wb') as temp_pdf_file:
+                temp_pdf_file.write(pdfResponse.content)
+                
+            logger.warning(temp_file_path)
+            # logger.warning(pdfResponse.content)
             # Create a PatientPathLabReports instance and save the file in the model's FileField
-            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id , pdfUrl =pdfurl ,jsonResult=json.dumps(responseJson.content))
+            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id ,pdfResult= temp_file_path )
             pdf_file_instance.save()
-            updateLabTest = familyMembers.objects.filter(id=labTest.patientFamilyMember_id).update(isLabTestReportGenerated=True)
 
             # Clean up: remove the temporary file
             # os.remove(temp_file_path)
