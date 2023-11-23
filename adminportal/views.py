@@ -60,8 +60,8 @@ class InsertUsers(generics.GenericAPIView):
                 error_message = value[0]
                 return Response({
                     "status": "error",
-                    "message": "Validation error",
-                    "errors": error_message,
+                    "message": error_message,
+                  
                 }, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as ex:
