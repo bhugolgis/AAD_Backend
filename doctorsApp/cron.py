@@ -97,6 +97,7 @@ def AddTestReport():
             # Create a PatientPathLabReports instance and save the file in the model's FileField
             pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id ,pdfResult= temp_file_path , jsonResult = json.loads(responseJson.content)  )
             pdf_file_instance.save()
+            updateLabTest = familyMembers.objects.filter(id=labTest.patientFamilyMember_id).update(isLabTestReportGenerated=True)
 
             # Clean up: remove the temporary file
             # os.remove(temp_file_path)
