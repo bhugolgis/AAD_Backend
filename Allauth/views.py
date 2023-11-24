@@ -1041,10 +1041,11 @@ class LoginView(generics.GenericAPIView):
                             'name' : user_data.name,         
                             'username': user_data.username,
                             'phoneNumber' : user_data.phoneNumber,
+                            'section_id' : user_data.section_id,
                             'ward' : user_data.section.healthPost.ward.wardName ,
                             'healthPostName' : user_data.section.healthPost.healthPostName,
                             'healthPostID' : user_data.section.healthPost.id,
-                            'ASHA/CHV_list' : chv_serializer.data, 
+                            # 'ASHA/CHV_list' : chv_serializer.data, 
                             'Group': group
                         }, status=200)                 
                     elif group == "phlebotomist":
