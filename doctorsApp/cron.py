@@ -6,6 +6,7 @@ import logging
 from datetime import datetime
 import json
 from ArogyaAplyaDari.settings import MEDIA_ROOT
+from pathlib import Path
 logger = logging.getLogger(__name__)
 
 def getPdfUrl(response_string):
@@ -93,9 +94,12 @@ def AddTestReport():
                 temp_pdf_file.write(pdfResponse.content)
                 
             logger.warning(temp_file_path)
+            path = Path(temp_file_path)
+            parts = path.parts[-2:]
+            p2 = Path(*parts)
             # logger.warning(pdfResponse.content)
             # Create a PatientPathLabReports instance and save the file in the model's FileField
-            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id ,pdfResult= temp_file_path , jsonResult = json.loads(responseJson.content)  )
+            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id ,pdfResult= p2 , jsonResult = json.loads(responseJson.content)  )
             pdf_file_instance.save()
             updateLabTest = familyMembers.objects.filter(id=labTest.patientFamilyMember_id).update(isLabTestReportGenerated=True)
 
