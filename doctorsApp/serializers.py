@@ -129,7 +129,10 @@ class ListTertiaryConsultancyPatientsSerializer(serializers.ModelSerializer):
 
 
 
-
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientPathLabReports
+        fields = ('pdfResult' ,)
 
 
 class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
@@ -139,24 +142,29 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     # secondaryConsultancy = SecondaryConsultancySerializer(many=True)
     # tertiaryConsultancy = TertiaryConsultancySerializer(many=True, read_only=True)
     # area = serializers.SerializerMethodField()
+    # report = serializers.CharField(source='patientFamilyMember.patientPathLabReports.pdfResult' )
     report = serializers.SerializerMethodField()
 
     class Meta:
         model = familyMembers
         fields = ('id','memberId','name','gender','age','mobileNo','familyHead','familySurveyor','area','aadharCard','abhaId','pulse','bloodPressure','weight',
         'height','BMI','Questionnaire','bloodCollectionLocation','questionsConsent','aadharAndAbhaConsent','demandLetter','bloodConsent','cbacScore',
-        'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated' , 'generalStatus' , 'report')
+        'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated' , 'generalStatus' , 
+        'report'
+        )
 
 
         depth = 1
 
     def get_report(self , data):
-        print(data.isLabTestReportGenerated)
+        print(data)
         try:
             if data.isLabTestReportGenerated == True:
-                pdf_url = data.patientFamilyMember.get().patientPathLabReports.get().pdfResult
+                pdf_url = str(data.patientFamilyMember.get().patientPathLabReports.get().pdfResult)
+          
         except:
             pdf_url = None
+      
         return pdf_url
 
         
