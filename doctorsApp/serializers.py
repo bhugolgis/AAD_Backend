@@ -157,13 +157,15 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
         depth = 1
 
     def get_report(self , data):
-        print(data)
-        try:
-            if data.isLabTestReportGenerated == True:
+        if data.isLabTestReportGenerated == True:
+            try:
+                
                 pdf_url = str(data.patientFamilyMember.get().patientPathLabReports.get().pdfResult)
-          
-        except:
-            pdf_url = None
+            
+            except:
+                pdf_url = ''
+        else:
+            pdf_url = ''
       
         return pdf_url
 
