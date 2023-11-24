@@ -152,11 +152,19 @@ class GetSectionListAPI(generics.ListAPIView):
 class GetDispensaryListAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
     serializer_class = getDispensarySerializer
-    queryset = dispensary.objects.all()
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ("ward__wardName", "dispensaryName")
+    # queryset = dispensary.objects.filter()
+    model = serializer_class.Meta.model
+    # filter_backends = (filters.SearchFilter,)
+    # search_fields = ("ward__wardName", "dispensaryName" )
 
+    def get_queryset(self):
+        """
+        The function returns a queryset of all objects ordered by their created date in descending order.
+        """
+        id = self.kwargs.get('id')
+        queryset = self.model.objects.filter(ward__id = id)
 
+        return queryset
 
 class InsertAmoAPI(generics.GenericAPIView):
     serializer_class = AMoRegisterSerializer

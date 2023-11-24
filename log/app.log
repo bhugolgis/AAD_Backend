@@ -106,3 +106,12 @@ Traceback (most recent call last):
     Ward_Name = data.dispensary.ward.wardName
 AttributeError: 'NoneType' object has no attribute 'ward'
 [35;1mHTTP GET /adminportal/api/GetuserListAPI/mo 500 [0.88, 127.0.0.1:52319][0m
+Unauthorized: /allauth/api/GetDispensaryListAPI
+[31;1mHTTP GET /allauth/api/GetDispensaryListAPI 401 [0.01, 127.0.0.1:52832][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
