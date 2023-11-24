@@ -317,3 +317,54 @@ Traceback (most recent call last):
 django.core.exceptions.SuspiciousFileOperation: The joined path (D:\home\bgisadmin\AAD_backend\AAD_Backend\media\patientPathLabResults\Sanjay Guptae1af10a2-773d-4588-93ed-c36a5bc71059.pdf) is located outside of the base path component (D:\Jafar\AAD\media)
 Bad Request: /doctor/api/ViewFamilyDetails/181/
 [31;1mHTTP GET /doctor/api/ViewFamilyDetails/181/ 400 [0.24, 127.0.0.1:54570][0m
+The joined path (D:\home\bgisadmin\AAD_backend\AAD_Backend\media\patientPathLabResults\Sanjay Guptae1af10a2-773d-4588-93ed-c36a5bc71059.pdf) is located outside of the base path component (D:\Jafar\AAD\media)
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\renderers.py", line 99, in render
+    ret = json.dumps(
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\utils\json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\utils\encoders.py", line 66, in default
+    return tuple(item for item in obj)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\utils\encoders.py", line 66, in <genexpr>
+    return tuple(item for item in obj)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\files\base.py", line 78, in __iter__
+    for chunk in self.chunks():
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\files\base.py", line 55, in chunks
+    self.seek(0)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\files\utils.py", line 46, in <lambda>
+    seek = property(lambda self: self.file.seek)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\fields\files.py", line 48, in _get_file
+    self._file = self.storage.open(self.name, "rb")
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\files\storage\base.py", line 22, in open
+    return self._open(name, mode)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\files\storage\filesystem.py", line 68, in _open
+    return File(open(self.path(name), mode))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\files\storage\filesystem.py", line 179, in path
+    return safe_join(self.location, name)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\_os.py", line 31, in safe_join
+    raise SuspiciousFileOperation(
+django.core.exceptions.SuspiciousFileOperation: The joined path (D:\home\bgisadmin\AAD_backend\AAD_Backend\media\patientPathLabResults\Sanjay Guptae1af10a2-773d-4588-93ed-c36a5bc71059.pdf) is located outside of the base path component (D:\Jafar\AAD\media)
+Bad Request: /doctor/api/ViewFamilyDetails/181/
+[31;1mHTTP GET /doctor/api/ViewFamilyDetails/181/ 400 [0.19, 127.0.0.1:54774][0m

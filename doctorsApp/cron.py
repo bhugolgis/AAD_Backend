@@ -81,7 +81,7 @@ def AddTestReport():
             # os.makedirs(temp_folder, exist_ok=True)
 
             # Extract the file name from the URL
-            file_name =str(labTest.patientFamilyMember.name.strip())+str(labTest.patientID) + '.pdf'
+            file_name =str(labTest.patientFamilyMember.name.replace(" ",""))+str(labTest.patientID) + '.pdf'
 
             # Save the PDF file temporarily
             temp_file_path = os.path.join(temp_folder, file_name)
