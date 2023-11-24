@@ -71,7 +71,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
 		try:
 			Ward_Name = data.section.healthPost.ward.wardName
 		except:
-			Ward_Name = ''
+			try:
+				Ward_Name = data.dispensary.ward.wardName
+			except:
+				Ward_Name = ""
 		return Ward_Name
 	
 	def get_section(self , data):
@@ -79,6 +82,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 			sectionName = data.section.sectionName
 		except:
 			sectionName = ''
+
 		return sectionName
 	
 	def get_health_Post(self , data):
@@ -94,5 +98,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 		except:
 			dispensaryName = ''
 		return dispensaryName
+	
+
 	
 

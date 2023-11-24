@@ -81,11 +81,12 @@ class UpdateUserDetails(generics.GenericAPIView):
         except:
             return Response({'status': 'error',
                             'message': 'deatils not found'}, status=400)
+        
         serializer = self.get_serializer(instance , data = request.data , partial = True )
         if serializer.is_valid():
             serializer.save()
             return Response({"status" : "success" , 
-                    "message" : "User details updated successfully"
+                            "message" : "User details updated successfully"
                     },status=status.HTTP_201_CREATED)
         else:
             key, value = list(serializer.errors.items())[0]
