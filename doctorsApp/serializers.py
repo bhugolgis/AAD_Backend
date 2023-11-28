@@ -220,7 +220,7 @@ class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = familyHeadDetails
-        fields = ('id','familyId','name','totalFamilyMembers','area', 'address','mobileNo','HealthPostName','created_datetime', 'pendingMembers', 'partialSubmit')
+        fields = ('id','familyId','name','totalFamilyMembers','area', 'address','mobileNo','HealthPostName', 'pendingMembers', 'partialSubmit')
         depth = 1
 
 
