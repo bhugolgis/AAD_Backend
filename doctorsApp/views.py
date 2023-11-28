@@ -198,7 +198,6 @@ def FamilyHeadList(request):
         'data': paginated_data,  # Include serialized data for the current page
     }
 
-    # Return the response
     return Response(data)
 
 
@@ -232,7 +231,7 @@ def ViewFamilyDetails(request, pk):
             required=True
         ),
     ]
-)
+) 
 @permission_classes((IsAuthenticated,))
 @api_view(['POST'])
 def medicalOfficerAdviceView(request, patients_id):

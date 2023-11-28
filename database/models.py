@@ -110,7 +110,6 @@ class familyHeadDetails(models.Model):
     totalFamilyMembers = models.IntegerField(default=0)
     pendingMembers = models.IntegerField(default=0)
     location = models.PointField(blank= True , null= True )
-    created_datetime = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(CustomUser,related_name="surveyDoneBy", on_delete=models.CASCADE,null=True,blank=True)
     ASHA_CHV = models.ForeignKey(CustomUser , related_name="ASHA_CHV_family_head",on_delete=models.SET_NULL , blank = True , null = True)
     partialSubmit = models.BooleanField(default= False)
