@@ -1,0 +1,30 @@
+name: Docker Image CI/CD
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: dokcer login
+      env:
+        DOCKER_USER : ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD : ${{secrets.DOCKER_PASSWORD}}
+      run:
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: Build the Docker image
+      run: docker build --tag krishigram:latest .
+      
+    - name : tag the docker images to latest
+      run : docker tag krishigram jafarkhan0/krishi_gram
+      
+    - name : push the docker image to docker hub 
+      run: docker push jafarkhan0/krishi_gram
