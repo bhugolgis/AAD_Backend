@@ -16,6 +16,7 @@ admin.site.register(familyMembers)
 admin.site.register(PatientPathlab)
 admin.site.register(LabTests)
 admin.site.register(PatientPathLabReports)
+admin.site.register(refereloptions)
 
 
 

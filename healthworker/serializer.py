@@ -12,7 +12,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
-                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' )
+                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' , 'referels' )
     
 
     def validate(self, data):
@@ -26,7 +26,10 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('mobileNo can not be empty !!')
         return data
 
-
+class getReferelOptionListSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = refereloptions
+        fields = ('id', 'choice',)
 
 class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -96,12 +99,27 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
         familyMembers_details = data.pop('familyMembers_details')
         data.pop('latitude' , None)
         data.pop('longitude', None)
+        # print(familyMembers_details[0]['referels'])
+        # for reffer in familyMembers_details:
+        #     print(reffer['referels'])
+            # for ref in reffer:
+            #     print(ref)
+               
         head = familyHeadDetails.objects.create(**data)
         member_id_counter = 1
         for family in familyMembers_details:
+            # print(family['referels'])
+            reffer = family.pop('referels')
+            print(reffer , 'reffer')
             member_id = str(head.familyId) + '-' + str(member_id_counter).zfill(2)
             member_id_counter += 1
-            familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
+            instance = familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
+            print(instance)
+            instance.referels.add(*reffer)
+            # for i in instance:
+            #     i.referels.set(family['referels'])
+
+            
         return head
     
 

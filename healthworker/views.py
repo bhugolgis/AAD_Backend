@@ -119,7 +119,7 @@ class PostSurveyForm(generics.GenericAPIView):
                     error_message = str(key) + " ," +str(value[0])
             print(serializer.errors)
             print(error_message)
-            return Response({'status': 'error',
+            return Response({'status': 'error', 
                             'message' :error_message} , status = status.HTTP_400_BAD_REQUEST)
 
 
@@ -295,6 +295,13 @@ class GetCitizenList(generics.ListAPIView):
             serializer = GetFamilyHeadListSerialzier(queryset , many = True ).data
             return Response({ serializer } , status= status.HTTP_200_OK)
         
+
+class getReferelOptionList(generics.ListAPIView):
+    serializer_class = getReferelOptionListSerialzier
+    model = serializer_class.Meta.model
+    queryset = model.objects.all()
+
+   
 
 class GetFamilyList(generics.ListAPIView):
     serializer_class = GetFamilyHeadListSerialzier

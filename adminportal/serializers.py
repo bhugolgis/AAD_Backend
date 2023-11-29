@@ -57,15 +57,24 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	health_Post = serializers.SerializerMethodField()
 	# area = serializers.SerializerMethodField()
 	dispensary = serializers.SerializerMethodField()
+
+	ward_id = serializers.SerializerMethodField()
+	section_id = serializers.SerializerMethodField()
+	health_Post_id = serializers.SerializerMethodField()
+	dispensary_id = serializers.SerializerMethodField()
+
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 	class Meta:
 		model = CustomUser
 		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
-			"section" , "ward" , "health_Post" , "area" , "dispensary" , "group")
+			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","area" , "dispensary" ,"dispensary_id", "group")
 		
 	def validate(self, attrs):
 		group = attrs.pop("group")
-		return attrs 
+		return attrs
+
+	
+		
 	
 	def get_ward(self , data):
 		try:
@@ -77,6 +86,16 @@ class CustomUserSerializer(serializers.ModelSerializer):
 				Ward_Name = ""
 		return Ward_Name
 	
+	def get_ward_id(self , data):
+		try:
+			Ward_id = data.section.healthPost.ward.id
+		except:
+			try:
+				Ward_id = data.dispensary.ward.id
+			except:
+				Ward_id = ""
+		return Ward_id
+	
 	def get_section(self , data):
 		try:
 			sectionName = data.section.sectionName
@@ -85,6 +104,15 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 		return sectionName
 	
+	def get_section_id(self , data):
+		try:
+			section_id = data.section.id
+		except:
+			section_id = ''
+
+		return section_id
+	
+	
 	def get_health_Post(self , data):
 		try:
 			healthPostName = data.section.healthPost.healthPostName
@@ -92,9 +120,24 @@ class CustomUserSerializer(serializers.ModelSerializer):
 			healthPostName = ''
 		return healthPostName
 	
+	def get_health_Post_id(self , data):
+		try:
+			healthPost_id = data.section.healthPost.id
+		except:
+			healthPost_id = ''
+		return healthPost_id
+	
+	
 	def get_dispensary(self , data):
 		try:
 			dispensaryName = data.dispensary.dispensaryName
+		except:
+			dispensaryName = ''
+		return dispensaryName
+	
+	def get_dispensary_id(self , data):
+		try:
+			dispensaryName = data.dispensary.id
 		except:
 			dispensaryName = ''
 		return dispensaryName

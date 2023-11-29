@@ -95,7 +95,9 @@ class sendOtp(models.Model):
     createdDate = models.DateTimeField(auto_now_add=True)
     expireyDate = models.DateTimeField(blank=True,null=True)
 
-
+class refereloptions(models.Model):
+    choice = models.CharField(max_length=255 , blank = True, null=True)
+    createdDate = models.DateField(auto_now_add= True)
 
 class familyHeadDetails(models.Model):
 
@@ -156,7 +158,10 @@ class familyMembers(models.Model):
     isLabTestReportGenerated = models.BooleanField(default=False)
     generalStatus = models.CharField(max_length=100 , default = 'Survey Completed' )
     cbacRequired = models.BooleanField()
- 
+    referels = models.ManyToManyField(refereloptions , related_name="refereloptions_related" , blank = True )
+
+
+
 class PatientPathlab(models.Model): 
     
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
