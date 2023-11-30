@@ -6,6 +6,7 @@ from .serializers import *
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework import generics,permissions
+from django_filters.rest_framework import DjangoFilterBackend 
 from drf_yasg.utils import swagger_auto_schema
 from datetime import datetime
 from rest_framework.parsers import JSONParser,MultiPartParser,FileUploadParser,FormParser
@@ -124,8 +125,8 @@ class GethealthPostNameListAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = healthPostSerializer
     queryset = healthPost.objects.all()
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ("ward__id", "healthPostName")
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ("ward__id",)
 
 
 class GetHealthPostAreasAPI(generics.GenericAPIView):
@@ -144,8 +145,8 @@ class GetSectionListAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = sectionSerializer
     queryset = section.objects.all()
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ("healthPost__id", "sectionName")
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ("healthPost__id")
 
 
 

@@ -138,7 +138,7 @@ DATABASES = {
 #        'NAME':'Bkdb',
 #        'USER': 'postgres',
 #        'PASSWORD':'password',
-#     #    'HOST' : '10.202.100.7',
+#        'HOST' : '10.202.100.7',
 #        'HOST' : 'localhost',
 #        'PORT': '5432',
 #    }
