@@ -95,7 +95,9 @@ class sendOtp(models.Model):
     createdDate = models.DateTimeField(auto_now_add=True)
     expireyDate = models.DateTimeField(blank=True,null=True)
 
-
+class refereloptions(models.Model):
+    choice = models.CharField(max_length=255 , blank = True, null=True)
+    createdDate = models.DateField(auto_now_add= True)
 
 class familyHeadDetails(models.Model):
 
@@ -110,8 +112,8 @@ class familyHeadDetails(models.Model):
     totalFamilyMembers = models.IntegerField(default=0)
     pendingMembers = models.IntegerField(default=0)
     location = models.PointField(blank= True , null= True )
-    created_datetime = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(CustomUser,related_name="surveyDoneBy", on_delete=models.CASCADE,null=True,blank=True)
+    ASHA_CHV = models.ForeignKey(CustomUser , related_name="ASHA_CHV_family_head",on_delete=models.SET_NULL , blank = True , null = True)
     partialSubmit = models.BooleanField(default= False)
     created_date= models.DateTimeField(auto_now_add= True )
     isLabTestAdded = models.BooleanField(default=False)
@@ -134,6 +136,7 @@ class familyMembers(models.Model):
     mobileNo  = models.BigIntegerField(blank = True , null = True)
     familyHead = models.ForeignKey(familyHeadDetails,related_name="family_head_member",on_delete=models.CASCADE,null=True,blank=True)
     familySurveyor = models.ForeignKey(CustomUser,related_name="familysurveyor",on_delete=models.CASCADE,null=True,blank=True)
+    ASHA_CHV = models.ForeignKey(CustomUser , related_name="ASHA_CHV_family_Member",on_delete=models.SET_NULL , blank = True , null = True)
     area = models.ForeignKey(area , related_name="familymembers_area" , on_delete=models.CASCADE, blank = True , null = True  )
     aadharCard = models.BigIntegerField(blank = True , null = True)
     abhaId = models.CharField(max_length=100 , blank= True , null = True )
@@ -154,8 +157,11 @@ class familyMembers(models.Model):
     isSampleCollected = models.BooleanField(default=False)
     isLabTestReportGenerated = models.BooleanField(default=False)
     generalStatus = models.CharField(max_length=100 , default = 'Survey Completed' )
+    cbacRequired = models.BooleanField()
+    referels = models.ManyToManyField(refereloptions , related_name="refereloptions_related" , blank = True )
 
- 
+
+
 class PatientPathlab(models.Model): 
     
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
@@ -180,7 +186,8 @@ class PatientPathlab(models.Model):
 
 class PatientPathLabReports(models.Model):
     patientPathLab = models.ForeignKey(PatientPathlab , related_name="patientPathLabReports" , on_delete=models.CASCADE)
-    pdfResult = models.FileField(upload_to='patientPathLabResults'  , blank = True , null = True)
+    pdfResult = models.FileField(upload_to='patientPathLabResults'  , max_length=500 , blank = True , null = True)
+    pdfUrl = models.URLField(max_length= 500 , blank = True , null = True )
     jsonResult = models.JSONField(blank = True , null = True )
     created_at = models.DateTimeField(auto_now_add=True)
 

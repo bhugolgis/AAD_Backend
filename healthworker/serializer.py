@@ -10,9 +10,9 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     # familyHead = serializers.IntegerField(required = True ) 
     class Meta:
         model = familyMembers
-        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
+        fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
-                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' , 'created_date' )
+                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' , 'referels' )
     
 
     def validate(self, data):
@@ -26,7 +26,10 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('mobileNo can not be empty !!')
         return data
 
-
+class getReferelOptionListSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = refereloptions
+        fields = ('id', 'choice',)
 
 class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,7 +41,7 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
-                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
+                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV', 'cbacRequired',
                   'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' )
 
 
@@ -65,7 +68,7 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyHeadDetails
         fields = ( 'area','name' , 'mobileNo' , 'plotNo',
-                  'address' , 'pincode' ,'totalFamilyMembers' ,
+                  'address' , 'pincode' ,'totalFamilyMembers' , 'ASHA_CHV',
                  'latitude' , 'longitude'  , 'familyMembers_details' , 'partialSubmit')
         
     def validate(self, data):
@@ -96,12 +99,27 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
         familyMembers_details = data.pop('familyMembers_details')
         data.pop('latitude' , None)
         data.pop('longitude', None)
+        # print(familyMembers_details[0]['referels'])
+        # for reffer in familyMembers_details:
+        #     print(reffer['referels'])
+            # for ref in reffer:
+            #     print(ref)
+               
         head = familyHeadDetails.objects.create(**data)
         member_id_counter = 1
         for family in familyMembers_details:
+            # print(family['referels'])
+            reffer = family.pop('referels')
+            print(reffer , 'reffer')
             member_id = str(head.familyId) + '-' + str(member_id_counter).zfill(2)
             member_id_counter += 1
-            familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
+            instance = familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
+            print(instance)
+            instance.referels.add(*reffer)
+            # for i in instance:
+            #     i.referels.set(family['referels'])
+
+            
         return head
     
 
@@ -111,7 +129,7 @@ class GetFamilyHeadListSerialzier(serializers.ModelSerializer):
     class Meta:
         model = familyHeadDetails
         fields = ('id','familyId','name' , 'mobileNo' , 'plotNo',
-                  'address' ,  'pincode' ,'totalFamilyMembers' , 'pendingMembers' ,
+                  'address' ,  'pincode' ,'totalFamilyMembers' , 'pendingMembers' , 'ASHA_CHV',
                    'partialSubmit' , 'member')
       
 
@@ -120,8 +138,8 @@ class GetFamilyHeadListSerialzier(serializers.ModelSerializer):
 class GetCitizenListSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
-        fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
-                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,
+        fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead','ASHA_CHV' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
+                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'cbacRequired',
                   'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' )
 
 

@@ -129,7 +129,10 @@ class ListTertiaryConsultancyPatientsSerializer(serializers.ModelSerializer):
 
 
 
-
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientPathLabReports
+        fields = ('pdfResult' ,)
 
 
 class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
@@ -139,13 +142,34 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     # secondaryConsultancy = SecondaryConsultancySerializer(many=True)
     # tertiaryConsultancy = TertiaryConsultancySerializer(many=True, read_only=True)
     # area = serializers.SerializerMethodField()
+    # report = serializers.CharField(source='patientFamilyMember.patientPathLabReports.pdfResult' )
+    report = serializers.SerializerMethodField()
 
     class Meta:
         model = familyMembers
         fields = ('id','memberId','name','gender','age','mobileNo','familyHead','familySurveyor','area','aadharCard','abhaId','pulse','bloodPressure','weight',
         'height','BMI','Questionnaire','bloodCollectionLocation','questionsConsent','aadharAndAbhaConsent','demandLetter','bloodConsent','cbacScore',
-        'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated' , 'generalStatus')
+        'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated' , 'generalStatus' , 
+        'report'
+        )
+
+
         depth = 1
+
+    def get_report(self , data):
+        if data.isLabTestReportGenerated == True:
+            try:
+                
+                pdf_url = str(data.patientFamilyMember.get().patientPathLabReports.get().pdfResult)
+            
+            except:
+                pdf_url = ''
+        else:
+            pdf_url = ''
+      
+        return pdf_url
+
+        
 
     # def get_area(self , area):
     #     try:
@@ -196,7 +220,7 @@ class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = familyHeadDetails
-        fields = ('id','familyId','name','totalFamilyMembers','area', 'address','mobileNo','HealthPostName','created_datetime', 'pendingMembers', 'partialSubmit')
+        fields = ('id','familyId','name','totalFamilyMembers','area', 'address','mobileNo','HealthPostName', 'pendingMembers', 'partialSubmit' , 'created_date')
         depth = 1
 
 
@@ -223,4 +247,4 @@ class BookPatientSerializer(serializers.Serializer):
     MobileNumber= serializers.CharField(max_length=100 , required = False) 
     HisUniquePatientCode= serializers.CharField(max_length=100)
     HisHospitalRefNo= serializers.CharField(max_length=100)
-    Booking_TestDetails= serializers.JSONField(write_only=True , required = True)
+    Booking_TestDetails = serializers.JSONField(write_only=True , required = True)

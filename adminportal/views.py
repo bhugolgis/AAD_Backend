@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from rest_framework import filters
 from rest_framework.pagination import LimitOffsetPagination
 from Allauth.serializers import *
+from django.db.models import Q
 # Create your views here.
 
 
@@ -28,7 +29,6 @@ class UserCountsAPI(APIView):
             'ANM_count' : ANM_count
         } , status = 200)
         
-
 class InsertUsers(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserSerializer
@@ -56,10 +56,12 @@ class InsertUsers(generics.GenericAPIView):
                     "data": data,
                 })
             else:
+                key, value = list(serializer.errors.items())[0]
+                error_message = value[0]
                 return Response({
                     "status": "error",
-                    "message": "Validation error",
-                    "errors": serializer.errors,
+                    "message": error_message,
+                  
                 }, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as ex:
@@ -79,11 +81,12 @@ class UpdateUserDetails(generics.GenericAPIView):
         except:
             return Response({'status': 'error',
                             'message': 'deatils not found'}, status=400)
+        
         serializer = self.get_serializer(instance , data = request.data , partial = True )
         if serializer.is_valid():
             serializer.save()
             return Response({"status" : "success" , 
-                    "message" : "User details updated successfully"
+                            "message" : "User details updated successfully"
                     },status=status.HTTP_201_CREATED)
         else:
             key, value = list(serializer.errors.items())[0]
@@ -112,15 +115,15 @@ class AdminChangePasswordView(generics.UpdateAPIView):
     # permission_classes = (IsAuthenticated)
     def get_object(self, queryset=None):
         id = self.kwargs.get('id')
-        obj = CustomUser.objects.get(id = id)
+        try:
+            obj = CustomUser.objects.get(id = id)
+        except:
+            return Response({'status': 'error',
+                'message': 'user details not found'
+            }, status= status.HTTP_400_BAD_REQUEST)
         return obj
 
     def update(self , request, *args, **kwargs):
-        # try:
-        #     obj = CustomUser.objects.get(id = id)
-        # except:
-        #     return Response({'status':'error',
-        #                      'message' : 'user id not found'}, status=status.HTTP_400_BAD_REQUEST)
         self.object = self.get_object()
         serializer = self.get_serializer(data=request.data)
 
@@ -139,26 +142,35 @@ class AdminChangePasswordView(generics.UpdateAPIView):
             return Response(response)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 class userListAPI(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
     serializer_class = CustomUserSerializer
     model = serializer_class.Meta.model
     # permission_classes = (IsAuthenticated , IsAdmin)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ['name' , 'username' , 'phoneNumber' , 'ward__wardName' , 'health_Post__healthPostName' ]
+    # search_fields = ['name' , 'username' , 'phoneNumber' , 'section__healthPost__healthPostName' , 'section__healthPost__ward__wardName' ]
 
     def get_queryset(self):
         """
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
-
         group = self.kwargs.get('group')
-      
         queryset = self.model.objects.filter(groups__name = group)
+
+        search_terms = self.request.query_params.get('search', None)
+        if search_terms:
+            queryset = queryset.filter(
+                Q(section__healthPost__ward__wardName__icontains=search_terms)|
+                Q(name__icontains=search_terms) |
+                Q(username__icontains=search_terms) |
+                Q(phoneNumber__icontains=search_terms) |
+                Q(ward__wardName__icontains=search_terms) |
+                Q(health_Post__healthPostName__icontains=search_terms) |
+                Q(section__healthPost__healthPostName__icontains=search_terms)  
+            )
+
         return queryset
-    
+     
     def get(self, request, *args, **kwargs):
 
         queryset = self.get_queryset()

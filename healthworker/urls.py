@@ -18,6 +18,9 @@ urlpatterns = [
         path('veirfyaadharCard/<int:aadharCard>' , veirfyaadharCard.as_view() , name = 'aadharCard'),
         path('verifyabhaId/<str:abhaId>' , verifyabhaId.as_view() , name = 'aadharCard'),
         path('DumpExcelInsertxlsx' , DumpExcelInsertxlsx.as_view() , name = 'DumpExcelInsertxlsx'),
+        
+        
+        path('getReferelOptionList' , getReferelOptionList.as_view() , name = 'getReferelOptionList'),
 
 
 

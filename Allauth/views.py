@@ -23,7 +23,8 @@ from drf_extra_fields.fields import Base64ImageField
 from datetime import datetime, timedelta
 from django.db.models import Count
 from adminportal.serializers import *
-
+from adminportal.permissions import *
+from healthworker.permissions import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -115,14 +116,14 @@ class AddlabtestdeatilsAPI(generics.GenericAPIView):
 
 
 class GetWardListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
     serializer_class = WardSerialzier
     queryset = ward.objects.all()
     filter_backends = (filters.SearchFilter,)
     search_fields = ("wardName",)
 
 class GethealthPostNameListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
     serializer_class = healthPostSerializer
     queryset = healthPost.objects.all()
     filter_backends = (DjangoFilterBackend,)
@@ -131,7 +132,7 @@ class GethealthPostNameListAPI(generics.ListAPIView):
 
 class GetHealthPostAreasAPI(generics.GenericAPIView):
     serializer_class = AreaSerialzier
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
 
     def get(self, request ,id):
         data = area.objects.filter(healthPost__id= id )
@@ -142,13 +143,29 @@ class GetHealthPostAreasAPI(generics.GenericAPIView):
                 "data":serializer,} , status= 200)
     
 class GetSectionListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
     serializer_class = sectionSerializer
     queryset = section.objects.all()
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ("healthPost__id")
 
 
+class GetDispensaryListAPI(generics.ListAPIView):
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
+    serializer_class = getDispensarySerializer
+    # queryset = dispensary.objects.filter()
+    model = serializer_class.Meta.model
+    # filter_backends = (filters.SearchFilter,)
+    # search_fields = ("ward__wardName", "dispensaryName" )
+
+    def get_queryset(self):
+        """
+        The function returns a queryset of all objects ordered by their created date in descending order.
+        """
+        id = self.kwargs.get('id')
+        queryset = self.model.objects.filter(ward__id = id)
+
+        return queryset
 
 class InsertAmoAPI(generics.GenericAPIView):
     serializer_class = AMoRegisterSerializer
@@ -923,6 +940,24 @@ class AddWardAPI(generics.GenericAPIView):
                 'message': serializer.errors,
                 'status': 'error' ,
             } , status=400)
+        
+
+class AddDispensaryAPI(generics.GenericAPIView):
+    serializer_class = AddDispensarySerializer
+    parser_classes = [MultiPartParser]
+    def post(self , request):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'message': 'Saved successfully',
+                'status': 'success',
+            } ,status=201)
+        else:
+            return Response({
+                'message': serializer.errors,
+                'status': 'error' ,
+            } , status=400)
 
 class AddHealthPostAPI(generics.GenericAPIView):
     serializer_class = AddHealthPostSerializer
@@ -1007,10 +1042,11 @@ class LoginView(generics.GenericAPIView):
                             'name' : user_data.name,         
                             'username': user_data.username,
                             'phoneNumber' : user_data.phoneNumber,
+                            'section_id' : user_data.section_id,
                             'ward' : user_data.section.healthPost.ward.wardName ,
                             'healthPostName' : user_data.section.healthPost.healthPostName,
                             'healthPostID' : user_data.section.healthPost.id,
-                            'ASHA/CHV_list' : chv_serializer.data, 
+                            # 'ASHA/CHV_list' : chv_serializer.data, 
                             'Group': group
                         }, status=200)                 
                     elif group == "phlebotomist":

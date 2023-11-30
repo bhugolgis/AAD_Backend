@@ -36,7 +36,6 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 # docker run --name image_name -d -p 9006:9006 image_name:latest 
 # docker container ps
 
-
 # to push the image to the registry
 
 # docker tag claimassure jafarkhan0/claimassure_v1
