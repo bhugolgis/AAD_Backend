@@ -160,7 +160,7 @@ class familyMembers(models.Model):
     cbacRequired = models.BooleanField()
     referels = models.ManyToManyField(refereloptions , related_name="refereloptions_related" , blank = True )
     deniedBy = models.CharField(max_length=100 , blank = True , null = True)
-
+    vulnerable  = models.BooleanField(default=False)
 
 class PatientPathlab(models.Model): 
     

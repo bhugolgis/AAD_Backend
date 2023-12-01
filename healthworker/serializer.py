@@ -12,7 +12,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
-                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' , 'referels' , 'deniedBy')
+                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' , 'referels' , 'deniedBy' , 'vulnerable')
     
 
     def validate(self, data):
@@ -42,7 +42,7 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV', 'cbacRequired',
-                  'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' , 'deniedBy' )
+                  'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' , 'deniedBy' , 'vulnerable' )
 
 
     def validate(self, data):
@@ -130,7 +130,7 @@ class GetCitizenListSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead','ASHA_CHV' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'cbacRequired',
-                  'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' , 'deniedBy' )
+                  'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' , 'deniedBy' , 'vulnerable' )
 
 
 class DumpExcelSerializer(serializers.Serializer):
