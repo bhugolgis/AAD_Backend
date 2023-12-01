@@ -39,3 +39,279 @@ Traceback (most recent call last):
 AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
 Unauthorized: /allauth/api/GetSectionListAPI
 HTTP GET /allauth/api/GetSectionListAPI 401 [0.01, 127.0.0.1:55450]
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+Internal Server Error: /swagger/
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\views.py", line 96, in get
+    schema = generator.get_schema(request, self.public)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 276, in get_schema
+    paths, prefix = self.get_paths(endpoints, components, request, public)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 482, in get_paths
+    operation = self.get_operation(view, path, prefix, method, components, request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 524, in get_operation
+    operation = view_inspector.get_operation(operation_keys)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\view.py", line 33, in get_operation
+    query = self.get_query_parameters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\view.py", line 293, in get_query_parameters
+    natural_parameters = self.get_filter_parameters() + self.get_pagination_parameters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 409, in get_filter_parameters
+    fields += self.probe_inspectors(self.filter_inspectors, 'get_filter_parameters', filter_backend()) or []
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 110, in probe_inspectors
+    result = method(obj, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\query.py", line 42, in get_filter_parameters
+    return list(map(self.param_to_schema, filter_backend.get_schema_operation_parameters(self.view)))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\rest_framework\backends.py", line 146, in get_schema_operation_parameters
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\rest_framework\backends.py", line 51, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\filterset.py", line 62, in __new__
+    new_class.base_filters = new_class.get_filters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\filterset.py", line 349, in get_filters
+    raise TypeError(
+TypeError: 'Meta.fields' must not contain non-model field names: h, e, a, l, t, P, o, s, _, i, d
+[35;1mHTTP GET /swagger/?format=openapi 500 [0.24, 127.0.0.1:55722][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+Internal Server Error: /swagger/
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\views.py", line 96, in get
+    schema = generator.get_schema(request, self.public)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 276, in get_schema
+    paths, prefix = self.get_paths(endpoints, components, request, public)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 482, in get_paths
+    operation = self.get_operation(view, path, prefix, method, components, request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 524, in get_operation
+    operation = view_inspector.get_operation(operation_keys)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\view.py", line 33, in get_operation
+    query = self.get_query_parameters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\view.py", line 293, in get_query_parameters
+    natural_parameters = self.get_filter_parameters() + self.get_pagination_parameters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 409, in get_filter_parameters
+    fields += self.probe_inspectors(self.filter_inspectors, 'get_filter_parameters', filter_backend()) or []
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 110, in probe_inspectors
+    result = method(obj, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\query.py", line 42, in get_filter_parameters
+    return list(map(self.param_to_schema, filter_backend.get_schema_operation_parameters(self.view)))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\rest_framework\backends.py", line 146, in get_schema_operation_parameters
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\rest_framework\backends.py", line 51, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\filterset.py", line 62, in __new__
+    new_class.base_filters = new_class.get_filters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\filterset.py", line 349, in get_filters
+    raise TypeError(
+TypeError: 'Meta.fields' must not contain non-model field names: h, e, a, l, t, P, o, s, _, i, d
+[35;1mHTTP GET /swagger/?format=openapi 500 [0.12, 127.0.0.1:56049][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+Internal Server Error: /swagger/
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\views.py", line 96, in get
+    schema = generator.get_schema(request, self.public)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 276, in get_schema
+    paths, prefix = self.get_paths(endpoints, components, request, public)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 482, in get_paths
+    operation = self.get_operation(view, path, prefix, method, components, request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 524, in get_operation
+    operation = view_inspector.get_operation(operation_keys)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\view.py", line 33, in get_operation
+    query = self.get_query_parameters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\view.py", line 293, in get_query_parameters
+    natural_parameters = self.get_filter_parameters() + self.get_pagination_parameters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 409, in get_filter_parameters
+    fields += self.probe_inspectors(self.filter_inspectors, 'get_filter_parameters', filter_backend()) or []
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 110, in probe_inspectors
+    result = method(obj, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\query.py", line 42, in get_filter_parameters
+    return list(map(self.param_to_schema, filter_backend.get_schema_operation_parameters(self.view)))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\rest_framework\backends.py", line 146, in get_schema_operation_parameters
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\rest_framework\backends.py", line 51, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\filterset.py", line 62, in __new__
+    new_class.base_filters = new_class.get_filters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\filterset.py", line 349, in get_filters
+    raise TypeError(
+TypeError: 'Meta.fields' must not contain non-model field names: h, e, a, l, t, P, o, s, _, i, d
+[35;1mHTTP GET /swagger/?format=openapi 500 [0.30, 127.0.0.1:56049][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+Internal Server Error: /swagger/
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\views.py", line 96, in get
+    schema = generator.get_schema(request, self.public)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 276, in get_schema
+    paths, prefix = self.get_paths(endpoints, components, request, public)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 482, in get_paths
+    operation = self.get_operation(view, path, prefix, method, components, request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\generators.py", line 524, in get_operation
+    operation = view_inspector.get_operation(operation_keys)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\view.py", line 33, in get_operation
+    query = self.get_query_parameters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\view.py", line 293, in get_query_parameters
+    natural_parameters = self.get_filter_parameters() + self.get_pagination_parameters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 409, in get_filter_parameters
+    fields += self.probe_inspectors(self.filter_inspectors, 'get_filter_parameters', filter_backend()) or []
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 110, in probe_inspectors
+    result = method(obj, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\query.py", line 42, in get_filter_parameters
+    return list(map(self.param_to_schema, filter_backend.get_schema_operation_parameters(self.view)))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\rest_framework\backends.py", line 146, in get_schema_operation_parameters
+    filterset_class = self.get_filterset_class(view, queryset)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\rest_framework\backends.py", line 51, in get_filterset_class
+    class AutoFilterSet(self.filterset_base):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\filterset.py", line 62, in __new__
+    new_class.base_filters = new_class.get_filters()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django_filters\filterset.py", line 349, in get_filters
+    raise TypeError(
+TypeError: 'Meta.fields' must not contain non-model field names: h, e, a, l, t, P, o, s, _, i, d
+[35;1mHTTP GET /swagger/?format=openapi 500 [0.20, 127.0.0.1:56209][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+Forbidden: /allauth/api/GetSectionListAPI/4
+[31;1mHTTP GET /allauth/api/GetSectionListAPI/4 403 [0.11, 127.0.0.1:56345][0m
+Bad Request: /allauth/api/login
+[31;1mHTTP POST /allauth/api/login 400 [0.64, 127.0.0.1:56345][0m

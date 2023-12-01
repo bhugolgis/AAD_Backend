@@ -145,9 +145,17 @@ class GetHealthPostAreasAPI(generics.GenericAPIView):
 class GetSectionListAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
     serializer_class = sectionSerializer
-    queryset = section.objects.all()
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ("healthPost__id")
+    # queryset = section.objects.all()
+
+    def get(self, request ,id):
+        data = section.objects.filter(healthPost__id= id )
+        serializer = self.get_serializer(data , many = True).data
+
+        return Response({ "status":"success",
+                "message" : 'data feteched successfully',
+                "data":serializer,} , status= 200)
+    # filter_backends = (DjangoFilterBackend,)
+    # filterset_fields = ("healthPost__id")
 
 
 class GetDispensaryListAPI(generics.ListAPIView):
