@@ -16,8 +16,9 @@ urlpatterns = [
         path('login', LoginView.as_view(), name='login'),
         path('GetHealthPostAreas/<str:id>' , GetHealthPostAreasAPI.as_view() , name = 'GetHealthPostAreas'),
         path('GetSectionListAPI/<str:id>' , GetSectionListAPI.as_view() , name = 'GetSectionListAPI'),
+        path('GethealthPostNameListAPI/<str:id>' , GethealthPostNameListAPI.as_view() , name = 'GethealthPostNameListAPI'),
         re_path(r'^GetWardListAPI', GetWardListAPI.as_view(), name='GetWardListAPI'),
-        re_path(r'^GethealthPostNameList', GethealthPostNameListAPI.as_view(), name='GethealthPostNameList'),
+        # re_path(r'^GethealthPostNameList', GethealthPostNameListAPI.as_view(), name='GethealthPostNameList'),
         # re_path(r'^GetSectionListAPI', GetSectionListAPI.as_view(), name='GetSectionListAPI'),
         re_path(r'^GetDispensaryListAPI/(?P<id>.+)$', GetDispensaryListAPI.as_view(), name='GetDispensaryListAPI'),
                 
