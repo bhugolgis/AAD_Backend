@@ -127,6 +127,7 @@ class familyMembers(models.Model):
          ("Home" , "Home"),
          ("Center" , "Center") ,
          ("Denied" , "Denied"),
+         ("Not Required" , "Not Required"),
     ]
     # user = models.ForeignKey(CustomUser , related_name="updatefamilysurveyor",on_delete=models.CASCADE,null=True,blank=True )
     memberId = models.CharField(max_length=255 , blank = True , null = True )
