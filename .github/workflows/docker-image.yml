@@ -21,10 +21,10 @@ jobs:
       run:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Docker image
-      run: docker build --tag krishigram:latest .
+      run: docker build --tag arogya:latest .
       
     - name : tag the docker images to latest
-      run : docker tag krishigram jafarkhan0/krishi_gram
+      run : docker tag krishigram jafarkhan0/arogya
       
     - name : push the docker image to docker hub 
-      run: docker push jafarkhan0/krishi_gram
+      run: docker push jafarkhan0/arogya
