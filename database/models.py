@@ -159,7 +159,7 @@ class familyMembers(models.Model):
     generalStatus = models.CharField(max_length=100 , default = 'Survey Completed' )
     cbacRequired = models.BooleanField()
     referels = models.ManyToManyField(refereloptions , related_name="refereloptions_related" , blank = True )
-
+    deniedBy = models.CharField(max_length=100 , blank = True , null = True)
 
 
 class PatientPathlab(models.Model): 
