@@ -14,6 +14,8 @@ from rest_framework import filters
 from rest_framework.pagination import LimitOffsetPagination
 from Allauth.serializers import *
 from django.db.models import Q
+import openpyxl
+from django.http import HttpResponse
 # Create your views here.
 
 
@@ -186,3 +188,86 @@ class userListAPI(generics.ListAPIView):
         return Response({'status': 'success',
                         'message': 'Data fetched successfully',
                         'data': serializer.data})
+    
+
+
+class DownloadHealthpostwiseUserList(generics.GenericAPIView):
+    # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
+
+    def get(self, request, id ,  *args, **kwargs ,):
+        data_list = [['name','memberId', 'mobileNo','gender' , 'Age', 'familyHead', 'familySurveyor',
+                      'aadharCard', 'abhaId' , 'bloodCollectionLocation' , 'CBAC_Score' , 'Survey Date' , 'Status' , 'DeniedBy' ]]
+
+        healthpost_related_user = familyMembers.objects.filter(familySurveyor__section__healthPost__id = id)
+        for i in  healthpost_related_user:
+            data_list.append([
+                i.name , i.memberId ,  i.mobileNo, i.gender , i.age , i.familyHead.name , i.familySurveyor.name ,
+                 i.aadharCard , i.abhaId , i.bloodCollectionLocation , i.cbacScore , i.created_date.strftime('%d/%m/%Y %I:%M:%S %p'),
+                i.generalStatus , i.deniedBy
+            ])
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        for row in data_list:   
+            ws.append(row)
+
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="data.xlsx"'
+        wb.save(response)
+        return response
+    
+
+class DownloadWardwiseUserList(generics.GenericAPIView):
+    # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
+
+    def get(self, request, id ,  *args, **kwargs ,):
+        data_list = [['name','memberId', 'mobileNo','gender' , 'Age', 'familyHead', 'familySurveyor',
+                      'aadharCard', 'abhaId' , 'bloodCollectionLocation' , 'CBAC_Score' , 'Survey Date' , 'Status' , 'DeniedBy' ]]
+
+        healthpost_related_user = familyMembers.objects.filter(familySurveyor__section__healthPost__ward__id = id)
+        
+        for i in  healthpost_related_user:
+            data_list.append([
+                i.name , i.memberId ,  i.mobileNo, i.gender , i.age , i.familyHead.name , i.familySurveyor.name ,
+                 i.aadharCard , i.abhaId , i.bloodCollectionLocation , i.cbacScore , i.created_date.strftime('%d/%m/%Y %I:%M:%S %p'),
+                i.generalStatus , i.deniedBy
+            ])
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        for row in data_list:   
+            ws.append(row)
+
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'
+        wb.save(response)
+        return response
+    
+
+class DownloadDispensarywiseUserList(generics.GenericAPIView):
+    # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
+
+    def get(self, request, id ,  *args, **kwargs ,):
+        data_list = [['name','memberId', 'mobileNo','gender' , 'Age', 'familyHead', 'familySurveyor',
+                      'aadharCard', 'abhaId' , 'bloodCollectionLocation' , 'CBAC_Score' , 'Survey Date' , 'Status' , 'DeniedBy' ]]
+
+        healthpost_related_user = familyMembers.objects.filter(familySurveyor__dispensary__id = id)
+        dispensary_name = dispensary.objects.get(id = id )
+        
+        for i in  healthpost_related_user:
+            dispensary_name = i.familySurveyor.dispensary.dispensaryName
+            data_list.append([
+                i.name , i.memberId ,  i.mobileNo, i.gender , i.age , i.familyHead.name , i.familySurveyor.name ,
+                 i.aadharCard , i.abhaId , i.bloodCollectionLocation , i.cbacScore , i.created_date.strftime('%d/%m/%Y %I:%M:%S %p'),
+                i.generalStatus , i.deniedBy , 
+            ])
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        for row in data_list:   
+            ws.append(row)
+        
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = f'attachment; filename="{dispensary_name.dispensaryName}.xlsx"'
+        wb.save(response)
+        return response

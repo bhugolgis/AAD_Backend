@@ -237,9 +237,11 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         today = timezone.now().date() 
         total_citizen_count = self.get_queryset().filter(familySurveyor = request.user).count()
         todays_citizen_count  = self.get_queryset().filter(familySurveyor = request.user , created_date__day= today.day).count()
-        
+        total_cbac_count = self.get_queryset().filter(familySurveyor = request.user , age__gte = 30 , cbacRequired = True).count()
         partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user = request.user).count()
         total_family_count = self.FamilySurvey_count.filter(user = request.user).count()
+        citizen_above_60 =  self.get_queryset().filter(familySurveyor = request.user , age__gte = 60 ).count()
+        citizen_above_30 =  self.get_queryset().filter(familySurveyor = request.user , age__gte = 30 ).count()
         today_family_count = self.FamilySurvey_count.filter(user = request.user , created_date__day = today.day ).count()
 
         return Response({
@@ -247,8 +249,10 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'todays_count' : todays_citizen_count ,
             'partial_survey_count'  : partial_survey_count ,
             'total_family_count' : total_family_count ,
-            'today_family_count' : today_family_count
-        } , status= status.HTTP_200_OK )
+            'today_family_count' : today_family_count,
+            'total_cbac_count' : total_cbac_count ,
+            'citizen_above_60' : citizen_above_60,
+            'citizen_above_30' : citizen_above_30, } , status= status.HTTP_200_OK )
     
     
 class GetCitizenList(generics.ListAPIView):
