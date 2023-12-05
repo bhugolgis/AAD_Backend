@@ -191,6 +191,7 @@ class userListAPI(generics.ListAPIView):
                         'data': serializer.data})
     
 class GetWardWiseSUerList(generics.ListAPIView):
+    permission_classes = [IsAuthenticated ,IsMOH]
     pagination_class = LimitOffsetPagination
     serializer_class = CustomUserSerializer
     model = serializer_class.Meta.model
@@ -200,8 +201,9 @@ class GetWardWiseSUerList(generics.ListAPIView):
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
         group = self.kwargs.get('group')
-        wardName = self.kwargs.get('ward')
-        print(group , wardName)
+        # wardName = self.kwargs.get('ward')
+        # print(group , wardName)
+        wardName = self.request.user.ward
         queryset = self.model.objects.filter(groups__name = group  , section__healthPost__ward__wardName = wardName)
    
         search_terms = self.request.query_params.get('search', None)
@@ -213,7 +215,7 @@ class GetWardWiseSUerList(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
 
         queryset = self.get_queryset()
-        print(queryset)
+     
         page = self.paginate_queryset(queryset)
 
         if page is not None:

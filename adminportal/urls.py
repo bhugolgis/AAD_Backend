@@ -18,7 +18,7 @@ urlpatterns = [
    
         re_path(r'^GetuserListAPI/(?P<group>.+)$', userListAPI.as_view(), name='user-list'),
         # re_path(r'^GetWardWiseSUerList/(?P<group>.+)/(?P<ward>.+)$', GetWardWiseSUerList.as_view(), name='user-list'),
-        re_path(r'^GetWardWiseSUerList/(?P<group>.+)/(?P<ward>[^/]+)$', GetWardWiseSUerList.as_view(), name='user-list'),
+        re_path(r'^GetWardWiseSUerList/(?P<group>.+)$', GetWardWiseSUerList.as_view(), name='user-list'),
 
 
 ]
