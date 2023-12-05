@@ -16,6 +16,7 @@ from Allauth.serializers import *
 from django.db.models import Q
 import openpyxl
 from django.http import HttpResponse
+from django.utils import timezone
 # Create your views here.
 
 
@@ -186,10 +187,79 @@ class userListAPI(generics.ListAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response({'status': 'success',
-                        'message': 'Data fetched successfully',
+                        'message': 'Data fetched successfully', 
                         'data': serializer.data})
     
+class GetWardWiseSUerList(generics.ListAPIView):
+    pagination_class = LimitOffsetPagination
+    serializer_class = CustomUserSerializer
+    model = serializer_class.Meta.model
 
+    def get_queryset(self):
+        """
+        The function returns a queryset of all objects ordered by their created date in descending order.
+        """
+        group = self.kwargs.get('group')
+        wardName = self.kwargs.get('ward')
+        print(group , wardName)
+        queryset = self.model.objects.filter(groups__name = group  , section__healthPost__ward__wardName = wardName)
+   
+        search_terms = self.request.query_params.get('search', None)
+        if search_terms:
+            queryset = queryset.filter(section__healthPost__ward__wardName__icontains=search_terms)
+
+        return queryset
+    
+    def get(self, request, *args, **kwargs):
+
+        queryset = self.get_queryset()
+        print(queryset)
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success',
+                        'message': 'Data fetched successfully', 
+                        'data': serializer.data})
+
+
+
+
+
+class  MOHDashboardView(generics.GenericAPIView):
+    permission_classes= (IsAuthenticated , IsMOH)
+    queryset = familyMembers.objects.all()
+    FamilySurvey_count = familyHeadDetails.objects.all()
+    def get(self, request, *args, **kwargs):
+
+       
+        today = timezone.now().date() 
+        ward = request.user.ward_id
+        total_citizen_count = self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id  ).count()
+        todays_citizen_count  = self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id , created_date__day= today.day).count()
+        total_cbac_count = self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id  , age__gte = 30 , cbacRequired = True).count()
+        partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user__section__healthPost__ward__id =  request.user.ward_id).count()
+        total_family_count = self.FamilySurvey_count.filter(user__section__healthPost__ward__id = request.user.ward_id).count()
+        citizen_above_60 =  self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id  , age__gte = 60 ).count()
+        citizen_above_30 =  self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id  , age__gte = 30 ).count()
+        today_family_count = self.FamilySurvey_count.filter(user__section__healthPost__ward__id = request.user.ward_id , created_date__day = today.day ).count()
+
+        return Response({
+            'total_count' : total_citizen_count ,
+            'todays_count' : todays_citizen_count ,
+            'partial_survey_count'  : partial_survey_count ,
+            'total_family_count' : total_family_count ,
+            'today_family_count' : today_family_count,
+            'total_cbac_count' : total_cbac_count ,
+            'citizen_above_60' : citizen_above_60,
+            'citizen_above_30' : citizen_above_30, } , status= 200)
+        
+        
 
 class DownloadHealthpostwiseUserList(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
@@ -245,6 +315,7 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
     
 
 class DownloadDispensarywiseUserList(generics.GenericAPIView):
+
     # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
 
     def get(self, request, id ,  *args, **kwargs ,):

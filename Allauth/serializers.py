@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import Permission, Group
 from rest_framework import serializers
 from database.managers import *
+from ArogyaAplyaDari import settings
 
 
 #user Serializer
@@ -349,26 +350,31 @@ class ViewSpecialHealthCareSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    phoneNumber = serializers.IntegerField()
-    password = serializers.CharField()
-    class Meta:
-        # model = CustomUser
-        fields = ('id','phoneNumber','password')
-    def validate(self,data):
-        phoneNumber = data.get('phoneNumber')
-        password = data.get('password')
-       
-        customuser = auth.authenticate(phoneNumber=phoneNumber, password=password)
-        
-        if data["phoneNumber"] =="" or data["phoneNumber"] == None:
-            msg = "Please enter username."
-            raise serializers.ValidationError(msg)
-        if data["password"] =="" or data["password"] == None:
-            msg = "Please enter password."
-            raise serializers.ValidationError(msg)
-        if customuser and customuser.is_active:
-            return customuser
-        raise serializers.ValidationError("Incorrect Credentials")
+	phoneNumber = serializers.IntegerField()
+	password = serializers.CharField()
+	class Meta:
+		# model = CustomUser
+		fields = ('id','phoneNumber','password')
+	def validate(self,data):
+		phoneNumber = data.get('phoneNumber')
+		password = data.get('password')
+
+		customuser = auth.authenticate(phoneNumber=phoneNumber, password=password)
+		if not customuser:
+			user = CustomUser.objects.get_by_natural_key(phoneNumber)
+			if not user.is_active:
+				raise serializers.ValidationError("Account is not active")
+
+		if data["phoneNumber"] =="" or data["phoneNumber"] == None:
+			msg = "Please enter username."
+			raise serializers.ValidationError(msg)
+		if data["password"] =="" or data["password"] == None:
+			msg = "Please enter password."
+			raise serializers.ValidationError(msg)
+		elif customuser and customuser.is_active:
+			return customuser
+		raise serializers.ValidationError("Incorrect Credentials")
+		# return customuser
 
 
 class LoginWithOtpSerializer(serializers.Serializer):
@@ -472,7 +478,7 @@ class UpdateUserDetailsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name" , "username" , "emailId" , "phoneNumber" , "supervisor" , 
-			"section" , "ward" , "health_Post" , "area" , "dispensary"  )
+			"section" , "ward" , "health_Post" , "area" , "dispensary" , "is_active" )
 		
 
 class AddDispensarySerializer(serializers.ModelSerializer):

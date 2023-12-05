@@ -1039,6 +1039,7 @@ class LoginView(generics.GenericAPIView):
             serializer = LoginSerializer(data=request.data)
             if serializer.is_valid():
                 user_data = serializer.validated_data
+
                 group = user_data.groups.values_list("name", flat=True)[0]
                 if serializer is not None:
                     try:
@@ -1047,173 +1048,187 @@ class LoginView(generics.GenericAPIView):
                     except AuthToken.DoesNotExist:
                         pass
                     _, token = AuthToken.objects.create(serializer.validated_data)
-                    if group == 'healthworker':
-                        chv_list = CustomUser.objects.filter(section = user_data.section).exclude(groups__name = 'healthworker')
-                        chv_serializer = CHV_ASHA_Serializer(chv_list , many = True)
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'email': user_data.emailId,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                            'section_id' : user_data.section_id,
-                            'ward' : user_data.section.healthPost.ward.wardName ,
-                            'healthPostName' : user_data.section.healthPost.healthPostName,
-                            'healthPostID' : user_data.section.healthPost.id,
-                            # 'ASHA/CHV_list' : chv_serializer.data, 
-                            'Group': group
-                        }, status=200)                 
-                    elif group == "phlebotomist":
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'email': user_data.emailId,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                            'Group': group}, status=200)                   
-                    elif group == "supervisor":
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'email': user_data.emailId,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                            'Group': group}, status=200)                     
-                    elif group == "amo":
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'email': user_data.emailId,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                            # 'ward' : user_data.section.healthPost.ward.wardName ,
-                            'healthPostName' : user_data.health_Post.healthPostName,
-                            'healthPostID' : user_data.health_Post.id,
-                            # 'areaId':user_data.section.healthPost.healthPost.id,
-                            # 'areas':user_data.section.healthPost.area.areas,
-                            # 'sectionId':user_data.section.id,
-                            # 'sectionName':user_data.section.sectionName,
+                    if user_data.is_active:
+                        if group == 'healthworker':
+                            chv_list = CustomUser.objects.filter(section = user_data.section).exclude(groups__name = 'healthworker')
+                            chv_serializer = CHV_ASHA_Serializer(chv_list , many = True)
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'email': user_data.emailId,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                'section_id' : user_data.section_id,
+                                'ward' : user_data.section.healthPost.ward.wardName ,
+                                'healthPostName' : user_data.section.healthPost.healthPostName,
+                                'healthPostID' : user_data.section.healthPost.id,
+                                # 'ASHA/CHV_list' : chv_serializer.data, 
+                                'Group': group
+                            }, status=200)                 
+                        elif group == "phlebotomist":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'email': user_data.emailId,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                'Group': group}, status=200)                   
+                        elif group == "supervisor":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'email': user_data.emailId,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                'Group': group}, status=200)                     
+                        elif group == "amo":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'email': user_data.emailId,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                # 'ward' : user_data.section.healthPost.ward.wardName ,
+                                'healthPostName' : user_data.health_Post.healthPostName,
+                                'healthPostID' : user_data.health_Post.id,
+                                # 'areaId':user_data.section.healthPost.healthPost.id,
+                                # 'areas':user_data.section.healthPost.area.areas,
+                                # 'sectionId':user_data.section.id,
+                                # 'sectionName':user_data.section.sectionName,
 
-                            'Group': group}, status=200)
-                    elif group == "mo":
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            # 'email': user_data.emailId,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                            # 'ward' : user_data.section.healthPost.ward.wardName ,
-                            # 'healthPostName' : user_data.health_Post.healthPostName,
-                            # 'healthPostID' : user_data.health_Post.id,
-                            'dispensaryId':user_data.dispensary.id,
-                            'dispensaryName':user_data.dispensary.dispensaryName,
-                            # 'sectionId':user_data.section.id,
-                            # 'sectionName':user_data.section.sectionName,
-                            'Group': group}, status=200)            
-                    elif group == "phcc":
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                            # 'ward' : user_data.section.healthPost.ward.wardName ,
-                            # 'healthPostName' : user_data.health_Post.healthPostName,
-                            # 'healthPostID' : user_data.health_Post.id,
-                            # 'dispensaryId':user_data.dispensary.id,
-                            'healthCareName':user_data.HealthCareCenters.healthCareName,
-                            'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
-                            'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
-                            'healthCareType':user_data.HealthCareCenters.healthCareType[0],
+                                'Group': group}, status=200)
+                        elif group == "mo":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                # 'email': user_data.emailId,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                # 'ward' : user_data.section.healthPost.ward.wardName ,
+                                # 'healthPostName' : user_data.health_Post.healthPostName,
+                                # 'healthPostID' : user_data.health_Post.id,
+                                'dispensaryId':user_data.dispensary.id,
+                                'dispensaryName':user_data.dispensary.dispensaryName,
+                                # 'sectionId':user_data.section.id,
+                                # 'sectionName':user_data.section.sectionName,
+                                'Group': group}, status=200)            
+                        elif group == "phcc":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                # 'ward' : user_data.section.healthPost.ward.wardName ,
+                                # 'healthPostName' : user_data.health_Post.healthPostName,
+                                # 'healthPostID' : user_data.health_Post.id,
+                                # 'dispensaryId':user_data.dispensary.id,
+                                'healthCareName':user_data.HealthCareCenters.healthCareName,
+                                'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
+                                'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
+                                'healthCareType':user_data.HealthCareCenters.healthCareType[0],
 
-                            # 'sectionId':user_data.section.id,
-                            # 'sectionName':user_data.section.sectionName,
-                            'Group': group}, status=200)
-            
-                    elif group == "shcc":
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                            # 'ward' : user_data.section.healthPost.ward.wardName ,
-                            # 'healthPostName' : user_data.health_Post.healthPostName,
-                            # 'healthPostID' : user_data.health_Post.id,
-                            # 'dispensaryId':user_data.dispensary.id,
-                            'healthCareName':user_data.HealthCareCenters.healthCareName,
-                            'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
-                            'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
-                            'healthCareType':user_data.HealthCareCenters.healthCareType[0],
+                                # 'sectionId':user_data.section.id,
+                                # 'sectionName':user_data.section.sectionName,
+                                'Group': group}, status=200)
+                        elif group == "shcc":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                # 'ward' : user_data.section.healthPost.ward.wardName ,
+                                # 'healthPostName' : user_data.health_Post.healthPostName,
+                                # 'healthPostID' : user_data.health_Post.id,
+                                # 'dispensaryId':user_data.dispensary.id,
+                                'healthCareName':user_data.HealthCareCenters.healthCareName,
+                                'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
+                                'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
+                                'healthCareType':user_data.HealthCareCenters.healthCareType[0],
 
-                            # 'sectionId':user_data.section.id,
-                            # 'sectionName':user_data.section.sectionName,
-                            'Group': group}, status=200)
+                                # 'sectionId':user_data.section.id,
+                                # 'sectionName':user_data.section.sectionName,
+                                'Group': group}, status=200)
+                        elif group == "thcc":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                # 'ward' : user_data.section.healthPost.ward.wardName ,
+                                # 'healthPostName' : user_data.health_Post.healthPostName,
+                                # 'healthPostID' : user_data.health_Post.id,
+                                # 'dispensaryId':user_data.dispensary.id,
+                                'healthCareName':user_data.HealthCareCenters.healthCareName,
+                                'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
+                                'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
+                                'healthCareType':user_data.HealthCareCenters.healthCareType[0],
 
-                    elif group == "thcc":
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                            # 'ward' : user_data.section.healthPost.ward.wardName ,
-                            # 'healthPostName' : user_data.health_Post.healthPostName,
-                            # 'healthPostID' : user_data.health_Post.id,
-                            # 'dispensaryId':user_data.dispensary.id,
-                            'healthCareName':user_data.HealthCareCenters.healthCareName,
-                            'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
-                            'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
-                            'healthCareType':user_data.HealthCareCenters.healthCareType[0],
-
-                            # 'sectionId':user_data.section.id,
-                            # 'sectionName':user_data.section.sectionName,
-                            'Group': group}, status=200)
-                    elif group == "Family Head":
-                         return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                             'Group': group
+                                # 'sectionId':user_data.section.id,
+                                # 'sectionName':user_data.section.sectionName,
+                                'Group': group}, status=200)
+                        elif group == "Family Head":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                'Group': group
+                                
+                            })
+                        elif group == "admin":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                'Group': group
+                                
+                            })
+                        elif group == "MOH":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                'Group': group
                             
-                         })
-                    elif group == "admin":
-                        return Response({
-                            'message': 'Login successful',
-                            'Token': token,
-                            'status': 'success',
-                            'id': user_data.id,
-                            'name' : user_data.name,         
-                            'username': user_data.username,
-                            'phoneNumber' : user_data.phoneNumber,
-                             'Group': group
-                            
-                         })
+                        })
+                    else:
+                        return Response({'status': 'error' ,
+                                         'message': 'Your account is disabled'} , status=401)
 
             else:
                 key, value = list(serializer.errors.items())[0]

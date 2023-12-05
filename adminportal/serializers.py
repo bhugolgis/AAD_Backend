@@ -24,7 +24,7 @@ class AddUserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
-					 "dispensary" , "HealthCareCenters" ,"section" , "group")
+					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward")
 		extra_kwargs = {'password':{'write_only':True}}
 		
 	def create(self,validated_data):
@@ -41,7 +41,7 @@ class UpdateUserDetailsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name" , "username" ,"emailId" , "phoneNumber" , "supervisor" , 
-			"section" , "ward" , "health_Post" , "area" , "dispensary")
+			"section" , "ward" , "health_Post" , "area" , "dispensary" , 'is_active')
 		
 
 class DeleteUserSerializer(serializers.ModelSerializer):
@@ -67,7 +67,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
-			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","area" , "dispensary" ,"dispensary_id", "group")
+			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","area" ,
+			"dispensary" ,"dispensary_id", "group" , "is_active" )
 		
 	def validate(self, attrs):
 		group = attrs.pop("group")

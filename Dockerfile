@@ -33,7 +33,7 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:9061"]
 # docker run -it osgeo/gdal:ubuntu-small-latest
 # docker build --tag image_name:latest .
 # docker image ls
-# docker run --name image_name -d -p 9006:9006 image_name:latest 
+# docker run --name arogya -d -p 9061:9061 jafarkhan0/arogya::latest 
 # docker container ps
 
 # to push the image to the registry
