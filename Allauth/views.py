@@ -29,6 +29,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
+from adminportal.permissions import IsMOH
 
 class GetDailyCountOfSurvey(generics.GenericAPIView):
     # serializer_class = AreaSerialzier
@@ -116,14 +117,14 @@ class AddlabtestdeatilsAPI(generics.GenericAPIView):
 
 
 class GetWardListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH ]
     serializer_class = WardSerialzier
     queryset = ward.objects.all()
     filter_backends = (filters.SearchFilter,)
     search_fields = ("wardName",)
 
 class GethealthPostNameListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH ]
     serializer_class = healthPostSerializer
     # queryset = healthPost.objects.all()
     # filter_backends = (DjangoFilterBackend,)
@@ -141,7 +142,7 @@ class GethealthPostNameListAPI(generics.ListAPIView):
 
 class GetHealthPostAreasAPI(generics.GenericAPIView):
     serializer_class = AreaSerialzier
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH ]
 
     def get(self, request ,id):
         data = area.objects.filter(healthPost__id= id )
@@ -152,7 +153,7 @@ class GetHealthPostAreasAPI(generics.GenericAPIView):
                 "data":serializer,} , status= 200)
     
 class GetSectionListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH ]
     serializer_class = sectionSerializer
     # queryset = section.objects.all()
 

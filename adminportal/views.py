@@ -151,34 +151,30 @@ class userListAPI(generics.ListAPIView):
     model = serializer_class.Meta.model
     # permission_classes = (IsAuthenticated , IsAdmin)
     filter_backends = (filters.SearchFilter,)
-    # search_fields = ['name' , 'username' , 'phoneNumber' , 'section__healthPost__healthPostName' , 'section__healthPost__ward__wardName' ]
 
     def get_queryset(self):
         """
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
         group = self.kwargs.get('group')
-        queryset = self.model.objects.filter(groups__name = group)
+        wardName = self.kwargs.get('ward')
+        print(wardName)
+        queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = wardName)
 
-        search_terms = self.request.query_params.get('search', None)
+        search_terms = self.request.query_params.get('search', None )
         if search_terms:
             queryset = queryset.filter(
-                Q(section__healthPost__ward__wardName__icontains=search_terms)|
                 Q(name__icontains=search_terms) |
                 Q(username__icontains=search_terms) |
                 Q(phoneNumber__icontains=search_terms) |
-                Q(ward__wardName__icontains=search_terms) |
                 Q(health_Post__healthPostName__icontains=search_terms) |
-                Q(section__healthPost__healthPostName__icontains=search_terms)  
-            )
-
+                Q(section__healthPost__healthPostName__icontains=search_terms) )
         return queryset
      
     def get(self, request, *args, **kwargs):
 
         queryset = self.get_queryset()
         page = self.paginate_queryset(queryset)
-
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response({'status': 'success',
@@ -230,9 +226,6 @@ class GetWardWiseSUerList(generics.ListAPIView):
                         'data': serializer.data})
 
 
-
-
-
 class  MOHDashboardView(generics.GenericAPIView):
     permission_classes= (IsAuthenticated , IsMOH)
     queryset = familyMembers.objects.all()
@@ -261,8 +254,7 @@ class  MOHDashboardView(generics.GenericAPIView):
             'citizen_above_60' : citizen_above_60,
             'citizen_above_30' : citizen_above_30, } , status= 200)
         
-        
-
+     
 class DownloadHealthpostwiseUserList(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
 

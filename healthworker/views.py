@@ -252,7 +252,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'today_family_count' : today_family_count,
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
-            'citizen_above_30' : citizen_above_30, } , status= status.HTTP_200_OK )
+            'citizen_above_30' : citizen_above_30 } , status= status.HTTP_200_OK )
     
     
 class GetCitizenList(generics.ListAPIView):
@@ -355,7 +355,6 @@ class GetBloodCollectionDetail(generics.ListAPIView):
     permission_classes =(IsAuthenticated , IsHealthworker)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['bloodCollectionLocation']
-
 
 
 # The `DumpExcelInsertxlsx` class is a view in a Django REST framework API that handles the uploading
