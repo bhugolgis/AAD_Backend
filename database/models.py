@@ -99,6 +99,10 @@ class refereloptions(models.Model):
     choice = models.CharField(max_length=255 , blank = True, null=True)
     createdDate = models.DateField(auto_now_add= True)
 
+class vulnerableOptions(models.Model):
+    choice = models.CharField(max_length=255 , blank = True, null = True )
+    createdDate = models.DateField(auto_now_add= True)
+
 class familyHeadDetails(models.Model):
 
     familyId = models.CharField(max_length=150,blank=True,null=True , unique= True)
@@ -162,6 +166,8 @@ class familyMembers(models.Model):
     referels = models.ManyToManyField(refereloptions , related_name="refereloptions_related" , blank = True )
     deniedBy = models.CharField(max_length=100 , blank = True , null = True)
     vulnerable  = models.BooleanField(default=False)
+    vulnerable_choices  = models.ManyToManyField(vulnerableOptions , related_name= 'vulnerability_choices', blank = True )
+    vulnerable_reason = models.TextField(max_length=500 , blank  = True , null = True )
 
 class PatientPathlab(models.Model): 
     

@@ -12,7 +12,8 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
-                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' , 'referels' , 'deniedBy' , 'vulnerable')
+                  'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' ,
+                    'referels' , 'deniedBy' , 'vulnerable' , 'vulnerable_choices' , 'vulnerable_reason' )
     
 
     def validate(self, data):
@@ -29,6 +30,12 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
 class getReferelOptionListSerialzier(serializers.ModelSerializer):
     class Meta:
         model = refereloptions
+        fields = ('id', 'choice',)
+
+
+class getvulnerableOptionListSerialzier(serializers.ModelSerializer):
+    class Meta:
+        model = vulnerableOptions
         fields = ('id', 'choice',)
 
 class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
@@ -54,7 +61,6 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('age can not be empty !!')
         if 'mobileNo' not in data or data['mobileNo'] =='':
             raise serializers.ValidationError('mobileNo can not be empty !!')
-        
         return data
 
 
@@ -83,12 +89,7 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
 
         if 'mobileNo' not in data or data['mobileNo'] == '' :
             raise serializers.ValidationError('mobileNo can not be empty !!')
-        # if 'plotNo' not in data or data['plotNo'] == '' :
-        #     raise serializers.ValidationError('plotNo can not be empty !!')
-        # if 'addressLine1' not in data or data['addressLine1'] == '' :
-        #     raise serializers.ValidationError('addressLine1  can not be empty !!')
-        # if 'pincode' not in data or data['pincode'] == '' :
-        #     raise serializers.ValidationError('pincode can not be empty !!')
+        
         return data
     
     def create(self,data):
@@ -104,12 +105,12 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
         member_id_counter = 1
         for family in familyMembers_details:
             reffer = family.pop('referels')
-            print(reffer , 'reffer')
+            vulnerable = family.pop('vulnerable_choices')
             member_id = str(head.familyId) + '-' + str(member_id_counter).zfill(2)
             member_id_counter += 1
             instance = familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
-            print(instance)
             instance.referels.add(*reffer)
+            instance.referels.add(*vulnerable)
         return head
     
 

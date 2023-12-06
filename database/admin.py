@@ -17,6 +17,7 @@ admin.site.register(PatientPathlab)
 admin.site.register(LabTests)
 admin.site.register(PatientPathLabReports)
 admin.site.register(refereloptions)
+admin.site.register(vulnerableOptions)
 
 
 

@@ -21,6 +21,7 @@ urlpatterns = [
         
         
         path('getReferelOptionList' , getReferelOptionList.as_view() , name = 'getReferelOptionList'),
+        path('getvulnerableOptionList' , getvulnerableOptionList.as_view() , name = 'getvulnerableOptionList'),
 
 
 

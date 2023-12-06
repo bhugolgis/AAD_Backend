@@ -305,6 +305,11 @@ class getReferelOptionList(generics.ListAPIView):
     model = serializer_class.Meta.model
     queryset = model.objects.all()
 
+class getvulnerableOptionList(generics.ListAPIView):
+    serializer_class = getvulnerableOptionListSerialzier
+    model = serializer_class.Meta.model
+    queryset = model.objects.all()
+
    
 
 class GetFamilyList(generics.ListAPIView):
