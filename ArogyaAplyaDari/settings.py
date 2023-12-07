@@ -135,10 +135,10 @@ DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.contrib.gis.db.backends.postgis',
 #     #    'NAME': 'DemoNbr',
-#        'NAME':'Bkdb',
+#        'NAME':'upd07_12Db',
 #        'USER': 'postgres',
 #        'PASSWORD':'password',
-#        'HOST' : '10.202.100.7',
+#     #    'HOST' : '10.202.100.7',
 #        'HOST' : 'localhost',
 #        'PORT': '5432',
 #    }
