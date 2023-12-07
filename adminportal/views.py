@@ -36,7 +36,7 @@ class InsertUsers(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserSerializer
     parser_classes = [MultiPartParser]
-    permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor)
+    permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor | IsMOH)
 
 
     def post(self, request, *args, **kwargs):
@@ -75,7 +75,7 @@ class InsertUsers(generics.GenericAPIView):
         
 class UpdateUserDetails(generics.GenericAPIView):
     serializer_class  = UpdateUserDetailsSerializer
-    permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor)
+    permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor | IsMOH)
     parser_classes = [MultiPartParser]
 
     def patch(self, request, pk):
