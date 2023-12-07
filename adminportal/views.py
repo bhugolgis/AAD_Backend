@@ -158,8 +158,11 @@ class userListAPI(generics.ListAPIView):
         """
         group = self.kwargs.get('group')
         wardName = self.kwargs.get('ward')
-        print(wardName)
-        queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = wardName)
+       
+        if group == 'mo':
+            queryset = self.model.objects.filter(groups__name = group , dispensary__ward__wardName = wardName )
+        else:
+            queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = wardName)
 
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
@@ -169,6 +172,7 @@ class userListAPI(generics.ListAPIView):
                 Q(phoneNumber__icontains=search_terms) |
                 Q(health_Post__healthPostName__icontains=search_terms) |
                 Q(section__healthPost__healthPostName__icontains=search_terms) )
+            
         return queryset
      
     def get(self, request, *args, **kwargs):
