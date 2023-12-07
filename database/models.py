@@ -66,7 +66,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     emailId=models.EmailField(max_length=255,blank=True,null=True)
     phoneNumber=models.CharField(max_length=20,blank=True,null=True , unique = True )
     otpChecked = models.BooleanField(default=False)
-    supervisor = models.ForeignKey('CustomUser',related_name="supervisorId",on_delete=models.CASCADE,null=True,blank=True)
+    created_by = models.ForeignKey('CustomUser',related_name="supervisorId",on_delete=models.CASCADE,null=True,blank=True)
     section = models.ForeignKey( section , related_name="section_name" , on_delete=models.SET_NULL , blank = True , null = True )
     ward = models.ForeignKey(ward , related_name="wardAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
     health_Post = models.ForeignKey(healthPost , related_name="healthpostAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
@@ -74,7 +74,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     dispensary = models.ForeignKey(dispensary , related_name="dispensary_name" , on_delete=models.SET_NULL , blank = True , null = True )
     HealthCareCenters = models.ForeignKey(HealthCareCenters,related_name="HealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
     is_active = models.BooleanField(default = False)
-  
+    
 
     USERNAME_FIELD = 'phoneNumber'
     REQUIRED_FIELDS = []

@@ -477,7 +477,7 @@ class Addlabtestserializer(serializers.ModelSerializer):
 class UpdateUserDetailsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
-		fields = ("name" , "username" , "emailId" , "phoneNumber" , "supervisor" , 
+		fields = ("name" , "username" , "emailId" , "phoneNumber" , "created_by" , 
 			"section" , "ward" , "health_Post" , "area" , "dispensary" , "is_active" )
 		
 

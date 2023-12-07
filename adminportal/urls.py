@@ -6,7 +6,8 @@ from .views import *
 
 
 urlpatterns = [
-        path('InsertUsers' , InsertUsers.as_view() , name = 'InsertUsers'),
+        path('InsertUsersByadmin' , InsertUsersByadmin.as_view() , name = 'InsertUsersByadmin'),
+        path('InsertUsersByMOH' , InsertUsersByMOH.as_view() , name = 'InsertUsersByMOH'),
         path('UpdateUserDetailsAPI/<int:pk>', UpdateUserDetails.as_view(), name='UpdateUserDetailsAPI'),
         path('deleteUserAPI/<int:id>', deleteUser.as_view(), name='deleteUserAPI'),
         path('AdminChangePasswordView/<int:id>', AdminChangePasswordView.as_view(), name='deleteUserAPI'),

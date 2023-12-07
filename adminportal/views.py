@@ -32,7 +32,7 @@ class UserCountsAPI(APIView):
             'ANM_count' : ANM_count
         } , status = 200)
         
-class InsertUsers(generics.GenericAPIView):
+class InsertUsersByadmin(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserSerializer
     parser_classes = [MultiPartParser]
@@ -41,8 +41,7 @@ class InsertUsers(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        # print(request.data["name"], request.data)
-        
+        print(request.user.groups.all().first())
         try:
             if serializer.is_valid():
                 group = Group.objects.get(name=serializer.validated_data.get("group"))
@@ -52,7 +51,7 @@ class InsertUsers(generics.GenericAPIView):
                 data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
                 user.groups.add(group)
                 
-                addSupervisor = CustomUser.objects.filter(id= user.id).update(supervisor_id = request.user.id)
+                addSupervisor = CustomUser.objects.filter(id= user.id).update(created_by_id = request.user.id)
                 return Response({
                     "status": "success",
                     "message": "Successfully Inserted.",
@@ -73,6 +72,51 @@ class InsertUsers(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+
+# class GetDeactivatedUserList(generics.ListAPIView):
+#     serializer_class = GetDeactivatedUserListSerializer
+#     queryset = 
+
+class InsertUsersByMOH(generics.GenericAPIView):
+    # permission_classes = [permissions.IsAuthenticated,]
+    serializer_class = AddUserByMOHSerializer
+    parser_classes = [MultiPartParser]
+    permission_classes = (IsAuthenticated , IsMOH)
+
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+       
+        try:
+            if serializer.is_valid():
+                group = Group.objects.get(name=serializer.validated_data.get("group"))
+                
+                user = serializer.save()
+                customuser = serializer.validated_data
+                data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
+                user.groups.add(group)
+                
+                addSupervisor = CustomUser.objects.filter(id= user.id).update(created_by_id = request.user.id)
+                return Response({
+                    "status": "success",
+                    "message": "Successfully Inserted.",
+                    "data": data,
+                })
+            else:
+                key, value = list(serializer.errors.items())[0]
+                error_message = value[0]
+                return Response({
+                    "status": "error",
+                    "message": error_message,
+                  
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as ex:
+            return Response({
+                "status": "error",
+                "message": "Error in Field " + str(ex),
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class UpdateUserDetails(generics.GenericAPIView):
     serializer_class  = UpdateUserDetailsSerializer
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor | IsMOH)

@@ -24,7 +24,24 @@ class AddUserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
-					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward")
+					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward" , "is_active" )
+		extra_kwargs = {'password':{'write_only':True}}
+		
+	def create(self,validated_data):
+		group = validated_data.pop("group")
+		# healthPostName = validated_data.pop("healthPostName")
+		customuser = CustomUser.objects.create_user(**validated_data)
+		
+		return customuser
+	
+
+class AddUserByMOHSerializer(serializers.ModelSerializer):
+	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
+
+	class Meta:
+		model = CustomUser
+		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
+					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward"  )
 		extra_kwargs = {'password':{'write_only':True}}
 		
 	def create(self,validated_data):
