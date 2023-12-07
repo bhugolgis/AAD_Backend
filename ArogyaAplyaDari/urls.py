@@ -39,7 +39,7 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('admin/', admin.site.urls),
     path('healthworker/api/' , include('healthworker.urls')),
-    path('abdm/api/' , include('ABDM.urls')),
+    # path('abdm/api/' , include('ABDM.urls')),
     path('allauth/api/' , include('Allauth.urls')),
     path('phlebo/api/' , include('pathlab.urls')),
     path('doctor/api/' , include('doctorsApp.urls')),
