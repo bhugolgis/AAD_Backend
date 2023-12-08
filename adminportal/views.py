@@ -76,9 +76,43 @@ class InsertUsersByadmin(generics.GenericAPIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
-# class GetDeactivatedUserList(generics.ListAPIView):
-#     serializer_class = GetDeactivatedUserListSerializer
-#     queryset = 
+class GetDeactivatedUserList(generics.ListAPIView):
+    pagination_class = LimitOffsetPagination
+    serializer_class = GetDeactivatedUserListSerializer
+    model = serializer_class.Meta.model
+    filter_backends = (filters.SearchFilter,)
+    # permission_classes = (IsAuthenticated , IsAdmin)
+
+    def get_queryset(self):
+        # group = self.user.groups.all().first()
+        queryset = self.model.objects.filter(is_active=False  , created_by__groups__name = 'MOH'  )
+
+        search_terms = self.request.query_params.get('search', None )
+        if search_terms:
+            queryset = queryset.filter(
+                Q(name__icontains=search_terms) |
+                Q(username__icontains=search_terms) |
+                Q(phoneNumber__icontains=search_terms) |
+                Q(health_Post__healthPostName__icontains=search_terms) |
+                Q(section__healthPost__healthPostName__icontains=search_terms) )
+            
+        return queryset
+    
+    def get(self, request, *args, **kwargs):
+
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success',
+                        'message': 'Data fetched successfully', 
+                        'data': serializer.data})
+    
 
 class InsertUsersByMOH(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
@@ -204,12 +238,12 @@ class userListAPI(generics.ListAPIView):
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
         group = self.kwargs.get('group')
-        wardName = self.kwargs.get('ward')
+        ward_id = self.kwargs.get('ward_id')
        
         if group == 'mo':
-            queryset = self.model.objects.filter(groups__name = group , dispensary__ward__wardName = wardName )
+            queryset = self.model.objects.filter(groups__name = group , dispensary__ward__id = ward_id )
         else:
-            queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = wardName)
+            queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__id = ward_id)
 
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
@@ -242,6 +276,7 @@ class GetWardWiseSUerList(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
     serializer_class = CustomUserSerializer
     model = serializer_class.Meta.model
+    filter_backends = (filters.SearchFilter,)
 
     def get_queryset(self):
         """
@@ -250,12 +285,16 @@ class GetWardWiseSUerList(generics.ListAPIView):
         group = self.kwargs.get('group')
         # wardName = self.kwargs.get('ward')
         # print(group , wardName)
-        wardName = self.request.user.ward
-        queryset = self.model.objects.filter(groups__name = group  , section__healthPost__ward__wardName = wardName)
+        ward_id= self.request.user.ward.id
+        queryset = self.model.objects.filter(groups__name = group  , section__healthPost__ward__id = ward_id)
    
         search_terms = self.request.query_params.get('search', None)
         if search_terms:
-            queryset = queryset.filter(section__healthPost__ward__wardName__icontains=search_terms)
+            queryset = queryset.filter(Q(section__healthPost__ward__wardName__icontains=search_terms)|
+                                         Q(username__icontains=search_terms) |
+                                            Q(phoneNumber__icontains=search_terms) |
+                                            Q(health_Post__healthPostName__icontains=search_terms))
+                                       
 
         return queryset
     
@@ -467,7 +506,6 @@ def MoHDashboard(request):
                 data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
                 data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
                 data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-
         else:
             #Data For Only Ward Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId ).count()
