@@ -276,6 +276,7 @@ class GetWardWiseSUerList(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
     serializer_class = CustomUserSerializer
     model = serializer_class.Meta.model
+    filter_backends = (filters.SearchFilter,)
 
     def get_queryset(self):
         """
@@ -289,7 +290,11 @@ class GetWardWiseSUerList(generics.ListAPIView):
    
         search_terms = self.request.query_params.get('search', None)
         if search_terms:
-            queryset = queryset.filter(section__healthPost__ward__wardName__icontains=search_terms)
+            queryset = queryset.filter(Q(section__healthPost__ward__wardName__icontains=search_terms)|
+                                         Q(username__icontains=search_terms) |
+                                            Q(phoneNumber__icontains=search_terms) |
+                                            Q(health_Post__healthPostName__icontains=search_terms))
+                                       
 
         return queryset
     
