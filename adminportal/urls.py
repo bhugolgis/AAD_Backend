@@ -17,7 +17,6 @@ urlpatterns = [
         path('UserCountsAPI', UserCountsAPI.as_view(), name='UserCountsAPI'),
         path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
 
-        path('MoHDashboard', MoHDashboard, name='MoHDashboard'),
 
         path('AdminDashboard', AdminDashboard, name='AdminDashboard'),
 

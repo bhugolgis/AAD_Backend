@@ -25,7 +25,9 @@ urlpatterns = [
     path('PatientsForTertairyDoctorList', views.PatientsForTertairyDoctorList, name='PatientsForTertairyDoctorList'),
 
     path('labTestsList/', labTestsList, name='labTestsList'),
-
+    
+    
+    path('MoHDashboard', MoHDashboard, name='MoHDashboard'),
 
 
     
