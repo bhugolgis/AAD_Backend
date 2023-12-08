@@ -15,10 +15,9 @@ urlpatterns = [
         path('DownloadWardtwiseUserList/<int:id>', DownloadWardwiseUserList.as_view(), name='DownloadWardtwiseUserList'),
         path('DownloadDispensarywiseUserList/<int:id>', DownloadDispensarywiseUserList.as_view(), name='DownloadDispensarywiseUserList'),
         path('UserCountsAPI', UserCountsAPI.as_view(), name='UserCountsAPI'),
-        # path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
+        path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
         path('GetDeactivatedUserList', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),
 
-        path('MoHDashboard', MoHDashboard, name='MoHDashboard'),
 
         path('AdminDashboard', AdminDashboard, name='AdminDashboard'),
 
