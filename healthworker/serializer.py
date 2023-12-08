@@ -7,7 +7,7 @@ from drf_extra_fields.fields import Base64ImageField
 # member detail.
 class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     demandLetter = Base64ImageField(required=False)
-    # familyHead = serializers.IntegerField(required = True ) 
+
     class Meta:
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
@@ -19,6 +19,8 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if 'name' not in data or data["name"] == '':
             raise serializers.ValidationError('name can not be empty !!')
+        if 'aadharCard' not in data or data["aadharCard"] == '':
+            raise serializers.ValidationError('aadharCard can not be empty !!')
         if 'gender' not in data  or data['gender'] == '' :
             raise serializers.ValidationError('gender can not be empty !!')
         if 'age' not in data  or data['age'] == '' :
@@ -111,6 +113,7 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
             instance = familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
             instance.referels.add(*reffer)
             instance.referels.add(*vulnerable)
+            
         return head
     
 

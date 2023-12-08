@@ -252,7 +252,15 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'today_family_count' : today_family_count,
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
-            'citizen_above_30' : citizen_above_30 } , status= status.HTTP_200_OK )
+            'citizen_above_30' : citizen_above_30 ,
+            'diabetes' : 0,
+            'hypertension' : 0 ,
+            'oral_Cancer' : 0,
+            'cervical_cancer' : 0,
+            'copd' : 0,
+            'asthama' : 0,
+            'tb' : 0,
+            'communicable' : 0 } , status= status.HTTP_200_OK )
     
     
 class GetCitizenList(generics.ListAPIView):
@@ -310,8 +318,6 @@ class getvulnerableOptionList(generics.ListAPIView):
     model = serializer_class.Meta.model
     queryset = model.objects.all()
 
-   
-
 class GetFamilyList(generics.ListAPIView):
     serializer_class = GetFamilyHeadListSerialzier
     model = serializer_class.Meta.model
@@ -350,8 +356,6 @@ class GetFamilyList(generics.ListAPIView):
             serializer = self.get_serializer(total_list , many = True ).data
             return Response( serializer , status= status.HTTP_200_OK)
         
-
-
 # The above class is a generic ListAPIView that retrieves blood collection details for family members,
 # with search functionality based on the blood collection location.
 class GetBloodCollectionDetail(generics.ListAPIView):

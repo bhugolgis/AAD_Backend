@@ -167,6 +167,7 @@ class familyMembers(models.Model):
     vulnerable_choices  = models.ManyToManyField(vulnerableOptions , related_name= 'vulnerability_choices', blank = True )
     vulnerable_reason = models.TextField(max_length=500 , blank  = True , null = True )
 
+
 class PatientPathlab(models.Model): 
     
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
@@ -194,7 +195,7 @@ class PatientPathLabReports(models.Model):
     pdfResult = models.FileField(upload_to='patientPathLabResults'  , max_length=500 , blank = True , null = True)
     pdfUrl = models.URLField(max_length= 500 , blank = True , null = True )
     jsonResult = models.JSONField(blank = True , null = True )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add = True)
 
 class MedicalOfficerConsultancy(models.Model):
     #patientLabTest to patientTest

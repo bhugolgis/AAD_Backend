@@ -35,6 +35,12 @@ class AddUserSerializer(serializers.ModelSerializer):
 		return customuser
 	
 
+class GetDeactivatedUserListSerializer(serializers.ModelSerializer):
+	class Meta:
+		model  = CustomUser
+		fields = ( "id", "name","username", "phoneNumber", "emailId" , "health_Post",
+					 "HealthCareCenters" ,"section" , "ward" , "is_active" )
+
 class AddUserByMOHSerializer(serializers.ModelSerializer):
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 
