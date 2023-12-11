@@ -1101,13 +1101,9 @@ class LoginView(generics.GenericAPIView):
                                 'name' : user_data.name,         
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                # 'ward' : user_data.section.healthPost.ward.wardName ,
                                 'healthPostName' : user_data.health_Post.healthPostName,
                                 'healthPostID' : user_data.health_Post.id,
-                                # 'areaId':user_data.section.healthPost.healthPost.id,
-                                # 'areas':user_data.section.healthPost.area.areas,
-                                # 'sectionId':user_data.section.id,
-                                # 'sectionName':user_data.section.sectionName,
+                            
 
                                 'Group': group}, status=200)
                         elif group == "mo":
@@ -1116,17 +1112,11 @@ class LoginView(generics.GenericAPIView):
                                 'Token': token,
                                 'status': 'success',
                                 'id': user_data.id,
-                                # 'email': user_data.emailId,
                                 'name' : user_data.name,         
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                # 'ward' : user_data.section.healthPost.ward.wardName ,
-                                # 'healthPostName' : user_data.health_Post.healthPostName,
-                                # 'healthPostID' : user_data.health_Post.id,
                                 'dispensaryId':user_data.dispensary.id,
                                 'dispensaryName':user_data.dispensary.dispensaryName,
-                                # 'sectionId':user_data.section.id,
-                                # 'sectionName':user_data.section.sectionName,
                                 'Group': group}, status=200)            
                         elif group == "phcc":
                             return Response({
@@ -1137,10 +1127,6 @@ class LoginView(generics.GenericAPIView):
                                 'name' : user_data.name,         
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                # 'ward' : user_data.section.healthPost.ward.wardName ,
-                                # 'healthPostName' : user_data.health_Post.healthPostName,
-                                # 'healthPostID' : user_data.health_Post.id,
-                                # 'dispensaryId':user_data.dispensary.id,
                                 'healthCareName':user_data.HealthCareCenters.healthCareName,
                                 'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
                                 'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
@@ -1158,17 +1144,11 @@ class LoginView(generics.GenericAPIView):
                                 'name' : user_data.name,         
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                # 'ward' : user_data.section.healthPost.ward.wardName ,
-                                # 'healthPostName' : user_data.health_Post.healthPostName,
-                                # 'healthPostID' : user_data.health_Post.id,
-                                # 'dispensaryId':user_data.dispensary.id,
                                 'healthCareName':user_data.HealthCareCenters.healthCareName,
                                 'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
                                 'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
                                 'healthCareType':user_data.HealthCareCenters.healthCareType[0],
 
-                                # 'sectionId':user_data.section.id,
-                                # 'sectionName':user_data.section.sectionName,
                                 'Group': group}, status=200)
                         elif group == "thcc":
                             return Response({
@@ -1179,18 +1159,12 @@ class LoginView(generics.GenericAPIView):
                                 'name' : user_data.name,         
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                # 'ward' : user_data.section.healthPost.ward.wardName ,
-                                # 'healthPostName' : user_data.health_Post.healthPostName,
-                                # 'healthPostID' : user_data.health_Post.id,
-                                # 'dispensaryId':user_data.dispensary.id,
                                 'healthCareName':user_data.HealthCareCenters.healthCareName,
                                 'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
                                 'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
                                 'healthCareType':user_data.HealthCareCenters.healthCareType[0],
-
-                                # 'sectionId':user_data.section.id,
-                                # 'sectionName':user_data.section.sectionName,
                                 'Group': group}, status=200)
+                        
                         elif group == "Family Head":
                             return Response({
                                 'message': 'Login successful',
@@ -1224,6 +1198,8 @@ class LoginView(generics.GenericAPIView):
                                 'name' : user_data.name,         
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
+                                'ward_id' : user_data.ward.id ,
+                                'ward_name' : user_data.ward.wardName,
                                 'Group': group
                             
                         })

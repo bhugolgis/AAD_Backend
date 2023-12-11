@@ -107,13 +107,15 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
         member_id_counter = 1
         for family in familyMembers_details:
             reffer = family.pop('referels')
+            # print(reffer , "referels")
             vulnerable = family.pop('vulnerable_choices')
+            # print(vulnerable , "vulnerable_choices")
             member_id = str(head.familyId) + '-' + str(member_id_counter).zfill(2)
             member_id_counter += 1
             instance = familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
             instance.referels.add(*reffer)
-            instance.referels.add(*vulnerable)
-            
+            instance.vulnerable_choices.add(*vulnerable)
+
         return head
     
 

@@ -44,7 +44,6 @@ class InsertUsersByadmin(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        print(request.user.groups.all().first())
         try:
             if serializer.is_valid():
                 group = Group.objects.get(name=serializer.validated_data.get("group"))
@@ -75,7 +74,6 @@ class InsertUsersByadmin(generics.GenericAPIView):
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
 class GetDeactivatedUserList(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
     serializer_class = GetDeactivatedUserListSerializer
@@ -113,7 +111,6 @@ class GetDeactivatedUserList(generics.ListAPIView):
                         'message': 'Data fetched successfully', 
                         'data': serializer.data})
     
-
 class InsertUsersByMOH(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserByMOHSerializer
@@ -315,7 +312,6 @@ class GetWardWiseSUerList(generics.ListAPIView):
                         'message': 'Data fetched successfully', 
                         'data': serializer.data})
 
-
 class  MOHDashboardView(generics.GenericAPIView):
     permission_classes= (IsAuthenticated , IsMOH)
     queryset = familyMembers.objects.all()
@@ -343,8 +339,7 @@ class  MOHDashboardView(generics.GenericAPIView):
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
             'citizen_above_30' : citizen_above_30, } , status= 200)
-        
-     
+            
 class DownloadHealthpostwiseUserList(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
 
@@ -370,7 +365,6 @@ class DownloadHealthpostwiseUserList(generics.GenericAPIView):
         wb.save(response)
         return response
     
-
 class DownloadWardwiseUserList(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
 
@@ -397,7 +391,6 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
         wb.save(response)
         return response
     
-
 class DownloadDispensarywiseUserList(generics.GenericAPIView):
 
     # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
@@ -427,20 +420,16 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
         wb.save(response)
         return response
     
+
+# class SwapUserAPI(generics.GenericAPIView):
+
+#     def get(self , request, *args, **kwargs):
+#         old_user = CustomUser.objects.get(id = id) 
+#         if old_user :
+#             old_user.is_active = False
+            
+            
     
-# from rest_framework import serializers
-
-# class DashboardFilterSerializer(serializers.Serializer):
-#     # fields for your filters
-#     # wardName = serializers.CharField(required=False)
-#     # wardName = serializers.CharField(required=False)
-
-#     wardId = serializers.IntegerField(required=False)
-#     healthPostId = serializers.IntegerField(required=False)
-#     UserId = serializers.IntegerField(required=False)
-
-    
-
 @permission_classes((IsAuthenticated,))
 @api_view(['GET'])
 def MoHDashboard(request):
@@ -563,11 +552,6 @@ def MoHDashboard(request):
             'message': 'Successfully Fetched',
             'data': data,
         })
-
-
-
-
-
 
 # @permission_classes((IsAuthenticated,))
 @api_view(['GET'])

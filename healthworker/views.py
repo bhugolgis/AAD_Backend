@@ -117,8 +117,8 @@ class PostSurveyForm(generics.GenericAPIView):
                 except:
                     key , value = list(value[1].items())[0]
                     error_message = str(key) + " ," +str(value[0])
-            print(serializer.errors)
-            print(error_message)
+            # print(serializer.errors)
+            # print(error_message)
             return Response({'status': 'error', 
                             'message' :error_message} , status = status.HTTP_400_BAD_REQUEST)
 
@@ -255,11 +255,11 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'citizen_above_30' : citizen_above_30 ,
             'diabetes' : 0,
             'hypertension' : 0 ,
-            'oral_Cancer' : 0,
-            'cervical_cancer' : 0,
-            'copd' : 0,
-            'asthama' : 0,
-            'tb' : 0,
+            'oral_Cancer' : 0 ,
+            'cervical_cancer' : 0 ,
+            'copd' : 0 ,
+            'asthama' : 0 ,
+            'tb' : 0 ,
             'communicable' : 0 } , status= status.HTTP_200_OK )
     
     
