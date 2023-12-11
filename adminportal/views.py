@@ -568,12 +568,16 @@ def AdminDashboard(request):
     # if request.user.is_authenticated:
     #     group = request.user.groups.values_list("name", flat=True).first()
     data = {}
+    data["TotalMoCount"] = CustomUser.objects.filter(groups__id=12).count()
+    data["TotalChvAshaCount"] = CustomUser.objects.filter(groups__id=13).count()
+    data["TotalHealthWorkerCount"] = CustomUser.objects.filter(groups__id=4).count()
+
     # wardId =  request.user.ward.id
     if gender:
         data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.all().count()
         data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(gender=gender).count()
-        data["NoOfMaleEnrolled"] = familyMembers.objects.filter(gender="male").count()
-        data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(gender="female").count()
+        data["NoOfMaleEnrolled"] = familyMembers.objects.filter(gender="M").count()
+        data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(gender="F").count()
 
         data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,gender=gender).count()
         data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,gender=gender).count()
@@ -593,8 +597,8 @@ def AdminDashboard(request):
         if wardId:
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender=gender).count()
-            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="male").count()
-            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="female").count()
+            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="M").count()
+            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="F").count()
 
 
             data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,gender=gender,familyHead__area__healthPost__ward_id  =wardId).count()
@@ -617,8 +621,8 @@ def AdminDashboard(request):
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender=gender,area__healthPost_id=healthPostId).count()
 
-            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="male",area__healthPost_id=healthPostId).count()
-            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="female",area__healthPost_id=healthPostId).count()
+            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="M",area__healthPost_id=healthPostId).count()
+            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="F",area__healthPost_id=healthPostId).count()
 
 
             data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
@@ -640,8 +644,8 @@ def AdminDashboard(request):
                 #Data For  Ward and HealthPost Filter and User Id Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,user_id=UserId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender=gender,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="male",area__healthPost_id=healthPostId,user_id=UserId).count()
-            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="female",area__healthPost_id=healthPostId,user_id=UserId).count()
+            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="M",area__healthPost_id=healthPostId,user_id=UserId).count()
+            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="F",area__healthPost_id=healthPostId,user_id=UserId).count()
 
            
             data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
@@ -664,8 +668,8 @@ def AdminDashboard(request):
         #Data For Only Ward Filter
         data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.all().count()
         data["NoOfCitizenEnrolled"] = familyMembers.objects.all().count()
-        data["NoOfMaleEnrolled"] = familyMembers.objects.filter(gender="male").count()
-        data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(gender="female").count()
+        data["NoOfMaleEnrolled"] = familyMembers.objects.filter(gender="M").count()
+        data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(gender="F").count()
 
         data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60).count()
         data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60).count()
@@ -686,8 +690,8 @@ def AdminDashboard(request):
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId).count()
 
-            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="male").count()
-            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="female").count()
+            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="M").count()
+            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="F").count()
 
 
             data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,familyHead__area__healthPost__ward_id  =wardId).count()
@@ -710,8 +714,8 @@ def AdminDashboard(request):
                 #Data For  Ward and HealthPost Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
-            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="male",area__healthPost_id=healthPostId).count()
-            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="female",area__healthPost_id=healthPostId).count()
+            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="M",area__healthPost_id=healthPostId).count()
+            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="F",area__healthPost_id=healthPostId).count()
 
             
             data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
@@ -734,8 +738,8 @@ def AdminDashboard(request):
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,user_id=UserId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
             
-            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="male",area__healthPost_id=healthPostId,user_id=UserId).count()
-            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="female",area__healthPost_id=healthPostId,user_id=UserId).count()
+            data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="M",area__healthPost_id=healthPostId,user_id=UserId).count()
+            data["NoOfFemaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="F",area__healthPost_id=healthPostId,user_id=UserId).count()
 
             
             

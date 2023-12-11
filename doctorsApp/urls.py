@@ -27,7 +27,7 @@ urlpatterns = [
     path('labTestsList/', labTestsList, name='labTestsList'),
     
     
-    path('MoHDashboard', MoHDashboard, name='MoHDashboard'),
+    path('MoDashboard', MoDashboard, name='MoDashboard'),
 
 
     
