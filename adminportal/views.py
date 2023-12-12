@@ -11,7 +11,6 @@ from .permissions import *
 from rest_framework.permissions import IsAuthenticated , AllowAny,IsAdminUser
 from rest_framework.decorators import permission_classes
 from rest_framework.decorators import api_view
-
 from rest_framework.views import APIView
 from rest_framework import filters
 from rest_framework.pagination import LimitOffsetPagination
@@ -230,17 +229,17 @@ class userListAPI(generics.ListAPIView):
     # permission_classes = (IsAuthenticated , IsAdmin)
     filter_backends = (filters.SearchFilter,)
 
-    def get_queryset(self):
+    def get_queryset(self ):
         """
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
         group = self.kwargs.get('group')
-        ward_id = self.kwargs.get('ward_id')
-       
+        ward_name = self.kwargs.get('ward_name')
+        # print(ward_name)
         if group == 'mo':
-            queryset = self.model.objects.filter(groups__name = group , dispensary__ward__id = ward_id )
+            queryset = self.model.objects.filter(groups__name = group , dispensary__ward__wardName = ward_name )
         else:
-            queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__id = ward_id)
+            queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = ward_name)
 
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
@@ -254,8 +253,8 @@ class userListAPI(generics.ListAPIView):
         return queryset
      
     def get(self, request, *args, **kwargs):
-
-        queryset = self.get_queryset()
+        
+        queryset = self.get_queryset( )
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

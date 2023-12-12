@@ -22,7 +22,10 @@ urlpatterns = [
         path('AdminDashboard', AdminDashboard, name='AdminDashboard'),
 
 
-        re_path(r'^GetuserListAPI/(?P<group>.+)/(?P<ward_id>.+)$', userListAPI.as_view(), name='user-list'),
+        # re_path(r'^GetuserListAPI/(?P<group>.+)/(?P<ward_id>.+)$', userListAPI.as_view(), name='user-list'),
+        # re_path(r'^GetuserListAPI/(?P<group>.+)/(?P<ward_Name>.+)$', userListAPI.as_view(), name='user-list'),
+        re_path(r'^GetuserListAPI/(?P<ward_name>.+)/(?P<group>.+)$', userListAPI.as_view(), name='user-list'),
+
         # re_path(r'^GetWardWiseSUerList/(?P<group>.+)/(?P<ward>.+)$', GetWardWiseSUerList.as_view(), name='user-list'),
         re_path(r'^GetWardWiseSUerList/(?P<group>.+)$', GetWardWiseSUerList.as_view(), name='user-list'),
 
