@@ -74,15 +74,18 @@ class InsertUsersByadmin(generics.GenericAPIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class GetDeactivatedUserList(generics.ListAPIView):
+    permission_classes = [IsAuthenticated , IsAdmin]
     pagination_class = LimitOffsetPagination
     serializer_class = GetDeactivatedUserListSerializer
     model = serializer_class.Meta.model
     filter_backends = (filters.SearchFilter,)
-    # permission_classes = (IsAuthenticated , IsAdmin)
 
     def get_queryset(self):
-        # group = self.user.groups.all().first()
-        queryset = self.model.objects.filter(is_active=False  , created_by__groups__name = 'MOH'  )
+        ward_name = self.kwargs.get('ward_name')
+        group = self.kwargs.get('group')
+
+        queryset = self.model.objects.filter( is_active=False  , created_by__groups__name = 'MOH' , 
+                                             section__healthPost__ward__wardName = ward_name , groups__name = group )
 
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
@@ -106,7 +109,7 @@ class GetDeactivatedUserList(generics.ListAPIView):
                                                 'data': serializer.data})
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response({'status': 'success',
+        return Response({'status': 'success', 
                         'message': 'Data fetched successfully', 
                         'data': serializer.data})
     
@@ -154,6 +157,101 @@ class UpdateUserDetails(generics.GenericAPIView):
     serializer_class  = UpdateUserDetailsSerializer
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor | IsMOH)
     parser_classes = [MultiPartParser]
+
+    def get_instance(self, pk):
+# 		"""
+# 		The function `get_instance` retrieves a User instance from the database based on the provided id.
+
+# 		:param id: The `id` parameter is the primary key of the User object that we want to retrieve. It is
+# 		used to uniquely identify the User instance in the database
+# 		:return: an instance of the User model with the specified id if it exists. If the User with the
+# 		specified id does not exist, it returns None.
+# 		""
+        try:
+            instance = CustomUser.objects.get(pk = pk)
+            return instance
+        except CustomUser.DoesNotExist:
+            return None
+        
+    def get_group(self, name):
+        """
+        The function `get_group` takes a name parameter and returns an instance of the Group model with
+        that name, or None if no such instance exists.
+
+        :param name: The name of the group you want to retrieve
+        :return: an instance of the Group model if a group with the specified name exists. If no group is
+        found, it returns None.
+        """
+        try:
+            instance = Group.objects.get(name=name)
+            return instance
+        except Exception:
+            return None
+        
+    def handle_update(self, request, user_id, partial = False):
+        """
+        The function `handle_update` is used to update user data, including the group the user belongs to,
+        and returns a response indicating the success or failure of the update.
+
+        :param request: The `request` parameter is the HTTP request object that contains information about
+        the current request, such as the request method, headers, and data
+        :param user_id: The `user_id` parameter is the unique identifier of the user whose data needs to be
+        updated
+        :param partial: The `partial` parameter is a boolean flag that indicates whether the update
+        operation should be partial or not. If `partial` is set to `True`, it means that only a subset of
+        fields in the user data will be updated, while the rest will remain unchanged. If `partial` is set,
+        defaults to False (optional)
+        :return: a Response object. The content of the response object includes a message, status, and data
+        (if applicable).
+        """
+        group_name : str
+        if request.data.get("group",None):
+            request.data._mutable = True
+            group_name = request.data.pop("group")[0]
+            group = self.get_group(group_name)
+            if group is None:
+                return Response({
+                    "message":"Group with name %s does not exist" %(group_name),
+                    "status":"error"
+                    },status=status.HTTP_400_BAD_REQUEST)
+            
+        instance = self.get_instance(user_id)
+        if instance is None:
+            return Response({
+                "message":"There is no user data for id {val}".format(val=user_id),
+                "status":"error"
+                },status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(data = request.data, instance = instance,
+            partial = partial)
+
+        if serializer.is_valid():
+            user = serializer.save()
+            if group_name:
+                user.groups.clear()
+                user.groups.add(group)
+            # The `add_user_history` function is used to add a user history entry when a user is created or
+            # updated. It takes three parameters:
+            # add_user_history(user, request, created=False)
+            data = UpdateUserDetailsSerializer(user,context=self.get_serializer_context()).data
+
+            return Response({
+                "message":"User data updated successfully",
+                "status":"success",
+                "data":data
+                })
+        # error = error_simplifier(serializer.errors)
+        return Response({
+            "message": serializer.errors ,
+            "status":"error"
+            },status=status.HTTP_400_BAD_REQUEST)
+    
+    # def put(self, request, user_id, *args, **kwargs):
+    #     return self.handle_update(request, user_id)
+    
+    # def patch(self, request, user_id, *args, **kwargs):
+    #     return self.handle_update(request, user_id, partial = True)  
+
 
     def patch(self, request, pk):
         try:
@@ -234,8 +332,9 @@ class userListAPI(generics.ListAPIView):
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
         group = self.kwargs.get('group')
+        print(group)
         ward_name = self.kwargs.get('ward_name')
-        # print(ward_name)
+    
         if group == 'mo':
             queryset = self.model.objects.filter(groups__name = group , dispensary__ward__wardName = ward_name )
         else:
@@ -418,7 +517,110 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
         response['Content-Disposition'] = f'attachment; filename="{dispensary_name.dispensaryName}.xlsx"'
         wb.save(response)
         return response
-    
+
+
+# class UpdateUser(generics.GenericAPIView):
+# 	"""
+# 	This API will update the data of an existing user
+# 	Only admins are authorized to perform this action
+# 	"""
+# 	permission_classes = (IsAdmin,)
+# 	serializer_class = UpdateUserSerializer
+# 	parser_classes = (MultiPartParser,)
+
+# 	def get_instance(self, id):
+# 		"""
+# 		The function `get_instance` retrieves a User instance from the database based on the provided id.
+
+# 		:param id: The `id` parameter is the primary key of the User object that we want to retrieve. It is
+# 		used to uniquely identify the User instance in the database
+# 		:return: an instance of the User model with the specified id if it exists. If the User with the
+# 		specified id does not exist, it returns None.
+# 		"""
+# 		try:
+# 			instance = User.objects.get(pk = id)
+# 			return instance
+# 		except User.DoesNotExist:
+# 			return None
+
+# 	def get_group(self, name):
+# 		"""
+# 		The function `get_group` takes a name parameter and returns an instance of the Group model with
+# 		that name, or None if no such instance exists.
+
+# 		:param name: The name of the group you want to retrieve
+# 		:return: an instance of the Group model if a group with the specified name exists. If no group is
+# 		found, it returns None.
+# 		"""
+# 		try:
+# 			instance = Group.objects.get(name=name)
+# 			return instance
+# 		except Exception:
+# 			return None
+
+# 	#This is the common function for handling updates
+    # def handle_update(self, request, user_id, partial = False):
+# 		"""
+# 		The function `handle_update` is used to update user data, including the group the user belongs to,
+# 		and returns a response indicating the success or failure of the update.
+
+# 		:param request: The `request` parameter is the HTTP request object that contains information about
+# 		the current request, such as the request method, headers, and data
+# 		:param user_id: The `user_id` parameter is the unique identifier of the user whose data needs to be
+# 		updated
+# 		:param partial: The `partial` parameter is a boolean flag that indicates whether the update
+# 		operation should be partial or not. If `partial` is set to `True`, it means that only a subset of
+# 		fields in the user data will be updated, while the rest will remain unchanged. If `partial` is set,
+# 		defaults to False (optional)
+# 		:return: a Response object. The content of the response object includes a message, status, and data
+# 		(if applicable).
+# 		"""
+        # group_name : str
+        # if request.data.get("group",None):
+        #     request.data._mutable = True
+        #     group_name = request.data.pop("group")[0]
+        #     group = self.get_group(group_name)
+        #     if group is None:
+        #         return Response({
+        #             "message":"Group with name %s does not exist" %(group_name),
+        #             "status":"error"
+        #             },status=status.HTTP_400_BAD_REQUEST)
+        # instance = self.get_instance(user_id)
+        # if instance is None:
+        #     return Response({
+        #         "message":"There is no user data for id {val}".format(val=user_id),
+        #         "status":"error"
+        #         },status=status.HTTP_400_BAD_REQUEST)
+
+        # serializer = self.get_serializer(data = request.data, instance = instance,
+        #     partial = partial)
+
+        # if serializer.is_valid():
+        #     user = serializer.save()
+        #     if group_name:
+        #         user.groups.clear()
+        #         user.groups.add(group)
+        #     # The `add_user_history` function is used to add a user history entry when a user is created or
+        #     # updated. It takes three parameters:
+        #     # add_user_history(user, request, created=False)
+        #     data = UserSerializer(user,context=self.get_serializer_context()).data
+
+        #     return Response({
+        #         "message":"User data updated successfully",
+        #         "status":"success",
+        #         "data":data
+        #         })
+        # error = error_simplifier(serializer.errors)
+        # return Response({
+        #     "message":error,
+        #     "status":"error"
+        #     },status=status.HTTP_400_BAD_REQUEST)
+
+# 	def put(self, request, user_id, *args, **kwargs):
+# 		return self.handle_update(request, user_id)
+
+# 	def patch(self, request, user_id, *args, **kwargs):
+# 		return self.handle_update(request, user_id, partial = True)  
 
 # class SwapUserAPI(generics.GenericAPIView):
 

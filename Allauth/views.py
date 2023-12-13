@@ -1282,6 +1282,7 @@ class HealthCareCentersDetail(APIView):
             return HealthCareCenters.objects.get(pk=pk)
         except HealthCareCenters.DoesNotExist:
             raise Http404
+        
 
     def get(self, request, pk):
         healthcare_center = self.get_object(pk)
@@ -1313,7 +1314,7 @@ class GetCHV_ASHA_list(generics.GenericAPIView):
     serializer_class = CHV_ASHA_Serializer
     def get(self , request , section):
         try:
-            user_list = CustomUser.objects.filter(section = section , groups__name = 'CHV/ASHA')
+            user_list = CustomUser.objects.filter(section = section , groups__name = 'CHV-ASHA')
         except:
             return Response({
                 'status': 'error' ,

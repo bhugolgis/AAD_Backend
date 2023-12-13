@@ -3664,3 +3664,545 @@ Traceback (most recent call last):
   File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
     assert self.serializer_class is not None, (
 AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Internal Server Error: /adminportal/api/GetDeactivatedUserList/F/S
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 105, in get
+    queryset = self.get_queryset()
+  File "D:\Jafar\AAD\adminportal\views.py", line 90, in get_queryset
+    queryset = self.model.objects.filter( s_active=False  , created_by__groups__name = 'MOH' , section__healthPost__ward__wardName = ward_name)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1426, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1236, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 's_active' into field. Choices are: ASHA_CHV_family_Member, ASHA_CHV_family_head, HealthCareCenters, HealthCareCenters_id, PathLab, PriassignedDoctor, ReferByPrimaryDoctor, ReferBySecondaryDoctor, Registeruser, ReportCheckByDoctor, SecassignedDoctor, TerassignedDoctor, area, area_id, auth_token_set, created_by, created_by_id, date_joined, dispensary, dispensary_id, email, emailId, familysurveyor, first_name, groups, health_Post, health_Post_id, id, is_active, is_staff, is_superuser, last_login, last_name, logentry, moassignedDoctor, name, otpChecked, password, phoneNumber, referByDoctor, section, section_id, suggested_by_doctor, supervisorId, surveyDoneBy, user_permissions, username, ward, ward_id
+[35;1mHTTP GET /adminportal/api/GetDeactivatedUserList/F%2FS 500 [1.26, 127.0.0.1:60513][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.19, 10.202.100.219:50873][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:50873][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.09, 10.202.100.219:50996][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:50996][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51057][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51057][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.08, 10.202.100.219:51057][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51057][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51057][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51057][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51057][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51138][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51138][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.08, 10.202.100.219:51138][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51138][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.19, 10.202.100.219:51138][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51138][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51138][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51138][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.08, 10.202.100.219:51154][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51154][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51154][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51154][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51153][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51153][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.05, 10.202.100.219:51154][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.01, 10.202.100.219:51153][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.08, 10.202.100.219:51155][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.05, 10.202.100.219:51155][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.08, 10.202.100.219:51161][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:51161][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:51161][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.03, 10.202.100.219:51180][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.01, 10.202.100.219:51180][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.02, 10.202.100.219:51183][0m
+Bad Request: /adminportal/api/InsertUsersByadmin
+[31;1mHTTP POST /adminportal/api/InsertUsersByadmin 400 [0.09, 10.202.100.219:51184][0m
+Bad Request: /adminportal/api/InsertUsersByadmin
+[31;1mHTTP POST /adminportal/api/InsertUsersByadmin 400 [0.09, 10.202.100.219:51184][0m
+Bad Request: /adminportal/api/InsertUsersByadmin
+[31;1mHTTP POST /adminportal/api/InsertUsersByadmin 400 [0.08, 10.202.100.219:51184][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.07, 10.202.100.219:51259][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.09, 10.202.100.219:51296][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.07, 10.202.100.219:51296][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.09, 10.202.100.219:51306][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.08, 10.202.100.219:51306][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.08, 10.202.100.219:51306][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.09, 10.202.100.219:51306][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.08, 10.202.100.219:51306][0m
+Bad Request: /adminportal/api/UpdateUserDetailsAPI/4655
+[31;1mHTTP PATCH /adminportal/api/UpdateUserDetailsAPI/4655 400 [0.09, 10.202.100.219:51306][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.12, 10.202.100.219:51345][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.18, 10.202.100.219:51460][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.03, 10.202.100.219:51487][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.03, 10.202.100.219:51487][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.02, 10.202.100.219:51486][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.04, 10.202.100.219:51487][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.04, 10.202.100.219:51486][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.10, 10.202.100.219:51487][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A 401 [0.39, 10.202.100.219:51495][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.08, 10.202.100.219:51515][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.09, 10.202.100.219:51515][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.08, 10.202.100.219:51515][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.09, 10.202.100.219:51515][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 401 [0.09, 10.202.100.219:51515][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Unauthorized: /adminportal/api/GetDeactivatedUserList/F/S/CHV-ASHA
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/F%2FS/CHV-ASHA 401 [0.00, 10.202.100.219:51961][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.02, 10.202.100.219:52063][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.02, 10.202.100.219:52063][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.02, 10.202.100.219:52083][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.02, 10.202.100.219:52083][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.02, 10.202.100.219:52084][0m
+Not Found: /adminportal/api/GetDeactivatedUserList
+[33mHTTP GET /adminportal/api/GetDeactivatedUserList 404 [0.00, 10.202.100.219:52085][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A/healthworker
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/healthworker 401 [0.02, 10.202.100.219:52093][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A/healthworker
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/healthworker 401 [0.02, 10.202.100.219:52095][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A/healthworker
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/healthworker 401 [0.03, 10.202.100.219:52095][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA 401 [0.01, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA 401 [0.01, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA 401 [0.01, 10.202.100.219:52306][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA 401 [0.01, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA
+[31;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/CHV-ASHA 401 [0.00, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=nishant 401 [0.00, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=nishant 401 [0.00, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=nishant 401 [0.02, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=nishant 401 [0.00, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=nishant 401 [0.01, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=nishant 401 [0.01, 10.202.100.219:52307][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=Nisahht 401 [0.01, 10.202.100.219:52559][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=Nishant 401 [0.01, 10.202.100.219:52559][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=Nishant 401 [0.02, 10.202.100.219:52565][0m
+Unauthorized: /adminportal/api/GetWardWiseSUerList/healthworker
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/healthworker?search=Nishant 401 [0.01, 10.202.100.219:52565][0m
+Not Found: /adminportal/api/InsertUsers
+[33mHTTP POST /adminportal/api/InsertUsers 404 [0.01, 10.202.100.219:52565][0m
+Not Found: /adminportal/api/InsertUsers
+[33mHTTP POST /adminportal/api/InsertUsers 404 [0.01, 10.202.100.219:52565][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.09, 10.202.100.219:52565][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.12, 10.202.100.219:52565][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.08, 10.202.100.219:54376][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.15, 10.202.100.219:54726][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.13, 10.202.100.219:54726][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.13, 10.202.100.219:54726][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.17, 10.202.100.219:54735][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.12, 10.202.100.219:54735][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.17, 10.202.100.219:54786][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.21, 10.202.100.219:54853][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.15, 10.202.100.219:54853][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.13, 10.202.100.219:54881][0m
+Bad Request: /adminportal/api/InsertUsersByMOH
+[31;1mHTTP POST /adminportal/api/InsertUsersByMOH 400 [0.55, 10.202.100.219:54881][0m
+Bad Request: /healthworker/api/PostFamilyDetails
+[31;1mHTTP POST /healthworker/api/PostFamilyDetails 400 [0.10, 10.202.100.219:55017][0m
+Internal Server Error: /adminportal/api/GetDeactivatedUserList/A/healthworker
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 114, in get
+    'data': serializer.data})
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 507, in to_representation
+    for field in fields:
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `created_by__name` is not valid for model `CustomUser`.
+[35;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/healthworker 500 [0.28, 10.202.100.219:55400][0m
+Internal Server Error: /adminportal/api/GetDeactivatedUserList/A/healthworker
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 114, in get
+    'data': serializer.data})
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 507, in to_representation
+    for field in fields:
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 1076, in get_fields
+    field_class, field_kwargs = self.build_field(
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 1222, in build_field
+    return self.build_unknown_field(field_name, model_class)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 1340, in build_unknown_field
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: Field name `created_by__name` is not valid for model `CustomUser`.
+[35;1mHTTP GET /adminportal/api/GetDeactivatedUserList/A/healthworker 500 [0.16, 10.202.100.219:55399][0m
+Forbidden: /adminportal/api/GetWardWiseSUerList/mo
+[31;1mHTTP GET /adminportal/api/GetWardWiseSUerList/mo 403 [0.07, 10.202.100.219:56165][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.08, 10.202.100.219:56308][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:56356][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.06, 10.202.100.219:56356][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:56357][0m
+Unauthorized: /allauth/api/GetWardListAPI
+[31;1mHTTP GET /allauth/api/GetWardListAPI 401 [0.07, 10.202.100.219:56357][0m

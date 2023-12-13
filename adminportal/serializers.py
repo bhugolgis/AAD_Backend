@@ -36,10 +36,49 @@ class AddUserSerializer(serializers.ModelSerializer):
 	
 
 class GetDeactivatedUserListSerializer(serializers.ModelSerializer):
+	section = serializers.SerializerMethodField()
+	ward = serializers.SerializerMethodField()
+	health_Post = serializers.SerializerMethodField()
+	created_by = serializers.SerializerMethodField()
+
 	class Meta:
 		model  = CustomUser
 		fields = ( "id", "name","username", "phoneNumber", "emailId" , "health_Post",
-					 "HealthCareCenters" ,"section" , "ward" , "is_active" )
+					 "HealthCareCenters" ,"section" , "ward" , "is_active" , 'created_by',  )
+
+	def get_ward(self , data):
+		try:
+			Ward_Name = data.section.healthPost.ward.wardName
+		except:
+			try:
+				Ward_Name = data.dispensary.ward.wardName
+			except:
+				Ward_Name = ""
+		return Ward_Name
+	
+	def get_created_by(self , data):
+		try:
+			created_by = data.created_by.name
+		except:
+			created_by = ""
+			
+		return created_by
+	
+	def get_section(self , data):
+		try:
+			sectionName = data.section.sectionName
+		except:
+			sectionName = ''
+
+		return sectionName
+	
+	def get_health_Post(self , data):
+		try:
+			healthPostName = data.section.healthPost.healthPostName
+		except:
+			healthPostName = ''
+		return healthPostName
+	
 
 class AddUserByMOHSerializer(serializers.ModelSerializer):
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)

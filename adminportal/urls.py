@@ -16,7 +16,7 @@ urlpatterns = [
         path('DownloadDispensarywiseUserList/<int:id>', DownloadDispensarywiseUserList.as_view(), name='DownloadDispensarywiseUserList'),
         path('UserCountsAPI', UserCountsAPI.as_view(), name='UserCountsAPI'),
         path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
-        path('GetDeactivatedUserList', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),
+        re_path(r'^GetDeactivatedUserList/(?P<ward_name>.+)/(?P<group>.+)$', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),
 
 
         path('AdminDashboard', AdminDashboard, name='AdminDashboard'),

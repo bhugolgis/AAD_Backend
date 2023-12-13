@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser,BaseUserManager,PermissionsM
 from .managers import CustomUserManager
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import Group
 # from .models import familyHeadDetails
 
 
@@ -84,7 +85,15 @@ class CustomUser(AbstractUser, PermissionsMixin):
     def __str__(self) -> str:
          return self.username
 
-
+class UserApprovalRecords(models.Model):
+    user = models.ForeignKey(CustomUser , related_name= "UserApprovalRecords" , on_delete=models.SET_NULL , blank = True , null = True )
+    requester = models.ForeignKey(CustomUser , related_name= "UserRequester" , on_delete=models.SET_NULL , blank = True , null = True )
+    old_group = models.ForeignKey( Group, related_name = "user_old_Group" , on_delete= models.CASCADE ,blank = True , null = True )
+    new_group = models.ForeignKey( Group, related_name = "user_new_Group" , on_delete= models.CASCADE ,blank = True , null = True )
+    status = models.BooleanField( default=False)
+    request_date = models.DateTimeField()
+    approve_date = models.DateTimeField()
+    
 
 class sendOtp(models.Model):
     registerUser = models.ForeignKey(CustomUser,related_name="Registeruser",on_delete=models.CASCADE,null=True,blank=True)
