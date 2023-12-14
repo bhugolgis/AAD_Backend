@@ -252,14 +252,14 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
             'citizen_above_30' : citizen_above_30 ,
-            'diabetes' : 0,
-            'hypertension' : 0 ,
-            'oral_Cancer' : 0 ,
+            'diabetes' : 6,
+            'hypertension' : 11 ,
+            'oral_Cancer' : 9 ,
             'cervical_cancer' : 0 ,
-            'copd' : 0 ,
-            'asthama' : 0 ,
-            'tb' : 0 ,
-            'communicable' : 0 } , status= status.HTTP_200_OK )
+            'copd' : 8,
+            'asthama' : 4 ,
+            'tb' : 2,
+            'communicable' : 1 } , status= status.HTTP_200_OK )
     
     
 class GetCitizenList(generics.ListAPIView):
