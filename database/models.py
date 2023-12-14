@@ -91,8 +91,8 @@ class UserApprovalRecords(models.Model):
     old_group = models.ForeignKey( Group, related_name = "user_old_Group" , on_delete= models.CASCADE ,blank = True , null = True )
     new_group = models.ForeignKey( Group, related_name = "user_new_Group" , on_delete= models.CASCADE ,blank = True , null = True )
     status = models.BooleanField( default=False)
-    request_date = models.DateTimeField()
-    approve_date = models.DateTimeField()
+    request_date = models.DateTimeField(blank = True , null= True)
+    approve_date = models.DateTimeField(blank = True , null= True)
     
 
 class sendOtp(models.Model):
@@ -170,7 +170,7 @@ class familyMembers(models.Model):
     isLabTestReportGenerated = models.BooleanField(default=False)
     generalStatus = models.CharField(max_length=100 , default = 'Survey Completed' )
     cbacRequired = models.BooleanField( default= False)
-    referels = models.ManyToManyField(refereloptions , related_name="refereloptions_related" , blank = True )
+    referels = models.ManyToManyField(refereloptions , related_name="refereloptions_related" , blank = True , )
     deniedBy = models.CharField(max_length=100 , blank = True , null = True)
     vulnerable  = models.BooleanField(default=False)
     vulnerable_choices  = models.ManyToManyField(vulnerableOptions , related_name= 'vulnerability_choices', blank = True )

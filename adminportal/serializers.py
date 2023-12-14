@@ -4,6 +4,13 @@ from database.models import *
 from django.contrib.auth.models import Group
 
 
+
+class UpdateSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = UserApprovalRecords
+		fields = ('user' , 'requester' , 'new_group' , 'old_group' , 'status' , 'request_date' , 'approve_date')
+
+
 def get_group_choice():
 	"""
 	The function "get_group_choice" returns all the available group names in the database as a tuple of

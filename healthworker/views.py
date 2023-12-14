@@ -117,8 +117,7 @@ class PostSurveyForm(generics.GenericAPIView):
                 except:
                     key , value = list(value[1].items())[0]
                     error_message = str(key) + " ," +str(value[0])
-            # print(serializer.errors)
-            # print(error_message)
+     
             return Response({'status': 'error', 
                             'message' :error_message} , status = status.HTTP_400_BAD_REQUEST)
 

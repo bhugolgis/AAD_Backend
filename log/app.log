@@ -4296,3 +4296,1017 @@ Bad Request: /allauth/api/GetCHV_ASHA_list/22
 [31;1mHTTP GET /allauth/api/GetCHV_ASHA_list/22 400 [0.03, 127.0.0.1:59035][0m
 Bad Request: /allauth/api/GetCHV_ASHA_list/22
 [31;1mHTTP GET /allauth/api/GetCHV_ASHA_list/22 400 [0.02, 127.0.0.1:59035][0m
+Internal Server Error: /admin/database/userapprovalrecords/
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedTable: relation "database_userapprovalrecords" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "database_userapprovalreco...
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\contrib\admin\options.py", line 688, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\contrib\admin\sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\contrib\admin\options.py", line 1926, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\contrib\admin\options.py", line 836, in get_changelist_instance
+    return ChangeList(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\contrib\admin\views\main.py", line 123, in __init__
+    self.get_results(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\contrib\admin\views\main.py", line 279, in get_results
+    result_count = paginator.count
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\paginator.py", line 93, in count
+    return c()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 608, in count
+    return self.query.get_count(using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 568, in get_count
+    return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 554, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: relation "database_userapprovalrecords" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "database_userapprovalreco...
+                                          ^
+
+[35;1mHTTP GET /admin/database/userapprovalrecords/ 500 [0.18, 127.0.0.1:59202][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.23, 127.0.0.1:59720][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 19, in update_user_group
+    print(instance.group)
+AttributeError: 'UserApprovalRecords' object has no attribute 'group'
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.18, 127.0.0.1:59768][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 19, in update_user_group
+    print(instance.user.group)
+AttributeError: 'CustomUser' object has no attribute 'group'
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.16, 127.0.0.1:59804][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 19, in update_user_group
+    print(instance.user.group.name)
+AttributeError: 'CustomUser' object has no attribute 'group'
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.33, 127.0.0.1:59849][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 19, in update_user_group
+    print(instance.user.group.all())
+AttributeError: 'CustomUser' object has no attribute 'group'
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.16, 127.0.0.1:59867][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 19, in update_user_group
+    print(instance.user.group_id)
+AttributeError: 'CustomUser' object has no attribute 'group_id'
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.17, 127.0.0.1:59947][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\fields\__init__.py", line 2053, in get_prep_value
+    return int(value)
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'Group'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 21, in update_user_group
+    instance = Group.objects.get(id=instance.new_group)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 623, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\lookups.py", line 341, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\fields\__init__.py", line 2055, in get_prep_value
+    raise e.__class__(
+TypeError: Field 'id' expected a number but got <Group: healthworker>.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 981, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `UserApprovalRecords.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `UserApprovalRecords.objects.create()`. You may need to make the field read-only, or override the UpdateSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\fields\__init__.py", line 2053, in get_prep_value
+    return int(value)
+TypeError: int() argument must be a string, a bytes-like object or a real number, not 'Group'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 21, in update_user_group
+    instance = Group.objects.get(id=instance.new_group)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 623, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\lookups.py", line 341, in get_prep_lookup
+    return super().get_prep_lookup()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\lookups.py", line 85, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\fields\__init__.py", line 2055, in get_prep_value
+    raise e.__class__(
+TypeError: Field 'id' expected a number but got <Group: healthworker>.
+
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [1.16, 127.0.0.1:60046][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 21, in update_user_group
+    if instance.status == False:
+NameError: name 'Fa' is not defined
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.22, 127.0.0.1:60535][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 23, in update_user_group
+    instance.groups.clear()
+AttributeError: 'UserApprovalRecords' object has no attribute 'groups'
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.23, 127.0.0.1:60672][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 24, in update_user_group
+    print(instance.user.groups.all()[0] , "2nd print")
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.22, 127.0.0.1:60684][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 19, in update_user_group
+    print(instance.user.groups.all()[0] , "1st print")
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.19, 127.0.0.1:60742][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 19, in update_user_group
+    print(instance.user.groups.all()[0] , "1st print")
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 450, in __getitem__
+    return qs._result_cache[0]
+IndexError: list index out of range
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.27, 127.0.0.1:60758][0m
+Internal Server Error: /adminportal/api/updateGroupResquest
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 31, in post
+    serializer.save()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 962, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\base.py", line 892, in save_base
+    post_save.send(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 176, in send
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\dispatch\dispatcher.py", line 177, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "D:\Jafar\AAD\adminportal\signals.py", line 23, in update_user_group
+    instance.user.groups.all().clear()
+AttributeError: 'QuerySet' object has no attribute 'clear'
+[35;1mHTTP POST /adminportal/api/updateGroupResquest 500 [0.21, 127.0.0.1:60767][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Internal Server Error: /healthworker/api/PostSurveyForm
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\healthworker\views.py", line 106, in post
+    serializer.save(location = location , familyId = familyId ,user = user )
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\healthworker\serializer.py", line 109, in create
+    reffer = family.pop('referels')
+KeyError: 'referels'
+[35;1mHTTP POST /healthworker/api/PostSurveyForm 500 [0.51, 10.202.100.195:57810][0m
+Bad Request: /healthworker/api/PostSurveyForm
+[31;1mHTTP POST /healthworker/api/PostSurveyForm 400 [0.16, 10.202.100.195:57875][0m
+Internal Server Error: /healthworker/api/PostSurveyForm
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\healthworker\views.py", line 106, in post
+    serializer.save(location = location , familyId = familyId ,user = user )
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\healthworker\serializer.py", line 122, in create
+    instance.referels.add(*reffer)
+TypeError: django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager.add() argument after * must be an iterable, not NoneType
+[35;1mHTTP POST /healthworker/api/PostSurveyForm 500 [0.43, 10.202.100.195:57966][0m

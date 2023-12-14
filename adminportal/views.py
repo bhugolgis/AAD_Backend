@@ -22,6 +22,17 @@ from django.utils import timezone
 # Create your views here.
 
 
+class updateGroupResquest(generics.GenericAPIView):
+    parser_classes = [MultiPartParser]
+    serializer_class = UpdateSerializer 
+    def post(self, request ,  *args, **kwargs):
+        serializer = self.get_serializer(data = request.data )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(None)
+        else:
+            return Response(serializer.errors)
+
 class UserCountsAPI(APIView):
     def get(self, request, *args, **kwargs):
         all = CustomUser.objects.all()
@@ -230,9 +241,7 @@ class UpdateUserDetails(generics.GenericAPIView):
             if group_name:
                 user.groups.clear()
                 user.groups.add(group)
-            # The `add_user_history` function is used to add a user history entry when a user is created or
-            # updated. It takes three parameters:
-            # add_user_history(user, request, created=False)
+                
             data = UpdateUserDetailsSerializer(user,context=self.get_serializer_context()).data
 
             return Response({
