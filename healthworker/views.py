@@ -242,7 +242,16 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         citizen_above_60 =  self.get_queryset().filter(familySurveyor = request.user , age__gte = 60 ).count()
         citizen_above_30 =  self.get_queryset().filter(familySurveyor = request.user , age__gte = 30 ).count()
         today_family_count = self.FamilySurvey_count.filter(user = request.user , created_date__day = today.day ).count()
-
+        blood_collected_home = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'Home').count()
+        blood_collected_center = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'Center').count()
+        denieded_by_mo_count = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'AMO').count()
+        denieded_by_mo_individual = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'Individual Itself').count()
+        Referral_choice_further_management = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral for further management (known case)').count()
+        Referral_choice_suspect_symptoms = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral in case of suspect symptoms').count()
+        Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral for further diagnosis').count()
+        Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral In case of multiple co-morbid investigation').count()
+        Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral of Blood Collection at Dispensary').count()
+        
         return Response({
             'total_count' : total_citizen_count ,
             'todays_count' : todays_citizen_count ,
@@ -259,7 +268,17 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'copd' : 8,
             'asthama' : 4 ,
             'tb' : 2,
-            'communicable' : 1 } , status= status.HTTP_200_OK )
+            'communicable' : 1 ,
+            'blood_collected_home' : blood_collected_home , 
+            'blood_collected_center' : blood_collected_center ,
+            'denieded_by_mo_count' : denieded_by_mo_count , 
+            'denieded_by_mo_individual' : denieded_by_mo_individual ,
+            'Referral_choice_further_management' : Referral_choice_further_management ,
+            'Referral_choice_suspect_symptoms': Referral_choice_suspect_symptoms ,
+            'Referral_choice_diagnosis': Referral_choice_diagnosis ,
+            'Referral_choice_co_morbid_investigation': Referral_choice_co_morbid_investigation ,
+            'Referral_choice_Collection_at_dispensary': Referral_choice_Collection_at_Dispensary ,
+               } , status= status.HTTP_200_OK )
     
     
 class GetCitizenList(generics.ListAPIView):
