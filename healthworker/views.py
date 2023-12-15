@@ -14,6 +14,7 @@ from rest_framework import filters
 from django.utils import timezone
 from openpyxl import load_workbook 
 from django.contrib.auth.models import Group 
+from django.db.models import Q
 
 
 class verifyMobileNumber(APIView):
@@ -100,6 +101,7 @@ class PostSurveyForm(generics.GenericAPIView):
                 location = Point(long, lat, srid=4326)
             except:
                 location = None
+
             user =  request.user
             ward =  (user.section.healthPost.ward.wardName).replace(" ","")
             familyId = 'F-{ward}-{num}'.format(ward = ward, num = random.randint(0000000 , 9999999))
@@ -251,6 +253,8 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral for further diagnosis').count()
         Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral In case of multiple co-morbid investigation').count()
         Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral of Blood Collection at Dispensary').count()
+        diabetes_queryset = self.get_queryset().filter( Q(familySurveyor=request.user) &  Q(Questionnaire__part_a__answer__isnull=False))
+        print(diabetes_queryset)
         
         return Response({
             'total_count' : total_citizen_count ,

@@ -8,7 +8,40 @@ from django.contrib.auth.models import Group
 class UpdateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserApprovalRecords
-		fields = ('user' , 'requester' , 'new_group' , 'old_group' , 'status' , 'request_date' , 'approve_date')
+		fields = ('user' , 'requester' , 'new_group' , 'old_group' , 'status' , 'request_date' ,)
+
+
+class UpdateGroupRequest(serializers.ModelSerializer):
+	class Meta:
+		model = UserApprovalRecords
+		fields = ('id' , 'status' , 'approve_date')
+
+
+class GetGroupRequestListSerializer(serializers.ModelSerializer):
+	user = serializers.SerializerMethodField()
+	requester = serializers.SerializerMethodField()
+	class Meta:
+		model = UserApprovalRecords
+		fields = ('user','requester' , 'new_group' , 'old_group' , 'status' , 'request_date' , 'approve_date')
+		depth = 1
+
+	def get_user(self , data):
+		# print(data.user.name)
+		try:
+			user = data.user.name
+		except:
+			user = ""
+		return user
+	
+	def get_requester(self , data):
+		# print(data.requester.name)
+		try:
+			requester = data.requester.name
+		except:
+			requester = ""
+		return requester
+	
+
 
 
 def get_group_choice():
