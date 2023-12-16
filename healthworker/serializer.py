@@ -29,6 +29,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('mobileNo can not be empty !!')
         return data
 
+
 class getReferelOptionListSerialzier(serializers.ModelSerializer):
     class Meta:
         model = refereloptions
@@ -71,7 +72,7 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
 class PostSurveyFormSerializer(serializers.ModelSerializer):
     familyMembers_details = postFamilyMemberDetailSerializer(many = True)
     latitude = serializers.CharField(max_length=50,required=False)
-    longitude = serializers.CharField(max_length=50,required=False)
+    longitude = serializers.CharField(max_length=50, required=False)
 
     class Meta:
         model = familyHeadDetails
@@ -80,6 +81,8 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
                  'latitude' , 'longitude'  , 'familyMembers_details' , 'partialSubmit')
         
     def validate(self, data):
+        # print(data.latitude)
+        # print(data.longitude)
         """
         The function validates the data by checking if certain fields are present and not empty, and
         raises a validation error if any of the checks fail.
@@ -100,6 +103,7 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
         provided data.
         """
         familyMembers_details = data.pop('familyMembers_details')
+        # print(data.latitude , data.longitude)
         data.pop('latitude' , None)
         data.pop('longitude', None)
                

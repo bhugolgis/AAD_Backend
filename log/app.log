@@ -6989,3 +6989,121 @@ Traceback (most recent call last):
     arg, value = filter_expr
 ValueError: too many values to unpack (expected 2)
 [35;1mHTTP GET /adminportal/api/GetGroupList 500 [0.12, 127.0.0.1:63249][0m
+Bad Request: /healthworker/api/PostSurveyForm
+[31;1mHTTP POST /healthworker/api/PostSurveyForm 400 [0.10, 10.202.100.195:52598][0m
+Bad Request: /healthworker/api/PostSurveyForm
+[31;1mHTTP POST /healthworker/api/PostSurveyForm 400 [0.09, 10.202.100.195:52642][0m
+Bad Request: /healthworker/api/PostSurveyForm
+[31;1mHTTP POST /healthworker/api/PostSurveyForm 400 [0.13, 10.202.100.195:52683][0m
+Bad Request: /healthworker/api/PostSurveyForm
+[31;1mHTTP POST /healthworker/api/PostSurveyForm 400 [0.10, 10.202.100.195:52771][0m
+Bad Request: /healthworker/api/PostSurveyForm
+[31;1mHTTP POST /healthworker/api/PostSurveyForm 400 [0.13, 10.202.100.195:52822][0m
+Bad Request: /healthworker/api/PostSurveyForm
+[31;1mHTTP POST /healthworker/api/PostSurveyForm 400 [0.25, 10.202.100.195:55067][0m
+Internal Server Error: /healthworker/api/PostSurveyForm
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\healthworker\views.py", line 98, in post
+    if serializer.is_valid():
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 227, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 429, in run_validation
+    value = self.validate(value)
+  File "D:\Jafar\AAD\healthworker\serializer.py", line 84, in validate
+    print(data.latitude)
+AttributeError: 'collections.OrderedDict' object has no attribute 'latitude'
+[35;1mHTTP POST /healthworker/api/PostSurveyForm 500 [0.18, 10.202.100.195:55171][0m
+Internal Server Error: /healthworker/api/PostSurveyForm
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\healthworker\views.py", line 98, in post
+    if serializer.is_valid():
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 227, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 429, in run_validation
+    value = self.validate(value)
+  File "D:\Jafar\AAD\healthworker\serializer.py", line 84, in validate
+    print(data.latitude)
+AttributeError: 'collections.OrderedDict' object has no attribute 'latitude'
+[35;1mHTTP POST /healthworker/api/PostSurveyForm 500 [0.16, 10.202.100.195:55251][0m
+Internal Server Error: /healthworker/api/PostSurveyForm
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\healthworker\views.py", line 109, in post
+    serializer.save(location = location , familyId = familyId ,user = user )
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 212, in save
+    self.instance = self.create(validated_data)
+  File "D:\Jafar\AAD\healthworker\serializer.py", line 106, in create
+    # print(data.latitude , data.longitude)
+AttributeError: 'dict' object has no attribute 'latitude'
+[35;1mHTTP POST /healthworker/api/PostSurveyForm 500 [0.16, 10.202.100.195:55275][0m

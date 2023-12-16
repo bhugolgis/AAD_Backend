@@ -94,6 +94,7 @@ class PostSurveyForm(generics.GenericAPIView):
         
         """
         serializer = self.get_serializer(data = request.data)
+        # print(serializer)
         if serializer.is_valid():
             try:
                 lat = float(serializer.validated_data['latitude'] , None)
@@ -288,7 +289,6 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'Referral_choice_co_morbid_investigation': Referral_choice_co_morbid_investigation ,
             'Referral_choice_Collection_at_dispensary': Referral_choice_Collection_at_Dispensary ,
             } , status= status.HTTP_200_OK )
-    
     
 class GetCitizenList(generics.ListAPIView):
     serializer_class = GetCitizenListSerializer
