@@ -31,12 +31,12 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:9061"]
 # Step to Create docker images  
 # docker pull osgeo/gdal:ubuntu-small-latest
 # docker run -it osgeo/gdal:ubuntu-small-latest
-# docker build --tag image_name:latest .
+# docker build --tag arogya:latest .
 # docker image ls
 # docker run --name arogya -d -p 9061:9061 jafarkhan0/arogya:latest 
 # docker container ps
 
 # to push the image to the registry
 
-# docker tag claimassure jafarkhan0/claimassure_v1
-# docker push jafarkhan0/claimassure_v1
+# docker tag arogya jafarkhan0/arogya
+# docker push jafarkhan0/arogya

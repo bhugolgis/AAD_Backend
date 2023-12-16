@@ -19,6 +19,7 @@ urlpatterns = [
         path('updateGroupResquest', PostUserGroupResquest.as_view(), name='updateGroupResquest'),
         path('updateUserGroupRequest/<int:id>', updateUserGroupRequest.as_view(), name='updateUserGroupRequest'),
         path('GetGroupRequestList', GetGroupRequestList.as_view(), name='GetGroupRequestList'),
+        path('GetGroupList', GetGroupList.as_view(), name='GetGroupRequestList'),
         re_path(r'^GetDeactivatedUserList/(?P<ward_name>.+)/(?P<group>.+)$', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),
 
 

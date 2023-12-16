@@ -96,8 +96,8 @@ class PostSurveyForm(generics.GenericAPIView):
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             try:
-                lat = float(serializer.validated_data['latitude'])
-                long = float(serializer.validated_data['longitude'])
+                lat = float(serializer.validated_data['latitude'] , None)
+                long = float(serializer.validated_data['longitude'] , None)
                 location = Point(long, lat, srid=4326)
             except:
                 location = None
@@ -253,9 +253,13 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral for further diagnosis').count()
         Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral In case of multiple co-morbid investigation').count()
         Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral of Blood Collection at Dispensary').count()
-        diabetes_queryset = self.get_queryset().filter( Q(familySurveyor=request.user) &  Q(Questionnaire__part_a__answer__isnull=False))
-        print(diabetes_queryset)
-        
+        # diabetes_queryset = self.get_queryset().filter( Q(familySurveyor=request.user) & Q(Questionnaire__part_a__answer__exact=[]))
+        diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__part_b__answer__isnull= True).count()
+        # print(diabetes_queryset.Questionnaire)
+        part_a = diabetes_queryset.Questionnaire['part_b'] 
+        print(part_a)
+
+
         return Response({
             'total_count' : total_citizen_count ,
             'todays_count' : todays_citizen_count ,
@@ -265,13 +269,14 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
             'citizen_above_30' : citizen_above_30 ,
-            'diabetes' : 6,
+            'diabetes' : diabetes_queryset,
             'hypertension' : 11 ,
             'oral_Cancer' : 9 ,
             'cervical_cancer' : 0 ,
-            'copd' : 8,
+            'copd' : 8 ,
             'asthama' : 4 ,
-            'tb' : 2,
+            'tb' : 2 ,
+            'breast_cancer' : 2 , 
             'communicable' : 1 ,
             'blood_collected_home' : blood_collected_home , 
             'blood_collected_center' : blood_collected_center ,
@@ -282,7 +287,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'Referral_choice_diagnosis': Referral_choice_diagnosis ,
             'Referral_choice_co_morbid_investigation': Referral_choice_co_morbid_investigation ,
             'Referral_choice_Collection_at_dispensary': Referral_choice_Collection_at_Dispensary ,
-               } , status= status.HTTP_200_OK )
+            } , status= status.HTTP_200_OK )
     
     
 class GetCitizenList(generics.ListAPIView):

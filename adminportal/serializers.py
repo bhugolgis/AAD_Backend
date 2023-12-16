@@ -42,6 +42,10 @@ class GetGroupRequestListSerializer(serializers.ModelSerializer):
 		return requester
 	
 
+class GroupListSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Group
+		fields = ('id' , 'name')
 
 
 def get_group_choice():

@@ -21,7 +21,6 @@ from django.http import HttpResponse
 from django.utils import timezone
 # Create your views here.
 
-
 class PostUserGroupResquest(generics.GenericAPIView):
     parser_classes = [MultiPartParser]
     serializer_class = UpdateSerializer 
@@ -35,7 +34,15 @@ class PostUserGroupResquest(generics.GenericAPIView):
             })
         else:
             return Response(serializer.errors)
-        
+
+
+class GetGroupList(generics.GenericAPIView):
+    serializer_class = GroupListSerializer
+    def get(self, request):
+        group_list = Group.objects.all()
+        serializer = self.get_serializer(group_list , many = True).data
+        return Response({'group_list': serializer})
+
 class GetGroupRequestList(generics.ListAPIView):
     serializer_class = GetGroupRequestListSerializer
     permission_classes = [IsAuthenticated , IsAdmin | IsMOH]
@@ -45,10 +52,6 @@ class GetGroupRequestList(generics.ListAPIView):
 
 
     def get_queryset(self):
-        # ward_name = self.kwargs.get('ward_name')
-        # group = self.kwargs.get('group')
-        # print(self.request.user.groups.all()[0])
-        # if self.request.user.groups.all()[0] == 'MOH':
         queryset = self.model.objects.filter( status=False   )
 
         search_terms = self.request.query_params.get('search', None )
@@ -75,12 +78,11 @@ class GetGroupRequestList(generics.ListAPIView):
                         'message': 'Data fetched successfully', 
                         'data': serializer.data})
 
-
 class updateUserGroupRequest(generics.GenericAPIView):
     serializer_class = UpdateGroupRequest
     parser_classes = [MultiPartParser]
     permission_classes = [IsAuthenticated , IsAdmin]
-    
+
 
     def patch(self, request ,  id ,  *args, **kwargs):
         try:
@@ -100,13 +102,10 @@ class updateUserGroupRequest(generics.GenericAPIView):
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
 
-
-
-
 class UserCountsAPI(APIView):
     def get(self, request, *args, **kwargs):
         all = CustomUser.objects.all()
-        CHV_ASHA_count = all.filter(groups__name='CHV/ASHA').count()
+        CHV_ASHA_count = all.filter(groups__name='CHV-ASHA').count()
         MO_count = all.filter(groups__name='mo').count()
         ANM_count = all.filter(groups__name='healthworker').count()
         return Response({
