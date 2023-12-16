@@ -254,10 +254,10 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral In case of multiple co-morbid investigation').count()
         Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral of Blood Collection at Dispensary').count()
         # diabetes_queryset = self.get_queryset().filter( Q(familySurveyor=request.user) & Q(Questionnaire__part_a__answer__exact=[]))
-        diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__part_b__answer__isnull= True).count()
-        # print(diabetes_queryset.Questionnaire)
-        part_a = diabetes_queryset.Questionnaire['part_b'] 
-        print(part_a)
+        # diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__part_b__answer__isnull= True).count()
+        # # print(diabetes_queryset.Questionnaire)
+        # part_a = diabetes_queryset.Questionnaire['part_b'] 
+        # print(part_a)
 
 
         return Response({
@@ -269,7 +269,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
             'citizen_above_30' : citizen_above_30 ,
-            'diabetes' : diabetes_queryset,
+            'diabetes' : 0,
             'hypertension' : 11 ,
             'oral_Cancer' : 9 ,
             'cervical_cancer' : 0 ,
