@@ -254,7 +254,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral for further diagnosis').count()
         Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral In case of multiple co-morbid investigation').count()
         Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral of Blood Collection at Dispensary').count()
-        diabetes_queryset = self.get_queryset().filter(Questionnaire__isnull=False)
+        diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__isnull=False)
         # print(diabetes_queryset.Questionnaire)
         total_tb_count = 0
         total_diabetes = 0
