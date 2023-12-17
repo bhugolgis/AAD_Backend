@@ -160,7 +160,7 @@ class PostFamilyDetails(generics.GenericAPIView):
         """
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
-            print(serializer.validated_data)
+            # print(serializer.validated_data)
             get_last_memberId = familyMembers.objects.filter(familyHead_id = serializer.validated_data['familyHead']).last()
             if get_last_memberId:
                 last_member_id = get_last_memberId.memberId
@@ -254,13 +254,45 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral for further diagnosis').count()
         Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral In case of multiple co-morbid investigation').count()
         Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral of Blood Collection at Dispensary').count()
-        # diabetes_queryset = self.get_queryset().filter( Q(familySurveyor=request.user) & Q(Questionnaire__part_a__answer__exact=[]))
-        # diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__part_b__answer__isnull= True).count()
-        # # print(diabetes_queryset.Questionnaire)
-        # part_a = diabetes_queryset.Questionnaire['part_b'] 
-        # print(part_a)
+        diabetes_queryset = self.get_queryset().filter(Questionnaire__isnull=False)
+        # print(diabetes_queryset.Questionnaire)
+        total_tb_count = 0
+        total_diabetes = 0
+        total_breast_cancer = 0 
+        total_oral_cancer = 0 
+        for record in diabetes_queryset:
+            part_b = record.Questionnaire.get('part_b', []) 
+            tb_count = 0
+            diabetes = 0 
+            breast_cancer = 0 
+            oral_cancer = 0
+            for question in part_b[:10]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    tb_count += 1
+                    break
+
+            for question in part_b[10:12]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    diabetes += 1
+                    break
+            for question in part_b[33:36]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    breast_cancer += 1
+                    break
+            for question in part_b[18:25]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    oral_cancer += 1
+                    break
 
 
+            total_tb_count += tb_count
+            total_diabetes += diabetes
+            total_breast_cancer += breast_cancer
+            total_oral_cancer += oral_cancer
         return Response({
             'total_count' : total_citizen_count ,
             'todays_count' : todays_citizen_count ,
@@ -270,14 +302,14 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
             'citizen_above_30' : citizen_above_30 ,
-            'diabetes' : 0,
+            'diabetes' : total_diabetes,
             'hypertension' : 11 ,
-            'oral_Cancer' : 9 ,
+            'oral_Cancer' : total_oral_cancer ,
             'cervical_cancer' : 0 ,
             'copd' : 8 ,
             'asthama' : 4 ,
-            'tb' : 2 ,
-            'breast_cancer' : 2 , 
+            'tb' : total_tb_count ,
+            'breast_cancer' : total_breast_cancer , 
             'communicable' : 1 ,
             'blood_collected_home' : blood_collected_home , 
             'blood_collected_center' : blood_collected_center ,
