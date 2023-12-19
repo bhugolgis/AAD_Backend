@@ -23,7 +23,8 @@ urlpatterns = [
         re_path(r'^GetDispensaryListAPI/(?P<id>.+)$', GetDispensaryListAPI.as_view(), name='GetDispensaryListAPI'),
                 
         path('healthcarecenters', HealthCareCentersList.as_view(), name='healthcare-centers-list'),
-        path('healthcarecenters/<int:pk>/', HealthCareCentersDetail.as_view(), name='healthcare-centers-detail'),
+        path('GetCoordPassword', GetCoordPassword.as_view(), name='GetCoordPassword'),
+        # path('healthcarecenters/<int:pk>/', HealthCareCentersDetail.as_view(), name='healthcare-centers-detail'),
         path('AddlabtestdeatilsAPI', AddlabtestdeatilsAPI.as_view(), name='healthcare-centers-detail'),
         path('usersList', UserGroupFilterView.as_view(), name='user-list'),
         path('SendOtp',views.SendOtp),

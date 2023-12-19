@@ -30,6 +30,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from adminportal.permissions import IsMOH
+from django.contrib.auth.hashers import check_password
+
 
 class GetDailyCountOfSurvey(generics.GenericAPIView):
     # serializer_class = AreaSerialzier
@@ -1219,7 +1221,20 @@ class LoginView(generics.GenericAPIView):
             
             
             
-            
+class GetCoordPassword(generics.GenericAPIView):
+    serializer_class = CoordPasswordSerializer
+    def get(self, request, *args, **kwargs):
+        
+        query = CustomUser.objects.filter(groups__name = 'healthworker')  
+        lis = [] 
+        for i in query:
+            if check_password('Ncdcoord@123' , i.password):
+                # i.set_password('Ncdanm@123')
+                var = lis.append(i.phoneNumber) 
+
+                # serializer = self.get_serializer( i , many = True ).data
+        print(lis)
+        return Response(None)     
             
             
 # class PrimaryHealthCareCentersView(generics.ListCreateAPIView):
@@ -1276,12 +1291,12 @@ class HealthCareCentersList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class HealthCareCentersDetail(APIView):
-    def get_object(self, pk):
-        try:
-            return HealthCareCenters.objects.get(pk=pk)
-        except HealthCareCenters.DoesNotExist:
-            raise Http404
+# class HealthCareCentersDetail(APIView):
+#     def get_object(self, pk):
+#         try:
+#             return HealthCareCenters.objects.get(pk=pk)
+#         except HealthCareCenters.DoesNotExist:
+#             raise Http404
         
 
     def get(self, request, pk):

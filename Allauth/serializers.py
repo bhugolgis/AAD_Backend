@@ -347,7 +347,10 @@ class ViewSpecialHealthCareSerializer(serializers.ModelSerializer):
 		model = CustomUser
 		fields = ("id","name","username","password","emailId","phoneNumber","SpecialityHealthCare")
 
-
+class CoordPasswordSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = CustomUser
+		fields = ("id" , "phoneNumber")
 
 class LoginSerializer(serializers.Serializer):
 	phoneNumber = serializers.IntegerField()
@@ -360,13 +363,15 @@ class LoginSerializer(serializers.Serializer):
 		password = data.get('password')
 
 		customuser = auth.authenticate(phoneNumber=phoneNumber, password=password)
+		print(customuser)
 		if not customuser:
-			try:
+			# try:
 				user = CustomUser.objects.get_by_natural_key(phoneNumber)
+				print(user.is_active)
 				if not user.is_active:
 					raise serializers.ValidationError("Account is not active")
-			except:
-				raise serializers.ValidationError("Incorrect Credentials")
+			# except:
+			# 	raise serializers.ValidationError("Incorrect Credentials")
 
 				
 

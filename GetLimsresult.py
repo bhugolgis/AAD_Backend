@@ -1,18 +1,30 @@
 import requests
-import json
 
-url = "http://ilis.krsnaadiagnostics.com/api/KDL_LIS_APP_API/Patient_Results_Data"
+def send_sms(api_key, sender_id, mobile_number, message):
+    # CDAC SMS Gateway API endpoint
+    api_url = "https://msdgweb.1` .gov.in/esms/sendsmsrequest"
 
-payload = json.dumps({
-  "authKey": "05436EFE3826447DBE720525F78A9EEDBMC",
-  "BookingVisitID": "21772025",
-  "PUID": "BMCM231100682727",
-  "patientID": "e1af10a2-773d-4588-93ed-c36a5bc71059"
-})
-headers = {
-  'Content-Type': 'application/json'
-}
+    # Prepare the request payload
+    payload = {
+        'apikey': api_key,
+        'sms': message,
+        'to': mobile_number,
+        'senderid': sender_id,
+        'route': 'P',
+        'country': '91',  # Country code for India
+    }
 
-response = requests.request("POST", url, headers=headers, data=payload)
+    # Make the HTTP POST request
+    response = requests.post(api_url, data=payload)
 
-print(response.content)
+    # Print the response from the API
+    print(response.text)
+
+# Replace these values with your CDAC SMS Gateway credentials
+api_key = "881da998-3880-4c18-b921-0fdc9427f8d8"
+sender_id = "MCGMTA"
+mobile_number = "8850824601"
+message = "Hello, this is a test message from CDAC SMS Gateway."
+
+# Call the function to send SMS
+send_sms(api_key, sender_id, mobile_number, message)

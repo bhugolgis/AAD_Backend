@@ -22,7 +22,7 @@ class GetGroupRequestListSerializer(serializers.ModelSerializer):
 	requester = serializers.SerializerMethodField()
 	class Meta:
 		model = UserApprovalRecords
-		fields = ('user','requester' , 'new_group' , 'old_group' , 'status' , 'request_date' , 'approve_date')
+		fields = ( 'id','user','requester' , 'new_group' , 'old_group' , 'status' , 'request_date' , 'approve_date')
 		depth = 1
 
 	def get_user(self , data):
