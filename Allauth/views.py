@@ -1323,17 +1323,15 @@ class HealthCareCentersList(APIView):
 # Admin Portal API's
 
 
-
-
 class GetCHV_ASHA_list(generics.GenericAPIView):
     serializer_class = CHV_ASHA_Serializer
-    def get(self , request , section):
+    def get(self , request , id):
         try:
-            user_list = CustomUser.objects.filter(section = section , groups__name = 'CHV-ASHA')
+            user_list = CustomUser.objects.filter(ANM = id , groups__name = 'CHV-ASHA')
         except:
             return Response({
                 'status': 'error' ,
-                'message' : 'section ID is not found'
+                'message' : 'User ID is not found'
             } , status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(user_list , many = True).data
         return Response({

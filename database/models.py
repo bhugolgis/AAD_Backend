@@ -59,7 +59,6 @@ class section(models.Model):
     def __str__(self) -> str:
          return self.sectionName
 
-
     
 class CustomUser(AbstractUser, PermissionsMixin):
     name=models.CharField(max_length=300,blank=True,null=True)
@@ -74,6 +73,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     area = models.ForeignKey(area , related_name="areaAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True ) # By area we can find the health post , dispensary and Ward 
     dispensary = models.ForeignKey(dispensary , related_name="dispensary_name" , on_delete=models.SET_NULL , blank = True , null = True )
     HealthCareCenters = models.ForeignKey(HealthCareCenters,related_name="HealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
+    ANM = models.ForeignKey('CustomUser',related_name="ANM_Id",on_delete=models.CASCADE,null=True,blank=True)
     is_active = models.BooleanField(default = False)
     
 
