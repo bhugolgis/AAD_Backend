@@ -1042,12 +1042,15 @@ class LoginView(generics.GenericAPIView):
             serializer = LoginSerializer(data=request.data)
             if serializer.is_valid():
                 user_data = serializer.validated_data
+                print(user_data)
 
                 group = user_data.groups.values_list("name", flat=True)[0]
                 if serializer is not None:
+                    
                     try:
                         token = AuthToken.objects.filter(user=serializer.validated_data)
-                        token.delete()
+                        if group != 'admin':
+                            token.delete()
                     except AuthToken.DoesNotExist:
                         pass
                     _, token = AuthToken.objects.create(serializer.validated_data)
@@ -1165,8 +1168,7 @@ class LoginView(generics.GenericAPIView):
                                 'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
                                 'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
                                 'healthCareType':user_data.HealthCareCenters.healthCareType[0],
-                                'Group': group}, status=200)
-                        
+                                'Group': group}, status=200)                        
                         elif group == "Family Head":
                             return Response({
                                 'message': 'Login successful',
@@ -1202,6 +1204,22 @@ class LoginView(generics.GenericAPIView):
                                 'phoneNumber' : user_data.phoneNumber,
                                 'ward_id' : user_data.ward.id ,
                                 'ward_name' : user_data.ward.wardName,
+                                'Group': group
+                            
+                        })
+                        elif group == "CHV-ASHA":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                'section_id' : user_data.section_id,
+                                'ward' : user_data.section.healthPost.ward.wardName ,
+                                'healthPostName' : user_data.section.healthPost.healthPostName,
+                                'healthPostID' : user_data.section.healthPost.id,
                                 'Group': group
                             
                         })

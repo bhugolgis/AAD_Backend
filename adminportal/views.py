@@ -20,6 +20,7 @@ import openpyxl
 from django.http import HttpResponse
 from django.utils import timezone
 # Create your views here.
+from .permissions import IsSupervisor
 
 class PostUserGroupResquest(generics.GenericAPIView):
     parser_classes = [MultiPartParser]
@@ -37,6 +38,7 @@ class PostUserGroupResquest(generics.GenericAPIView):
 
 
 class GetGroupList(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated , IsSupervisor ]
     serializer_class = GroupListSerializer
     def get(self, request):
         group_list = Group.objects.all()
@@ -103,6 +105,7 @@ class updateUserGroupRequest(generics.GenericAPIView):
                             'status' : 'error'}, status=400)
 
 class UserCountsAPI(APIView):
+    permission_classes = [ IsAuthenticated, IsAdmin]
     def get(self, request, *args, **kwargs):
         all = CustomUser.objects.all()
         CHV_ASHA_count = all.filter(groups__name='CHV-ASHA').count()
