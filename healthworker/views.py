@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser , JSONParser
 from rest_framework.permissions import IsAuthenticated
 import random
-from .permissions import IsHealthworker
+from .permissions import IsHealthworker , IsCHV_ASHA
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework import filters
@@ -18,7 +18,7 @@ from django.db.models import Q
 
 
 class verifyMobileNumber(APIView):
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     def get(self , request ,mobileNo):
         """
         The function checks if a given mobile number already exists in the database and returns a
@@ -42,7 +42,7 @@ class verifyMobileNumber(APIView):
                             'message' : 'verify successfully' } , status= status.HTTP_200_OK)
             
 class veirfyaadharCard(APIView):
-    permission_classes = (IsAuthenticated, IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     def get(self , request ,aadharCard):
         """
         The function checks if a given Aadhar Card number already exists in the database and returns a
@@ -67,7 +67,7 @@ class veirfyaadharCard(APIView):
                             'message' : 'verify successfully' } , status= status.HTTP_200_OK)
         
 class verifyabhaId(APIView):
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     def get(self , request ,abhaId):
         """
         The function checks if a given abhaId already exists in the familyMembers table and returns a
@@ -84,7 +84,7 @@ class verifyabhaId(APIView):
 
 class PostSurveyForm(generics.GenericAPIView):
     serializer_class = PostSurveyFormSerializer
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     parser_classes = [JSONParser]
 
     def post(self , request , *args , **kwargs):
@@ -128,7 +128,7 @@ class PostSurveyForm(generics.GenericAPIView):
 # The class `GetFamilyHeadList` is a generic ListAPIView that retrieves a list of family head details
 # and allows filtering by mobile number, name, and family ID.
 class GetFamilyHeadList(generics.ListAPIView):
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     serializer_class = GetFamilyHeadListSerialzier
     filter_backends = (filters.SearchFilter,)
     search_fields = ['mobileNo', 'name', 'familyId']
@@ -139,7 +139,7 @@ class GetFamilyHeadList(generics.ListAPIView):
         return queryset
 
 class GetPartiallyInsertedRecord(generics.ListAPIView):
-    permission_classes =(IsAuthenticated , IsHealthworker)
+    permission_classes =(IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     serializer_class = GetFamilyHeadListSerialzier
     filter_backends = (filters.SearchFilter,)
      
@@ -151,8 +151,7 @@ class GetPartiallyInsertedRecord(generics.ListAPIView):
 
 class PostFamilyDetails(generics.GenericAPIView):
     serializer_class = postFamilyMemberDetailSerializer
-    permission_classes = (IsAuthenticated , IsHealthworker)
-    # parser_classes = [MultiPartParser]
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     def post(self , request , *args , **kwargs):
         """
         This function saves data from a serializer and returns a success message if the data is valid,
@@ -170,7 +169,6 @@ class PostFamilyDetails(generics.GenericAPIView):
                 new_numeric_part = numeric_part + 1
 
                 new_member_id = "-".join(last_member_id_parts[:-1]) + "-" + str(new_numeric_part).zfill(2)
-                # print(new_member_id)
             else:
                 new_member_id = "F-F/S-7145623-01"  
             serializer.save(familySurveyor = request.user  , memberId = new_member_id)
@@ -186,7 +184,7 @@ class PostFamilyDetails(generics.GenericAPIView):
 # The class `GetFamilyMembersDetails` is a generic ListAPIView that retrieves details of family
 # members and allows filtering based on family ID, mobile number, and name.
 class GetFamilyMembersDetails(generics.ListAPIView):
-    permission_classes = (IsAuthenticated , )
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     serializer_class = GetFamilyMemberDetailSerializer  
     filter_backends = (filters.SearchFilter,)
     search_fields = ['familyHead__familyId' , 'familyHead__mobileNo' , 'familyHead__name' , 'memberId'  ]
@@ -200,7 +198,7 @@ class GetFamilyMembersDetails(generics.ListAPIView):
 class UpdateFamilyDetails(generics.GenericAPIView):
 
     serializer_class = UpdateFamilyMemberDetailSerializer
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     # parser_classes = [MultiPartParser]
 
     def patch(self , request , id , *args , **kwargs):
@@ -228,7 +226,7 @@ class UpdateFamilyDetails(generics.GenericAPIView):
         
         
 class GetSurveyorCountDashboard(generics.GenericAPIView):
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     queryset = familyMembers.objects.all()
     FamilySurvey_count = familyHeadDetails.objects.all()
     serializer_class = GetFamilyMemberDetailSerializer
@@ -325,7 +323,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
 class GetCitizenList(generics.ListAPIView):
     serializer_class = GetCitizenListSerializer
     model = serializer_class.Meta.model
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['familyHead__familyId' , 'familyHead__mobileNo' , 'familyHead__name' , 'memberId' , 'name' , 'mobileNo' ]
 
@@ -368,6 +366,7 @@ class GetCitizenList(generics.ListAPIView):
         
 
 class getReferelOptionList(generics.ListAPIView):
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     serializer_class = getReferelOptionListSerialzier
     model = serializer_class.Meta.model
     queryset = model.objects.all()
@@ -380,7 +379,7 @@ class getvulnerableOptionList(generics.ListAPIView):
 class GetFamilyList(generics.ListAPIView):
     serializer_class = GetFamilyHeadListSerialzier
     model = serializer_class.Meta.model
-    permission_classes = (IsAuthenticated , IsHealthworker)
+    permission_classes = (IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['familyHead__familyId' , 'familyHead__mobileNo' , 'familyHead__name' , 'memberId' , 'name' , 'mobileNo' ]
     paginate_by = 100
@@ -420,7 +419,7 @@ class GetFamilyList(generics.ListAPIView):
 class GetBloodCollectionDetail(generics.ListAPIView):
     queryset = familyMembers.objects.all()
     serializer_class = GetCitizenListSerializer
-    permission_classes =(IsAuthenticated , IsHealthworker)
+    permission_classes =(IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['bloodCollectionLocation']
 
