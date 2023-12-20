@@ -1042,11 +1042,8 @@ class LoginView(generics.GenericAPIView):
             serializer = LoginSerializer(data=request.data)
             if serializer.is_valid():
                 user_data = serializer.validated_data
-                print(user_data)
-
                 group = user_data.groups.values_list("name", flat=True)[0]
                 if serializer is not None:
-                    
                     try:
                         token = AuthToken.objects.filter(user=serializer.validated_data)
                         if group != 'admin':
@@ -1056,8 +1053,6 @@ class LoginView(generics.GenericAPIView):
                     _, token = AuthToken.objects.create(serializer.validated_data)
                     if user_data.is_active:
                         if group == 'healthworker':
-                            chv_list = CustomUser.objects.filter(section = user_data.section).exclude(groups__name = 'healthworker')
-                            chv_serializer = CHV_ASHA_Serializer(chv_list , many = True)
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,
@@ -1071,8 +1066,8 @@ class LoginView(generics.GenericAPIView):
                                 'ward' : user_data.section.healthPost.ward.wardName ,
                                 'healthPostName' : user_data.section.healthPost.healthPostName,
                                 'healthPostID' : user_data.section.healthPost.id,
-                                # 'ASHA/CHV_list' : chv_serializer.data, 
                                 'Group': group
+
                             }, status=200)                 
                         elif group == "phlebotomist":
                             return Response({
@@ -1191,7 +1186,7 @@ class LoginView(generics.GenericAPIView):
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
                                 'Group': group
-                                
+             
                             })
                         elif group == "MOH":
                             return Response({

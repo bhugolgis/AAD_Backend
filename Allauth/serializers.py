@@ -363,15 +363,12 @@ class LoginSerializer(serializers.Serializer):
 		password = data.get('password')
 
 		customuser = auth.authenticate(phoneNumber=phoneNumber, password=password)
-		# print(customuser)
+	
 		if not customuser:
-			# try:
-				user = CustomUser.objects.get_by_natural_key(phoneNumber)
-				print(user.is_active)
-				if not user.is_active:
-					raise serializers.ValidationError("Account is not active")
-			# except:
-			# 	raise serializers.ValidationError("Incorrect Credentials")
+			user = CustomUser.objects.get_by_natural_key(phoneNumber)
+			if not user.is_active:
+				raise serializers.ValidationError("Account is not active")
+	
 
 				
 

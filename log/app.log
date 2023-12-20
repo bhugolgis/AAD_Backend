@@ -2948,3 +2948,9 @@ Unauthorized: /allauth/api/login
 [31;1mHTTP POST /allauth/api/login 401 [0.06, 127.0.0.1:65297][0m
 Unauthorized: /healthworker/api/GetFamilyHeadList
 [31;1mHTTP GET /healthworker/api/GetFamilyHeadList 401 [0.07, 10.202.100.178:52942][0m
+Bad Request: /allauth/api/login
+[31;1mHTTP POST /allauth/api/login 400 [2.99, 127.0.0.1:50997][0m
+Forbidden: /healthworker/api/GetSurveyorDashboard
+[31;1mHTTP GET /healthworker/api/GetSurveyorDashboard 403 [0.12, 10.202.100.195:60663][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.13, 10.202.100.195:60662][0m
