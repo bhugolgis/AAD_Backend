@@ -119,14 +119,14 @@ class AddlabtestdeatilsAPI(generics.GenericAPIView):
 
 
 class GetWardListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = WardSerialzier
     queryset = ward.objects.all()
     filter_backends = (filters.SearchFilter,)
     search_fields = ("wardName",)
 
 class GethealthPostNameListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = healthPostSerializer
     # queryset = healthPost.objects.all()
     # filter_backends = (DjangoFilterBackend,)
@@ -144,7 +144,7 @@ class GethealthPostNameListAPI(generics.ListAPIView):
 
 class GetHealthPostAreasAPI(generics.GenericAPIView):
     serializer_class = AreaSerialzier
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
 
     def get(self, request ,id):
         data = area.objects.filter(healthPost__id= id )
@@ -155,7 +155,7 @@ class GetHealthPostAreasAPI(generics.GenericAPIView):
                 "data":serializer,} , status= 200)
     
 class GetSectionListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = sectionSerializer
     # queryset = section.objects.all()
 

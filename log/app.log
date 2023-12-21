@@ -2954,3 +2954,86 @@ Forbidden: /healthworker/api/GetSurveyorDashboard
 [31;1mHTTP GET /healthworker/api/GetSurveyorDashboard 403 [0.12, 10.202.100.195:60663][0m
 Forbidden: /allauth/api/GetHealthPostAreas/215
 [31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.13, 10.202.100.195:60662][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.22, 10.202.100.195:49415][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.15, 10.202.100.195:49440][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.15, 10.202.100.195:49446][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.11, 10.202.100.195:49516][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.14, 10.202.100.195:49542][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.19, 10.202.100.195:49631][0m
+Bad Request: /allauth/api/login
+[31;1mHTTP POST /allauth/api/login 400 [0.27, 10.202.100.195:49770][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.15, 10.202.100.195:49789][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.11, 10.202.100.195:49941][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.10, 10.202.100.195:49962][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.10, 10.202.100.195:50076][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.14, 10.202.100.195:50096][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.11, 10.202.100.195:50113][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.17, 10.202.100.195:50121][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.16, 10.202.100.195:50135][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.19, 10.202.100.195:50150][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.23, 10.202.100.195:50144][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.11, 10.202.100.195:50287][0m
+Forbidden: /allauth/api/GetHealthPostAreas/215
+[31;1mHTTP GET /allauth/api/GetHealthPostAreas/215 403 [0.26, 10.202.100.195:50358][0m
+Unauthorized: /healthworker/api/GetSurveyorDashboard
+[31;1mHTTP GET /healthworker/api/GetSurveyorDashboard 401 [0.06, 10.202.100.195:50539][0m
