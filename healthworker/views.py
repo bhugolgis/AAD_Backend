@@ -254,11 +254,11 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Private facility').count()
 
         total_vulnerabel = self.get_queryset().filter(familySurveyor = request.user , vulnerable = True).count()
-        vulnerabel_70_Years = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = '70+ Years').count()
-        vulnerabel_Physically_handicapped = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Physically Handicapped').count()
-        vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Completely Paralyzed or On bed').count()
-        vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Elderly and alone at home').count()
-        vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Any other reason').count()
+        vulnerabel_70_Years = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = '70+ Years').count()
+        vulnerabel_Physically_handicapped = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Physically Handicapped').count()
+        vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+        vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Elderly and alone at home').count()
+        vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Any other reason').count()
 
         diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__isnull=False)
         # print(diabetes_queryset.Questionnaire)
