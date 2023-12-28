@@ -441,40 +441,6 @@ class AddAreaSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 
-
-# class DispensaryHealthPostAssociationSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = DispensaryHealthPostAssociation
-#         fields = '__all__'
-
-# class DispensarySerializer(serializers.ModelSerializer):
-#     health_post_ids = serializers.ListField(write_only=True, required=False)
-
-#     class Meta:
-#         model = dispensary
-#         fields = '__all__'
-
-#     def create(self, validated_data):
-#         health_post_ids = validated_data.pop('health_post_ids', [])
-#         disp = super().create(validated_data)
-#         disp.health_posts.set(health_post_ids)
-#         return disp
-    
-
-
-
-
-# class SpecialityHealthCareCentersSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = SpecialityHealthCareCenters
-#         fields = '__all__'
-
-# class MedicalCollegeHealthCareCentersSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = MedicalCollegeHealthCareCenters
-#         fields = '__all__'
-
-
 class Addlabtestserializer(serializers.ModelSerializer):
 	class Meta:
 		model = LabTests

@@ -22,7 +22,8 @@ class GetGroupRequestListSerializer(serializers.ModelSerializer):
 	requester = serializers.SerializerMethodField()
 	class Meta:
 		model = UserApprovalRecords
-		fields = ( 'id','user','requester' , 'new_group' , 'old_group' , 'status' , 'request_date' , 'approve_date')
+		fields = ( 'id','user','requester' , 'new_group' , 'old_group' , 
+					'status' , 'request_date' , 'approve_date')
 		depth = 1
 
 	def get_user(self , data):
@@ -168,13 +169,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	section_id = serializers.SerializerMethodField()
 	health_Post_id = serializers.SerializerMethodField()
 	dispensary_id = serializers.SerializerMethodField()
+	ANM = serializers.SerializerMethodField()
 
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 	class Meta:
 		model = CustomUser
 		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
 			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","area" ,
-			"dispensary" ,"dispensary_id", "group" , "is_active" )
+			"dispensary" ,"dispensary_id", "group" , "is_active" , "ANM" )
 		
 	def validate(self, attrs):
 		group = attrs.pop("group")
@@ -192,6 +194,17 @@ class CustomUserSerializer(serializers.ModelSerializer):
 			except:
 				Ward_Name = ""
 		return Ward_Name
+	
+
+	def get_ANM(self , data):
+		try:
+			ANM_id = data.ANM.id
+		except:
+			try:
+				ANM_id =data.ANM.id
+			except:
+				ANM_id = ""
+		return ANM_id
 	
 	def get_ward_id(self , data):
 		try:

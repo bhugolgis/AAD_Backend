@@ -247,11 +247,19 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         blood_collected_center = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'Center').count()
         denieded_by_mo_count = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'AMO').count()
         denieded_by_mo_individual = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'Individual Itself').count()
-        Referral_choice_further_management = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral for further management (known case)').count()
-        Referral_choice_suspect_symptoms = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral in case of suspect symptoms').count()
-        Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral for further diagnosis').count()
-        Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral In case of multiple co-morbid investigation').count()
-        Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral of Blood Collection at Dispensary').count()
+        Referral_choice_further_management = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+        Referral_choice_suspect_symptoms = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+        Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+        Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Medical College for management of Complication').count()
+        Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Private facility').count()
+
+        total_vulnerabel = self.get_queryset().filter(familySurveyor = request.user , vulnerable = True).count()
+        vulnerabel_70_Years = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = '70+ Years').count()
+        vulnerabel_Physically_handicapped = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Physically Handicapped').count()
+        vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Completely Paralyzed or On bed').count()
+        vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Elderly and alone at home').count()
+        vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Any other reason').count()
+
         diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__isnull=False)
         # print(diabetes_queryset.Questionnaire)
         total_tb_count = 0
@@ -318,6 +326,13 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'Referral_choice_diagnosis': Referral_choice_diagnosis ,
             'Referral_choice_co_morbid_investigation': Referral_choice_co_morbid_investigation ,
             'Referral_choice_Collection_at_dispensary': Referral_choice_Collection_at_Dispensary ,
+            'total_vulnerabel' : total_vulnerabel , 
+            'vulnerabel_70_Years' : vulnerabel_70_Years , 
+            'vulnerabel_Physically_handicapped' : vulnerabel_Physically_handicapped , 
+            'vulnerabel_completely_paralyzed_or_on_bed' : vulnerabel_completely_paralyzed_or_on_bed , 
+            'vulnerabel_elderly_and_alone_at_home' : vulnerabel_elderly_and_alone_at_home , 
+            'vulnerabel_any_other_reason' : vulnerabel_any_other_reason , 
+
             } , status= status.HTTP_200_OK )
     
 class GetCitizenList(generics.ListAPIView):

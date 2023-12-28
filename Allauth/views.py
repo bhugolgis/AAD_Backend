@@ -147,12 +147,13 @@ class GetHealthPostAreasAPI(generics.GenericAPIView):
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
 
     def get(self, request ,id):
-        data = area.objects.filter(healthPost__id= id )
+        data = area.objects.filter(healthPost__id = id )
         serializer = self.get_serializer(data , many = True).data
 
         return Response({ "status":"success",
                 "message" : 'data feteched successfully',
                 "data":serializer,} , status= 200)
+     
     
 class GetSectionListAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
@@ -166,8 +167,6 @@ class GetSectionListAPI(generics.ListAPIView):
         return Response({ "status":"success",
                 "message" : 'data feteched successfully',
                 "data":serializer,} , status= 200)
-    # filter_backends = (DjangoFilterBackend,)
-    # filterset_fields = ("healthPost__id")
 
 
 class GetDispensaryListAPI(generics.ListAPIView):
@@ -193,7 +192,6 @@ class InsertAmoAPI(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        # print(request.data["name"], request.data)
         
         try:
             if serializer.is_valid():
@@ -221,6 +219,7 @@ class InsertAmoAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class InsertPrimaryHealthCareDoctorAPI(generics.GenericAPIView):
     serializer_class = PrimaryHealthCareRegisterSerializer
@@ -1246,7 +1245,7 @@ class GetCoordPassword(generics.GenericAPIView):
                 var = lis.append(i.phoneNumber) 
 
                 # serializer = self.get_serializer( i , many = True ).data
-        print(lis)
+        # print(lis)
         return Response(None)     
             
             
@@ -1332,10 +1331,7 @@ class HealthCareCentersList(APIView):
             
 
 
-
 # Admin Portal API's
-
-
 class GetCHV_ASHA_list(generics.GenericAPIView):
     serializer_class = CHV_ASHA_Serializer
     def get(self , request , id):

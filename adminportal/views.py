@@ -105,7 +105,7 @@ class updateUserGroupRequest(generics.GenericAPIView):
                             'status' : 'error'}, status=400)
 
 class UserCountsAPI(APIView):
-    permission_classes = [ IsAuthenticated, IsAdmin]
+    # permission_classes = [ IsAuthenticated, IsAdmin]
     def get(self, request, *args, **kwargs):
         all = CustomUser.objects.all()
         CHV_ASHA_count = all.filter(groups__name='CHV-ASHA').count()
@@ -786,7 +786,7 @@ def AdminDashboard(request):
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId).count()
 
         if healthPostId:
-                #Data For  Ward and HealthPost Filter
+            #Data For  Ward and HealthPost Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender=gender,area__healthPost_id=healthPostId).count()
 
@@ -810,7 +810,7 @@ def AdminDashboard(request):
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             
         if UserId:
-                #Data For  Ward and HealthPost Filter and User Id Filter
+            #Data For  Ward and HealthPost Filter and User Id Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,user_id=UserId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender=gender,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
             data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="M",area__healthPost_id=healthPostId,user_id=UserId).count()
@@ -833,7 +833,6 @@ def AdminDashboard(request):
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
 
     else:
-        print("From Here 2")
         #Data For Only Ward Filter
         data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.all().count()
         data["NoOfCitizenEnrolled"] = familyMembers.objects.all().count()
@@ -880,7 +879,7 @@ def AdminDashboard(request):
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId).count()
 
         if healthPostId:
-                #Data For  Ward and HealthPost Filter
+            #Data For  Ward and HealthPost Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             data["NoOfMaleEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender="M",area__healthPost_id=healthPostId).count()
@@ -894,7 +893,6 @@ def AdminDashboard(request):
 
             # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             data["NoLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
-
             data["BloodCollectedAtHome"] = familyMembers.objects.filter(bloodCollectionLocation = "Home",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             data["TotalReportGenerated"] = familyMembers.objects.filter(isLabTestReportGenerated = True,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
 
@@ -903,7 +901,7 @@ def AdminDashboard(request):
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             
         if UserId:
-                #Data For  Ward and HealthPost Filter and User Id Filter
+            #Data For  Ward and HealthPost Filter and User Id Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,user_id=UserId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
             
