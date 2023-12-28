@@ -69,7 +69,7 @@ class AddUserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
-					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward" , "is_active" )
+					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward" , "is_active" , "ANM")
 		extra_kwargs = {'password':{'write_only':True}}
 		
 	def create(self,validated_data):
@@ -131,7 +131,7 @@ class AddUserByMOHSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
-					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward"  )
+					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward" , "ANM" )
 		extra_kwargs = {'password':{'write_only':True}}
 		
 	def create(self,validated_data):
@@ -148,7 +148,7 @@ class UpdateUserDetailsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name" , "username" ,"emailId" , "phoneNumber" , "supervisor" , 
-			"section" , "ward" , "health_Post" , "area" , "dispensary" , 'is_active')
+			"section" , "ward" , "health_Post" , "area" , "dispensary" , 'is_active' , 'ANM')
 		
 
 class DeleteUserSerializer(serializers.ModelSerializer):
@@ -169,14 +169,15 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	section_id = serializers.SerializerMethodField()
 	health_Post_id = serializers.SerializerMethodField()
 	dispensary_id = serializers.SerializerMethodField()
-	ANM = serializers.SerializerMethodField()
+	ANM_id = serializers.SerializerMethodField()
+	ANM_name = serializers.SerializerMethodField()
 
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 	class Meta:
 		model = CustomUser
 		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
 			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","area" ,
-			"dispensary" ,"dispensary_id", "group" , "is_active" , "ANM" )
+			"dispensary" ,"dispensary_id", "group" , "is_active" , "ANM_id"  , "ANM_name" )
 		
 	def validate(self, attrs):
 		group = attrs.pop("group")
@@ -196,7 +197,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 		return Ward_Name
 	
 
-	def get_ANM(self , data):
+	def get_ANM_id(self , data):
 		try:
 			ANM_id = data.ANM.id
 		except:
@@ -205,6 +206,17 @@ class CustomUserSerializer(serializers.ModelSerializer):
 			except:
 				ANM_id = ""
 		return ANM_id
+	
+
+	def get_ANM_name(self , data):
+		try:
+			ANM_name = data.ANM.name
+		except:
+			try:
+				ANM_name =data.ANM.name
+			except:
+				ANM_name = ""
+		return ANM_name
 	
 	def get_ward_id(self , data):
 		try:
