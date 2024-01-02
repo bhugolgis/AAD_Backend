@@ -58,8 +58,10 @@ class section(models.Model):
  
     def __str__(self) -> str:
          return self.sectionName
-
     
+
+
+
 class CustomUser(AbstractUser, PermissionsMixin):
     name=models.CharField(max_length=300,blank=True,null=True)
     username=models.CharField(max_length=255,unique=True)
@@ -67,6 +69,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     phoneNumber=models.CharField(max_length=20,blank=True,null=True , unique = True )
     otpChecked = models.BooleanField(default=False)
     created_by = models.ForeignKey('CustomUser',related_name="supervisorId",on_delete=models.CASCADE,null=True,blank=True)
+    userSections = models.ManyToManyField(section , related_name = "multiple_Section" , blank = True )
     section = models.ForeignKey( section , related_name="section_name" , on_delete=models.SET_NULL , blank = True , null = True )
     ward = models.ForeignKey(ward , related_name="wardAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
     health_Post = models.ForeignKey(healthPost , related_name="healthpostAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
@@ -75,6 +78,7 @@ class CustomUser(AbstractUser, PermissionsMixin):
     HealthCareCenters = models.ForeignKey(HealthCareCenters,related_name="HealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
     ANM = models.ForeignKey('CustomUser',related_name="ANM_Id",on_delete=models.CASCADE,null=True,blank=True)
     is_active = models.BooleanField(default = False)
+    created_date = models.DateTimeField(auto_now_add=True)
     
 
     USERNAME_FIELD = 'phoneNumber'

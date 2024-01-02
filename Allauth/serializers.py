@@ -168,14 +168,79 @@ class healthPostSerializer(serializers.ModelSerializer):
 		fields = ("id","ward" , "healthPostName")
 
 class AreaSerialzier(serializers.ModelSerializer):
+	healthPost_id = serializers.SerializerMethodField()
+	healthPost_name = serializers.SerializerMethodField()
+	ward = serializers.SerializerMethodField()
+	ward_id = serializers.SerializerMethodField()
 	class Meta:
+
 		model = area
-		fields = ("id","areas",)
+		fields = ("id","areas", "healthPost_id" , "healthPost_name" , "ward" , "ward_id")
+
+	def get_healthPost_id(self , data):
+		try:
+			healthPost_id = data.healthPost.id
+		except:
+			healthPost_id = ''
+		return healthPost_id
+	
+	def get_healthPost_name(self , data):
+		try:
+			healthPost_name = data.healthPost.healthPostName
+		except:
+			healthPost_name = ''
+		return healthPost_name
+	
+	def get_ward(self , data):
+		try:
+			ward = data.healthPost.ward.wardName
+		except:
+			ward = ''
+		return ward
+	
+	def get_ward_id(self , data):
+		try:
+			ward_id = data.healthPost.ward.id
+		except:
+			ward_id = ''
+		return ward_id
 
 class sectionSerializer(serializers.ModelSerializer):
+	healthPost_id = serializers.SerializerMethodField()
+	healthPost_name = serializers.SerializerMethodField()
+	ward = serializers.SerializerMethodField()
+	ward_id = serializers.SerializerMethodField()
 	class Meta:
 		model = section
-		fields = ("id" , "sectionName" , )
+		fields = ("id" , "sectionName" ,"healthPost_id" , "healthPost_name" , "ward" , "ward_id" )
+
+	def get_healthPost_id(self , data):
+		try:
+			healthPost_id = data.healthPost.id
+		except:
+			healthPost_id = ''
+		return healthPost_id
+	
+	def get_healthPost_name(self , data):
+		try:
+			healthPost_name = data.healthPost.healthPostName
+		except:
+			healthPost_name = ''
+		return healthPost_name
+	
+	def get_ward(self , data):
+		try:
+			ward = data.healthPost.ward.wardName
+		except:
+			ward = ''
+		return ward
+	
+	def get_ward_id(self , data):
+		try:
+			ward_id = data.healthPost.ward.id
+		except:
+			ward_id = ''
+		return ward_id
 	
 class SendOTPSerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=15)  # Assuming E.164 format

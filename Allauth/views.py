@@ -31,6 +31,8 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from adminportal.permissions import IsMOH
 from django.contrib.auth.hashers import check_password
+from rest_framework.pagination import LimitOffsetPagination
+from django.db.models import Q
 
 
 class GetDailyCountOfSurvey(generics.GenericAPIView):
@@ -144,6 +146,7 @@ class GethealthPostNameListAPI(generics.ListAPIView):
 
 class GetHealthPostAreasAPI(generics.GenericAPIView):
     serializer_class = AreaSerialzier
+    
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
 
     def get(self, request ,id):
@@ -153,6 +156,58 @@ class GetHealthPostAreasAPI(generics.GenericAPIView):
         return Response({ "status":"success",
                 "message" : 'data feteched successfully',
                 "data":serializer,} , status= 200)
+    
+class GetWardAreasAPI(generics.ListAPIView):
+    serializer_class = AreaSerialzier
+    pagination_class = LimitOffsetPagination
+    model = serializer_class.Meta.model
+    filter_backends = (filters.SearchFilter,)
+    # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+
+    # def get(self, request ,wardName):
+    #     data = area.objects.filter(healthPost__ward__wardName= wardName )
+    #     serializer = self.get_serializer(data , many = True).data
+
+    #     return Response({ "status":"success",
+    #             "message" : 'data feteched successfully',
+    #             "data":serializer,} , status= 200)
+    
+
+
+    def get_queryset(self ):
+        """
+        The function returns a queryset of all objects ordered by their created date in descending order.
+        """
+        # group = self.kwargs.get('group')
+        wardName = self.kwargs.get('wardName')
+        # print(group , wardName)
+        # ward_id= self.request.user.ward.id
+        queryset = self.model.objects.filter(healthPost__ward__wardName= wardName )
+   
+        search_terms = self.request.query_params.get('search', None)
+        if search_terms:
+            queryset = queryset.filter(healthPost__healthPostName__icontains=search_terms)
+                                       
+
+        return queryset
+    
+    def get(self, request, *args, **kwargs):
+
+        queryset = self.get_queryset()
+     
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success',
+                        'message': 'Data fetched successfully', 
+                        'data': serializer.data})
+
      
     
 class GetSectionListAPI(generics.ListAPIView):
@@ -167,6 +222,51 @@ class GetSectionListAPI(generics.ListAPIView):
         return Response({ "status":"success",
                 "message" : 'data feteched successfully',
                 "data":serializer,} , status= 200)
+    
+
+class GetWardSectionListAPI(generics.ListAPIView):
+    # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    serializer_class = sectionSerializer
+    pagination_class = LimitOffsetPagination
+    model = serializer_class.Meta.model
+    filter_backends = (filters.SearchFilter,)
+    # queryset = section.objects.all()
+    
+
+    def get_queryset(self ):
+        """
+        The function returns a queryset of all objects ordered by their created date in descending order.
+        """
+        # group = self.kwargs.get('group')
+        wardName = self.kwargs.get('wardName')
+        # print(group , wardName)
+        # ward_id= self.request.user.ward.id
+        queryset = self.model.objects.filter(healthPost__ward__wardName= wardName )
+   
+        search_terms = self.request.query_params.get('search', None)
+        if search_terms:
+            queryset = queryset.filter(healthPost__healthPostName__icontains=search_terms)
+                                       
+
+        return queryset
+    
+    def get(self, request, *args, **kwargs):
+
+        queryset = self.get_queryset()
+     
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success',
+                        'message': 'Data fetched successfully', 
+                        'data': serializer.data})
+
 
 
 class GetDispensaryListAPI(generics.ListAPIView):
@@ -1012,6 +1112,7 @@ class AddsectionAPI(generics.GenericAPIView):
                 'status': 'error' ,
             } , status=400)
 
+# class GetArea
 
 class AddAreaAPI(generics.GenericAPIView):
     serializer_class = AddAreaSerializer

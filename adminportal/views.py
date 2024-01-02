@@ -413,13 +413,13 @@ class userListAPI(generics.ListAPIView):
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
         group = self.kwargs.get('group')
-        print(group)
+        
         ward_name = self.kwargs.get('ward_name')
     
         if group == 'mo':
-            queryset = self.model.objects.filter(groups__name = group , dispensary__ward__wardName = ward_name )
+            queryset = self.model.objects.filter(groups__name = group , dispensary__ward__wardName = ward_name ).order_by("-created_date")
         else:
-            queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = ward_name)
+            queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = ward_name).order_by("-created_date")
 
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
