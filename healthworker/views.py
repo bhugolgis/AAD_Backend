@@ -258,7 +258,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         vulnerabel_Physically_handicapped = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Physically Handicapped').count()
         vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
         vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Elderly and alone at home').count()
-        vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices = 'Any other reason').count()
+        vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Any other reason').count()
 
         diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__isnull=False)
         # print(diabetes_queryset.Questionnaire)
