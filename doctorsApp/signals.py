@@ -5,13 +5,11 @@ from database.models import *
   
 @receiver(post_save , sender=PatientPathlab)  
 def update_isLabTestAdded_check(sender, instance , created, **kwargs):
-    print("Created")
     if created:
         family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
         family.isLabTestAdded = True 
         family.generalStatus = 'Appointment Booked' 
         family.save()
-
 
 
 

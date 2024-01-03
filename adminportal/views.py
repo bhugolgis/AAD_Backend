@@ -131,7 +131,7 @@ class InsertUsersByadmin(generics.GenericAPIView):
             if serializer.is_valid():
                 group = Group.objects.get(name=serializer.validated_data.get("group"))
                 
-                user = serializer.save()
+                user = serializer.save(is_active = True)
                 customuser = serializer.validated_data
                 data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
                 user.groups.add(group)
