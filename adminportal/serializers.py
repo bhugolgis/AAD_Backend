@@ -136,7 +136,7 @@ class AddUserByMOHSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
-					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward" , "ANM" )
+					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward" , "ANM" , "userSections" )
 		extra_kwargs = {'password':{'write_only':True}}
 		
 	def create(self,validated_data):
@@ -153,12 +153,12 @@ class AddUserByMOHSerializer(serializers.ModelSerializer):
 	
 
 
-class UpdateUserDetailsSerializer(serializers.ModelSerializer):
+class UpdateUsersDetailsSerializer(serializers.ModelSerializer):
 	username = serializers.CharField(max_length=200 , required = False)
 	class Meta:
 		model = CustomUser
-		fields = ("name" , "username" ,"emailId" , "phoneNumber" , "supervisor" , 
-			"section" , "ward" , "health_Post" , "area" , "dispensary" , 'is_active' , 'ANM')
+		fields = ("name" , "username" ,"emailId" , "phoneNumber" , "created_by" , 
+			"section" , "ward" , "health_Post" , "area" , "userSections", "dispensary" , 'is_active' , 'ANM' ,)
 		
 
 class DeleteUserSerializer(serializers.ModelSerializer):

@@ -159,11 +159,11 @@ class GetHealthPostAreasAPI(generics.GenericAPIView):
     
 
 
-class updateAreaAPI(generics.ListAPIView):
+class updateAreaAPI(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = UpdateAreaSerializer
 
-    def get(self, request ,id):
+    def patch(self, request ,id):
         try:
             instance = area.objects.get(id= id )
         except:
@@ -238,11 +238,11 @@ class GetSectionListAPI(generics.ListAPIView):
     
 
 
-class updateSectionAPI(generics.ListAPIView):
+class updateSectionAPI(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = UpdateSectionSerializer
 
-    def get(self, request ,id):
+    def patch(self, request ,id):
         try:
             instance = section.objects.get(id= id )
         except:

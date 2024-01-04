@@ -238,100 +238,9 @@ class InsertUsersByMOH(generics.GenericAPIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UpdateUserDetails(generics.GenericAPIView):
-    serializer_class  = UpdateUserDetailsSerializer
+    serializer_class  = UpdateUsersDetailsSerializer
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor | IsMOH)
     parser_classes = [MultiPartParser]
-
-#     def get_instance(self, pk):
-# # 		"""
-# # 		The function `get_instance` retrieves a User instance from the database based on the provided id.
-
-# # 		:param id: The `id` parameter is the primary key of the User object that we want to retrieve. It is
-# # 		used to uniquely identify the User instance in the database
-# # 		:return: an instance of the User model with the specified id if it exists. If the User with the
-# # 		specified id does not exist, it returns None.
-# # 		""
-#         try:
-#             instance = CustomUser.objects.get(pk = pk)
-#             return instance
-#         except CustomUser.DoesNotExist:
-#             return None
-        
-#     def get_group(self, name):
-#         """
-#         The function `get_group` takes a name parameter and returns an instance of the Group model with
-#         that name, or None if no such instance exists.
-
-#         :param name: The name of the group you want to retrieve
-#         :return: an instance of the Group model if a group with the specified name exists. If no group is
-#         found, it returns None.
-#         """
-#         try:
-#             instance = Group.objects.get(name=name)
-#             return instance
-#         except Exception:
-#             return None
-        
-#     def handle_update(self, request, user_id, partial = False):
-#         """
-#         The function `handle_update` is used to update user data, including the group the user belongs to,
-#         and returns a response indicating the success or failure of the update.
-
-#         :param request: The `request` parameter is the HTTP request object that contains information about
-#         the current request, such as the request method, headers, and data
-#         :param user_id: The `user_id` parameter is the unique identifier of the user whose data needs to be
-#         updated
-#         :param partial: The `partial` parameter is a boolean flag that indicates whether the update
-#         operation should be partial or not. If `partial` is set to `True`, it means that only a subset of
-#         fields in the user data will be updated, while the rest will remain unchanged. If `partial` is set,
-#         defaults to False (optional)
-#         :return: a Response object. The content of the response object includes a message, status, and data
-#         (if applicable).
-#         """
-#         group_name : str
-#         if request.data.get("group",None):
-#             request.data._mutable = True
-#             group_name = request.data.pop("group")[0]
-#             group = self.get_group(group_name)
-#             if group is None:
-#                 return Response({
-#                     "message":"Group with name %s does not exist" %(group_name),
-#                     "status":"error"
-#                     },status=status.HTTP_400_BAD_REQUEST)
-            
-#         instance = self.get_instance(user_id)
-#         if instance is None:
-#             return Response({
-#                 "message":"There is no user data for id {val}".format(val=user_id),
-#                 "status":"error"
-#                 },status=status.HTTP_400_BAD_REQUEST)
-
-#         serializer = self.get_serializer(data = request.data, instance = instance, partial = partial)
-
-#         if serializer.is_valid():
-#             user = serializer.save()
-#             if group_name:
-#                 user.groups.clear()
-#                 user.groups.add(group)
-                
-#             data = UpdateUserDetailsSerializer(user,context=self.get_serializer_context()).data
-
-#             return Response({
-#                 "message":"User data updated successfully",
-#                 "status":"success",
-#                 "data":data
-#                 })
-#         # error = error_simplifier(serializer.errors)
-#         return Response({
-#             "message": serializer.errors ,
-#             "status":"error"
-#             },status=status.HTTP_400_BAD_REQUEST)
-    
-    # def put(self, request, user_id, *args, **kwargs):
-    #     return self.handle_update(request, user_id)
-    
-    # def patch(self, request, user_id, *args, **kwargs):
-    #     return self.handle_update(request, user_id, partial = True)  
 
 
     def patch(self, request, pk):
@@ -342,6 +251,7 @@ class UpdateUserDetails(generics.GenericAPIView):
                             'message': 'deatils not found'}, status=400)
         
         serializer = self.get_serializer(instance , data = request.data , partial = True )
+        print(serializer.Meta.fields)
         if serializer.is_valid():
             serializer.save()
             return Response({"status" : "success" , 
