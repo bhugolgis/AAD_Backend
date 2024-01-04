@@ -187,7 +187,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
 		model = CustomUser
 		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
 			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","area" ,
-			"dispensary" ,"dispensary_id", "group" , "is_active" , "ANM_id"  , "ANM_name" )
+			"dispensary" ,"dispensary_id", "group" , "is_active" , "ANM_id"  , "ANM_name", "userSections")
+		depth = 1
 		
 	def validate(self, attrs):
 		group = attrs.pop("group")
