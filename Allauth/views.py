@@ -157,33 +157,47 @@ class GetHealthPostAreasAPI(generics.GenericAPIView):
                 "message" : 'data feteched successfully',
                 "data":serializer,} , status= 200)
     
+
+
+class updateAreaAPI(generics.ListAPIView):
+    # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    serializer_class = UpdateAreaSerializer
+
+    def get(self, request ,id):
+        try:
+            instance = area.objects.get(id= id )
+        except:
+            return Response({
+                "status":"error",
+                "message" : 'area ID not found',
+            } , status=400)
+        serializer = self.get_serializer(instance , data= request.data , partial = True)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({ "status":"success",
+                    "message" : 'data updated successfully',} , status= 200)
+        
+        else:
+            key, value = list(serializer.errors.items())[0]
+            error_message = value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
+    
 class GetWardAreasAPI(generics.ListAPIView):
     serializer_class = AreaSerialzier
     pagination_class = LimitOffsetPagination
     model = serializer_class.Meta.model
     filter_backends = (filters.SearchFilter,)
-    # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
-
-    # def get(self, request ,wardName):
-    #     data = area.objects.filter(healthPost__ward__wardName= wardName )
-    #     serializer = self.get_serializer(data , many = True).data
-
-    #     return Response({ "status":"success",
-    #             "message" : 'data feteched successfully',
-    #             "data":serializer,} , status= 200)
-    
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
 
 
     def get_queryset(self ):
         """
         The function returns a queryset of all objects ordered by their created date in descending order.
         """
-        # group = self.kwargs.get('group')
         wardName = self.kwargs.get('wardName')
-        # print(group , wardName)
-        # ward_id= self.request.user.ward.id
         queryset = self.model.objects.filter(healthPost__ward__wardName= wardName )
-   
         search_terms = self.request.query_params.get('search', None)
         if search_terms:
             queryset = queryset.filter(healthPost__healthPostName__icontains=search_terms)
@@ -204,7 +218,7 @@ class GetWardAreasAPI(generics.ListAPIView):
                                                 'data': serializer.data})
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response({'status': 'success',
+        return Response({'status': 'success', 
                         'message': 'Data fetched successfully', 
                         'data': serializer.data})
 
@@ -213,7 +227,6 @@ class GetWardAreasAPI(generics.ListAPIView):
 class GetSectionListAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = sectionSerializer
-    # queryset = section.objects.all()
 
     def get(self, request ,id):
         data = section.objects.filter(healthPost__id= id )
@@ -224,13 +237,40 @@ class GetSectionListAPI(generics.ListAPIView):
                 "data":serializer,} , status= 200)
     
 
-class GetWardSectionListAPI(generics.ListAPIView):
+
+class updateSectionAPI(generics.ListAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    serializer_class = UpdateSectionSerializer
+
+    def get(self, request ,id):
+        try:
+            instance = section.objects.get(id= id )
+        except:
+            return Response({
+                "status":"error",
+                "message" : 'section ID not found',
+            } , status=400)
+        serializer = self.get_serializer(instance , data= request.data , partial = True)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({ "status":"success",
+                    "message" : 'data updated successfully',} , status= 200)
+        
+        else:
+            key, value = list(serializer.errors.items())[0]
+            error_message = value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
+    
+
+class GetWardSectionListAPI(generics.ListAPIView):
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = sectionSerializer
     pagination_class = LimitOffsetPagination
     model = serializer_class.Meta.model
     filter_backends = (filters.SearchFilter,)
-    # queryset = section.objects.all()
+  
     
 
     def get_queryset(self ):

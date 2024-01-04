@@ -69,13 +69,18 @@ class AddUserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
 		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",
-					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward" , "is_active" , "ANM")
+					 "dispensary" , "HealthCareCenters" ,"section" , "group" , "ward" , "is_active" , "ANM" , 'userSections')
 		extra_kwargs = {'password':{'write_only':True}}
 		
 	def create(self,validated_data):
 		group = validated_data.pop("group")
+		try:
+			usersections = validated_data.pop("userSections")
+		except:
+			usersections = []
 		# healthPostName = validated_data.pop("healthPostName")
 		customuser = CustomUser.objects.create_user(**validated_data)
+		customuser.userSections.add(*usersections)
 		
 		return customuser
 	
@@ -136,8 +141,13 @@ class AddUserByMOHSerializer(serializers.ModelSerializer):
 		
 	def create(self,validated_data):
 		group = validated_data.pop("group")
+		try:
+			usersections = validated_data.pop("userSections")
+		except:
+			usersections = []
 		# healthPostName = validated_data.pop("healthPostName")
 		customuser = CustomUser.objects.create_user(**validated_data)
+		customuser.userSections.add(*usersections)
 		
 		return customuser
 	

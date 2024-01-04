@@ -125,7 +125,7 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
             instance = familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
             instance.referels.add(*reffer)
             instance.vulnerable_choices.add(*vulnerable)
-
+            
         return head
     
 

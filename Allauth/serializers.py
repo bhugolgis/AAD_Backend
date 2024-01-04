@@ -204,6 +204,18 @@ class AreaSerialzier(serializers.ModelSerializer):
 		except:
 			ward_id = ''
 		return ward_id
+	
+
+class UpdateSectionSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = section
+		fields = ("sectionName" , "healthPost")
+		# read_only = fields
+
+class UpdateAreaSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = area
+		fields = ("dispensary" , "healthPost" , "areas")
 
 class sectionSerializer(serializers.ModelSerializer):
 	healthPost_id = serializers.SerializerMethodField()

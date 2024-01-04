@@ -17,6 +17,8 @@ urlpatterns = [
         path('GetHealthPostAreas/<str:id>' , GetHealthPostAreasAPI.as_view() , name = 'GetHealthPostAreas'),
         re_path(r'^GetWardAreasAPI/(?P<wardName>.+)$' , GetWardAreasAPI.as_view() , name = 'GetHealthPostAreas'),
         path('GetSectionListAPI/<str:id>' , GetSectionListAPI.as_view() , name = 'GetSectionListAPI'),
+        path('updateSectionAPI/<int:id>' , updateSectionAPI.as_view() , name = 'updateSectionAPI'),
+        path('updateAreaAPI/<int:id>' , updateAreaAPI.as_view() , name = 'updateAreaAPI'),
         re_path(r'^GetWardSectionListAPI/(?P<wardName>.+)$' , GetWardSectionListAPI.as_view() , name = 'GetSectionListAPI'),
         path('GethealthPostNameListAPI/<str:id>' , GethealthPostNameListAPI.as_view() , name = 'GethealthPostNameListAPI'),
         re_path(r'^GetWardListAPI', GetWardListAPI.as_view(), name='GetWardListAPI'),
@@ -34,32 +36,6 @@ urlpatterns = [
         path('LoginWithOtp',LoginWithOtp.as_view(),name="LoginWithOtp"),
         path('changePassword', ChangePasswordView.as_view(), name='change-password'),
         path('logout', LogoutView.as_view(), name='knox_logout'),
-
-
-
-        
-        # path('InsertAmoAPI' , InsertAmoAPI.as_view() , name = 'InsertAmoAPI'),
-        # path('InsertMoAPI' , InsertMoAPI.as_view() , name = 'InsertMoAPI'),
-
-        # path('InsertHealthWorkerAPI' , InsertHealthWorkerAPI.as_view() , name = 'InsertHealthWorkerAPI'),
-        # path('InsertCHV_ASHA_API' , InsertCHV_ASHA_API.as_view() , name = 'InsertHealthWorkerAPI'),
-        # path('InsertPhlebotomistAPI' , InsertPhlebotomistAPI.as_view() , name = 'InsertPhlebotomistAPI'),
-        # path('InsertphccAPI' , InsertphccAPI.as_view() , name = 'InsertphccAPI'),
-        # path('InsertshccAPI' , InsertshccAPI.as_view() , name = 'InsertshccAPI'),
-        # path('InsertthccAPI' , InsertthccAPI.as_view() , name = 'InsertthccAPI'),
-
-
-        # path('InsertPrimaryHealthCareDoctorAPI' , InsertPrimaryHealthCareDoctorAPI.as_view() , name = 'InsertPrimaryHealthCareDoctorAPI'),
-        # path('InsertSpecialityHealthCareDoctorAPI' , InsertSpecialityHealthCareDoctorAPI.as_view() , name = 'InsertSpecialityHealthCareDoctorAPI'),
-        # path('InsertMedicalCollegeHealthCareDoctorAPI' , InsertMedicalCollegeHealthCareDoctorAPI.as_view() , name = 'InsertMedicalCollegeHealthCareDoctorAPI'),
-
-
-        # path('phc/', PrimaryHealthCareCentersView.as_view(), name='phc-list'),
-        # path('phc/<int:pk>/', PrimaryHealthCareCentersDetailView.as_view(), name='phc-detail'),
-        # path('shc/', SpecialityHealthCareCentersView.as_view(), name='shc-list'),
-        # path('shc/<int:pk>/', SpecialityHealthCareCentersDetailView.as_view(), name='shc-detail'),
-        # path('mchc/', MedicalCollegeHealthCareCentersView.as_view(), name='mchc-list'),
-        # path('mchc/<int:pk>/', MedicalCollegeHealthCareCentersDetailView.as_view(), name='mchc-detail'),
 
 
 
