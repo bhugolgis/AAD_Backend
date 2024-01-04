@@ -49,7 +49,7 @@ class healthPost(models.Model):
 class area(models.Model):
     dispensary = models.ForeignKey(dispensary, related_name = "area_dispensarys_name", on_delete=models.SET_NULL , blank = True , null = True )
     healthPost = models.ForeignKey(healthPost , related_name="area_healthpost_name" , on_delete=models.SET_NULL , blank= True , null = True )
-    areas= models.TextField(max_length=1000 , blank = True , null = True )
+    areas= models.TextField(max_length=1000 , unique = True , blank = True , null = True )
 
 
 class section(models.Model):

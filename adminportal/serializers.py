@@ -65,6 +65,7 @@ def get_group_choice():
 
 class AddUserSerializer(serializers.ModelSerializer):
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
+	password = serializers.CharField(max_length = 20 ,required = True)
 
 	class Meta:
 		model = CustomUser
@@ -132,7 +133,7 @@ class GetDeactivatedUserListSerializer(serializers.ModelSerializer):
 
 class AddUserByMOHSerializer(serializers.ModelSerializer):
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
-
+	password = serializers.CharField(max_length = 20 ,required = True)
 	class Meta:
 		model = CustomUser
 		fields = ("name","username", "password", "phoneNumber", "emailId" , "health_Post",

@@ -1139,8 +1139,25 @@ class AddsectionAPI(generics.GenericAPIView):
     serializer_class = AddSectionSerializer
     parser_classes = [MultiPartParser]
     def post(self , request):
+        
         serializer = self.get_serializer(data = request.data)
+        
         if serializer.is_valid():
+            healthPost = serializer.validated_data.get("healthPost")
+            sectionName =serializer.validated_data.get("sectionName")
+            try:
+                healthPost_id = section.objects.filter(healthPost__id = healthPost.id )
+                for i in healthPost_id:
+                    if i.sectionName == sectionName :
+                       return Response({
+                            'message': f'{sectionName} is already present',
+                            'status': 'error',
+                        } , status=400)
+            except:
+                return Response({
+                            'message': f'{sectionName} is already present',
+                            'status': 'error',
+                        } , status=400)
             serializer.save()
             return Response({
                 'message': 'Saved successfully',
