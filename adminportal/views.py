@@ -127,15 +127,16 @@ class InsertUsersByadmin(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
+        # print(serializer)
         try:
             if serializer.is_valid():
+                print(serializer.validated_data.get("userSections"))
                 group = Group.objects.get(name=serializer.validated_data.get("group"))
                 
                 user = serializer.save(is_active = True)
                 customuser = serializer.validated_data
                 data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
                 user.groups.add(group)
-                
                 addSupervisor = CustomUser.objects.filter(id= user.id).update(created_by_id = request.user.id)
                 return Response({
                     "status": "success",
@@ -144,6 +145,7 @@ class InsertUsersByadmin(generics.GenericAPIView):
                 })
             else:
                 key, value = list(serializer.errors.items())[0]
+                print(key , value)
                 error_message = value[0]
                 return Response({
                     "status": "error",

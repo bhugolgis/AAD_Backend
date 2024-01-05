@@ -9,6 +9,7 @@ urlpatterns = [
         path('AddWardAPI', AddWardAPI.as_view(), name='AddWardAPI'),
         path('AddHealthPostAPI', AddHealthPostAPI.as_view(), name='AddHealthPostAPI'),
         path('GetCHV_ASHA_list/<int:id>', GetCHV_ASHA_list.as_view(), name='AddHealthPostAPI'),
+        path('GetMultipleCHV_ASHA_list/<str:id>', GetMultipleCHV_ASHA_list.as_view(), name='GetMultipleCHV_ASHA_list'),
         path('AddsectionAPI', AddsectionAPI.as_view(), name='AddsectionAPI'),
         path('AddDispensaryAPI', AddDispensaryAPI.as_view(), name='AddDispensaryAPI'),
         path('AddAreaAPI', AddAreaAPI.as_view(), name='AddAreaAPI'),

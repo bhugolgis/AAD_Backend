@@ -1209,6 +1209,13 @@ class LoginView(generics.GenericAPIView):
                         pass
                     _, token = AuthToken.objects.create(serializer.validated_data)
                     if user_data.is_active:
+                        sections = []
+                        sect = user_data.userSections.all()
+                        for i in sect:
+                            sections.append(i.pk)
+                        print(sections)
+
+                        
                         if group == 'healthworker':
                             return Response({
                                 'message': 'Login successful',
@@ -1223,6 +1230,7 @@ class LoginView(generics.GenericAPIView):
                                 'ward' : user_data.section.healthPost.ward.wardName ,
                                 'healthPostName' : user_data.section.healthPost.healthPostName,
                                 'healthPostID' : user_data.section.healthPost.id,
+                                'userSections' :sections,
                                 'Group': group
 
                             }, status=200)                 
@@ -1507,3 +1515,24 @@ class GetCHV_ASHA_list(generics.GenericAPIView):
                 'data': serializer} , status=status.HTTP_200_OK)
     
 
+class GetMultipleCHV_ASHA_list(generics.GenericAPIView):
+    serializer_class = CHV_ASHA_Serializer
+    def get(self , request , id ): 
+        
+        try:
+            ids = id.split(',')
+            users_list = []
+            for i in ids:
+                user_list = CustomUser.objects.filter(userSections = i , groups__name = 'CHV-ASHA')
+                for i in user_list:
+                    users_list.append(i)
+        except:
+            return Response({
+                'status': 'error' ,
+                'message' : 'User ID is not found'
+                } , status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(users_list , many = True).data
+        return Response({
+                'status': 'success' ,
+                'message' : 'data fetched successfully',
+                'data': serializer} , status=status.HTTP_200_OK)
