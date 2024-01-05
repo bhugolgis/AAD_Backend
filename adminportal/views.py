@@ -121,7 +121,7 @@ class UserCountsAPI(APIView):
 class InsertUsersByadmin(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserSerializer
-    parser_classes = [MultiPartParser]
+    # parser_classes = [MultiPartParser]
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor | IsMOH)
 
 
@@ -202,7 +202,7 @@ class GetDeactivatedUserList(generics.ListAPIView):
 class InsertUsersByMOH(generics.GenericAPIView):
     # permission_classes = [permissions.IsAuthenticated,]
     serializer_class = AddUserByMOHSerializer
-    parser_classes = [MultiPartParser]
+    # parser_classes = [MultiPartParser]
     permission_classes = (IsAuthenticated , IsMOH)
 
 

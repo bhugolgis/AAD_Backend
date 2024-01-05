@@ -1212,10 +1212,10 @@ class LoginView(generics.GenericAPIView):
                         sections = []
                         sect = user_data.userSections.all()
                         for i in sect:
+                            healthPostID = i.healthPost.id 
+                            healthPostName = i.healthPost.healthPostName 
+                            ward = i.healthPost.ward.wardName 
                             sections.append(i.pk)
-                        print(sections)
-
-                        
                         if group == 'healthworker':
                             return Response({
                                 'message': 'Login successful',
@@ -1227,9 +1227,9 @@ class LoginView(generics.GenericAPIView):
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
                                 'section_id' : user_data.section_id,
-                                'ward' : user_data.section.healthPost.ward.wardName ,
-                                'healthPostName' : user_data.section.healthPost.healthPostName,
-                                'healthPostID' : user_data.section.healthPost.id,
+                                'ward' : ward ,
+                                'healthPostName' : healthPostName,
+                                'healthPostID' : healthPostID,
                                 'userSections' :sections,
                                 'Group': group
 
