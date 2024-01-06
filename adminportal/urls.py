@@ -21,8 +21,6 @@ urlpatterns = [
         path('GetGroupRequestList', GetGroupRequestList.as_view(), name='GetGroupRequestList'),
         path('GetGroupList', GetGroupList.as_view(), name='GetGroupRequestList'),
         re_path(r'^GetDeactivatedUserList/(?P<ward_name>.+)/(?P<group>.+)$', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),
-
-
         path('AdminDashboard', AdminDashboard, name='AdminDashboard'),
 
 

@@ -89,7 +89,8 @@ class GetPatientsDetailsAPI(generics.GenericAPIView):
         
         """
         try:
-            instance = PatientPathlab.objects.get(patientFamilyMember__id=id)
+            instance = PatientsPathlabrecords.objects.get(patientFamilyMember__id=id)
+           
         except:
             return Response({'status': 'error',
                            'message': 'deatils not found'}, status=400)
@@ -112,7 +113,7 @@ class PostResponseLIMSAPI(generics.GenericAPIView):
     
         """
         try:
-            instance = PatientPathlab.objects.get(pk=id)
+            instance = PatientsPathlabrecords.objects.get(pk=id)
         except:
             return Response({'status': 'error',
                             'message': 'deatils not found'}, status=400)

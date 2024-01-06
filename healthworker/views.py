@@ -260,13 +260,12 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Elderly and alone at home').count()
         vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Any other reason').count()
 
-        diabetes_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__isnull=False)
-        # print(diabetes_queryset.Questionnaire)
+        Questionnaire_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__isnull=False)
         total_tb_count = 0
         total_diabetes = 0
         total_breast_cancer = 0 
         total_oral_cancer = 0 
-        for record in diabetes_queryset:
+        for record in Questionnaire_queryset:
             part_b = record.Questionnaire.get('part_b', []) 
             tb_count = 0
             diabetes = 0 
@@ -299,6 +298,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             total_diabetes += diabetes
             total_breast_cancer += breast_cancer
             total_oral_cancer += oral_cancer
+
         return Response({
             'total_count' : total_citizen_count ,
             'todays_count' : todays_citizen_count ,
@@ -437,8 +437,6 @@ class GetBloodCollectionDetail(generics.ListAPIView):
     permission_classes =(IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['bloodCollectionLocation']
-
-
 # The `DumpExcelInsertxlsx` class is a view in a Django REST framework API that handles the uploading
 # of an Excel file, parses the data, and creates users in the database based on the data in the Excel
 # file.
@@ -482,7 +480,7 @@ class DumpExcelInsertxlsx(generics.GenericAPIView):
                     continue
                 user = CustomUser.objects.create_user(name = row[0] , username=row[1],
                                                       password=row[2], phoneNumber=row[3],section_id=row[4])
-                group = Group.objects.get(name = 'CHV/ASHA')
+                group = Group.objects.get(name = 'CHV-ASHA')
                 user.groups.add(group)
                         
             return Response({'message' : 'File Uploaded Successfully and users created !!' , 

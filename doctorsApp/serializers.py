@@ -3,17 +3,17 @@ from database.models import *
 
 class PatientsPathlabSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PatientPathlab
+        model = PatientsPathlabrecords
         fields = ['patientFamilyMember','LabTestSuggested']
         
         
         
 
 
-# class ListPatientsPathlabSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = PatientsPathlab
-#         fields = ['patientFamilyMember_id','LabTestSuggested','suggested_by_doctor_id','patientFamilyMember__familyHead__area','patientFamilyMember__familyHead__pincode','patientFamilyMember__familyHead__address','patientFamilyMember__familyHead__plotNo']
+class ListPatientsPathlabSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientsPathlabrecords
+        fields = ['patientFamilyMember_id','LabTestSuggested','suggested_by_doctor_id','patientFamilyMember__familyHead__area','patientFamilyMember__familyHead__pincode','patientFamilyMember__familyHead__address','patientFamilyMember__familyHead__plotNo']
 
         
         
@@ -25,7 +25,7 @@ class ListPatientsPathlabSerializer(serializers.ModelSerializer):
     # patientFamilyMember_plotNo = serializers.CharField(source='patientFamilyMember.family_head_member.plotNo', read_only=True)
 
     class Meta:
-        model = PatientPathlab
+        model = PatientsPathlabrecords
         fields = [
             'patientFamilyMember_id',
             'LabTestSuggested',
@@ -39,7 +39,7 @@ class ListPatientsPathlabSerializer(serializers.ModelSerializer):
 
 class PatientPathlabSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PatientPathlab
+        model = PatientsPathlabrecords
         fields = '__all__'
 
 class MedicalOfficerConsultancySerializer(serializers.ModelSerializer):

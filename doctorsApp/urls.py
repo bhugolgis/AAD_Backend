@@ -10,7 +10,7 @@ urlpatterns = [
     path('FamilyHeadList',views.FamilyHeadList),
 
     path('ViewFamilyDetails/<str:pk>/',views.ViewFamilyDetails),
-    path('ViewPatientsLabTestViewDetails/<str:pk>/',views.ViewPatientsLabTestViewDetails),
+    # path('ViewPatientsLabTestViewDetails/<str:pk>/',views.ViewPatientsLabTestViewDetails),
     path('medicalOfficerAdviceView/<int:patients_id>/', views.medicalOfficerAdviceView, name='medicalOfficerAdviceView'),
     path('medicalOfficerReferalAdviceView/<int:patients_id>/', views.medicalOfficerReferalAdviceView, name='medicalOfficerReferalAdviceView'),
     path('ViewFamilyMemberView/<str:pk>/',views.ViewFamilyMemberView),

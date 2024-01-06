@@ -36,8 +36,6 @@ class PostUserGroupResquest(generics.GenericAPIView):
         else:
             return Response(serializer.errors)
 
-
-
 class GetGroupList(generics.GenericAPIView):
     permission_classes = [IsAuthenticated , IsSupervisor ]
     serializer_class = GroupListSerializer
@@ -171,7 +169,7 @@ class GetDeactivatedUserList(generics.ListAPIView):
         group = self.kwargs.get('group')
 
         queryset = self.model.objects.filter( is_active=False  , created_by__groups__name = 'MOH' , 
-                                             section__healthPost__ward__wardName = ward_name , groups__name = group )
+                                            section__healthPost__ward__wardName = ward_name , groups__name = group ).order_by("-created_date")
 
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
@@ -374,16 +372,15 @@ class GetWardWiseSUerList(generics.ListAPIView):
         # wardName = self.kwargs.get('ward')
         # print(group , wardName)
         ward_id= self.request.user.ward.id
-        queryset = self.model.objects.filter(groups__name = group  , section__healthPost__ward__id = ward_id)
+        queryset = self.model.objects.filter(groups__name = group  , section__healthPost__ward__id = ward_id).order_by("-created_date")
    
         search_terms = self.request.query_params.get('search', None)
         if search_terms:
             queryset = queryset.filter(Q(section__healthPost__ward__wardName__icontains=search_terms)|
-                                         Q(username__icontains=search_terms) |
-                                            Q(phoneNumber__icontains=search_terms) |
-                                            Q(health_Post__healthPostName__icontains=search_terms))
+                                        Q(username__icontains=search_terms) |
+                                        Q(phoneNumber__icontains=search_terms) |
+                                        Q(health_Post__healthPostName__icontains=search_terms))
                                        
-
         return queryset
     
     def get(self, request, *args, **kwargs):
@@ -843,3 +840,5 @@ def AdminDashboard(request):
         'message': 'Successfully Fetched',
         'data': data,
     })
+
+

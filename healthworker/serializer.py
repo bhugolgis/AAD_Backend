@@ -13,7 +13,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
                   'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' ,
-                    'referels' , 'deniedBy' , 'vulnerable' , 'vulnerable_choices' , 'vulnerable_reason' )
+                    'referels' , 'deniedBy' , 'vulnerable' , 'vulnerable_choices' , 'vulnerable_reason' , "relationship" )
     
 
     def validate(self, data):
@@ -52,7 +52,7 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV', 'cbacRequired',
-                  'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' , 'deniedBy' , 'vulnerable' )
+                  'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' , 'deniedBy' , 'vulnerable'  , "relationship")
 
 
     def validate(self, data):
@@ -125,7 +125,7 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
             instance = familyMembers.objects.create(familyHead = head, familySurveyor = head.user, memberId = member_id , **family)
             instance.referels.add(*reffer)
             instance.vulnerable_choices.add(*vulnerable)
-            
+
         return head
     
 
@@ -146,7 +146,7 @@ class GetCitizenListSerializer(serializers.ModelSerializer):
         model = familyMembers
         fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead','ASHA_CHV' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'cbacRequired',
-                  'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' , 'deniedBy' , 'vulnerable' )
+                  'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' , 'deniedBy' , 'vulnerable' , "relationship" )
 
 
 class DumpExcelSerializer(serializers.Serializer):

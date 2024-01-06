@@ -169,6 +169,15 @@ class DeleteUserSerializer(serializers.ModelSerializer):
 			"section" , "ward" , "health_Post" , "area" , "dispensary")
 		
 
+
+def get_areas_name(id):
+
+	areas = area.objects.filter(healthPost__id = id )
+	areas_list = []
+	for i in areas:
+		areas_list.append(i.areas)
+	return areas_list
+
 class CustomUserSerializer(serializers.ModelSerializer):
 	section = serializers.SerializerMethodField()
 	ward = serializers.SerializerMethodField()
@@ -182,25 +191,34 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	dispensary_id = serializers.SerializerMethodField()
 	ANM_id = serializers.SerializerMethodField()
 	ANM_name = serializers.SerializerMethodField()
+	areas = serializers.SerializerMethodField()
 
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
 	class Meta:
 		model = CustomUser
 		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
-			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","area" ,
+			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","areas" ,
 			"dispensary" ,"dispensary_id", "group" , "is_active" , "ANM_id"  , "ANM_name", "userSections")
 		depth = 1
 		
 	def validate(self, attrs):
 		group = attrs.pop("group")
 		return attrs
-
 	
-		
+	def get_areas(self , data):
+		try:
+			section = data.userSections.all()[0]
+			healthPost_id = section.healthPost.id 
+			area = get_areas_name(healthPost_id)
+			print(area)
+		except:
+			area = ""
+		return area
 	
 	def get_ward(self , data):
 		try:
-			Ward_Name = data.section.healthPost.ward.wardName
+			section = data.userSections.all()[0]
+			Ward_Name = section.healthPost.ward.wardName
 		except:
 			try:
 				Ward_Name = data.dispensary.ward.wardName
@@ -232,7 +250,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	
 	def get_ward_id(self , data):
 		try:
-			Ward_id = data.section.healthPost.ward.id
+			section = data.userSections.all()[0]
+			Ward_id = section.healthPost.ward.id
 		except:
 			try:
 				Ward_id = data.dispensary.ward.id
@@ -242,7 +261,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	
 	def get_section(self , data):
 		try:
-			sectionName = data.section.sectionName
+			section = data.userSections.all()[0]
+			sectionName = section.sectionName
 		except:
 			sectionName = ''
 
@@ -250,7 +270,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	
 	def get_section_id(self , data):
 		try:
-			section_id = data.section.id
+			section = data.userSections.all()[0]
+			section_id = section.id
 		except:
 			section_id = ''
 
@@ -259,14 +280,16 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	
 	def get_health_Post(self , data):
 		try:
-			healthPostName = data.section.healthPost.healthPostName
+			section = data.userSections.all()[0]
+			healthPostName = section.healthPost.healthPostName
 		except:
 			healthPostName = ''
 		return healthPostName
 	
 	def get_health_Post_id(self , data):
 		try:
-			healthPost_id = data.section.healthPost.id
+			section = data.userSections.all()[0]
+			healthPost_id = section.healthPost.id
 		except:
 			healthPost_id = ''
 		return healthPost_id

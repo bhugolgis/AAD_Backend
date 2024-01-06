@@ -14,7 +14,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 import json
 import requests
-from pathlab.serializers import PostResponseLIMSAPISerialzier
+from pathlab.serializers import * 
 from .permissions import IsMO
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -39,7 +39,7 @@ class LabTestSuggestedCreateView(generics.GenericAPIView):
             lab_test_suggested = request.data.get('LabTestSuggested')
 
             # Check if lab tests already added for the patient
-            check_user_exists = PatientPathlab.objects.filter(patientFamilyMember_id= patient_family_member_id)
+            check_user_exists = PatientsPathlabrecords.objects.filter(patientFamilyMember_id= patient_family_member_id)
             
             if check_user_exists:
                 return Response({
@@ -52,7 +52,7 @@ class LabTestSuggestedCreateView(generics.GenericAPIView):
             updateFmailyMember.update(isLabTestAdded = True,isSampleCollected=True)
             # updateFamilyHead = familyHeadDetails.objects.filter(id =updateFmailyMember[0].familyHead_id ).update(isLabTestAdded = True)
             
-            insert_lab_test = PatientPathlab.objects.create(
+            insert_lab_test = PatientsPathlabrecords.objects.create(
                 patientFamilyMember_id=patient_family_member_id,
                 LabTestSuggested=lab_test_suggested,
                 suggested_by_doctor=request.user
@@ -72,22 +72,22 @@ class LabTestSuggestedCreateView(generics.GenericAPIView):
 
         
 
-# class ListPatientsPathlabView(generics.ListAPIView):
-#     serializer_class = ListPatientsPathlabSerializer
+class ListPatientsPathlabView(generics.ListAPIView):
+    serializer_class = ListPatientsPathlabSerializer
 
-#     def get_queryset(self):
-#         suggested_by_doctor_id = self.request.query_params.get('suggested_by_doctor_id', None)
-#         patient_family_member_id = self.request.query_params.get('patient_family_member_id', None)
+    def get_queryset(self):
+        suggested_by_doctor_id = self.request.query_params.get('suggested_by_doctor_id', None)
+        patient_family_member_id = self.request.query_params.get('patient_family_member_id', None)
 
-#         queryset = PatientsPathlab.objects.all()
+        queryset = PatientsPathlabrecords.objects.all()
 
-#         if suggested_by_doctor_id is not None:
-#             queryset = queryset.filter(suggested_by_doctor_id=suggested_by_doctor_id)
+        if suggested_by_doctor_id is not None:
+            queryset = queryset.filter(suggested_by_doctor_id=suggested_by_doctor_id)
         
-#         if patient_family_member_id is not None:
-#             queryset = queryset.filter(patientFamilyMember_id=patient_family_member_id)
+        if patient_family_member_id is not None:
+            queryset = queryset.filter(patientFamilyMember_id=patient_family_member_id)
 
-#         return queryset
+        return queryset
 
 
 
@@ -101,7 +101,7 @@ class ListPatientsPathlabView(generics.ListAPIView):
     def get_queryset(self):
         # queryset = PatientPathlab.objects.select_related('patientFamilyMember__family_head_member')
         # return PatientPathlab.objects.all()
-        return PatientPathlab.objects.select_related('patientFamilyMember__familyHead')
+        return PatientsPathlabrecords.objects.select_related('patientFamilyMember__familyHead')
     
     
 from django.shortcuts import get_object_or_404
@@ -109,7 +109,7 @@ from django.shortcuts import get_object_or_404
 @permission_classes((IsAuthenticated,))
 @api_view(['GET'])
 def ViewPatientsLabTestViewDetails(request, pk):
-    comDet = get_object_or_404(PatientPathlab, patientFamilyMember_id=int(pk))
+    comDet = get_object_or_404(PatientsPathlabrecords, patientFamilyMember_id=int(pk))
     serializer = PatientPathlabSerializer(comDet)
     testData  = serializer.data
     return Response({"status": "success", "message": "Successfully Fetched", "data": serializer.data})
@@ -126,35 +126,35 @@ def ViewPatientsMedicalOffConsultancyView(request, pk):
 
 
     
-# @permission_classes((IsAuthenticated,))
-# @api_view(['GET'])
-# def FamilyHeadList(request):
-#     pagination = PageNumberPagination()
-#     pagination.page_size = 10
+@permission_classes((IsAuthenticated,))
+@api_view(['GET'])
+def FamilyHeadList(request):
+    pagination = PageNumberPagination()
+    pagination.page_size = 10
 
-#     # Determine user's group (if authenticated)
-#     group = None
-#     if request.user.is_authenticated:
-#         group = request.user.groups.values_list("name", flat=True).first()
+    # Determine user's group (if authenticated)
+    group = None
+    if request.user.is_authenticated:
+        group = request.user.groups.values_list("name", flat=True).first()
 
-#     # Filter family head details based on user's group (if authenticated)
-#     if group == "amo" and request.user.is_authenticated:
-#         comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id)
-#     elif group == "mo" and request.user.is_authenticated:
-#         comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id)
-#     else:
-#         comDet = familyHeadDetails.objects.all()
+    # Filter family head details based on user's group (if authenticated)
+    if group == "amo" and request.user.is_authenticated:
+        comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id)
+    elif group == "mo" and request.user.is_authenticated:
+        comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id)
+    else:
+        comDet = familyHeadDetails.objects.all()
 
-#     # Paginate the queryset
-#     page_queryset = pagination.paginate_queryset(comDet, request)
+    # Paginate the queryset
+    page_queryset = pagination.paginate_queryset(comDet, request)
 
-#     # Serialize the paginated queryset
-#     serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
-#     data = {'status': 'success',
-#         'message': 'Successfully Feteched',
+    # Serialize the paginated queryset
+    serializer = ListFamilyHeadDetailsSerializer(page_queryset, many=True)
+    data = {'status': 'success',
+        'message': 'Successfully Feteched',
         
-#         'data': serializer.data  # Include serialized data in the response
-#     }
+        'data': serializer.data  # Include serialized data in the response
+    }
 
 
 #     # Return the paginated response
@@ -463,16 +463,17 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             instance = familyMembers.objects.get(pk=request.data["id"])
         except:
             return Response({'status': 'error',
-                            'message': 'Family Member deatils not found'}, status=status.HTTP_400_BAD_REQUEST)
+                            'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
         
-        try:
-            pathlab_instance = PatientPathlab.objects.filter(patientFamilyMember=request.data["id"]).exists()
-            if pathlab_instance:
-                return Response({'status': 'error', 
-                                 'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
-        except:
-            return Response({'status': 'error',
-                            'message': 'Family Member deatils not found'}, status=status.HTTP_400_BAD_REQUEST)
+        # try:
+        pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
+        print(pathlab_instance)
+        if pathlab_instance:
+            return Response({'status': 'error', 
+                                'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
+        # except:
+        #     return Response({'status': 'error',
+        #                     'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
 
 
         if serializer.is_valid():
@@ -530,6 +531,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             
         else:
             key, value = list(serializer.errors.items())[0]
+            print(key , value)
             error_message = value[0]
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)

@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from database.models import *
 
   
-@receiver(post_save , sender=PatientPathlab)  
+@receiver(post_save , sender=PatientsPathlabrecords)  
 def update_isLabTestAdded_check(sender, instance , created, **kwargs):
     if created:
         family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)

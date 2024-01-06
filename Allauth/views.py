@@ -62,10 +62,10 @@ class GetLabTestDashboardCount(generics.GenericAPIView):
         today = datetime.now().date()
 
         # Count familyHeadDetails objects for today
-        testOpintmentDaily = PatientPathlab.objects.filter(created_date__date=today,PatientSampleTaken=False).count()        # data = area.objects.filter(healthPost__id= id )
-        dailyTestReceived = PatientPathlab.objects.filter(created_date__date=today).count()        # data = area.objects.filter(healthPost__id= id )
-        testResultAwaited = PatientPathlab.objects.filter(created_date__date=today,PatientSampleTaken=True,isCompleted=False).count()        # data = area.objects.filter(healthPost__id= id )
-        citizenRejectedLabTestCount = PatientPathlab.objects.filter(citizenRejectedLabTest=True,isCompleted=False).count()        # data = area.objects.filter(healthPost__id= id )
+        testOpintmentDaily = PatientsPathlabrecords.objects.filter(created_date__date=today,PatientSampleTaken=False).count()        # data = area.objects.filter(healthPost__id= id )
+        dailyTestReceived = PatientsPathlabrecords.objects.filter(created_date__date=today).count()        # data = area.objects.filter(healthPost__id= id )
+        testResultAwaited = PatientsPathlabrecords.objects.filter(created_date__date=today,PatientSampleTaken=True,isCompleted=False).count()        # data = area.objects.filter(healthPost__id= id )
+        citizenRejectedLabTestCount = PatientsPathlabrecords.objects.filter(citizenRejectedLabTest=True,isCompleted=False).count()        # data = area.objects.filter(healthPost__id= id )
 
 
 
@@ -1209,14 +1209,15 @@ class LoginView(generics.GenericAPIView):
                         pass
                     _, token = AuthToken.objects.create(serializer.validated_data)
                     if user_data.is_active:
-                        sections = []
-                        sect = user_data.userSections.all()
-                        for i in sect:
-                            healthPostID = i.healthPost.id 
-                            healthPostName = i.healthPost.healthPostName 
-                            ward = i.healthPost.ward.wardName 
-                            sections.append(i.pk)
+                        
                         if group == 'healthworker':
+                            sections = []
+                            sect = user_data.userSections.all()
+                            for i in sect:
+                                healthPostID = i.healthPost.id 
+                                healthPostName = i.healthPost.healthPostName 
+                                ward = i.healthPost.ward.wardName 
+                            sections.append(i.pk)
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,
@@ -1232,7 +1233,6 @@ class LoginView(generics.GenericAPIView):
                                 'healthPostID' : healthPostID,
                                 'userSections' :sections,
                                 'Group': group
-
                             }, status=200)                 
                         elif group == "phlebotomist":
                             return Response({
@@ -1282,53 +1282,7 @@ class LoginView(generics.GenericAPIView):
                                 'phoneNumber' : user_data.phoneNumber,
                                 'dispensaryId':user_data.dispensary.id,
                                 'dispensaryName':user_data.dispensary.dispensaryName,
-                                'Group': group}, status=200)            
-                        elif group == "phcc":
-                            return Response({
-                                'message': 'Login successful',
-                                'Token': token,
-                                'status': 'success',
-                                'id': user_data.id,
-                                'name' : user_data.name,         
-                                'username': user_data.username,
-                                'phoneNumber' : user_data.phoneNumber,
-                                'healthCareName':user_data.HealthCareCenters.healthCareName,
-                                'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
-                                'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
-                                'healthCareType':user_data.HealthCareCenters.healthCareType[0],
-
-                                # 'sectionId':user_data.section.id,
-                                # 'sectionName':user_data.section.sectionName,
-                                'Group': group}, status=200)
-                        elif group == "shcc":
-                            return Response({
-                                'message': 'Login successful',
-                                'Token': token,
-                                'status': 'success',
-                                'id': user_data.id,
-                                'name' : user_data.name,         
-                                'username': user_data.username,
-                                'phoneNumber' : user_data.phoneNumber,
-                                'healthCareName':user_data.HealthCareCenters.healthCareName,
-                                'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
-                                'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
-                                'healthCareType':user_data.HealthCareCenters.healthCareType[0],
-
-                                'Group': group}, status=200)
-                        elif group == "thcc":
-                            return Response({
-                                'message': 'Login successful',
-                                'Token': token,
-                                'status': 'success',
-                                'id': user_data.id,
-                                'name' : user_data.name,         
-                                'username': user_data.username,
-                                'phoneNumber' : user_data.phoneNumber,
-                                'healthCareName':user_data.HealthCareCenters.healthCareName,
-                                'HhealthcareAddress':user_data.HealthCareCenters.HhealthcareAddress,
-                                'healthCareContactNumber':user_data.HealthCareCenters.healthCareContactNumber,
-                                'healthCareType':user_data.HealthCareCenters.healthCareType[0],
-                                'Group': group}, status=200)                        
+                                'Group': group}, status=200)                      
                         elif group == "Family Head":
                             return Response({
                                 'message': 'Login successful',
