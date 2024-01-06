@@ -252,7 +252,8 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
         Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Medical College for management of Complication').count()
         Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Private facility').count()
-
+        hypertension = self.get_queryset().filter(familySurveyor = request.user , bloodPressure__gte = 140).count()
+        
         total_vulnerabel = self.get_queryset().filter(familySurveyor = request.user , vulnerable = True).count()
         vulnerabel_70_Years = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = '70+ Years').count()
         vulnerabel_Physically_handicapped = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Physically Handicapped').count()
@@ -265,12 +266,23 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         total_diabetes = 0
         total_breast_cancer = 0 
         total_oral_cancer = 0 
+        total_cervical_cancer =0
+        total_COPD_count = 0 
+        for record in Questionnaire_queryset:
+            part_c =  record.Questionnaire.get('part_c', []) 
+            COPD = 0 
+            for question in part_c[0:]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    COPD += 1
+                    break
         for record in Questionnaire_queryset:
             part_b = record.Questionnaire.get('part_b', []) 
             tb_count = 0
             diabetes = 0 
             breast_cancer = 0 
             oral_cancer = 0
+            cervical_cancer = 0
             for question in part_b[:10]:
                 answer = question.get('answer', [])
                 if answer and len(answer) > 0:
@@ -293,11 +305,18 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
                     oral_cancer += 1
                     break
 
+            for question in part_b[36:40]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    cervical_cancer += 1
+                    break
 
             total_tb_count += tb_count
             total_diabetes += diabetes
             total_breast_cancer += breast_cancer
             total_oral_cancer += oral_cancer
+            total_cervical_cancer += cervical_cancer
+            total_COPD_count += COPD
 
         return Response({
             'total_count' : total_citizen_count ,
@@ -309,11 +328,11 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'citizen_above_60' : citizen_above_60,
             'citizen_above_30' : citizen_above_30 ,
             'diabetes' : total_diabetes,
-            'hypertension' : 11 ,
+            'hypertension' : hypertension ,
             'oral_Cancer' : total_oral_cancer ,
-            'cervical_cancer' : 0 ,
-            'copd' : 8 ,
-            'asthama' : 4 ,
+            'cervical_cancer' : total_cervical_cancer ,
+            'copd' : total_COPD_count,
+            'asthama' : 0 ,
             'tb' : total_tb_count ,
             'breast_cancer' : total_breast_cancer , 
             'communicable' : 1 ,

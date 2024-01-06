@@ -9338,3 +9338,5 @@ Bad Request: /doctor/api/BookPatientAPI
 [31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.10, 127.0.0.1:53854][0m
 Unauthorized: /doctor/api/FamilyHeadList
 [31;1mHTTP GET /doctor/api/FamilyHeadList 401 [0.12, 10.202.100.224:54449][0m
+Unauthorized: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 401 [0.08, 127.0.0.1:55907][0m

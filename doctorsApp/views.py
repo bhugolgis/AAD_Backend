@@ -467,7 +467,6 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
         
         # try:
         pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
-        print(pathlab_instance)
         if pathlab_instance:
             return Response({'status': 'error', 
                                 'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
