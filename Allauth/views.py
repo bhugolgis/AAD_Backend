@@ -1322,6 +1322,13 @@ class LoginView(generics.GenericAPIView):
                             
                         })
                         elif group == "CHV-ASHA":
+                            sections = []
+                            sect = user_data.userSections.all()
+                            for i in sect:
+                                healthPostID = i.healthPost.id 
+                                healthPostName = i.healthPost.healthPostName 
+                                ward = i.healthPost.ward.wardName 
+                            sections.append(i.pk)
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,
@@ -1334,6 +1341,7 @@ class LoginView(generics.GenericAPIView):
                                 'ward' : user_data.section.healthPost.ward.wardName ,
                                 'healthPostName' : user_data.section.healthPost.healthPostName,
                                 'healthPostID' : user_data.section.healthPost.id,
+                                'userSections' :sections,
                                 'Group': group
                             
                         })
