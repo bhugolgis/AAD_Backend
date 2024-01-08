@@ -225,16 +225,55 @@ class GetWardAreasAPI(generics.ListAPIView):
      
     
 class GetSectionListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = sectionSerializer
+    pagination_class = LimitOffsetPagination
+    model = serializer_class.Meta.model
+    filter_backends = (filters.SearchFilter,)
 
-    def get(self, request ,id):
-        data = section.objects.filter(healthPost__id= id )
-        serializer = self.get_serializer(data , many = True).data
+    # def get(self, request ,id):
+    #     data = section.objects.filter(healthPost__id= id )
+    #     serializer = self.get_serializer(data , many = True).data
 
-        return Response({ "status":"success",
-                "message" : 'data feteched successfully',
-                "data":serializer,} , status= 200)
+    #     return Response({ "status":"success",
+    #             "message" : 'data feteched successfully',
+    #             "data":serializer,} , status= 200)
+    
+    def get_queryset(self ):
+        """
+        The function returns a queryset of all objects ordered by their created date in descending order.
+        """
+        # group = self.kwargs.get('group')
+        id = self.kwargs.get('id')
+        # print(group , wardName)
+        # ward_id= self.request.user.ward.id
+        # section.objects.filter(healthPost__id= id )
+        queryset = self.model.objects.filter(healthPost__id= id)
+   
+        search_terms = self.request.query_params.get('search', None)
+        if search_terms:
+            queryset = queryset.filter(healthPost__healthPostName__icontains=search_terms)
+                                       
+
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+
+        queryset = self.get_queryset()
+     
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success',
+                        'message': 'Data fetched successfully', 
+                        'data': serializer.data})
+
     
 
 

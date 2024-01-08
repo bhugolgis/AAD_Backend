@@ -465,14 +465,14 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             return Response({'status': 'error',
                             'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
         
-        # try:
-        pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
-        if pathlab_instance:
-            return Response({'status': 'error', 
-                                'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
-        # except:
-        #     return Response({'status': 'error',
-        #                     'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
+            if pathlab_instance:
+                return Response({'status': 'error', 
+                                    'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'status': 'error',
+                            'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
 
 
         if serializer.is_valid():
@@ -531,7 +531,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
         else:
             key, value = list(serializer.errors.items())[0]
             print(key , value)
-            error_message = value[0]
+            error_message = key+" , "+ value[0]
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
         
