@@ -144,7 +144,7 @@ class InsertUsersByadmin(generics.GenericAPIView):
             else:
                 key, value = list(serializer.errors.items())[0]
                 print(key , value)
-                error_message = value[0]
+                error_message = key + " ,"  + value[0]
                 return Response({
                     "status": "error",
                     "message": error_message,
@@ -169,7 +169,7 @@ class GetDeactivatedUserList(generics.ListAPIView):
         group = self.kwargs.get('group')
 
         queryset = self.model.objects.filter( is_active=False  , created_by__groups__name = 'MOH' , 
-                                            section__healthPost__ward__wardName = ward_name , groups__name = group ).order_by("-created_date")
+                                            userSections__healthPost__ward__wardName = ward_name , groups__name = group ).order_by("-created_date")
 
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
@@ -178,7 +178,7 @@ class GetDeactivatedUserList(generics.ListAPIView):
                 Q(username__icontains=search_terms) |
                 Q(phoneNumber__icontains=search_terms) |
                 Q(health_Post__healthPostName__icontains=search_terms) |
-                Q(section__healthPost__healthPostName__icontains=search_terms) )
+                Q(userSections__healthPost__healthPostName__icontains=search_terms) )
             
         return queryset
     
@@ -240,7 +240,7 @@ class InsertUsersByMOH(generics.GenericAPIView):
 class UpdateUserDetails(generics.GenericAPIView):
     serializer_class  = UpdateUsersDetailsSerializer
     permission_classes = (IsAuthenticated , IsAdmin | IsSupervisor | IsMOH)
-    parser_classes = [MultiPartParser]
+    # parser_classes = [MultiPartParser]
 
 
     def patch(self, request, pk):
@@ -325,11 +325,14 @@ class userListAPI(generics.ListAPIView):
         group = self.kwargs.get('group')
         
         ward_name = self.kwargs.get('ward_name')
-    
+        section = self.model.objects.filter(groups__name = group, userSections__id = 239)
+        for i  in section:
+            print(i.name)
         if group == 'mo':
             queryset = self.model.objects.filter(groups__name = group , dispensary__ward__wardName = ward_name ).order_by("-created_date")
         else:
-            queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = ward_name).order_by("-created_date")
+            # queryset = self.model.objects.filter(groups__name = group , section__healthPost__ward__wardName = ward_name).order_by("-created_date")
+            queryset = self.model.objects.filter(groups__name = group , userSections__healthPost__ward__wardName = ward_name).order_by("-created_date")
 
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
@@ -404,29 +407,273 @@ class  MOHDashboardView(generics.GenericAPIView):
     permission_classes= (IsAuthenticated , IsMOH)
     queryset = familyMembers.objects.all()
     FamilySurvey_count = familyHeadDetails.objects.all()
-    def get(self, request, *args, **kwargs):
 
-       
-        today = timezone.now().date() 
-        ward = request.user.ward_id
-        total_citizen_count = self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id  ).count()
-        todays_citizen_count  = self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id , created_date__day= today.day).count()
-        total_cbac_count = self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id  , age__gte = 30 , cbacRequired = True).count()
-        partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user__section__healthPost__ward__id =  request.user.ward_id).count()
-        total_family_count = self.FamilySurvey_count.filter(user__section__healthPost__ward__id = request.user.ward_id).count()
-        citizen_above_60 =  self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id  , age__gte = 60 ).count()
-        citizen_above_30 =  self.get_queryset().filter(familySurveyor__section__healthPost__ward__id = request.user.ward_id  , age__gte = 30 ).count()
-        today_family_count = self.FamilySurvey_count.filter(user__section__healthPost__ward__id = request.user.ward_id , created_date__day = today.day ).count()
+
+    def get(self, request ,  *args, **kwargs):
+        healthpost_id = self.request.query_params.get('healthpost_id', None)
+        
+        if healthpost_id:
+            
+            today = timezone.now().date() 
+            total_citizen_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id =  request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id ).count()
+            
+            todays_citizen_count  = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id , created_date__day= today.day).count()
+            total_cbac_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , familySurveyor__userSections__healthPost__id = healthpost_id,age__gte = 30 , cbacRequired = True).count()
+            partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user__userSections__healthPost__ward__id =  request.user.ward_id, user__userSections__healthPost__id = healthpost_id).count()
+            total_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__ward__id = request.user.ward_id , user__userSections__healthPost__id = healthpost_id).count()
+            male =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , familySurveyor__userSections__healthPost__id = healthpost_id , gender = "M" ).count()
+            female =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , familySurveyor__userSections__healthPost__id = healthpost_id , gender = "F" ).count()
+            transgender =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , familySurveyor__userSections__healthPost__id = healthpost_id, gender = "O" ).count()
+            citizen_above_60 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  ,familySurveyor__userSections__healthPost__id = healthpost_id, age__gte = 60 ).count()
+            citizen_above_30 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  ,familySurveyor__userSections__healthPost__id = healthpost_id, age__gte = 30 ).count()
+            today_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__ward__id = request.user.ward_id ,user__userSections__healthPost__id = healthpost_id ,created_date__day = today.day ).count()
+
+            total_vulnerabel = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable = True).count()
+            vulnerabel_70_Years = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = '70+ Years').count()
+            vulnerabel_Physically_handicapped = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Physically Handicapped').count()
+            vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Elderly and alone at home').count()
+            vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Any other reason').count()
+
+            blood_collected_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'Home').count()
+            blood_collected_center = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'Center').count()
+            denieded_by_mo_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'AMO').count()
+            denieded_by_mo_individual = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, familySurveyor__userSections__healthPost__id = healthpost_id,bloodCollectionLocation = 'Individual Itself').count()
+            Referral_choice_further_management = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id,familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            Referral_choice_suspect_symptoms = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Medical College for management of Complication').count()
+            Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Private facility').count()
+            hypertension = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,  familySurveyor__userSections__healthPost__id = healthpost_id ,bloodPressure__gte = 140).count()
+
+            Questionnaire_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,  familySurveyor__userSections__healthPost__id = healthpost_id , Questionnaire__isnull=False)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0 
+            total_cervical_cancer =0
+            total_COPD_count = 0 
+            toatal_communicable  = 0 
+            total_eye_problem = 0 
+            total_Alzheimers = 0 
+            
+            for record in Questionnaire_queryset:
+                part_e = record.Questionnaire.get(('part_e' , []))
+                communicable = 0 
+                for question in part_e[0:]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        communicable += 1
+                        break
+                
+            for record in Questionnaire_queryset:
+                part_c =  record.Questionnaire.get('part_c', []) 
+                COPD = 0 
+                for question in part_c[0:]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        COPD += 1
+                        break
+            for record in Questionnaire_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+                for question in part_b[12:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[36:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer += cervical_cancer
+                total_COPD_count += COPD
+                toatal_communicable += communicable
+                total_eye_problem += eye_problem
+
+        else:
+            today = timezone.now().date() 
+            ward = request.user.ward_id
+            total_citizen_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  ).count()
+            todays_citizen_count  = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id , created_date__day= today.day).count()
+            total_cbac_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , age__gte = 30 , cbacRequired = True).count()
+            partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user__userSections__healthPost__ward__id =  request.user.ward_id).count()
+            total_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__ward__id = request.user.ward_id).count()
+            male =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , gender = "M" ).count()
+            female =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , gender = "F" ).count()
+            transgender =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , gender = "O" ).count()
+            citizen_above_60 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , age__gte = 60 ).count()
+            citizen_above_30 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , age__gte = 30 ).count()
+            today_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__ward__id = request.user.ward_id , created_date__day = today.day ).count()
+
+            total_vulnerabel = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable = True).count()
+            vulnerabel_70_Years = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = '70+ Years').count()
+            vulnerabel_Physically_handicapped = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Physically Handicapped').count()
+            vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Elderly and alone at home').count()
+            vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Any other reason').count()
+
+            blood_collected_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , bloodCollectionLocation = 'Home').count()
+            blood_collected_center = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , bloodCollectionLocation = 'Center').count()
+            denieded_by_mo_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , bloodCollectionLocation = 'AMO').count()
+            denieded_by_mo_individual = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, bloodCollectionLocation = 'Individual Itself').count()
+            Referral_choice_further_management = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            Referral_choice_suspect_symptoms = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Medical College for management of Complication').count()
+            Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Private facility').count()
+            hypertension = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , bloodPressure__gte = 140).count()
+
+            Questionnaire_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id  , Questionnaire__isnull=False)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0 
+            total_cervical_cancer =0
+            total_COPD_count = 0 
+            toatal_communicable  = 0 
+            total_eye_problem = 0 
+            total_Alzheimers = 0 
+            
+            for record in Questionnaire_queryset:
+                part_e = record.Questionnaire.get(('part_e' , []))
+                communicable = 0 
+                for question in part_e[0:]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        communicable += 1
+                        break
+                
+            for record in Questionnaire_queryset:
+                part_c =  record.Questionnaire.get('part_c', []) 
+                COPD = 0 
+                for question in part_c[0:]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        COPD += 1
+                        break
+            for record in Questionnaire_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+                for question in part_b[12:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[36:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer += cervical_cancer
+                total_COPD_count += COPD
+                toatal_communicable += communicable
+                total_eye_problem += eye_problem
 
         return Response({
+
             'total_count' : total_citizen_count ,
             'todays_count' : todays_citizen_count ,
-            'partial_survey_count'  : partial_survey_count ,
+            'partial_survey_count' : partial_survey_count ,
             'total_family_count' : total_family_count ,
             'today_family_count' : today_family_count,
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
-            'citizen_above_30' : citizen_above_30, } , status= 200)
+            'citizen_above_30' : citizen_above_30,
+            "male" : male,
+            "female" : female,
+            "transgender" : transgender,
+            'diabetes' : total_diabetes,
+            'hypertension' : hypertension ,
+            'oral_Cancer' : total_oral_cancer ,
+            'cervical_cancer' : total_cervical_cancer ,
+            'copd' : total_COPD_count,
+            'eye_problem' : total_eye_problem , 
+            'asthama' : 0 ,
+            'Alzheimers' : 0 ,
+            'tb' : total_tb_count ,
+            'breast_cancer' : total_breast_cancer,
+            'communicable' : toatal_communicable ,
+            'blood_collected_home' : blood_collected_home , 
+            'blood_collected_center' : blood_collected_center ,
+            'denieded_by_mo_count' : denieded_by_mo_count , 
+            'denieded_by_mo_individual' : denieded_by_mo_individual ,
+            'Referral_choice_further_management' : Referral_choice_further_management ,
+            'Referral_choice_suspect_symptoms': Referral_choice_suspect_symptoms ,
+            'Referral_choice_diagnosis': Referral_choice_diagnosis ,
+            'Referral_choice_co_morbid_investigation': Referral_choice_co_morbid_investigation ,
+            'Referral_choice_Collection_at_dispensary': Referral_choice_Collection_at_Dispensary ,
+            'total_vulnerabel' : total_vulnerabel , 
+            'vulnerabel_70_Years' : vulnerabel_70_Years , 
+            'vulnerabel_Physically_handicapped' : vulnerabel_Physically_handicapped , 
+            'vulnerabel_completely_paralyzed_or_on_bed' : vulnerabel_completely_paralyzed_or_on_bed , 
+            'vulnerabel_elderly_and_alone_at_home' : vulnerabel_elderly_and_alone_at_home , 
+            'vulnerabel_any_other_reason' : vulnerabel_any_other_reason , 
+                
+                } , status= 200)
             
 class DownloadHealthpostwiseUserList(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
@@ -508,6 +755,7 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
         wb.save(response)
         return response
  
+
 @permission_classes((IsAuthenticated,))
 @api_view(['GET'])
 def MoHDashboard(request):
@@ -540,6 +788,116 @@ def MoHDashboard(request):
             data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__healthPost__ward_id  =wardId).count()
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId).count()
 
+
+            data["Referral_choice_further_management"] = familyMembers.objects.filter( gender=gender,familyHead__area__healthPost__ward_id  =wardId,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            data["Referral_choice_diagnosis"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Medical College for management of Complication').count()
+            data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Private facility').count()
+
+            data["total_vulnerabel"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, vulnerable = True).count()
+            data["vulnerabel_70_Years"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = '70+ Years').count()
+            data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Physically Handicapped').count()
+            data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+            data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Any other reason').count()
+            diabetes_queryset = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId, Questionnaire__isnull=False)
+            # data["diabetes_queryset"] = diabetes_queryset 
+            # print(diabetes_queryset.Questionnaire)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_eye_problem = 0
+            total_ear_problem = 0
+            total_fits_problem = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0
+            total_cervical_cancer = 0
+            total_leprosy = 0
+            for record in diabetes_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                ear_problem = 0
+                fits_problem = 0
+                leprosy = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[37:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                for question in part_b[12:15]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+
+                for question in part_b[15:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ear_problem += 1
+                        break
+
+
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        fits_problem += 1
+                        break
+
+                for question in part_b[25:32]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        leporsy += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_eye_problem += eye_problem
+                total_ear_problem +=ear_problem
+                total_fits_problem += fits_problem
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer +=cervical_cancer
+                total_leprosy += leprosy
+            data["total_tb_count"] = tb_count          
+            data["total_diabetes"] = total_diabetes
+            data["total_eye_problem"]= eye_problem
+            data["total_ear_problem"]= ear_problem
+            data["total_fits_problem"]= fits_problem
+
+
+            data["total_breast_cancer"] =total_breast_cancer
+            data["total_oral_cancer"]=total_oral_cancer
+            data["total_cervical_cancer"]=cervical_cancer
+            data["total_leprosy"]=leprosy
+
             if healthPostId:
                     #Data For  Ward and HealthPost Filter
                 data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId ).count()
@@ -556,7 +914,116 @@ def MoHDashboard(request):
                 data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
                 data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
                 data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
-                
+
+                data["Referral_choice_further_management"] = familyMembers.objects.filter( gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+                data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+                data["Referral_choice_diagnosis"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+                data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Medical College for management of Complication').count()
+                data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Private facility').count()
+
+                data["total_vulnerabel"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable = True).count()
+                data["vulnerabel_70_Years"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = '70+ Years').count()
+                data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Physically Handicapped').count()
+                data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+                data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+                data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Any other reason').count()
+                diabetes_queryset = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, Questionnaire__isnull=False)
+                # data["diabetes_queryset"] = diabetes_queryset 
+                # print(diabetes_queryset.Questionnaire)
+                total_tb_count = 0
+                total_diabetes = 0
+                total_eye_problem = 0
+                total_ear_problem = 0
+                total_fits_problem = 0
+                total_breast_cancer = 0 
+                total_oral_cancer = 0
+                total_cervical_cancer = 0
+                total_leprosy = 0
+                for record in diabetes_queryset:
+                    part_b = record.Questionnaire.get('part_b', []) 
+                    tb_count = 0
+                    diabetes = 0 
+                    breast_cancer = 0 
+                    oral_cancer = 0
+                    cervical_cancer = 0
+                    eye_problem = 0
+                    ear_problem = 0
+                    fits_problem = 0
+                    leprosy = 0
+                    for question in part_b[:10]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            tb_count += 1
+                            break
+
+                    for question in part_b[10:12]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            diabetes += 1
+                            break
+                    for question in part_b[33:36]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            breast_cancer += 1
+                            break
+                    for question in part_b[18:25]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            oral_cancer += 1
+                            break
+
+                    for question in part_b[37:40]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            cervical_cancer += 1
+                            break
+
+                    for question in part_b[12:15]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            eye_problem += 1
+                            break
+
+                    for question in part_b[15:16]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            ear_problem += 1
+                            break
+
+
+                    for question in part_b[16:17]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            fits_problem += 1
+                            break
+
+                    for question in part_b[25:32]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            leporsy += 1
+                            break
+
+                    total_tb_count += tb_count
+                    total_diabetes += diabetes
+                    total_eye_problem += eye_problem
+                    total_ear_problem +=ear_problem
+                    total_fits_problem += fits_problem
+                    total_breast_cancer += breast_cancer
+                    total_oral_cancer += oral_cancer
+                    total_cervical_cancer +=cervical_cancer
+                    total_leprosy += leprosy
+                data["total_tb_count"] = tb_count          
+                data["total_diabetes"] = total_diabetes
+                data["total_eye_problem"]= eye_problem
+                data["total_ear_problem"]= ear_problem
+                data["total_fits_problem"]= fits_problem
+
+
+                data["total_breast_cancer"] =total_breast_cancer
+                data["total_oral_cancer"]=total_oral_cancer
+                data["total_cervical_cancer"]=cervical_cancer
+                data["total_leprosy"]=leprosy
+
             if UserId:
                     #Data For  Ward and HealthPost Filter and User Id Filter
                 data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,user_id=UserId ).count()
@@ -573,6 +1040,116 @@ def MoHDashboard(request):
                 data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
                 data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
                 data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
+
+                data["Referral_choice_further_management"] = familyMembers.objects.filter( gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+                data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+                data["Referral_choice_diagnosis"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+                data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Medical College for management of Complication').count()
+                data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Private facility').count()
+
+                data["total_vulnerabel"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable = True).count()
+                data["vulnerabel_70_Years"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = '70+ Years').count()
+                data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Physically Handicapped').count()
+                data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+                data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+                data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Any other reason').count()
+                diabetes_queryset = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, Questionnaire__isnull=False)
+                # data["diabetes_queryset"] = diabetes_queryset 
+                # print(diabetes_queryset.Questionnaire)
+                total_tb_count = 0
+                total_diabetes = 0
+                total_eye_problem = 0
+                total_ear_problem = 0
+                total_fits_problem = 0
+                total_breast_cancer = 0 
+                total_oral_cancer = 0
+                total_cervical_cancer = 0
+                total_leprosy = 0
+                for record in diabetes_queryset:
+                    part_b = record.Questionnaire.get('part_b', []) 
+                    tb_count = 0
+                    diabetes = 0 
+                    breast_cancer = 0 
+                    oral_cancer = 0
+                    cervical_cancer = 0
+                    eye_problem = 0
+                    ear_problem = 0
+                    fits_problem = 0
+                    leprosy = 0
+                    for question in part_b[:10]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            tb_count += 1
+                            break
+
+                    for question in part_b[10:12]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            diabetes += 1
+                            break
+                    for question in part_b[33:36]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            breast_cancer += 1
+                            break
+                    for question in part_b[18:25]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            oral_cancer += 1
+                            break
+
+                    for question in part_b[37:40]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            cervical_cancer += 1
+                            break
+
+                    for question in part_b[12:15]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            eye_problem += 1
+                            break
+
+                    for question in part_b[15:16]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            ear_problem += 1
+                            break
+
+
+                    for question in part_b[16:17]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            fits_problem += 1
+                            break
+
+                    for question in part_b[25:32]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            leporsy += 1
+                            break
+
+                    total_tb_count += tb_count
+                    total_diabetes += diabetes
+                    total_eye_problem += eye_problem
+                    total_ear_problem +=ear_problem
+                    total_fits_problem += fits_problem
+                    total_breast_cancer += breast_cancer
+                    total_oral_cancer += oral_cancer
+                    total_cervical_cancer +=cervical_cancer
+                    total_leprosy += leprosy
+                data["total_tb_count"] = tb_count          
+                data["total_diabetes"] = total_diabetes
+                data["total_eye_problem"]= eye_problem
+                data["total_ear_problem"]= ear_problem
+                data["total_fits_problem"]= fits_problem
+
+
+                data["total_breast_cancer"] =total_breast_cancer
+                data["total_oral_cancer"]=total_oral_cancer
+                data["total_cervical_cancer"]=cervical_cancer
+                data["total_leprosy"]=leprosy
+
         else:
             #Data For Only Ward Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId ).count()
@@ -590,6 +1167,119 @@ def MoHDashboard(request):
             data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",familyHead__area__healthPost__ward_id  =wardId).count()
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId).count()
 
+
+            data["Referral_choice_further_management"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            data["Referral_choice_diagnosis"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,referels__choice = 'Referral to Medical College for management of Complication').count()
+            data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Private facility').count()
+
+            data["total_vulnerabel"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable = True).count()
+            data["vulnerabel_70_Years"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = '70+ Years').count()
+            data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Physically Handicapped').count()
+            data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+            data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Any other reason').count()
+            diabetes_queryset = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, Questionnaire__isnull=False)
+            # data["diabetes_queryset"] = diabetes_queryset 
+            # print(diabetes_queryset.Questionnaire)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_eye_problem = 0
+            total_ear_problem = 0
+            total_fits_problem = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0
+            total_cervical_cancer = 0
+            total_leprosy = 0
+            for record in diabetes_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                ear_problem = 0
+                fits_problem = 0
+                leprosy = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[37:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                for question in part_b[12:15]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+
+                for question in part_b[15:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ear_problem += 1
+                        break
+
+
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        fits_problem += 1
+                        break
+
+                for question in part_b[25:32]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        leprosy += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_eye_problem += eye_problem
+                total_ear_problem +=ear_problem
+                total_fits_problem += fits_problem
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer += cervical_cancer
+                total_leprosy += leprosy
+
+            data["total_tb_count"] = tb_count          
+            data["total_diabetes"] = total_diabetes
+            data["total_eye_problem"]= eye_problem
+            data["total_ear_problem"]= ear_problem
+            data["total_fits_problem"]= fits_problem
+
+
+            data["total_breast_cancer"] = total_breast_cancer
+            data["total_oral_cancer"]= total_oral_cancer
+            data["total_cervical_cancer"]= cervical_cancer
+            data["total_leprosy"]= leprosy
+
+
+
             if healthPostId:
                     #Data For  Ward and HealthPost Filter
                 data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId ).count()
@@ -606,6 +1296,115 @@ def MoHDashboard(request):
                 data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
                 data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
                 data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
+
+                data["Referral_choice_further_management"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+                data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+                data["Referral_choice_diagnosis"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+                data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Medical College for management of Complication').count()
+                data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Private facility').count()
+
+                data["total_vulnerabel"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,vulnerable = True).count()
+                data["vulnerabel_70_Years"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = '70+ Years').count()
+                data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,vulnerable_choices__choice = 'Physically Handicapped').count()
+                data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+                data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+                data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Any other reason').count()
+                diabetes_queryset = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, Questionnaire__isnull=False)
+                # data["diabetes_queryset"] = diabetes_queryset 
+                # print(diabetes_queryset.Questionnaire)
+                total_tb_count = 0
+                total_diabetes = 0
+                total_eye_problem = 0
+                total_ear_problem = 0
+                total_fits_problem = 0
+                total_breast_cancer = 0 
+                total_oral_cancer = 0
+                total_cervical_cancer = 0
+                total_leprosy = 0
+                for record in diabetes_queryset:
+                    part_b = record.Questionnaire.get('part_b', []) 
+                    tb_count = 0
+                    diabetes = 0 
+                    breast_cancer = 0 
+                    oral_cancer = 0
+                    cervical_cancer = 0
+                    eye_problem = 0
+                    ear_problem = 0
+                    fits_problem = 0
+                    leprosy = 0
+                    for question in part_b[:10]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            tb_count += 1
+                            break
+
+                    for question in part_b[10:12]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            diabetes += 1
+                            break
+                    for question in part_b[33:36]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            breast_cancer += 1
+                            break
+                    for question in part_b[18:25]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            oral_cancer += 1
+                            break
+
+                    for question in part_b[37:40]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            cervical_cancer += 1
+                            break
+
+                    for question in part_b[12:15]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            eye_problem += 1
+                            break
+
+                    for question in part_b[15:16]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            ear_problem += 1
+                            break
+
+
+                    for question in part_b[16:17]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            fits_problem += 1
+                            break
+
+                    for question in part_b[25:32]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            leporsy += 1
+                            break
+
+                    total_tb_count += tb_count
+                    total_diabetes += diabetes
+                    total_eye_problem += eye_problem
+                    total_ear_problem +=ear_problem
+                    total_fits_problem += fits_problem
+                    total_breast_cancer += breast_cancer
+                    total_oral_cancer += oral_cancer
+                    total_cervical_cancer +=cervical_cancer
+                    total_leprosy += leprosy
+                data["total_tb_count"] = tb_count          
+                data["total_diabetes"] = total_diabetes
+                data["total_eye_problem"]= eye_problem
+                data["total_ear_problem"]= ear_problem
+                data["total_fits_problem"]= fits_problem
+
+
+                data["total_breast_cancer"] =total_breast_cancer
+                data["total_oral_cancer"]=total_oral_cancer
+                data["total_cervical_cancer"]=cervical_cancer
+                data["total_leprosy"]=leprosy
                 
             if UserId:
                     #Data For  Ward and HealthPost Filter and User Id Filter
@@ -623,7 +1422,115 @@ def MoHDashboard(request):
                 data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
                 data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
                 data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-        
+                data["Referral_choice_further_management"] = familyMembers.objects.filter( gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+                data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+                data["Referral_choice_diagnosis"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+                data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Medical College for management of Complication').count()
+                data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Private facility').count()
+
+                data["total_vulnerabel"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable = True).count()
+                data["vulnerabel_70_Years"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = '70+ Years').count()
+                data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Physically Handicapped').count()
+                data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+                data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+                data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Any other reason').count()
+                diabetes_queryset = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, Questionnaire__isnull=False)
+                # data["diabetes_queryset"] = diabetes_queryset 
+                # print(diabetes_queryset.Questionnaire)
+                total_tb_count = 0
+                total_diabetes = 0
+                total_eye_problem = 0
+                total_ear_problem = 0
+                total_fits_problem = 0
+                total_breast_cancer = 0 
+                total_oral_cancer = 0
+                total_cervical_cancer = 0
+                total_leprosy = 0
+                for record in diabetes_queryset:
+                    part_b = record.Questionnaire.get('part_b', []) 
+                    tb_count = 0
+                    diabetes = 0 
+                    breast_cancer = 0 
+                    oral_cancer = 0
+                    cervical_cancer = 0
+                    eye_problem = 0
+                    ear_problem = 0
+                    fits_problem = 0
+                    leprosy = 0
+                    for question in part_b[:10]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            tb_count += 1
+                            break
+
+                    for question in part_b[10:12]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            diabetes += 1
+                            break
+                    for question in part_b[33:36]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            breast_cancer += 1
+                            break
+                    for question in part_b[18:25]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            oral_cancer += 1
+                            break
+
+                    for question in part_b[37:40]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            cervical_cancer += 1
+                            break
+
+                    for question in part_b[12:15]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            eye_problem += 1
+                            break
+
+                    for question in part_b[15:16]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            ear_problem += 1
+                            break
+
+
+                    for question in part_b[16:17]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            fits_problem += 1
+                            break
+
+                    for question in part_b[25:32]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            leporsy += 1
+                            break
+
+                    total_tb_count += tb_count
+                    total_diabetes += diabetes
+                    total_eye_problem += eye_problem
+                    total_ear_problem +=ear_problem
+                    total_fits_problem += fits_problem
+                    total_breast_cancer += breast_cancer
+                    total_oral_cancer += oral_cancer
+                    total_cervical_cancer +=cervical_cancer
+                    total_leprosy += leprosy
+                data["total_tb_count"] = tb_count          
+                data["total_diabetes"] = total_diabetes
+                data["total_eye_problem"]= eye_problem
+                data["total_ear_problem"]= ear_problem
+                data["total_fits_problem"]= fits_problem
+
+
+                data["total_breast_cancer"] =total_breast_cancer
+                data["total_oral_cancer"]=total_oral_cancer
+                data["total_cervical_cancer"]=cervical_cancer
+                data["total_leprosy"]=leprosy
+
 
         return Response({
             'status': 'success',
@@ -672,6 +1579,114 @@ def AdminDashboard(request):
         data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender).count()
         data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender).count()
 
+        data["Referral_choice_further_management"] = familyMembers.objects.filter( gender=gender,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+        data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(gender=gender , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+        data["Referral_choice_diagnosis"] = familyMembers.objects.filter(gender=gender , referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+        data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(gender=gender , referels__choice = 'Referral to Medical College for management of Complication').count()
+        data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(gender=gender , referels__choice = 'Referral to Private facility').count()
+
+        data["total_vulnerabel"] = familyMembers.objects.filter(gender=gender , vulnerable = True).count()
+        data["vulnerabel_70_Years"] = familyMembers.objects.filter(gender=gender , vulnerable_choices__choice = '70+ Years').count()
+        data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(gender=gender, vulnerable_choices__choice = 'Physically Handicapped').count()
+        data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(gender=gender, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+        data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(gender=gender, vulnerable_choices__choice = 'Elderly and alone at home').count()
+        data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(gender=gender, vulnerable_choices__choice = 'Any other reason').count()
+        diabetes_queryset = familyMembers.objects.filter(gender=gender, Questionnaire__isnull=False)
+        # data["diabetes_queryset"] = diabetes_queryset 
+        # print(diabetes_queryset.Questionnaire)
+        total_tb_count = 0
+        total_diabetes = 0
+        total_eye_problem = 0
+        total_ear_problem = 0
+        total_fits_problem = 0
+        total_breast_cancer = 0 
+        total_oral_cancer = 0
+        total_cervical_cancer = 0
+        total_leprosy = 0
+        for record in diabetes_queryset:
+            part_b = record.Questionnaire.get('part_b', []) 
+            tb_count = 0
+            diabetes = 0 
+            breast_cancer = 0 
+            oral_cancer = 0
+            cervical_cancer = 0
+            eye_problem = 0
+            ear_problem = 0
+            fits_problem = 0
+            leprosy = 0
+            for question in part_b[:10]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    tb_count += 1
+                    break
+
+            for question in part_b[10:12]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    diabetes += 1
+                    break
+            for question in part_b[33:36]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    breast_cancer += 1
+                    break
+            for question in part_b[18:25]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    oral_cancer += 1
+                    break
+
+            for question in part_b[37:40]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    cervical_cancer += 1
+                    break
+
+            for question in part_b[12:15]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    eye_problem += 1
+                    break
+
+            for question in part_b[15:16]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    ear_problem += 1
+                    break
+
+
+            for question in part_b[16:17]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    fits_problem += 1
+                    break
+
+            for question in part_b[25:32]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    leporsy += 1
+                    break
+
+            total_tb_count += tb_count
+            total_diabetes += diabetes
+            total_eye_problem += eye_problem
+            total_ear_problem +=ear_problem
+            total_fits_problem += fits_problem
+            total_breast_cancer += breast_cancer
+            total_oral_cancer += oral_cancer
+            total_cervical_cancer +=cervical_cancer
+            total_leprosy += leprosy
+        data["total_tb_count"] = tb_count          
+        data["total_diabetes"] = total_diabetes
+        data["total_eye_problem"]= eye_problem
+        data["total_ear_problem"]= ear_problem
+        data["total_fits_problem"]= fits_problem
+
+
+        data["total_breast_cancer"] =total_breast_cancer
+        data["total_oral_cancer"]=total_oral_cancer
+        data["total_cervical_cancer"]=cervical_cancer
+        data["total_leprosy"]=leprosy
         if wardId:
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId ).count()
             data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender=gender).count()
@@ -693,6 +1708,116 @@ def AdminDashboard(request):
             data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",gender=gender,familyHead__area__healthPost__ward_id  =wardId).count()
             data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__healthPost__ward_id  =wardId).count()
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId).count()
+
+            data["Referral_choice_further_management"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, gender=gender,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            data["Referral_choice_diagnosis"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Medical College for management of Complication').count()
+            data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Private facility').count()
+
+            data["total_vulnerabel"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, vulnerable = True).count()
+            data["vulnerabel_70_Years"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = '70+ Years').count()
+            data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Physically Handicapped').count()
+            data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+            data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Any other reason').count()
+            diabetes_queryset = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId, Questionnaire__isnull=False)
+            # data["diabetes_queryset"] = diabetes_queryset 
+            # print(diabetes_queryset.Questionnaire)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_eye_problem = 0
+            total_ear_problem = 0
+            total_fits_problem = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0
+            total_cervical_cancer = 0
+            total_leprosy = 0
+            for record in diabetes_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                ear_problem = 0
+                fits_problem = 0
+                leprosy = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[37:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                for question in part_b[12:15]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+
+                for question in part_b[15:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ear_problem += 1
+                        break
+
+
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        fits_problem += 1
+                        break
+
+                for question in part_b[25:32]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        leporsy += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_eye_problem += eye_problem
+                total_ear_problem +=ear_problem
+                total_fits_problem += fits_problem
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer +=cervical_cancer
+                total_leprosy += leprosy
+            data["total_tb_count"] = tb_count          
+            data["total_diabetes"] = total_diabetes
+            data["total_eye_problem"]= eye_problem
+            data["total_ear_problem"]= ear_problem
+            data["total_fits_problem"]= fits_problem
+
+
+            data["total_breast_cancer"] =total_breast_cancer
+            data["total_oral_cancer"]=total_oral_cancer
+            data["total_cervical_cancer"]=cervical_cancer
+            data["total_leprosy"]=leprosy
+
 
         if healthPostId:
             #Data For  Ward and HealthPost Filter
@@ -718,6 +1843,114 @@ def AdminDashboard(request):
             data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             
+            data["Referral_choice_further_management"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, gender=gender,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId ,area__healthPost_id=healthPostId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            data["Referral_choice_diagnosis"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId ,area__healthPost_id=healthPostId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Medical College for management of Complication').count()
+            data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Private facility').count()
+
+            data["total_vulnerabel"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable = True).count()
+            data["vulnerabel_70_Years"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = '70+ Years').count()
+            data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Physically Handicapped').count()
+            data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+            data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Any other reason').count()
+            diabetes_queryset = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, Questionnaire__isnull=False)
+            # data["diabetes_queryset"] = diabetes_queryset 
+            # print(diabetes_queryset.Questionnaire)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_eye_problem = 0
+            total_ear_problem = 0
+            total_fits_problem = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0
+            total_cervical_cancer = 0
+            total_leprosy = 0
+            for record in diabetes_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                ear_problem = 0
+                fits_problem = 0
+                leprosy = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[37:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                for question in part_b[12:15]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+
+                for question in part_b[15:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ear_problem += 1
+                        break
+
+
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        fits_problem += 1
+                        break
+
+                for question in part_b[25:32]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        leporsy += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_eye_problem += eye_problem
+                total_ear_problem +=ear_problem
+                total_fits_problem += fits_problem
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer +=cervical_cancer
+                total_leprosy += leprosy
+            data["total_tb_count"] = tb_count          
+            data["total_diabetes"] = total_diabetes
+            data["total_eye_problem"]= eye_problem
+            data["total_ear_problem"]= ear_problem
+            data["total_fits_problem"]= fits_problem
+
+
+            data["total_breast_cancer"] =total_breast_cancer
+            data["total_oral_cancer"]=total_oral_cancer
+            data["total_cervical_cancer"]=cervical_cancer
+            data["total_leprosy"]=leprosy
         if UserId:
             #Data For  Ward and HealthPost Filter and User Id Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,user_id=UserId ).count()
@@ -740,7 +1973,116 @@ def AdminDashboard(request):
             data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
             data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
+           
+           
+            data["Referral_choice_further_management"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, gender=gender,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(gender=gender,familyHead__area__healthPost__ward_id  =wardId ,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            data["Referral_choice_diagnosis"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId ,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Medical College for management of Complication').count()
+            data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Private facility').count()
 
+            data["total_vulnerabel"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable = True).count()
+            data["vulnerabel_70_Years"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = '70+ Years').count()
+            data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Physically Handicapped').count()
+            data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+            data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Any other reason').count()
+            diabetes_queryset = familyMembers.objects.filter(gender=gender ,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, Questionnaire__isnull=False)
+            # data["diabetes_queryset"] = diabetes_queryset 
+            # print(diabetes_queryset.Questionnaire)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_eye_problem = 0
+            total_ear_problem = 0
+            total_fits_problem = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0
+            total_cervical_cancer = 0
+            total_leprosy = 0
+            for record in diabetes_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                ear_problem = 0
+                fits_problem = 0
+                leprosy = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[37:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                for question in part_b[12:15]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+
+                for question in part_b[15:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ear_problem += 1
+                        break
+
+
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        fits_problem += 1
+                        break
+
+                for question in part_b[25:32]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        leporsy += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_eye_problem += eye_problem
+                total_ear_problem +=ear_problem
+                total_fits_problem += fits_problem
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer +=cervical_cancer
+                total_leprosy += leprosy
+            data["total_tb_count"] = tb_count          
+            data["total_diabetes"] = total_diabetes
+            data["total_eye_problem"]= eye_problem
+            data["total_ear_problem"]= ear_problem
+            data["total_fits_problem"]= fits_problem
+
+
+            data["total_breast_cancer"] =total_breast_cancer
+            data["total_oral_cancer"]=total_oral_cancer
+            data["total_cervical_cancer"]=cervical_cancer
+            data["total_leprosy"]=leprosy
     else:
         #Data For Only Ward Filter
         data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.all().count()
@@ -762,6 +2104,118 @@ def AdminDashboard(request):
         data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center").count()
         data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required").count()
         data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied").count()
+
+        data["Referral_choice_further_management"] = familyMembers.objects.filter(referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+        data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+        data["Referral_choice_diagnosis"] = familyMembers.objects.filter(referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+        data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(referels__choice = 'Referral to Medical College for management of Complication').count()
+        data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(referels__choice = 'Referral to Private facility').count()
+
+        data["total_vulnerabel"] = familyMembers.objects.filter(vulnerable = True).count()
+        data["vulnerabel_70_Years"] = familyMembers.objects.filter(vulnerable_choices__choice = '70+ Years').count()
+        data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(vulnerable_choices__choice = 'Physically Handicapped').count()
+        data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+        data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(vulnerable_choices__choice = 'Elderly and alone at home').count()
+        data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(vulnerable_choices__choice = 'Any other reason').count()
+        diabetes_queryset = familyMembers.objects.filter(Questionnaire__isnull=False)
+        # data["diabetes_queryset"] = diabetes_queryset 
+        # print(diabetes_queryset.Questionnaire)
+        total_tb_count = 0
+        total_diabetes = 0
+        total_eye_problem = 0
+        total_ear_problem = 0
+        total_fits_problem = 0
+        total_breast_cancer = 0 
+        total_oral_cancer = 0
+        total_cervical_cancer = 0
+        total_leprosy = 0
+        for record in diabetes_queryset:
+            part_b = record.Questionnaire.get('part_b', []) 
+            tb_count = 0
+            diabetes = 0 
+            breast_cancer = 0 
+            oral_cancer = 0
+            cervical_cancer = 0
+            eye_problem = 0
+            ear_problem = 0
+            fits_problem = 0
+            leprosy = 0
+            for question in part_b[:10]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    tb_count += 1
+                    break
+
+            for question in part_b[10:12]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    diabetes += 1
+                    break
+            for question in part_b[33:36]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    breast_cancer += 1
+                    break
+            for question in part_b[18:25]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    oral_cancer += 1
+                    break
+
+            for question in part_b[37:40]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    cervical_cancer += 1
+                    break
+
+            for question in part_b[12:15]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    eye_problem += 1
+                    break
+
+            for question in part_b[15:16]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    ear_problem += 1
+                    break
+
+
+            for question in part_b[16:17]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    fits_problem += 1
+                    break
+
+            for question in part_b[25:32]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    leprosy += 1
+                    break
+
+            total_tb_count += tb_count
+            total_diabetes += diabetes
+            total_eye_problem += eye_problem
+            total_ear_problem +=ear_problem
+            total_fits_problem += fits_problem
+            total_breast_cancer += breast_cancer
+            total_oral_cancer += oral_cancer
+            total_cervical_cancer +=cervical_cancer
+            total_leprosy += leprosy
+
+        data["total_tb_count"] = tb_count          
+        data["total_diabetes"] = total_diabetes
+        data["total_eye_problem"]= eye_problem
+        data["total_ear_problem"]= ear_problem
+        data["total_fits_problem"]= fits_problem
+
+
+        data["total_breast_cancer"] =total_breast_cancer
+        data["total_oral_cancer"]=total_oral_cancer
+        data["total_cervical_cancer"]=cervical_cancer
+        data["total_leprosy"]=leprosy
+
+
 
         if wardId:
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId ).count()
@@ -787,6 +2241,115 @@ def AdminDashboard(request):
             data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",familyHead__area__healthPost__ward_id  =wardId).count()
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId).count()
 
+
+            data["Referral_choice_further_management"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            data["Referral_choice_diagnosis"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Medical College for management of Complication').count()
+            data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, referels__choice = 'Referral to Private facility').count()
+
+            data["total_vulnerabel"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable = True).count()
+            data["vulnerabel_70_Years"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = '70+ Years').count()
+            data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Physically Handicapped').count()
+            data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+            data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,vulnerable_choices__choice = 'Any other reason').count()
+            diabetes_queryset = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId, Questionnaire__isnull=False)
+            # data["diabetes_queryset"] = diabetes_queryset 
+            # print(diabetes_queryset.Questionnaire)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_eye_problem = 0
+            total_ear_problem = 0
+            total_fits_problem = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0
+            total_cervical_cancer = 0
+            total_leprosy = 0
+            for record in diabetes_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                ear_problem = 0
+                fits_problem = 0
+                leprosy = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[37:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                for question in part_b[12:15]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+
+                for question in part_b[15:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ear_problem += 1
+                        break
+
+
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        fits_problem += 1
+                        break
+
+                for question in part_b[25:32]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        leporsy += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_eye_problem += eye_problem
+                total_ear_problem +=ear_problem
+                total_fits_problem += fits_problem
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer +=cervical_cancer
+                total_leprosy += leprosy
+            data["total_tb_count"] = tb_count          
+            data["total_diabetes"] = total_diabetes
+            data["total_eye_problem"]= eye_problem
+            data["total_ear_problem"]= ear_problem
+            data["total_fits_problem"]= fits_problem
+
+
+            data["total_breast_cancer"] =total_breast_cancer
+            data["total_oral_cancer"]=total_oral_cancer
+            data["total_cervical_cancer"]=cervical_cancer
+            data["total_leprosy"]=leprosy
         if healthPostId:
             #Data For  Ward and HealthPost Filter
             data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId ).count()
@@ -808,6 +2371,115 @@ def AdminDashboard(request):
             data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId).count()
+
+            data["Referral_choice_further_management"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId ,area__healthPost_id=healthPostId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            data["Referral_choice_diagnosis"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId ,area__healthPost_id=healthPostId,referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,referels__choice = 'Referral to Medical College for management of Complication').count()
+            data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, referels__choice = 'Referral to Private facility').count()
+
+            data["total_vulnerabel"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,vulnerable = True).count()
+            data["vulnerabel_70_Years"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = '70+ Years').count()
+            data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,vulnerable_choices__choice = 'Physically Handicapped').count()
+            data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+            data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,vulnerable_choices__choice = 'Any other reason').count()
+            diabetes_queryset = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId, Questionnaire__isnull=False)
+            # data["diabetes_queryset"] = diabetes_queryset 
+            # print(diabetes_queryset.Questionnaire)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_eye_problem = 0
+            total_ear_problem = 0
+            total_fits_problem = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0
+            total_cervical_cancer = 0
+            total_leprosy = 0
+            for record in diabetes_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                ear_problem = 0
+                fits_problem = 0
+                leprosy = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[37:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                for question in part_b[12:15]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+
+                for question in part_b[15:16]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ear_problem += 1
+                        break
+
+
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        fits_problem += 1
+                        break
+
+                for question in part_b[25:32]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        leporsy += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_eye_problem += eye_problem
+                total_ear_problem +=ear_problem
+                total_fits_problem += fits_problem
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer +=cervical_cancer
+                total_leprosy += leprosy
+            data["total_tb_count"] = tb_count          
+            data["total_diabetes"] = total_diabetes
+            data["total_eye_problem"]= eye_problem
+            data["total_ear_problem"]= ear_problem
+            data["total_fits_problem"]= fits_problem
+
+
+            data["total_breast_cancer"] =total_breast_cancer
+            data["total_oral_cancer"]=total_oral_cancer
+            data["total_cervical_cancer"]=cervical_cancer
+            data["total_leprosy"]=leprosy
             
         if UserId:
             #Data For  Ward and HealthPost Filter and User Id Filter
@@ -835,10 +2507,122 @@ def AdminDashboard(request):
             data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
     
 
+            data["Referral_choice_further_management"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            data["Referral_choice_suspect_symptoms"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId ,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            data["Referral_choice_diagnosis"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId ,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            data["Referral_choice_co_morbid_investigation"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Medical College for management of Complication').count()
+            data["Referral_choice_Collection_at_Dispensary"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, referels__choice = 'Referral to Private facility').count()
+
+            data["total_vulnerabel"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable = True).count()
+            data["vulnerabel_70_Years"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = '70+ Years').count()
+            data["vulnerabel_Physically_handicapped"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Physically Handicapped').count()
+            data["vulnerabel_completely_paralyzed_or_on_bed"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            data["vulnerabel_elderly_and_alone_at_home"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Elderly and alone at home').count()
+            data["vulnerabel_any_other_reason"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, vulnerable_choices__choice = 'Any other reason').count()
+            diabetes_queryset = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId, Questionnaire__isnull=False)
+            # data["diabetes_queryset"] = diabetes_queryset 
+            # print(diabetes_queryset.Questionnaire)
+            total_tb_count = 0
+            total_diabetes = 0
+            total_eye_problem = 0
+            total_ear_problem = 0
+            total_fits_problem = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0
+            total_cervical_cancer = 0
+            total_leprosy = 0
+            for record in diabetes_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                tb_count = 0
+                diabetes = 0 
+                breast_cancer = 0 
+                oral_cancer = 0
+                cervical_cancer = 0
+                eye_problem = 0
+                ear_problem = 0
+                fits_problem = 0
+                leprosy = 0
+                for question in part_b[:10]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        tb_count += 1
+                        break
+
+                for question in part_b[10:12]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        diabetes += 1
+                        break
+                for question in part_b[33:36]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        breast_cancer += 1
+                        break
+                for question in part_b[18:25]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        oral_cancer += 1
+                        break
+
+                for question in part_b[37:40]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        cervical_cancer += 1
+                        break
+
+                for question in part_b[12:15]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        eye_problem += 1
+                        break
+
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ear_problem += 1
+                        break
+
+
+                for question in part_b[17:18]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        fits_problem += 1
+                        break
+
+                for question in part_b[25:32]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        leporsy += 1
+                        break
+
+                total_tb_count += tb_count
+                total_diabetes += diabetes
+                total_eye_problem += eye_problem
+                total_ear_problem +=ear_problem
+                total_fits_problem += fits_problem
+                total_breast_cancer += breast_cancer
+                total_oral_cancer += oral_cancer
+                total_cervical_cancer +=cervical_cancer
+                total_leprosy += leprosy
+            data["total_tb_count"] = tb_count          
+            data["total_diabetes"] = total_diabetes
+            data["total_eye_problem"]= eye_problem
+            data["total_ear_problem"]= ear_problem
+            data["total_fits_problem"]= fits_problem
+
+
+            data["total_breast_cancer"] =total_breast_cancer
+            data["total_oral_cancer"]=total_oral_cancer
+            data["total_cervical_cancer"]=cervical_cancer
+            data["total_leprosy"]=leprosy
+
+
+
     return Response({
         'status': 'success',
         'message': 'Successfully Fetched',
         'data': data,
     })
+
 
 

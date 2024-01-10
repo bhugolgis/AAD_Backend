@@ -146,7 +146,6 @@ class familyMembers(models.Model):
          ("Individual Itself" , "Individual Itself"),
          ("AMO" , "AMO"),
     ]
-
     relationship_choices = [
          ("Self" , "Self"),
          ("Mother " , "Mother "),
@@ -179,6 +178,8 @@ class familyMembers(models.Model):
     weight = models.CharField(max_length=50 , blank = True , null = True)
     height = models.CharField(max_length=50 , blank = True , null = True)
     BMI = models.CharField(max_length=50 , blank = True , null = True)
+    # randomBloodSugar = models.CharField(max_length=50 , blank = True , null = True)
+
     Questionnaire = models.JSONField(blank= True , null = True)
     bloodCollectionLocation = models.CharField(max_length= 20 , choices= bloodCollectionLocation_choices , blank= True , null = True  )
     questionsConsent = models.BooleanField(default= False)

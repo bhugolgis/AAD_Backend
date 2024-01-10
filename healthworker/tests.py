@@ -1,11 +1,8 @@
-from django.test import TestCase
-
-# Create your tests here.
 {
     "part_a": [
-        {"answer": [], "question": "What_is_your_age_completeyears"},
+        {"answer": ["30_39_year"], "question": "What_is_your_age_completeyears"},
         {
-            "answer": [],
+            "answer": ["Used_to_consume_in_the_past_Sometimes_now"],
             "question": "Do_you_smoke_or_consume_smokeless_products_such_as_gutka_or_khaini",
         },
         {"answer": [], "question": "Do_you_consume_alcohol_daily"},
@@ -20,8 +17,8 @@ from django.test import TestCase
         },
     ],
     "part_b": [
-        {"answer": [], "question": "Shortness_of_breath_difficulty_breathing"},
-        {"answer": [], "question": "Coughing_more_than__weeks"},
+        {"answer": ["Yes"], "question": "Shortness_of_breath_difficulty_breathing"},
+        {"answer": ["Yes"], "question": "Coughing_more_than__weeks"},
         {"answer": [], "question": "Blood_in_sputum"},
         {"answer": [], "question": "Fever_for_more_than__weeks"},
         {"answer": [], "question": "Loss_of_weight"},
@@ -83,32 +80,37 @@ from django.test import TestCase
         {"answer": [], "question": "Forgetting_your_home_address_or_household_names"},
     ],
     "part_c": [
-        {"answer": [], "question": "Type_of_Fuel_used_for_cooking"},
-        {"answer": [], "question": "Occupational_exposure"},
+        {
+            "answer": ["Firewood", "Crop_Residue", "Cow_dung_cake"],
+            "question": "Type_of_Fuel_used_for_cooking",
+        },
+        {
+            "answer": ["Crop_residue_burning", "burning_of_garbage_leaves"],
+            "question": "Occupational_exposure",
+        },
     ],
     "part_d": [
-        {"answer": [], "question": "Little_interest_of_pleasure_in_doing_things"},
-        {"answer": [], "question": "Feeling_down_depressed_or_hopeless"},
+        {
+            "answer": ["Not_at_all"],
+            "question": "Little_interest_of_pleasure_in_doing_things",
+        },
+        {"answer": ["Not_at_all"], "question": "Feeling_down_depressed_or_hopeless"},
     ],
     "part_e": [
-        {"answer": [], "question": "Fever"},
-        {"answer": [], "question": "With_Chills"},
-        {"answer": [], "question": "With_Rash"},
+        {"answer": ["Less_than__days"], "question": "Fever"},
+        {"answer": ["Yes"], "question": "With_Chills"},
+        {"answer": ["Yes"], "question": "With_Rash"},
         {"answer": [], "question": "with_Bleeding"},
         {"answer": [], "question": "with_Altered_Sensorium"},
         {"answer": [], "question": "Waddling_in_water"},
-        {
-            "answer": [],
-            "question": "Exposure_to_domestic_animal_like_cattle__Dog__Cat__Pig__Rodent",
-        },
+        {"answer": [],"question": "Exposure_to_domestic_animal_like_cattle__Dog__Cat__Pig__Rodent",},
         {"answer": [], "question": "Loose_Motion"},
         {"answer": [], "question": "With_Blood"},
         {"answer": [], "question": "Vomitting"},
-        {
-            "answer": [],
-            "question": "Eating_outside__uncovered_food__drinking_contaminated_water",
-        },
+        {"answer": [],"question": "Eating_outside__uncovered_food__drinking_contaminated_water",},
         {"answer": [], "question": "Animal_Bite"},
         {"answer": [], "question": "Snake_Bite"},
+        {"answer": [],"question": "history of amputation due to diabetes complication",
+        },
     ],
 }

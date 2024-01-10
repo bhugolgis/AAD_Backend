@@ -95,7 +95,7 @@ class GetDeactivatedUserListSerializer(serializers.ModelSerializer):
 	class Meta:
 		model  = CustomUser
 		fields = ( "id", "name","username", "phoneNumber", "emailId" , "health_Post",
-					 "HealthCareCenters" ,"section" , "ward" , "is_active" , 'created_by',  )
+					 "HealthCareCenters" ,"section" , "ward" , "is_active" , 'created_by', "userSections"  )
 
 	def get_ward(self , data):
 		try:
@@ -155,12 +155,25 @@ class AddUserByMOHSerializer(serializers.ModelSerializer):
 
 
 class UpdateUsersDetailsSerializer(serializers.ModelSerializer):
-	username = serializers.CharField(max_length=200 , required = False)
-	class Meta:
-		model = CustomUser
-		fields = ("name" , "username" ,"emailId" , "phoneNumber" , "created_by" , 
-			"section" , "ward" , "health_Post" , "area" , "userSections", "dispensary" , 'is_active' , 'ANM' ,)
-		
+    username = serializers.CharField(max_length=200, required=False)
+    class Meta:
+        model = CustomUser
+        fields = ("name", "username", "emailId", "phoneNumber", "created_by", 'ward',
+                  "section", "userSections", "health_Post", "area", "dispensary", 'is_active', 'ANM',)
+
+    def update(self, instance, validated_data):
+        try:
+            user_sections_data = validated_data.pop("userSections")
+        except KeyError:
+            user_sections_data = []
+        # instance = CustomUser.objects.update(**validated_data)
+        # Save the changes to the instance
+        # instance.save()
+        # Update related userSections
+        instance.userSections.set(user_sections_data)
+
+        return instance
+
 
 class DeleteUserSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -171,7 +184,6 @@ class DeleteUserSerializer(serializers.ModelSerializer):
 
 
 def get_areas_name(id):
-
 	areas = area.objects.filter(healthPost__id = id )
 	areas_list = []
 	for i in areas:
@@ -184,7 +196,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	health_Post = serializers.SerializerMethodField()
 	# area = serializers.SerializerMethodField()
 	dispensary = serializers.SerializerMethodField()
-
 	ward_id = serializers.SerializerMethodField()
 	section_id = serializers.SerializerMethodField()
 	health_Post_id = serializers.SerializerMethodField()
@@ -192,12 +203,14 @@ class CustomUserSerializer(serializers.ModelSerializer):
 	ANM_id = serializers.SerializerMethodField()
 	ANM_name = serializers.SerializerMethodField()
 	areas = serializers.SerializerMethodField()
-
 	group = serializers.ChoiceField(choices = get_group_choice(),required = False)
+	chv_asha_list = serializers.SerializerMethodField()
+	ANM_list = serializers.SerializerMethodField()
+
 	class Meta:
 		model = CustomUser
-		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , 
-			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id","areas" ,
+		fields = ( "id" ,"name" , "username" ,"emailId" , "phoneNumber" , "areas", "chv_asha_list" , "ANM_list" ,
+			"section" , "ward" , "health_Post" , "ward_id" , "section_id" , "health_Post_id",
 			"dispensary" ,"dispensary_id", "group" , "is_active" , "ANM_id"  , "ANM_name", "userSections")
 		depth = 1
 		
@@ -205,12 +218,25 @@ class CustomUserSerializer(serializers.ModelSerializer):
 		group = attrs.pop("group")
 		return attrs
 	
+	def get_chv_asha_list(self ,data ):
+		chv_asha_list = self.Meta.model.objects.filter( groups__name= 'CHV-ASHA' , userSections = data.userSections.all()[0] )
+		list = []
+		for i in chv_asha_list:
+			list.append(i.name)
+		return list
+	
+	def get_ANM_list(self ,data ):
+		ANM_list = self.Meta.model.objects.filter( groups__name= 'healthworker' , userSections = data.userSections.all()[0] )
+		list = []
+		for i in ANM_list:
+			list.append(i.name)
+		return list
+
 	def get_areas(self , data):
 		try:
 			section = data.userSections.all()[0]
 			healthPost_id = section.healthPost.id 
 			area = get_areas_name(healthPost_id)
-			print(area)
 		except:
 			area = ""
 		return area

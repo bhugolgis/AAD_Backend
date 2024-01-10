@@ -19,7 +19,6 @@ urlpatterns = [
         path('verifyabhaId/<str:abhaId>' , verifyabhaId.as_view() , name = 'aadharCard'),
         path('DumpExcelInsertxlsx' , DumpExcelInsertxlsx.as_view() , name = 'DumpExcelInsertxlsx'),
         
-        
         path('getReferelOptionList' , getReferelOptionList.as_view() , name = 'getReferelOptionList'),
         path('getvulnerableOptionList' , getvulnerableOptionList.as_view() , name = 'getvulnerableOptionList'),
 

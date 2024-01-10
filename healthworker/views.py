@@ -261,6 +261,10 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Elderly and alone at home').count()
         vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor = request.user , vulnerable_choices__choice = 'Any other reason').count()
 
+        TestsAssigned = self.get_queryset().filter(familySurveyor = request.user , isLabTestAdded = True).count()
+        TestReportGenerated = self.get_queryset().filter(familySurveyor = request.user , isLabTestReportGenerated = True).count()
+
+
         Questionnaire_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__isnull=False)
         total_tb_count = 0
         total_diabetes = 0
@@ -268,6 +272,17 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         total_oral_cancer = 0 
         total_cervical_cancer =0
         total_COPD_count = 0 
+        toatal_communicable  = 0 
+        total_eye_problem = 0 
+        total_Alzheimers = 0 
+        for record in Questionnaire_queryset:
+            part_e = record.Questionnaire.get('part_e', []) 
+            communicable = 0 
+            for question in part_e[0:]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    communicable += 1
+                    break
         for record in Questionnaire_queryset:
             part_c =  record.Questionnaire.get('part_c', []) 
             COPD = 0 
@@ -283,12 +298,17 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             breast_cancer = 0 
             oral_cancer = 0
             cervical_cancer = 0
+            eye_problem = 0
             for question in part_b[:10]:
                 answer = question.get('answer', [])
                 if answer and len(answer) > 0:
                     tb_count += 1
                     break
-
+            for question in part_b[12:16]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    eye_problem += 1
+                    break
             for question in part_b[10:12]:
                 answer = question.get('answer', [])
                 if answer and len(answer) > 0:
@@ -317,6 +337,8 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             total_oral_cancer += oral_cancer
             total_cervical_cancer += cervical_cancer
             total_COPD_count += COPD
+            # toatal_communicable += communicable
+            total_eye_problem += eye_problem
 
         return Response({
             'total_count' : total_citizen_count ,
@@ -332,10 +354,12 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'oral_Cancer' : total_oral_cancer ,
             'cervical_cancer' : total_cervical_cancer ,
             'copd' : total_COPD_count,
+            'eye_problem' : total_eye_problem , 
             'asthama' : 0 ,
+            'Alzheimers' : 0 ,
             'tb' : total_tb_count ,
             'breast_cancer' : total_breast_cancer , 
-            'communicable' : 1 ,
+            'communicable' : toatal_communicable ,
             'blood_collected_home' : blood_collected_home , 
             'blood_collected_center' : blood_collected_center ,
             'denieded_by_mo_count' : denieded_by_mo_count , 
@@ -352,6 +376,8 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'vulnerabel_elderly_and_alone_at_home' : vulnerabel_elderly_and_alone_at_home , 
             'vulnerabel_any_other_reason' : vulnerabel_any_other_reason , 
 
+            "TestReportGenerated" : TestReportGenerated , 
+            "TestsAssigned" : TestsAssigned, 
             } , status= status.HTTP_200_OK )
     
 class GetCitizenList(generics.ListAPIView):

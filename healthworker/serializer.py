@@ -11,7 +11,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
-                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'questionsConsent','Questionnaire',
+                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'questionsConsent','Questionnaire',
                   'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' ,
                     'referels' , 'deniedBy' , 'vulnerable' , 'vulnerable_choices' , 'vulnerable_reason' , "relationship" )
     

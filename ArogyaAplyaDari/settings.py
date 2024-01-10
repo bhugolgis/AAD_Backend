@@ -120,11 +120,11 @@ DATABASES = {
    'default': {
        'ENGINE': 'django.contrib.gis.db.backends.postgis',
     #    'NAME': 'DemoNbr',
-       'NAME':'AAD_local',
+       'NAME':'Arogya_Aplya_Daari',
        'USER': 'postgres',
        'PASSWORD':'admin',
-    #    'HOST' : '10.202.100.7',    
-       'HOST' : 'localhost',
+       'HOST' : '10.202.100.7',    
+    #    'HOST' : 'localhost',
        'PORT': '5432',
    }
 }
