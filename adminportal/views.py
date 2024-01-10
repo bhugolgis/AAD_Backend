@@ -407,16 +407,20 @@ class  MOHDashboardView(generics.GenericAPIView):
     permission_classes= (IsAuthenticated , IsMOH)
     queryset = familyMembers.objects.all()
     FamilySurvey_count = familyHeadDetails.objects.all()
+    CustomUser_queryset = CustomUser.objects.all()
 
 
     def get(self, request ,  *args, **kwargs):
         healthpost_id = self.request.query_params.get('healthpost_id', None)
+
+        CHV_ASHA_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='CHV-ASHA').count()
+        MO_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id,groups__name='mo').count()
+        ANM_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='healthworker').count()
         
         if healthpost_id:
             
             today = timezone.now().date() 
             total_citizen_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id =  request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id ).count()
-            
             todays_citizen_count  = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id , created_date__day= today.day).count()
             total_cbac_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , familySurveyor__userSections__healthPost__id = healthpost_id,age__gte = 30 , cbacRequired = True).count()
             partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user__userSections__healthPost__ward__id =  request.user.ward_id, user__userSections__healthPost__id = healthpost_id).count()
@@ -439,12 +443,15 @@ class  MOHDashboardView(generics.GenericAPIView):
             blood_collected_center = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'Center').count()
             denieded_by_mo_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'AMO').count()
             denieded_by_mo_individual = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, familySurveyor__userSections__healthPost__id = healthpost_id,bloodCollectionLocation = 'Individual Itself').count()
-            Referral_choice_further_management = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id,familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
-            Referral_choice_suspect_symptoms = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
-            Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
-            Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Medical College for management of Complication').count()
-            Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Private facility').count()
+            Referral_choice_Referral_to_Mun_Dispensary = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id,familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            Referral_choice_Referral_to_HBT_polyclinic = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            Referral_choice_Referral_to_Peripheral_Hospital = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            Referral_choice_Referral_to_Medical_College = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Medical College for management of Complication').count()
+            Referral_choice_Referral_to_Private_facility = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Private facility').count()
             hypertension = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,  familySurveyor__userSections__healthPost__id = healthpost_id ,bloodPressure__gte = 140).count()
+
+            total_LabTestAdded = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id  , isLabTestAdded = True).count()
+            TestReportGenerated = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , isLabTestReportGenerated = True).count()
 
             Questionnaire_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id ,  familySurveyor__userSections__healthPost__id = healthpost_id , Questionnaire__isnull=False)
             total_tb_count = 0
@@ -549,13 +556,16 @@ class  MOHDashboardView(generics.GenericAPIView):
             blood_collected_center = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , bloodCollectionLocation = 'Center').count()
             denieded_by_mo_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , bloodCollectionLocation = 'AMO').count()
             denieded_by_mo_individual = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, bloodCollectionLocation = 'Individual Itself').count()
-            Referral_choice_further_management = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
-            Referral_choice_suspect_symptoms = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
-            Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
-            Referral_choice_co_morbid_investigation = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Medical College for management of Complication').count()
-            Referral_choice_Collection_at_Dispensary = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Private facility').count()
+            Referral_choice_Referral_to_Mun_Dispensary = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+            Referral_choice_Referral_to_HBT_polyclinic = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+            Referral_choice_Referral_to_Peripheral_Hospital = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+            Referral_choice_Referral_to_Medical_College = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Medical College for management of Complication').count()
+            Referral_choice_Referral_to_Private_facility = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id, referels__choice = 'Referral to Private facility').count()
             hypertension = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , bloodPressure__gte = 140).count()
 
+            total_LabTestAdded = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id  , isLabTestAdded = True).count()
+            TestReportGenerated = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , isLabTestReportGenerated = True).count()
+            
             Questionnaire_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id  , Questionnaire__isnull=False)
             total_tb_count = 0
             total_diabetes = 0
@@ -634,7 +644,9 @@ class  MOHDashboardView(generics.GenericAPIView):
                 total_eye_problem += eye_problem
 
         return Response({
-
+            'CHV_ASHA_count' : CHV_ASHA_count , 
+            'MO_count' : MO_count , 
+            'ANM_count' : ANM_count , 
             'total_count' : total_citizen_count ,
             'todays_count' : todays_citizen_count ,
             'partial_survey_count' : partial_survey_count ,
@@ -643,6 +655,10 @@ class  MOHDashboardView(generics.GenericAPIView):
             'total_cbac_count' : total_cbac_count ,
             'citizen_above_60' : citizen_above_60,
             'citizen_above_30' : citizen_above_30,
+            'TestReportGenerated' : TestReportGenerated,
+            'total_LabTestAdded' : total_LabTestAdded,
+
+
             "male" : male,
             "female" : female,
             "transgender" : transgender,
@@ -661,11 +677,11 @@ class  MOHDashboardView(generics.GenericAPIView):
             'blood_collected_center' : blood_collected_center ,
             'denieded_by_mo_count' : denieded_by_mo_count , 
             'denieded_by_mo_individual' : denieded_by_mo_individual ,
-            'Referral_choice_further_management' : Referral_choice_further_management ,
-            'Referral_choice_suspect_symptoms': Referral_choice_suspect_symptoms ,
-            'Referral_choice_diagnosis': Referral_choice_diagnosis ,
-            'Referral_choice_co_morbid_investigation': Referral_choice_co_morbid_investigation ,
-            'Referral_choice_Collection_at_dispensary': Referral_choice_Collection_at_Dispensary ,
+            'Referral_choice_Referral_to_Mun_Dispensary' : Referral_choice_Referral_to_Mun_Dispensary ,
+            'Referral_choice_Referral_to_HBT_polyclinic': Referral_choice_Referral_to_HBT_polyclinic ,
+            'Referral_choice_Referral_to_Peripheral_Hospital': Referral_choice_Referral_to_Peripheral_Hospital ,
+            'Referral_choice_Referral_to_Medical_College': Referral_choice_Referral_to_Medical_College ,
+            'Referral_choice_Referral_to_Private_facility': Referral_choice_Referral_to_Private_facility ,
             'total_vulnerabel' : total_vulnerabel , 
             'vulnerabel_70_Years' : vulnerabel_70_Years , 
             'vulnerabel_Physically_handicapped' : vulnerabel_Physically_handicapped , 

@@ -380,6 +380,18 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             "TestsAssigned" : TestsAssigned, 
             } , status= status.HTTP_200_OK )
     
+
+class GetExcelSurveyorCountDashboard(generics.GenericAPIView):
+
+    def get(self , request):
+        data_list = ['total_citizen_count','todays_citizen_count', 'partial_survey_count','total_family_count' , 'today_family_count', 'total_cbac_count', 'citizen_above_60',
+                      'citizen_above_30', 'total_diabetes' , 'hypertension' , 'total_oral_cancer' , 'total_cervical_cancer' , 'total_COPD_count' , 'total_eye_problem' , 
+                       'asthama' , 'Alzheimers' , 'total_tb_count' ]
+
+
+
+
+    
 class GetCitizenList(generics.ListAPIView):
     serializer_class = GetCitizenListSerializer
     model = serializer_class.Meta.model
