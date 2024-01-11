@@ -45,6 +45,7 @@ class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = '__all__'
+        depth = 1
         
 
 class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
@@ -53,6 +54,7 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV', 'cbacRequired',
                   'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' , 'deniedBy' , 'vulnerable'  , "relationship")
+   
 
 
     def validate(self, data):

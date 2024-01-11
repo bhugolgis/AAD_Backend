@@ -337,7 +337,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             total_oral_cancer += oral_cancer
             total_cervical_cancer += cervical_cancer
             total_COPD_count += COPD
-            # toatal_communicable += communicable
+            toatal_communicable += communicable
             total_eye_problem += eye_problem
 
         return Response({
@@ -354,9 +354,10 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'oral_Cancer' : total_oral_cancer ,
             'cervical_cancer' : total_cervical_cancer ,
             'copd' : total_COPD_count,
-            'eye_problem' : total_eye_problem , 
+            'ent_disorder' : 0 ,
+            'eye_disorder' : total_eye_problem , 
             'asthama' : 0 ,
-            'Alzheimers' : 0 ,
+            'Alzheimers/Dementia' : 0 ,
             'tb' : total_tb_count ,
             'breast_cancer' : total_breast_cancer , 
             'communicable' : toatal_communicable ,
@@ -375,23 +376,17 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'vulnerabel_completely_paralyzed_or_on_bed' : vulnerabel_completely_paralyzed_or_on_bed , 
             'vulnerabel_elderly_and_alone_at_home' : vulnerabel_elderly_and_alone_at_home , 
             'vulnerabel_any_other_reason' : vulnerabel_any_other_reason , 
-
             "TestReportGenerated" : TestReportGenerated , 
             "TestsAssigned" : TestsAssigned, 
             } , status= status.HTTP_200_OK )
     
 
-class GetExcelSurveyorCountDashboard(generics.GenericAPIView):
-
-    def get(self , request):
-        data_list = ['total_citizen_count','todays_citizen_count', 'partial_survey_count','total_family_count' , 'today_family_count', 'total_cbac_count', 'citizen_above_60',
-                      'citizen_above_30', 'total_diabetes' , 'hypertension' , 'total_oral_cancer' , 'total_cervical_cancer' , 'total_COPD_count' , 'total_eye_problem' , 
-                       'asthama' , 'Alzheimers' , 'total_tb_count' ]
 
 
 
 
-    
+
+
 class GetCitizenList(generics.ListAPIView):
     serializer_class = GetCitizenListSerializer
     model = serializer_class.Meta.model

@@ -147,12 +147,7 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = familyMembers
-        fields = ('id','memberId','name','gender','age','mobileNo','familyHead','familySurveyor','area','aadharCard','abhaId','pulse','bloodPressure','weight',
-        'height','BMI','Questionnaire','bloodCollectionLocation','questionsConsent','aadharAndAbhaConsent','demandLetter','bloodConsent','cbacScore',
-        'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated' , 'generalStatus' , 
-        'report'
-        )
-
+        fields = '__all__'
 
         depth = 1
 

@@ -21,8 +21,10 @@ urlpatterns = [
         path('GetGroupRequestList', GetGroupRequestList.as_view(), name='GetGroupRequestList'),
         path('GetGroupList', GetGroupList.as_view(), name='GetGroupRequestList'),
         re_path(r'^GetDeactivatedUserList/(?P<ward_name>.+)/(?P<group>.+)$', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),
-        path('AdminDashboard', AdminDashboard, name='AdminDashboard'),
       
+        # path('AdminDashboard', AdminDashboard, name='AdminDashboard'),
+        path('MOHDashboardExcelView', MOHDashboardExportView.as_view(), name='AdminDashboard'),
+        path('AdminDashboardView', AdminDashboardView.as_view(), name='AdminDashboardView'),
 
         re_path(r'^GetuserListAPI/(?P<ward_name>.+)/(?P<group>.+)$', userListAPI.as_view(), name='user-list'),
 

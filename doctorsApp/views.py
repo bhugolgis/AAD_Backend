@@ -563,6 +563,8 @@ def MoDashboard(request):
             data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
             # data["NoOfAbhaIdGenerated"] = 0
             data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
+            data["NoOfTestsAssignmentPending"] = familyMembers.objects.filter( isLabTestAdded = False,familyHead__area__dispensary_id  =dispensaryId).count()
+            data["NoOfTestsAssigned"] = familyMembers.objects.filter( isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
    
             # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
             # data["IsLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
@@ -582,7 +584,8 @@ def MoDashboard(request):
                 data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
                 # data["NoOfAbhaIdGenerated"] = 0
                 data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-    
+                data["NoOfTestsAssignmentPending"] = familyMembers.objects.filter( isLabTestAdded = False,familyHead__area__dispensary_id  =dispensaryId).count()
+                data["NoOfTestsAssigned"] = familyMembers.objects.filter( isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
                 # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
                 # data["IsLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
 
@@ -619,7 +622,8 @@ def MoDashboard(request):
             data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,familyHead__area__dispensary_id  =dispensaryId).count()
             # data["NoOfAbhaIdGenerated"] = 0
             data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,familyHead__area__dispensary_id  =dispensaryId).count()
-   
+            data["NoOfTestsAssignmentPending"] = familyMembers.objects.filter( isLabTestAdded = False,familyHead__area__dispensary_id  =dispensaryId).count()
+            data["NoOfTestsAssigned"] = familyMembers.objects.filter( isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
             # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,familyHead__area__dispensary_id  =dispensaryId).count()
             # data["IsLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
 
@@ -639,7 +643,8 @@ def MoDashboard(request):
                 data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
                 # data["NoOfAbhaIdGenerated"] = 0
                 data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-    
+                data["NoOfTestsAssignmentPending"] = familyMembers.objects.filter( isLabTestAdded = False,familyHead__area__dispensary_id  =dispensaryId).count()
+                data["NoOfTestsAssigned"] = familyMembers.objects.filter( isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
                 # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
                 # data["isLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
 

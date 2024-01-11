@@ -148,14 +148,14 @@ class familyMembers(models.Model):
     ]
     relationship_choices = [
          ("Self" , "Self"),
-         ("Mother " , "Mother "),
+         ("Mother" , "Mother"),
          ("Father" , "Father"),
          ("Spouse" , "Spouse"),
          ("Daughter" , "Daughter"),
          ("Grandson" , "Grandson"),
          ("Granddaughter" , "Granddaughter"),
-         ("Grandmother " , "Grandmother "),
-         ("Grandfather " , "Grandfather "),
+         ("Grandmother" , "Grandmother"),
+         ("Grandfather" , "Grandfather"),
          ("Uncle" , "Uncle"),
          ("Aunty" , "Aunty"),
          ("Nephew" , "Nephew"),
