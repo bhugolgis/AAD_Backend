@@ -161,18 +161,21 @@ class UpdateUsersDetailsSerializer(serializers.ModelSerializer):
         fields = ("name", "username", "emailId", "phoneNumber", "created_by", 'ward',
                   "section", "userSections", "health_Post", "area", "dispensary", 'is_active', 'ANM',)
 
-    def update(self, instance, validated_data):
-        try:
-            user_sections_data = validated_data.pop("userSections")
-        except KeyError:
-            user_sections_data = []
-        # instance = CustomUser.objects.update(**validated_data)
-        # Save the changes to the instance
-        # instance.save()
-        # Update related userSections
-        instance.userSections.set(user_sections_data)
+    # def update(self, instance, validated_data):
+    #     try:
+    #         user_sections_data = validated_data.pop("userSections")
+            
+    #     except KeyError:
+    #         user_sections_data = []
+    #     # instance = CustomUser.objects.update(**validated_data)
+    #     # Save the changes to the instance
+    #     # instance.save()
+    #     # Update related userSections
+	#     instance.userSections.set(user_sections_data)
+		
 
-        return instance
+    #     return instance
+
 
 
 class DeleteUserSerializer(serializers.ModelSerializer):

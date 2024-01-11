@@ -124,7 +124,7 @@ DATABASES = {
        'NAME':'AAD_local',
        'USER': 'postgres',
        'PASSWORD':'admin',
-    #    'HOST' : '10.202.100.7',    
+    #   'HOST' : '10.202.100.7',    
        'HOST' : '10.202.100.224',
        'PORT': '5432',
    }
@@ -132,18 +132,6 @@ DATABASES = {
 
 
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-#     #    'NAME': 'DemoNbr',
-#        'NAME':'upd07_12Db',
-#        'USER': 'postgres',
-#        'PASSWORD':'password',
-#     #    'HOST' : '10.202.100.7',
-#        'HOST' : 'localhost',
-#        'PORT': '5432',
-#    }
-# }
 
 CORS_ALLOW_ALL_ORIGINS = True
 AUTH_USER_MODEL = 'database.CustomUser'
