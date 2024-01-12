@@ -45,7 +45,7 @@ class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = '__all__'
-        depth = 1
+        # depth = 1
         
 
 class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):

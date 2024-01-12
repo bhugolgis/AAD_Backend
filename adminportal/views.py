@@ -377,12 +377,12 @@ class GetWardWiseSUerList(generics.ListAPIView):
         # wardName = self.kwargs.get('ward')
         # print(group , wardName)
         ward_id= self.request.user.ward.id
-        queryset = self.model.objects.filter(groups__name = group  , userSections__healthPost__ward__id = ward_id).order_by("-created_date")
+        queryset = self.model.objects.filter(groups__name = group  , userSections__healthPost__ward__id = ward_id).order_by("-created_date").distinct()
    
         search_terms = self.request.query_params.get('search', None)
         if search_terms:
             queryset = queryset.filter(Q(section__healthPost__ward__wardName__icontains=search_terms)|
-                                        Q( userSections__icontains=search_terms) |
+                                        Q(userSections__icontains=search_terms) |
                                         Q(phoneNumber__icontains=search_terms) |
                                         Q(health_Post__healthPostName__icontains=search_terms))
                                        
