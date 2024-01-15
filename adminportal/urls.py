@@ -1,8 +1,6 @@
 from django.urls import path , re_path
 from .views import *
-from . import views
-from knox.views import LogoutView
-from .views import *
+
 
 
 urlpatterns = [
@@ -15,19 +13,22 @@ urlpatterns = [
         path('DownloadWardtwiseUserList/<int:id>', DownloadWardwiseUserList.as_view(), name='DownloadWardtwiseUserList'),
         path('DownloadDispensarywiseUserList/<int:id>', DownloadDispensarywiseUserList.as_view(), name='DownloadDispensarywiseUserList'),
         path('UserCountsAPI', UserCountsAPI.as_view(), name='UserCountsAPI'),
-        path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
+        
         path('updateGroupResquest', PostUserGroupResquest.as_view(), name='updateGroupResquest'),
         path('updateUserGroupRequest/<int:id>', updateUserGroupRequest.as_view(), name='updateUserGroupRequest'),
         path('GetGroupRequestList', GetGroupRequestList.as_view(), name='GetGroupRequestList'),
         path('GetGroupList', GetGroupList.as_view(), name='GetGroupRequestList'),
-        re_path(r'^GetDeactivatedUserList/(?P<ward_name>.+)/(?P<group>.+)$', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),
-      
-        # path('AdminDashboard', AdminDashboard, name='AdminDashboard'),
-        path('MOHDashboardExcelView', MOHDashboardExportView.as_view(), name='AdminDashboard'),
+        
+
+        
+        path('MOHDashboardExcelView', MOHDashboardExportView.as_view(), name='MOHDashboardExportView'),
+        path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
+        
         path('AdminDashboardView', AdminDashboardView.as_view(), name='AdminDashboardView'),
+        path('AdminDashboardExportView', AdminDashboardExportView.as_view(), name='AdminDashboardExportView'),
 
         re_path(r'^GetuserListAPI/(?P<ward_name>.+)/(?P<group>.+)$', userListAPI.as_view(), name='user-list'),
-
+        re_path(r'^GetDeactivatedUserList/(?P<ward_name>.+)/(?P<group>.+)$', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),
         re_path(r'^GetWardWiseSUerList/(?P<group>.+)$', GetWardWiseSUerList.as_view(), name='user-list'),
 
 ]
