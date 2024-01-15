@@ -200,7 +200,10 @@ class GetWardAreasAPI(generics.ListAPIView):
         queryset = self.model.objects.filter(healthPost__ward__wardName= wardName )
         search_terms = self.request.query_params.get('search', None)
         if search_terms:
-            queryset = queryset.filter(healthPost__healthPostName__icontains=search_terms)
+            queryset = queryset.filter(
+                Q(healthPost__healthPostName__icontains=search_terms)|
+                Q(areas__icontains = search_terms)
+            )
                                        
 
         return queryset
