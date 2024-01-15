@@ -1213,7 +1213,23 @@ class AddsectionAPI(generics.GenericAPIView):
 class AddAreaAPI(generics.GenericAPIView):
     serializer_class = AddAreaSerializer
     parser_classes = [MultiPartParser]
+
+    def remove_all_extra_spaces(string):
+        return " ".join(string.split())
+
     def post(self , request):
+        try:
+            areas = request.data.get["areas"]
+            area_name = self.remove_all_extra_spaces(areas)
+
+            instance = area.objects.filter(areas = area_name , healthPost = request.data.get["healthPost"] , dispensary = request.data.get["dispensary"]).exists()
+            if instance:
+                return Response({"status" : "error" , 
+                                 "message" : "Duplicate area" } , status= status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({"status" : "error" , 
+            "message" : "Duplicate area" } , status= status.HTTP_400_BAD_REQUEST)
+
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             serializer.save()

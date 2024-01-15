@@ -49,7 +49,7 @@ class healthPost(models.Model):
 class area(models.Model):
     dispensary = models.ForeignKey(dispensary, related_name = "area_dispensarys_name", on_delete=models.SET_NULL , blank = True , null = True )
     healthPost = models.ForeignKey(healthPost , related_name="area_healthpost_name" , on_delete=models.SET_NULL , blank= True , null = True )
-    areas= models.TextField(max_length=1000 , blank = True , null = True )
+    areas= models.TextField(max_length=1000 , blank = True , null = True  )
 
 
 class section(models.Model):
@@ -161,7 +161,6 @@ class familyMembers(models.Model):
          ("Nephew" , "Nephew"),
          ("Niece" , "Niece"),
     ]
-    # user = models.ForeignKey(CustomUser , related_name="updatefamilysurveyor",on_delete=models.CASCADE,null=True,blank=True )
     memberId = models.CharField(max_length=255 , blank = True , null = True )
     name = models.CharField(max_length=900,blank=True,null=True)
     gender = models.CharField(max_length=15,blank=True,null=True)
@@ -178,7 +177,7 @@ class familyMembers(models.Model):
     weight = models.CharField(max_length=50 , blank = True , null = True)
     height = models.CharField(max_length=50 , blank = True , null = True)
     BMI = models.CharField(max_length=50 , blank = True , null = True)
-    # randomBloodSugar = models.CharField(max_length=50 , blank = True , null = True)
+    randomBloodSugar = models.CharField(max_length=50 , blank = True , null = True)
 
     Questionnaire = models.JSONField(blank= True , null = True)
     bloodCollectionLocation = models.CharField(max_length= 20 , choices= bloodCollectionLocation_choices , blank= True , null = True  )
@@ -199,28 +198,7 @@ class familyMembers(models.Model):
     vulnerable_choices  = models.ManyToManyField(vulnerableOptions , related_name= 'vulnerability_choices', blank = True )
     vulnerable_reason = models.TextField(max_length=500 , blank  = True , null = True )
     relationship = models.CharField(max_length = 100 , choices = relationship_choices ,  blank = True , null = True )
-
-# class PatientPathlab(models.Model): 
     
-#     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
-#     suggested_by_doctor = models.ForeignKey(CustomUser , related_name='suggested_by_doctor' , on_delete=models.SET_NULL ,  blank = True , null = True  )
-#     suggested_date = models.DateTimeField(auto_now=True)
-#     LabTestSuggested = models.JSONField(default=dict)  
-#     PatientSampleTaken = models.BooleanField(default=False)
-#     # pathLabPatient = models.ForeignKey(CustomUser,related_name="phlebotomist_user",on_delete=models.CASCADE,null=True,blank=True)
-#     PathLab = models.ForeignKey(CustomUser,related_name="PathLab",on_delete=models.CASCADE,null=True,blank=True)
-#     ReportCheckByDoctor = models.ForeignKey(CustomUser,related_name="ReportCheckByDoctor",on_delete=models.CASCADE,null=True,blank=True)
-#     LabTestReport = models.JSONField(default = dict,null=True,blank=True)
-#     doctorRemarks = models.CharField(max_length=500,blank=True,null=True)
-#     PathLabRemarks = models.CharField(max_length=500,blank=True,null=True)
-#     response_date = models.DateTimeField(blank=True,null=True)
-#     created_date = models.DateTimeField(auto_now=True)
-#     isCompleted = models.BooleanField(default=False)
-#     CentreID = models.CharField(max_length=255 , blank = True, null=True )
-#     bookingVisitID = models.CharField(max_length=255 , blank = True, null=True )
-#     puid =models.CharField(max_length=255 , blank = True, null=True )
-#     patientID =models.CharField(max_length=255 , blank = True, null=True )
-#     citizenRejectedLabTest = models.BooleanField(default=False)
 
 class PatientsPathlabrecords(models.Model):
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
@@ -228,7 +206,6 @@ class PatientsPathlabrecords(models.Model):
     suggested_date = models.DateTimeField(auto_now=True)
     LabTestSuggested = models.JSONField(default=dict)  
     PatientSampleTaken = models.BooleanField(default=False)
-    # pathLabPatient = models.ForeignKey(CustomUser,related_name="phlebotomist_user",on_delete=models.CASCADE,null=True,blank=True)
     PathLab = models.ForeignKey(CustomUser,related_name="PathLab",on_delete=models.CASCADE,null=True,blank=True)
     ReportCheckByDoctor = models.ForeignKey(CustomUser,related_name="ReportCheckByDoctor",on_delete=models.CASCADE,null=True,blank=True)
     LabTestReport = models.JSONField(default = dict,null=True,blank=True)
@@ -274,9 +251,7 @@ class PrimaryConsultancy(models.Model):
     PridoctorRemarks = models.CharField(max_length=500,blank=True,null=True)
     fileUpload = models.FileField(upload_to='doctorFolder',blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
-
     referedToSecondaryConsultancy = models.BooleanField(default=False)
-
     isCompleted = models.BooleanField(default=False)
 
 class SecondaryConsultancy(models.Model):

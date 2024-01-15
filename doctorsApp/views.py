@@ -139,11 +139,11 @@ def FamilyHeadList(request):
 
     # Filter family head details based on user's group (if authenticated)
     if group == "amo" and request.user.is_authenticated:
-        comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id)
+        comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id).order_by("-created_date")
     elif group == "mo" and request.user.is_authenticated:
-        comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id)
+        comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id).order_by("-created_date")
     else:
-        comDet = familyHeadDetails.objects.all()
+        comDet = familyHeadDetails.objects.all().order_by("-created_date")
 
     # Paginate the queryset
     page_queryset = pagination.paginate_queryset(comDet, request)
@@ -173,11 +173,11 @@ def FamilyHeadList(request):
 
     # Filter family head details based on user's group (if authenticated)
     if group == "amo" and request.user.is_authenticated:
-        comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id)
+        comDet = familyHeadDetails.objects.filter(area__healthPost_id=request.user.health_Post_id).order_by("-created_date")
     elif group == "mo" and request.user.is_authenticated:
-        comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id)
+        comDet = familyHeadDetails.objects.filter(area__dispensary_id=request.user.dispensary_id).order_by("-created_date")
     else:
-        comDet = familyHeadDetails.objects.all()
+        comDet = familyHeadDetails.objects.all().order_by("-created_date")
 
     # Paginate the queryset
     page_queryset = pagination.paginate_queryset(comDet, request)
@@ -514,6 +514,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
                     "bookingVisitID" : response_data.get("bookingVisitID") ,
                     "puid" : response_data.get("puid") ,
                     "patientID" : response_data.get("patientID") ,
+                    "CentreID" : serializer.validated_data.get("RefLabCode") ,
                     "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
 
                 }  )
@@ -557,24 +558,16 @@ def MoDashboard(request):
         data = {}
         dispensaryId =  request.user.dispensary.id
         if gender:
-            # data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__dispensary_id  =dispensaryId ).count()
-            # data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__dispensary_id  =dispensaryId,gender=gender).count()
-            # data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
             data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["NoOfAbhaIdGenerated"] = 0
             data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
             data["NoOfTestsAssignmentPending"] = familyMembers.objects.filter( isLabTestAdded = False,familyHead__area__dispensary_id  =dispensaryId).count()
             data["NoOfTestsAssigned"] = familyMembers.objects.filter( isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
-   
-            # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["IsLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
 
             data["BloodCollectedAtHome"] = familyMembers.objects.filter(bloodCollectionLocation = "Home",gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
             data["TotalReportGenerated"] = familyMembers.objects.filter(isLabTestReportGenerated = True,gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
 
             data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__dispensary_id  =dispensaryId).count()
+
 
             if areaId:
                     #Data For  Ward and HealthPost Filter
@@ -586,92 +579,36 @@ def MoDashboard(request):
                 data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
                 data["NoOfTestsAssignmentPending"] = familyMembers.objects.filter( isLabTestAdded = False,familyHead__area__dispensary_id  =dispensaryId).count()
                 data["NoOfTestsAssigned"] = familyMembers.objects.filter( isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["IsLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
+        
 
                 data["BloodCollectedAtHome"] = familyMembers.objects.filter(bloodCollectionLocation = "Home",gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
 
                 data["TotalReportGenerated"] = familyMembers.objects.filter(isLabTestReportGenerated = True,gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
 
                 data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                
-            # if UserId:
-            #         #Data For  Ward and HealthPost Filter and User Id Filter
-            #     data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,user_id=UserId ).count()
-            #     data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,gender=gender,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["NoOfAbhaIdGenerated"] = 0
-            #     data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-    
-            #     data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["BloodCollectedAtHome"] = familyMembers.objects.filter(bloodCollectionLocation = "Home",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["TotalReportGenerated"] = familyMembers.objects.filter(isLabTestReportGenerated = True,gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-
-            #     data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",gender=gender,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
 
         else:
-            #Data For Only Ward Filter
-            # data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__dispensary_id  =dispensaryId ).count()
-            # data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,familyHead__area__dispensary_id  =dispensaryId).count()
             data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,familyHead__area__dispensary_id  =dispensaryId).count()
             # data["NoOfAbhaIdGenerated"] = 0
             data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,familyHead__area__dispensary_id  =dispensaryId).count()
             data["NoOfTestsAssignmentPending"] = familyMembers.objects.filter( isLabTestAdded = False,familyHead__area__dispensary_id  =dispensaryId).count()
             data["NoOfTestsAssigned"] = familyMembers.objects.filter( isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["IsLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
-
 
             data["BloodCollectedAtHome"] = familyMembers.objects.filter(bloodCollectionLocation = "Home",familyHead__area__dispensary_id  =dispensaryId).count()
             data["TotalReportGenerated"] = familyMembers.objects.filter(isLabTestReportGenerated = True,familyHead__area__dispensary_id  =dispensaryId).count()
 
             data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",familyHead__area__dispensary_id  =dispensaryId).count()
-            # data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__dispensary_id  =dispensaryId).count()
 
             if areaId:
-                    #Data For  Ward and HealthPost Filter
-                # data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area_id  =areaId,area__dispensary_id  =dispensaryId).count()
-                # data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
                 data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["NoOfAbhaIdGenerated"] = 0
                 data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
                 data["NoOfTestsAssignmentPending"] = familyMembers.objects.filter( isLabTestAdded = False,familyHead__area__dispensary_id  =dispensaryId).count()
                 data["NoOfTestsAssigned"] = familyMembers.objects.filter( isLabTestAdded = True,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["isLabTestAdded"] = familyMembers.objects.filter(isLabTestAdded = True,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
 
                 data["BloodCollectedAtHome"] = familyMembers.objects.filter(bloodCollectionLocation = "Home",familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
                 data["TotalReportGenerated"] = familyMembers.objects.filter(isLabTestReportGenerated = True,familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
 
                 data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                # data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area_id  =areaId,familyHead__area__dispensary_id  =dispensaryId).count()
-                
-            # if UserId:
-            #         #Data For  Ward and HealthPost Filter and User Id Filter
-            #     data["NoOfFamilyEnrolled"] = familyHeadDetails.objects.filter(area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,user_id=UserId ).count()
-            #     data["NoOfCitizenEnrolled"] = familyMembers.objects.filter(familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["NoOfPersonMoreThan30"] = familyMembers.objects.filter(age__gte = 30,age__lt = 60,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["NoOfPersonMoreThan60"] = familyMembers.objects.filter(age__gte = 60,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["NoOfAbhaIdGenerated"] = 0
-            #     data["NoOfCBACFilled"] = familyMembers.objects.filter(cbacRequired = True,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-    
-            #     data["NoOfBloodCollected"] = familyMembers.objects.filter(isSampleCollected = True,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["BloodCollectedAtHome"] = familyMembers.objects.filter(bloodCollectionLocation = "Home",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["TotalReportGenerated"] = familyMembers.objects.filter(isLabTestReportGenerated = True,familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-
-            #     data["BloodCollectedAtCenter"] = familyMembers.objects.filter(bloodCollectionLocation = "Center",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["BloodCollecttionDeniedByAmo"] = familyMembers.objects.filter(bloodCollectionLocation = "Not Required",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-            #     data["BloodCollecttionDeniedByIndividual"] = familyMembers.objects.filter(bloodCollectionLocation = "Denied",familyHead__area__healthPost__ward_id  =wardId,area__healthPost_id=healthPostId,familyHead__user_id=UserId).count()
-        
 
         return Response({
             'status': 'success',
