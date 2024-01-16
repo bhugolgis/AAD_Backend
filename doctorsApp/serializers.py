@@ -144,12 +144,15 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     # area = serializers.SerializerMethodField()
     # report = serializers.CharField(source='patientFamilyMember.patientPathLabReports.pdfResult' )
     report = serializers.SerializerMethodField()
+    Healthpost = serializers.SerializerMethodField()
+    ward = serializers.SerializerMethodField()
+
 
     class Meta:
         model = familyMembers
         fields = '__all__'
 
-        depth = 1
+        # depth = 1
 
     def get_report(self , data):
         if data.isLabTestReportGenerated == True:
