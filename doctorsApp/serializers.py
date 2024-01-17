@@ -140,6 +140,7 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     Healthpost = serializers.SerializerMethodField()
     ward = serializers.SerializerMethodField()
     ANM_coordinator = serializers.SerializerMethodField()
+    HOF_Number = serializers.SerializerMethodField()
 
 
     class Meta:
@@ -158,8 +159,15 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
                 pdf_url = ''
         else:
             pdf_url = ''
-      
+
         return pdf_url
+    
+    def get_HOF_Number(self , data):
+        try:
+            HOF_Number = data.familyHead.mobileNo
+        except:
+            HOF_Number = ''
+        return HOF_Number
     
 
     def get_ward(self , data ):
