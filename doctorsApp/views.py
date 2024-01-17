@@ -217,6 +217,21 @@ def ViewFamilyDetails(request, pk):
     response_data.update(serializer.data)
     return Response(response_data)
 
+from rest_framework import filters
+
+class ViewFamilysDetails(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = FamilyMemberDetailsSerializer  
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ['name' , 'mobileNo'  ]
+
+    def get_queryset(self):
+        # Filter the queryset based on the currently logged-in user
+        queryset = familyMembers.objects.filter(familySurveyor=self.request.user)
+        return queryset
+
+    
+    
 
 
 @swagger_auto_schema(

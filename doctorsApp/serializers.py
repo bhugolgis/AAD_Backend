@@ -136,16 +136,10 @@ class ReportSerializer(serializers.ModelSerializer):
 
 
 class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
-    # pathlab_reports = PatientPathlabSerializer(many=True)
-    # medicalOfficerconsultancy = MedicalOfficerConsultancySerializer(many=True)
-    # primaryConsultancy = PrimaryConsultancySerializer(many=True)
-    # secondaryConsultancy = SecondaryConsultancySerializer(many=True)
-    # tertiaryConsultancy = TertiaryConsultancySerializer(many=True, read_only=True)
-    # area = serializers.SerializerMethodField()
-    # report = serializers.CharField(source='patientFamilyMember.patientPathLabReports.pdfResult' )
     report = serializers.SerializerMethodField()
     Healthpost = serializers.SerializerMethodField()
     ward = serializers.SerializerMethodField()
+    ANM_coordinator = serializers.SerializerMethodField()
 
 
     class Meta:
@@ -166,7 +160,33 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
             pdf_url = ''
       
         return pdf_url
+    
 
+    def get_ward(self , data ):
+        try:
+            userSections = data.familySurveyor.userSections.all()[0]
+            Ward_id = userSections.healthPost.ward.wardName
+        except:
+            try:
+                Ward_id = data.dispensary.ward.wardName
+            except:
+                Ward_id = ""
+        return Ward_id
+    
+    def get_Healthpost(self , data):
+        try:
+            section = data.familySurveyor.userSections.all()[0]
+            healthPostName = section.healthPost.healthPostName
+        except:
+            healthPostName = ''
+        return healthPostName
+
+    def get_ANM_coordinator(self , data):
+        try:
+            ANM_coordinator = data.familySurveyor.name
+        except:
+            ANM_coordinator = ''
+        return ANM_coordinator
         
 
     # def get_area(self , area):
