@@ -9,9 +9,9 @@ urlpatterns = [
     path('GetAllFamilysDetails', GetAllFamilysDetails.as_view(), name='ViewFamilysDetails'),
     # path('FamilyHeadList/', FamilyHeadList.as_view(), name='FamilyHeadList'),
     # path('ViewFamilyDetails/<str:pk>/', ViewFamilyDetails.as_view(), name='ViewFamilyDetails'),
-    path('FamilyHeadList',views.FamilyHeadList),
+    # path('FamilyHeadList',views.FamilyHeadList),
 
-    path('ViewFamilyDetails/<str:pk>/',views.ViewFamilyDetails),
+    # path('ViewFamilyDetails/<str:pk>/',views.ViewFamilyDetails),
     # path('ViewPatientsLabTestViewDetails/<str:pk>/',views.ViewPatientsLabTestViewDetails),
     path('medicalOfficerAdviceView/<int:patients_id>/', views.medicalOfficerAdviceView, name='medicalOfficerAdviceView'),
     path('medicalOfficerReferalAdviceView/<int:patients_id>/', views.medicalOfficerReferalAdviceView, name='medicalOfficerReferalAdviceView'),

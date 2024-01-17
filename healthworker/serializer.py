@@ -13,7 +13,7 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' , 'ASHA_CHV',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'questionsConsent','Questionnaire',
                   'bloodConsent' ,'demandLetter', 'bloodCollectionLocation' , 'cbacScore' ,'cbacRequired', 'created_date' ,
-                    'referels' , 'deniedBy' , 'vulnerable' , 'vulnerable_choices' , 'vulnerable_reason' , "relationship" )
+                    'referels' , 'deniedBy' , 'vulnerable' , 'vulnerable_choices' , 'vulnerable_reason' , "relationship" , "randomBloodSugar" )
     
 
     def validate(self, data):
@@ -52,7 +52,7 @@ class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = ('name' , 'gender' , 'age' , 'mobileNo' , 'familyHead' , 'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,
-                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV', 'cbacRequired',
+                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' ,  'ASHA_CHV', 'cbacRequired', "randomBloodSugar"
                   'questionsConsent','Questionnaire' ,'bloodConsent' , 'bloodCollectionLocation' , 'cbacScore' , 'created_date' , 'deniedBy' , 'vulnerable'  , "relationship")
    
 
@@ -147,7 +147,7 @@ class GetCitizenListSerializer(serializers.ModelSerializer):
     class Meta:
         model = familyMembers
         fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead','ASHA_CHV' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
-                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'cbacRequired',
+                   'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'cbacRequired', "randomBloodSugar" , 
                   'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' , 'deniedBy' , 'vulnerable' , "relationship" )
 
 
