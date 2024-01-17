@@ -17,6 +17,7 @@ import requests
 from pathlab.serializers import * 
 from .permissions import IsMO
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 
 
 
@@ -220,18 +221,79 @@ def ViewFamilyDetails(request, pk):
 from rest_framework import filters
 
 class ViewFamilysDetails(generics.ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsMO)
     serializer_class = FamilyMemberDetailsSerializer  
     filter_backends = (filters.SearchFilter,)
     search_fields = ['name' , 'mobileNo'  ]
 
-    def get_queryset(self):
+    def get_queryset(self , id ):
         # Filter the queryset based on the currently logged-in user
-        queryset = familyMembers.objects.filter(familySurveyor=self.request.user)
+        queryset = familyMembers.objects.filter(area__dispensary_id= self.request.user.dispensary_id , familyHead__id = id ).order_by("-created_date")
+
+
+        search_terms = self.request.query_params.get('search', None )
+        if search_terms:
+            queryset = queryset.filter(
+                Q(name__icontains=search_terms) |
+                Q(mobileNo__icontains=search_terms) )
         return queryset
+    
+
+    def get(self, request, id , *args, **kwargs):
+
+        queryset = self.get_queryset(id)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success', 
+                        'message': 'Data fetched successfully', 
+                        'data': serializer.data})
+    
+
+
+class GetAllFamilysDetails(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, IsMO)
+    serializer_class = FamilyMemberDetailsSerializer  
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ['name' , 'mobileNo'  ]
+
+    def get_queryset(self  ):
+        # Filter the queryset based on the currently logged-in user
+        queryset = familyMembers.objects.filter(area__dispensary_id = self.request.user.dispensary_id ).order_by("-created_date")
+
+
+        search_terms = self.request.query_params.get('search', None )
+        if search_terms:
+            queryset = queryset.filter(
+                Q(name__icontains=search_terms) |
+                Q(mobileNo__icontains=search_terms) )
+        return queryset
+    
+
+    def get(self, request, *args, **kwargs):
+
+        queryset = self.get_queryset()
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response({'status': 'success',
+                                                'message': 'Data fetched successfully',
+                                                'data': serializer.data})
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({'status': 'success', 
+                        'message': 'Data fetched successfully', 
+                        'data': serializer.data})
 
     
+
     
+
 
 
 @swagger_auto_schema(
