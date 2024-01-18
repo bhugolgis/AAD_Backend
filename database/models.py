@@ -215,10 +215,12 @@ class PatientsPathlabrecords(models.Model):
     created_date = models.DateTimeField(auto_now=True)
     isCompleted = models.BooleanField(default=False)
     CentreID = models.CharField(max_length=255 , blank = True, null=True )
+    centerName = models.CharField(max_length=255, blank = True, null = True )
     bookingVisitID = models.CharField(max_length=255 , blank = True, null=True )
     puid =models.CharField(max_length=255 , blank = True, null=True )
     patientID =models.CharField(max_length=255 , blank = True, null=True )
     citizenRejectedLabTest = models.BooleanField(default=False)
+    transactionid = models.CharField(max_length=255, blank = True, null = True )
 
 class PatientPathLabReports(models.Model):
     patientPathLab = models.ForeignKey(PatientsPathlabrecords , related_name="patientPathLabReports" , on_delete=models.CASCADE)

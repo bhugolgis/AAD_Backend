@@ -141,6 +141,7 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     ward = serializers.SerializerMethodField()
     ANM_coordinator = serializers.SerializerMethodField()
     HOF_Number = serializers.SerializerMethodField()
+    centerName = serializers.SerializerMethodField()
 
 
     class Meta:
@@ -161,6 +162,14 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
             pdf_url = ''
 
         return pdf_url
+    
+    def get_centerName(self , data): 
+        try:
+            centerName = data.patientFamilyMember.get().centerName
+           
+        except:
+            centerName = ''
+        return centerName
     
     def get_HOF_Number(self , data):
         try:
@@ -252,11 +261,11 @@ class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
 
 class BookPatientSerializer(serializers.Serializer):
     # authKey = serializers.CharField(max_length=100 , default = "05436EFE3826447DBE720525F78A9EEDBMC")
-    # CentreID = serializers.CharField (max_length=100 , default ="112084")
+    centreName = serializers.CharField (max_length=500 , required = True )
     id = serializers.IntegerField()
     RegisteredDate= serializers.CharField(max_length=100)
     PRNNo= serializers.CharField(max_length=100)
-    PatientCategory= serializers.CharField(max_length=100 ,)
+    PatientCategory= serializers.CharField(max_length=100 )
     PatientType= serializers.CharField(max_length=100)
     RefDrCode= serializers.CharField(max_length=100)
     refDrName= serializers.CharField(max_length=100)
@@ -273,4 +282,24 @@ class BookPatientSerializer(serializers.Serializer):
     MobileNumber= serializers.CharField(max_length=100 , required = False) 
     HisUniquePatientCode= serializers.CharField(max_length=100)
     HisHospitalRefNo= serializers.CharField(max_length=100)
+    Booking_TestDetails = serializers.JSONField(write_only=True , required = True)
+
+
+
+class HomeBookPatientSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    BookingDate= serializers.CharField(max_length=100)
+    slots= serializers.CharField(max_length=250)
+    CollectionAddress= serializers.CharField(max_length=500)
+    labaddress= serializers.CharField(max_length=500)
+    TransactionForId= serializers.CharField(max_length=500)
+    latitude= serializers.CharField(max_length=100)
+    UserId = serializers.CharField(max_length=100)
+    longitude= serializers.CharField(max_length=100)
+    note= serializers.CharField(max_length=500 , required = False)
+    PatientAge= serializers.CharField(max_length=100)
+    patientMobile= serializers.CharField(max_length=100 , required = False)
+    patientname = serializers.CharField(max_length=100)
+    PatientUid= serializers.CharField(max_length=100)
+    pincode= serializers.CharField(max_length=100)
     Booking_TestDetails = serializers.JSONField(write_only=True , required = True)

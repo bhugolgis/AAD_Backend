@@ -15137,3 +15137,627 @@ Traceback (most recent call last):
     response = handler(request, *args, **kwargs)
 TypeError: GetAllFamilysDetails.get() missing 1 required positional argument: 'id'
 [35;1mHTTP GET /doctor/api/GetAllFamilysDetails 500 [0.12, 127.0.0.1:58659][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's AdminDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's AdminDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Not Found: /doctor/api/ViewFamilysDetails374
+[33mHTTP GET /doctor/api/ViewFamilysDetails374 404 [0.03, 127.0.0.1:58251][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's AdminDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's AdminDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Unauthorized: /doctor/api/ViewFamilysDetails/360
+[31;1mHTTP GET /doctor/api/ViewFamilysDetails/360 401 [0.06, 10.202.100.219:63524][0m
+Unauthorized: /doctor/api/ViewFamilysDetails/360
+[31;1mHTTP GET /doctor/api/ViewFamilysDetails/360 401 [0.05, 10.202.100.219:63524][0m
+Unauthorized: /allauth/api/login
+[31;1mHTTP POST /allauth/api/login 401 [0.06, 10.202.100.219:63524][0m
+Unauthorized: /doctor/api/ViewFamilysDetails/375
+[31;1mHTTP GET /doctor/api/ViewFamilysDetails/375 401 [0.07, 127.0.0.1:58251][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's AdminDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's AdminDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's AdminDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's AdminDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Unauthorized: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 401 [0.02, 127.0.0.1:61234][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.10, 127.0.0.1:61315][0m
+Unauthorized: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 401 [0.08, 127.0.0.1:61594][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.14, 127.0.0.1:61594][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.12, 127.0.0.1:61764][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.14, 127.0.0.1:61810][0m
+Internal Server Error: /doctor/api/HomeBookPatientAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 626, in post
+    instance = familyMembers.objects.get(pk=request.data["id"])
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+database.models.familyMembers.DoesNotExist: familyMembers matching query does not exist.
+[35;1mHTTP POST /doctor/api/HomeBookPatientAPI 500 [0.23, 127.0.0.1:61897][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.13, 127.0.0.1:61957][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.11, 127.0.0.1:62085][0m
+Internal Server Error: /doctor/api/HomeBookPatientAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 627, in post
+    instance = familyMembers.objects.get(pk=request.data["id"])
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+database.models.familyMembers.DoesNotExist: familyMembers matching query does not exist.
+[35;1mHTTP POST /doctor/api/HomeBookPatientAPI 500 [0.51, 127.0.0.1:62267][0m
+Internal Server Error: /doctor/api/HomeBookPatientAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 627, in post
+    instance = familyMembers.objects.get(id=request.data["id"])
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+database.models.familyMembers.DoesNotExist: familyMembers matching query does not exist.
+[35;1mHTTP POST /doctor/api/HomeBookPatientAPI 500 [0.27, 127.0.0.1:62308][0m
+Internal Server Error: /doctor/api/HomeBookPatientAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 627, in post
+    instance = familyMembers.objects.get(id=request.data["id"])
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 637, in get
+    raise self.model.DoesNotExist(
+database.models.familyMembers.DoesNotExist: familyMembers matching query does not exist.
+[35;1mHTTP POST /doctor/api/HomeBookPatientAPI 500 [0.18, 127.0.0.1:62308][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.10, 127.0.0.1:62485][0m
+Bad Request: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.12, 127.0.0.1:51533][0m
+Internal Server Error: /doctor/api/ViewFamilysDetails/376
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 256, in get
+    'data': serializer.data})
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 522, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\fields.py", line 1838, in to_representation
+    return method(value)
+  File "D:\Jafar\AAD\doctorsApp\serializers.py", line 167, in get_centerName
+    centerName = data.get().patientFamilyMember.centreName
+AttributeError: 'familyMembers' object has no attribute 'get'
+[35;1mHTTP GET /doctor/api/ViewFamilysDetails/376 500 [0.22, 127.0.0.1:52098][0m
+Internal Server Error: /doctor/api/ViewFamilysDetails/376
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 256, in get
+    'data': serializer.data})
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 522, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\fields.py", line 1838, in to_representation
+    return method(value)
+  File "D:\Jafar\AAD\doctorsApp\serializers.py", line 167, in get_centerName
+    centerName = data.patientFamilyMember.centreName
+AttributeError: 'RelatedManager' object has no attribute 'centreName'
+[35;1mHTTP GET /doctor/api/ViewFamilysDetails/376 500 [0.27, 127.0.0.1:52109][0m
+Internal Server Error: /doctor/api/ViewFamilysDetails/375
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 256, in get
+    'data': serializer.data})
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 522, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\fields.py", line 1838, in to_representation
+    return method(value)
+  File "D:\Jafar\AAD\doctorsApp\serializers.py", line 167, in get_centerName
+    centerName = data.patientFamilyMember.centerName
+AttributeError: 'RelatedManager' object has no attribute 'centerName'
+[35;1mHTTP GET /doctor/api/ViewFamilysDetails/375 500 [0.26, 127.0.0.1:52229][0m
+Internal Server Error: /doctor/api/ViewFamilysDetails/375
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 256, in get
+    'data': serializer.data})
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 768, in data
+    ret = super().data
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 686, in to_representation
+    return [
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\serializers.py", line 522, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\fields.py", line 1838, in to_representation
+    return method(value)
+  File "D:\Jafar\AAD\doctorsApp\serializers.py", line 167, in get_centerName
+    centerName = data.patientFamilyMember.get().centerName
+AttributeError: 'PatientsPathlabrecords' object has no attribute 'centerName'
+[35;1mHTTP GET /doctor/api/ViewFamilysDetails/375 500 [0.29, 127.0.0.1:52270][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:54206][0m

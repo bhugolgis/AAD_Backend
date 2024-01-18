@@ -229,6 +229,7 @@ class ViewFamilysDetails(generics.ListAPIView):
     def get_queryset(self , id ):
         # Filter the queryset based on the currently logged-in user
         queryset = familyMembers.objects.filter(area__dispensary_id= self.request.user.dispensary_id , familyHead__id = id ).order_by("-created_date")
+        print(queryset)
 
 
         search_terms = self.request.query_params.get('search', None )
@@ -593,7 +594,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
                     "patientID" : response_data.get("patientID") ,
                     "CentreID" : serializer.validated_data.get("RefLabCode") ,
                     "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
-
+                    "centerName" : serializer.validated_data.get('centerName')
                 }  )
                 if pathlab_serializer.is_valid():
                     pathlab_serializer.save()
@@ -614,7 +615,100 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
                             'status' : 'error'}, status=400)
         
 
-# class GetPaientresult():
+class LIMSHomeBookPatientAPI(generics.GenericAPIView):
+
+    serializer_class = HomeBookPatientSerializer
+    # parser_classes = [MultiPartParser]
+    permission_classes = [IsAuthenticated ,IsMO]
+
+    def post(self, request):
+        serializer = self.get_serializer(data = request.data)
+        try:
+            instance = familyMembers.objects.get(pk=request.data["id"])
+        except:
+            return Response({'status': 'error',
+                            'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
+            if pathlab_instance:
+                return Response({'status': 'error', 
+                                    'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'status': 'error',
+                            'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        if serializer.is_valid():
+            url= "https://android.techjivaaindia.in/KRASNA/BookAppointmentV2"
+            headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json'}
+
+            payload = json.dumps({
+                "authKey": "E0DE107A7CA04A6CA7FBB6DAE89B4F3A",
+                "CentreID": "112084",
+                "BookingFrom": "ANDROID" , 
+                "bookingVisitID": "NAN",
+                "deviceId": "",
+                "HomeCollectionflag": "1",
+                "OfferDiduction": "0",
+                "OfflinePaid": "0",
+                "OnlinePaid": "0",
+                "PatientId": "NAN",
+                "PaymentType": "offline",
+                "TotalFees": "0",
+                "Trans_String": "NAN",
+                "TransactionId": "NAN",
+                "TransactionreferenceID": "NAN",
+                "TransactionStatus": "NAN",
+                "PromoCode": "",
+                "BookingDate": serializer.validated_data.get('BookingDate'),
+                "slots": serializer.validated_data.get('slots'),
+                "CollectionAddress": serializer.validated_data.get('CollectionAddress'),
+                "labaddress": serializer.validated_data.get('labaddress'),
+                "TransactionForId": serializer.validated_data.get('TransactionForId'),
+                "latitude": serializer.validated_data.get('latitude'),
+                "UserId" : serializer.validated_data.get('UserId'),
+                "longitude":serializer.validated_data.get('longitude'),
+                "note": serializer.validated_data.get('CreatedBy'),
+                "PatientAge": serializer.validated_data.get('PatientAge'),
+                "patientMobile": serializer.validated_data.get('patientMobile'),
+                "patientname": serializer.validated_data.get('patientname'),
+                "PatientUid": serializer.validated_data.get('PatientUid'),
+                "pincode": serializer.validated_data.get('pincode'),
+                "Booking_TestDetails": serializer.validated_data.get('Booking_TestDetails'),
+                
+                })
+
+            response = requests.request("POST", url, headers=headers, data=payload)
+            if response.status_code == 200:
+                response_data = json.loads(response.content)
+                pathlab_serializer = PostResponseHomeLIMSAPISerialzier(data = {
+                    "patientFamilyMember" : request.data["id"] , 
+                    "transactionid" : response_data.get("transactionid") ,
+                    "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
+
+                }  )
+                if pathlab_serializer.is_valid():
+                    pathlab_serializer.save()
+                    return Response(json.loads(response.content) , status=response.status_code)
+                else:
+                    # key, value =list(serializer.errors.items())[0]
+                    # error_message = key+" , "+ value[0]
+                    return Response({"status" : "error" ,
+                                    "message" : pathlab_serializer.errors}, status= 400) 
+            else:
+                return Response(json.loads(response.content) , status=response.status_code) 
+            
+        else:
+            key, value = list(serializer.errors.items())[0]
+            print(key , value)
+            error_message = key+" , "+ value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
+        
 
 
 
