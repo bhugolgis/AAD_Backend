@@ -230,7 +230,7 @@ class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
 
 class BookPatientSerializer(serializers.Serializer):
     # authKey = serializers.CharField(max_length=100 , default = "05436EFE3826447DBE720525F78A9EEDBMC")
-    centreName = serializers.CharField (max_length=500 , required = True )
+    # centreName = serializers.CharField (max_length=500 , required = True )
     id = serializers.IntegerField()
     RegisteredDate= serializers.CharField(max_length=100)
     PRNNo= serializers.CharField(max_length=100)
@@ -272,3 +272,19 @@ class HomeBookPatientSerializer(serializers.Serializer):
     PatientUid= serializers.CharField(max_length=100)
     pincode= serializers.CharField(max_length=100)
     Booking_TestDetails = serializers.JSONField(write_only=True , required = True)
+
+
+class LIMSPatientRegisterSerializer(serializers.Serializer):
+    adharcard = serializers.CharField(max_length=250)
+    address = serializers.CharField(max_length=250)
+    age = serializers.CharField(max_length=25)
+    birthdate = serializers.CharField()
+    bloodgroup = serializers.CharField(max_length=250)
+    emailid = serializers.EmailField(max_length=100)
+    gender = serializers.CharField()
+    labID = serializers.CharField()
+    mobileno = serializers.CharField()
+    name = serializers.CharField()
+    pincode = serializers.CharField()
+    title = serializers.CharField()
+ 

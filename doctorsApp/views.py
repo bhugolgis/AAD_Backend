@@ -18,6 +18,7 @@ from pathlab.serializers import *
 from .permissions import IsMO
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
+from rest_framework.pagination import LimitOffsetPagination
 
 
 
@@ -223,6 +224,7 @@ from rest_framework import filters
 class ViewFamilysDetails(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsMO)
     serializer_class = FamilyMemberDetailsSerializer  
+    pagination_class = LimitOffsetPagination 
     # filter_backends = (filters.SearchFilter,)
     # search_fields = ['name' , 'mobileNo' , "familyHead__mobileNo" ]
 
@@ -258,7 +260,8 @@ class ViewFamilysDetails(generics.ListAPIView):
 
 class GetAllFamilysDetails(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsMO)
-    serializer_class = FamilyMemberDetailsSerializer  
+    serializer_class = FamilyMemberDetailsSerializer 
+    pagination_class = LimitOffsetPagination 
     # filter_backends = (filters.SearchFilter,)
     # search_fields = ['name' , 'mobileNo'  ]
 
@@ -594,7 +597,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
                     "patientID" : response_data.get("patientID") ,
                     "CentreID" : serializer.validated_data.get("RefLabCode") ,
                     "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
-                    "centerName" : serializer.validated_data.get('centerName')
+                    # "centerName" : serializer.validated_data.get('centerName')
                 }  )
                 if pathlab_serializer.is_valid():
                     pathlab_serializer.save()
@@ -614,6 +617,54 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
         
+
+class LIMSPatientRegisterAPI(generics.GenericAPIView):
+    serializer_class = LIMSPatientRegisterSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data = request.data)
+        if serializer.is_valid():
+            url = "https://kdl.techjivaaindia.in/api/LISMobileAPP_API/LIS_RegisterPatient"
+
+            payload = json.dumps({
+            "adharcard": serializer.validated_data.get('adharcard'),
+            "acceptTermConditionPrivacyPolicy": "True",
+            "addressType": "Home",
+            "age" : serializer.validated_data.get('age'),
+            "ageUnit": "Y",
+            "authKey": "E0DE107A7CA04A6CA7FBB6DAE89B4F3A",
+            "birthdate": serializer.validated_data.get('birthdate'),
+            "bloodgroup": serializer.validated_data.get('bloodgroup'),
+            "emailid": serializer.validated_data.get('emailid'),
+            "gender": serializer.validated_data.get('gender'),
+            "labID": serializer.validated_data.get('labID'),
+            "mobileno": serializer.validated_data.get('mobileno'),
+            "name": serializer.validated_data.get('name'),
+            "pincode": serializer.validated_data.get('pincode'),
+            "registerById": "self",
+            "registerByName" :serializer.validated_data.get('name'),
+            "title" : serializer.validated_data.get('title'),
+            "userIdProof": "Aadhaar No.",
+            })
+
+            print(payload)
+            headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json',}
+            response = requests.request("POST", url, headers=headers, data=payload)
+            if response.status_code == 200:
+                response_data = json.loads(response.content)
+                print(response_data)
+                return Response(json.loads(response.content) , status=response.status_code)
+        
+
+        else:
+            return Response({'message': serializer.errors , 
+                             "status": "error" } , status=400)
+    
+
 
 class LIMSHomeBookPatientAPI(generics.GenericAPIView):
 

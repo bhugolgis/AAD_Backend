@@ -6,6 +6,7 @@ urlpatterns = [
     path('listpatientspathlab/', ListPatientsPathlabView.as_view(), name='list-patients-pathlab'),
     path('BookPatientAPI', LIMSBookPatientAPI.as_view(), name='BookPatientAPI'),
     path('HomeBookPatientAPI', LIMSHomeBookPatientAPI.as_view(), name='LIMSHomeBookPatientAPI'),
+    path('LIMSPatientRegisterAPI', LIMSPatientRegisterAPI.as_view(), name='LIMSPatientRegisterAPI'),
     path('ViewFamilysDetails/<int:id>/', ViewFamilysDetails.as_view(), name='ViewFamilysDetails'),
     path('GetAllFamilysDetails/', GetAllFamilysDetails.as_view(), name='ViewFamilysDetails'),
     # path('FamilyHeadList/', FamilyHeadList.as_view(), name='FamilyHeadList'),
