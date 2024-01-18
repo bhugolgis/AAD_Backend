@@ -788,9 +788,6 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
         wb.save(response)
         return response
  
-
-
-
 class MOHDashboardExportView(generics.GenericAPIView):
     
     permission_classes = ( IsAuthenticated , IsMOH )

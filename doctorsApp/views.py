@@ -223,20 +223,19 @@ from rest_framework import filters
 class ViewFamilysDetails(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsMO)
     serializer_class = FamilyMemberDetailsSerializer  
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ['name' , 'mobileNo'  ]
+    # filter_backends = (filters.SearchFilter,)
+    # search_fields = ['name' , 'mobileNo' , "familyHead__mobileNo" ]
 
     def get_queryset(self , id ):
         # Filter the queryset based on the currently logged-in user
         queryset = familyMembers.objects.filter(area__dispensary_id= self.request.user.dispensary_id , familyHead__id = id ).order_by("-created_date")
-        print(queryset)
-
-
+     
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
             queryset = queryset.filter(
                 Q(name__icontains=search_terms) |
-                Q(mobileNo__icontains=search_terms) )
+                Q(mobileNo__icontains=search_terms)|
+                Q(familyHead__mobileNo__icontains=search_terms) )
         return queryset
     
 
@@ -260,8 +259,8 @@ class ViewFamilysDetails(generics.ListAPIView):
 class GetAllFamilysDetails(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsMO)
     serializer_class = FamilyMemberDetailsSerializer  
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ['name' , 'mobileNo'  ]
+    # filter_backends = (filters.SearchFilter,)
+    # search_fields = ['name' , 'mobileNo'  ]
 
     def get_queryset(self  ):
         # Filter the queryset based on the currently logged-in user
@@ -272,7 +271,8 @@ class GetAllFamilysDetails(generics.ListAPIView):
         if search_terms:
             queryset = queryset.filter(
                 Q(name__icontains=search_terms) |
-                Q(mobileNo__icontains=search_terms) )
+                Q(mobileNo__icontains=search_terms)|
+                Q(familyHead__mobileNo__icontains=search_terms) )
         return queryset
     
 

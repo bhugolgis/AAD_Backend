@@ -206,37 +206,6 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
         return ANM_coordinator
         
 
-    # def get_area(self , area):
-    #     try:
-    #         area_name = area.areas
-    #         print(area_name)
-    #     except:
-    #         area_name = ''
-    #         return area_name
-
-       
-    # def get_ward(self , data):
-	# 	try:
-	# 		sectionName = data.section.healthPost.ward.wardName
-	# 	except:
-	# 		sectionName = ''
-	# 	return sectionName
-
-
-# class ViewFamilyMemberDetailsSerializer(serializers.ModelSerializer):
-#     pathlab_reports = PatientPathlabSerializer(many=True)
-#     medicalOfficerconsultancy = MedicalOfficerConsultancySerializer(many=True)
-#     primaryConsultancy = PrimaryConsultancySerializer(many=True)
-#     secondaryConsultancy = SecondaryConsultancySerializer(many=True)
-#     tertiaryConsultancy = TertiaryConsultancySerializer(many=True, read_only=True)
-
-#     class Meta:
-#         model = familyMembers
-#         fields = ('id','memberId','name','gender','age','mobileNo','familyHead','familySurveyor','area','aadharCard','abhaId','pulse','bloodPressure','weight',
-#         'height','BMI','Questionnaire','bloodCollectionLocation','questionsConsent','aadharAndAbhaConsent','demandLetter','bloodConsent','cbacScore',
-#         'created_date','isLabTestAdded','isSampleCollected','isLabTestReportGenerated','pathlab_reports','medicalOfficerconsultancy','primaryConsultancy','secondaryConsultancy','tertiaryConsultancy')
-
-
 
 class FamilyHeadDetailsSerializer(serializers.ModelSerializer):
     family_head_member = FamilyMemberDetailsSerializer(many=True, read_only=True)

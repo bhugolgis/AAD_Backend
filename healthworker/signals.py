@@ -2,7 +2,7 @@ from django.db.models.signals import post_save , pre_save
 from django.dispatch import receiver
 from database.models import familyHeadDetails , CustomUser , familyMembers
 from django.contrib.auth.models import Group
-from django.contrib.auth.hashers import make_password
+
 
 @receiver(post_save, sender=familyHeadDetails)
 def create_new_user_for_familyHead(sender, instance,created , **kwargs):

@@ -5,21 +5,20 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.hashers import make_password
 
 
-@receiver(post_save , sender=PatientPathlab)  
+@receiver(post_save , sender=PatientsPathlabrecords)  
 def update_Appoinment_schedule_check(sender, instance , created, **kwargs):
     if created:
-        family = familyMembers.objects.get(pk=instance.phlebo.member.id)
-        family.appoinmentSchedule = True 
+        family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
+        # family.appoinmentSchedule = True 
         family.BloodCollected = True
         family.save()
       
 
-@receiver(post_save , sender=PatientPathlab)  
+@receiver(post_save , sender=PatientsPathlabrecords)  
 def update_isLabTestAdded_check(sender, instance , created, **kwargs):
-    print("Created")
+ 
     if created:
         family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
-        print(family)
         family.isLabTestAdded = True 
         family.save()
 
