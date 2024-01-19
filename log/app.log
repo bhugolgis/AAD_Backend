@@ -16571,3 +16571,23 @@ Traceback (most recent call last):
   File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
     assert self.serializer_class is not None, (
 AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Unauthorized: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 401 [0.07, 127.0.0.1:56927][0m
+Bad Request: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.09, 127.0.0.1:56927][0m
+Unauthorized: /doctor/api/MoDashboard
+[31;1mHTTP GET /doctor/api/MoDashboard 401 [0.06, 10.202.100.219:62162][0m
+Unauthorized: /doctor/api/GetAllFamilysDetails/
+[31;1mHTTP GET /doctor/api/GetAllFamilysDetails/ 401 [0.06, 10.202.100.219:62162][0m
+Unauthorized: /doctor/api/GetAllFamilysDetails/
+[31;1mHTTP GET /doctor/api/GetAllFamilysDetails/ 401 [0.05, 10.202.100.219:62162][0m
+Unauthorized: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 401 [0.08, 127.0.0.1:57635][0m
+Bad Request: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.07, 127.0.0.1:57635][0m
+Bad Request: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.10, 127.0.0.1:57635][0m
+Bad Request: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.08, 127.0.0.1:57635][0m
+Bad Request: /doctor/api/BookPatientAPI
+[31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.11, 10.202.100.219:62963][0m

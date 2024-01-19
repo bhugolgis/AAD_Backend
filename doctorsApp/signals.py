@@ -8,7 +8,7 @@ def update_isLabTestAdded_check(sender, instance , created, **kwargs):
     if created:
         family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
         family.isLabTestAdded = True 
-        family.generalStatus = 'Appointment Booked' 
+        family.generalStatus = 'Tests Assigned' 
         family.save()
 
 
@@ -17,5 +17,5 @@ def update_isLabTestAdded_check(sender, instance , created, **kwargs):
 def update_general_status(sender, instance , created, **kwargs):
     if created:
         family = familyMembers.objects.get(pk=instance.patientPathLab.patientFamilyMember.id)
-        family.generalStatus = 'Report generated' 
+        family.generalStatus = 'Reports received' 
         family.save()

@@ -590,23 +590,28 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
                 response_data = json.loads(response.content)
-                pathlab_serializer = PostResponseLIMSAPISerialzier(data = {
-                    "patientFamilyMember" : request.data["id"] , 
-                    "bookingVisitID" : response_data.get("bookingVisitID") ,
-                    "puid" : response_data.get("puid") ,
-                    "patientID" : response_data.get("patientID") ,
-                    "CentreID" : serializer.validated_data.get("RefLabCode") ,
-                    "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
-                    "centerName" : serializer.validated_data.get('centerName')
-                }  )
-                if pathlab_serializer.is_valid():
-                    pathlab_serializer.save()
-                    return Response(json.loads(response.content) , status=response.status_code)
+                if response_data.get("hisResult" , True):
+                    pathlab_serializer = PostResponseLIMSAPISerialzier(data = {
+                        "patientFamilyMember" : request.data["id"] , 
+                        "bookingVisitID" : response_data.get("bookingVisitID") ,
+                        "puid" : response_data.get("puid") ,
+                        "patientID" : response_data.get("patientID") ,
+                        "CentreID" : serializer.validated_data.get("RefLabCode") ,
+                        "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
+                        "centerName" : serializer.validated_data.get('centerName')
+                    }  )
+                    if pathlab_serializer.is_valid():
+                        pathlab_serializer.save()
+                        return Response(json.loads(response.content) , status=response.status_code)
+                    else:
+                        # key, value =list(serializer.errors.items())[0]
+                        # error_message = key+" , "+ value[0]
+                        return Response({"status" : "error" ,
+                                        "message" : pathlab_serializer.errors}, status= 400) 
                 else:
-                    # key, value =list(serializer.errors.items())[0]
-                    # error_message = key+" , "+ value[0]
+                    mesaage = response_data.get("hisMessage")
                     return Response({"status" : "error" ,
-                                    "message" : pathlab_serializer.errors}, status= 400) 
+                                        "message" : mesaage}, status= 400)
             else:
                 return Response(json.loads(response.content) , status=response.status_code) 
             

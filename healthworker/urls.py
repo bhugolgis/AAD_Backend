@@ -12,8 +12,7 @@ urlpatterns = [
         path('GetCitizenList/<str:choice>' , GetCitizenList.as_view() , name = 'GetTotalCitizenList'),
         path('GetFamilyList/<str:choice>' , GetFamilyList.as_view() , name = 'GetFamilyList'),
         path('GetBloodCollectionDetail' , GetBloodCollectionDetail.as_view() , name = 'GetBloodCollectionDetail'),
-
-
+        
         path('verifyMobileNumber/<int:mobileNo>' , verifyMobileNumber.as_view() , name = 'verifyMobileNumber'),
         path('veirfyaadharCard/<int:aadharCard>' , veirfyaadharCard.as_view() , name = 'aadharCard'),
         path('verifyabhaId/<str:abhaId>' , verifyabhaId.as_view() , name = 'aadharCard'),
