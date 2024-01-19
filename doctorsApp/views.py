@@ -622,7 +622,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
         
-
+# class ChecPatient
 class LIMSPatientRegisterAPI(generics.GenericAPIView):
     serializer_class = LIMSPatientRegisterSerializer
     # permission_classes = [IsAuthenticated]
@@ -636,6 +636,7 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
             "adharcard": serializer.validated_data.get('adharcard'),
             "acceptTermConditionPrivacyPolicy": "True",
             "addressType": "Home",
+            "address" : serializer.validated_data.get('address'),
             "age" : serializer.validated_data.get('age'),
             "ageUnit": "Y",
             "authKey": "E0DE107A7CA04A6CA7FBB6DAE89B4F3A",
@@ -653,7 +654,7 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
             "userIdProof": "Aadhaar No.",
             })
 
-            print(payload)
+            # print(payload)
             headers = {
             'accept': '*/*',
             'Accept-Language': 'en-US',
@@ -661,13 +662,34 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
                 response_data = json.loads(response.content)
-                print(response_data)
+                if response_data.get("lisResult") == "True" :
+                    pathlab_serializer = PostResponseLIMSPatientRegisterSerializer(data = {
+                        "patientFamilyMember" : request.data["id"], 
+                        "puid" : response_data.get("puid") 
+                    } , partial = True  )
+                    if pathlab_serializer.is_valid():
+                        pathlab_serializer.save()
+                        mesaage = response_data.get("lisMessage")
+                        return Response({"status" : "success" ,
+                                        "message" : mesaage},  status=response.status_code)
+                    else:
+                        key, value =list(pathlab_serializer.errors.items())[0]
+                        error_message = key+" , "+ value[0]
+                        return Response({"status" : "error" ,
+                                        "message" : error_message }, status= 400) 
+                else:
+                    mesaage = response_data.get("lisMessage")
+                    return Response({"status" : "error" ,
+                                    "message" : mesaage}, status= 400)
+            else:
                 return Response(json.loads(response.content) , status=response.status_code)
         
-
         else:
-            return Response({'message': serializer.errors , 
-                             "status": "error" } , status=400)
+            key, value = list(serializer.errors.items())[0]
+            print(key , value)
+            error_message = key+" , "+ value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
     
 
 
@@ -720,6 +742,25 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                 "TransactionreferenceID": "NAN",
                 "TransactionStatus": "NAN",
                 "PromoCode": "",
+
+                # "authKey": serializer.validated_data.get('authKey'),
+                # "CentreID": serializer.validated_data.get('CentreID'),
+                # "BookingFrom":serializer.validated_data.get('BookingFrom'),
+                # "bookingVisitID":serializer.validated_data.get('bookingVisitID'),
+                # "deviceId":serializer.validated_data.get('deviceId'),
+                # "HomeCollectionflag":serializer.validated_data.get('HomeCollectionflag'),
+                # "OfferDiduction":serializer.validated_data.get('OfferDiduction'),
+                # "OfflinePaid":serializer.validated_data.get('OfflinePaid'),
+                # "OnlinePaid":serializer.validated_data.get('OnlinePaid'),
+                # "PatientId":serializer.validated_data.get('PatientId'),
+                # "PaymentType":serializer.validated_data.get('PaymentType'),
+                # "TotalFees":serializer.validated_data.get('TotalFees'),
+                # "Trans_String":serializer.validated_data.get('Trans_String'),
+                # "TransactionId":serializer.validated_data.get('TransactionId'),
+                # "TransactionreferenceID":serializer.validated_data.get('TransactionreferenceID'),
+                # "TransactionStatus":serializer.validated_data.get('TransactionStatus'),
+                # "PromoCode":serializer.validated_data.get('PromoCode'),
+
                 "BookingDate": serializer.validated_data.get('BookingDate'),
                 "slots": serializer.validated_data.get('slots'),
                 "CollectionAddress": serializer.validated_data.get('CollectionAddress'),
@@ -737,7 +778,7 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                 "Booking_TestDetails": serializer.validated_data.get('Booking_TestDetails'),
                 
                 })
-
+            print(payload)
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
                 response_data = json.loads(response.content)

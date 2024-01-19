@@ -5,8 +5,11 @@ urlpatterns = [
     path('labtestsuggested/', LabTestSuggestedCreateView.as_view(), name='lab-test-suggested-create'),
     path('listpatientspathlab/', ListPatientsPathlabView.as_view(), name='list-patients-pathlab'),
     path('BookPatientAPI', LIMSBookPatientAPI.as_view(), name='BookPatientAPI'),
+
     path('HomeBookPatientAPI', LIMSHomeBookPatientAPI.as_view(), name='LIMSHomeBookPatientAPI'),
     path('LIMSPatientRegisterAPI', LIMSPatientRegisterAPI.as_view(), name='LIMSPatientRegisterAPI'),
+    path('LIMSPatientRegisterAPI', LIMSPatientRegisterAPI.as_view(), name='LIMSPatientRegisterAPI'),
+
     path('ViewFamilysDetails/<int:id>/', ViewFamilysDetails.as_view(), name='ViewFamilysDetails'),
     path('GetAllFamilysDetails/', GetAllFamilysDetails.as_view(), name='ViewFamilysDetails'),
     # path('FamilyHeadList/', FamilyHeadList.as_view(), name='FamilyHeadList'),
@@ -22,7 +25,6 @@ urlpatterns = [
     path('ViewPrimaryConsultancyView/<int:patients_id>/', views.ViewPrimaryConsultancyView, name='ViewPrimaryConsultancyView'),
     path('ViewSecondaryConsultancyView/<int:patients_id>/', views.ViewSecondaryConsultancyView, name='ViewSecondaryConsultancyView'),
     path('ViewTertiaryConsultancyView/<int:patients_id>/', views.ViewTertiaryConsultancyView, name='ViewTertiaryConsultancyView'),
-
 
     path('PatientsForPrimaryDoctorList', views.PatientsForPrimaryDoctorList, name='PatientsForPrimaryDoctorList'),
     path('PatientsForSecondaryDoctorList', views.PatientsForSecondaryDoctorList, name='PatientsForSecondaryDoctorList'),

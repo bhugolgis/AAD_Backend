@@ -275,6 +275,7 @@ class HomeBookPatientSerializer(serializers.Serializer):
 
 
 class LIMSPatientRegisterSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     adharcard = serializers.CharField(max_length=250)
     address = serializers.CharField(max_length=250)
     age = serializers.CharField(max_length=25)

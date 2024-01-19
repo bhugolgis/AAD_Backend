@@ -40,6 +40,11 @@ class PostResponseLIMSAPISerialzier(serializers.ModelSerializer):
         fields = ( 'patientFamilyMember' ,'CentreID' , 'bookingVisitID' , 'puid' , 'patientID' , 'LabTestSuggested' , "centerName"  )
 
 
+class PostResponseLIMSPatientRegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PatientsPathlabrecords
+        fields = ( 'patientFamilyMember' , 'puid' )
+
 class PostResponseHomeLIMSAPISerialzier(serializers.ModelSerializer):
     LabTestSuggested = serializers.ListField(write_only=True , required = True)
     class Meta:

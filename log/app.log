@@ -16591,3 +16591,567 @@ Bad Request: /doctor/api/BookPatientAPI
 [31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.08, 127.0.0.1:57635][0m
 Bad Request: /doctor/api/BookPatientAPI
 [31;1mHTTP POST /doctor/api/BookPatientAPI 400 [0.11, 10.202.100.219:62963][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's AdminDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's AdminDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's AdminDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's AdminDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's AdminDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's AdminDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [0.09, 127.0.0.1:62629][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [0.90, 127.0.0.1:62865][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [0.97, 127.0.0.1:62905][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [6.86, 127.0.0.1:62976][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [19.30, 127.0.0.1:63104][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [6.08, 127.0.0.1:63104][0m
+Internal Server Error: /doctor/api/LIMSPatientRegisterAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 675, in post
+    "message" : mesaage},  status=response_data.status_code)
+AttributeError: 'dict' object has no attribute 'status_code'
+[35;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 500 [1.00, 127.0.0.1:63194][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [2.95, 127.0.0.1:63310][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [2.48, 127.0.0.1:63358][0m
+Internal Server Error: /doctor/api/LIMSPatientRegisterAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 203, in _new_conn
+    sock = connection.create_connection(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 791, in urlopen
+    response = self._make_request(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 492, in _make_request
+    raise new_e
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 468, in _make_request
+    self._validate_conn(conn)
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 1097, in _validate_conn
+    conn.connect()
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 611, in connect
+    self.sock = sock = self._new_conn()
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 210, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x0000017ADDD381C0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 845, in urlopen
+    retries = retries.increment(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\util\retry.py", line 515, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000017ADDD381C0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 662, in post
+    response = requests.request("POST", url, headers=headers, data=payload)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\adapters.py", line 519, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000017ADDD381C0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
+[35;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 500 [0.13, 127.0.0.1:63395][0m
+Internal Server Error: /doctor/api/LIMSPatientRegisterAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 203, in _new_conn
+    sock = connection.create_connection(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 791, in urlopen
+    response = self._make_request(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 492, in _make_request
+    raise new_e
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 468, in _make_request
+    self._validate_conn(conn)
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 1097, in _validate_conn
+    conn.connect()
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 611, in connect
+    self.sock = sock = self._new_conn()
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 210, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x0000017ADE0C48E0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 845, in urlopen
+    retries = retries.increment(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\util\retry.py", line 515, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000017ADE0C48E0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 662, in post
+    response = requests.request("POST", url, headers=headers, data=payload)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\adapters.py", line 519, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x0000017ADE0C48E0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
+[35;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 500 [0.12, 127.0.0.1:63395][0m
+Internal Server Error: /doctor/api/LIMSPatientRegisterAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 203, in _new_conn
+    sock = connection.create_connection(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 791, in urlopen
+    response = self._make_request(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 492, in _make_request
+    raise new_e
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 468, in _make_request
+    self._validate_conn(conn)
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 1097, in _validate_conn
+    conn.connect()
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 611, in connect
+    self.sock = sock = self._new_conn()
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 210, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x000001D505974130>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 845, in urlopen
+    retries = retries.increment(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\util\retry.py", line 515, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001D505974130>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 662, in post
+    response = requests.request("POST", url, headers=headers, data=payload)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\adapters.py", line 519, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001D505974130>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
+[35;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 500 [0.14, 127.0.0.1:63539][0m
+Internal Server Error: /doctor/api/LIMSPatientRegisterAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 203, in _new_conn
+    sock = connection.create_connection(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\util\connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 791, in urlopen
+    response = self._make_request(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 492, in _make_request
+    raise new_e
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 468, in _make_request
+    self._validate_conn(conn)
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 1097, in _validate_conn
+    conn.connect()
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 611, in connect
+    self.sock = sock = self._new_conn()
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connection.py", line 210, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x000001833D2603D0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\adapters.py", line 486, in send
+    resp = conn.urlopen(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\connectionpool.py", line 845, in urlopen
+    retries = retries.increment(
+  File "D:\Jafar\AAD\.env\lib\site-packages\urllib3\util\retry.py", line 515, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001833D2603D0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 662, in post
+    response = requests.request("POST", url, headers=headers, data=payload)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\requests\adapters.py", line 519, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001833D2603D0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
+[35;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 500 [0.16, 127.0.0.1:63650][0m

@@ -10,13 +10,12 @@ def update_Appoinment_schedule_check(sender, instance , created, **kwargs):
     if created:
         family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
         # family.appoinmentSchedule = True 
-        family.BloodCollected = True
+        family.isSampleCollected = True
         family.save()
       
 
 @receiver(post_save , sender=PatientsPathlabrecords)  
 def update_isLabTestAdded_check(sender, instance , created, **kwargs):
- 
     if created:
         family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
         family.isLabTestAdded = True 
