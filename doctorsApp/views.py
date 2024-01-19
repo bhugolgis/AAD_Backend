@@ -597,7 +597,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
                     "patientID" : response_data.get("patientID") ,
                     "CentreID" : serializer.validated_data.get("RefLabCode") ,
                     "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
-                    # "centerName" : serializer.validated_data.get('centerName')
+                    "centerName" : serializer.validated_data.get('centerName')
                 }  )
                 if pathlab_serializer.is_valid():
                     pathlab_serializer.save()

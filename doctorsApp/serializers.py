@@ -230,7 +230,7 @@ class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
 
 class BookPatientSerializer(serializers.Serializer):
     # authKey = serializers.CharField(max_length=100 , default = "05436EFE3826447DBE720525F78A9EEDBMC")
-    # centreName = serializers.CharField (max_length=500 , required = True )
+    centerName = serializers.CharField (max_length=500 , required = True )
     id = serializers.IntegerField()
     RegisteredDate= serializers.CharField(max_length=100)
     PRNNo= serializers.CharField(max_length=100)
