@@ -17155,3 +17155,5 @@ Traceback (most recent call last):
     raise ConnectionError(e, request=request)
 requests.exceptions.ConnectionError: HTTPSConnectionPool(host='kdl.techjivaaindia.in', port=443): Max retries exceeded with url: /api/LISMobileAPP_API/LIS_RegisterPatient (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001833D2603D0>: Failed to resolve 'kdl.techjivaaindia.in' ([Errno 11001] getaddrinfo failed)"))
 [35;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 500 [0.16, 127.0.0.1:63650][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [8.23, 127.0.0.1:65469][0m

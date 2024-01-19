@@ -24,10 +24,39 @@ def getPdfUrl(response_string):
         return report_url
     else:
         print("ReportURL not found in the response.")
+
+
+def GetBookingVisitID():
+    transactionId = PatientsPathlabrecords.objects.filter(transactionid__isnull= False , bookingVisitID__isnull = False ,
+                                                          patientID__isnull = False  )
+
+    for id in transactionId:
+        url = 'https://android.techjivaaindia.in/KRASNA/GetBookingVisitID'
+
+        payload = json.dumps({
+            "BookingId": id.transactionid
+            })
         
+        headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json',}
         
-        
-        
+        response = requests.request("POST", url, headers=headers, data=payload)
+        if response.status_code == 200:
+            response_data = json.loads(response.content)
+            booking_visit_id = response_data.get("boobkingVisitID", {})  
+            patient_id = booking_visit_id.get("patientID", "")
+            booking_visit_id_value = booking_visit_id.get("BookingVisitID", "")
+
+            if patient_id.lower() != "nan" and booking_visit_id_value.lower() != "nan":
+                id.patientID = patient_id
+                id.bookingVisitID = booking_visit_id_value
+                id.save()
+            else:
+                pass
+
+ 
 def AddTestReport():
     # logger.warning("add test report running")
 

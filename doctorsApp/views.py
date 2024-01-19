@@ -622,7 +622,6 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
         
-# class ChecPatient
 class LIMSPatientRegisterAPI(generics.GenericAPIView):
     serializer_class = LIMSPatientRegisterSerializer
     # permission_classes = [IsAuthenticated]
@@ -691,8 +690,6 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
     
-
-
 class LIMSHomeBookPatientAPI(generics.GenericAPIView):
 
     serializer_class = HomeBookPatientSerializer
