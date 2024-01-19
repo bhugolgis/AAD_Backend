@@ -29,6 +29,8 @@ def getPdfUrl(response_string):
 def GetBookingVisitID():
     transactionId = PatientsPathlabrecords.objects.filter(transactionid__isnull= False , bookingVisitID__isnull = False ,
                                                           patientID__isnull = False  )
+    logger.warning(transactionId)
+    logger.warning("transactionIds")
 
     for id in transactionId:
         url = 'https://android.techjivaaindia.in/KRASNA/GetBookingVisitID'
