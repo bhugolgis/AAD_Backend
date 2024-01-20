@@ -27,8 +27,8 @@ def getPdfUrl(response_string):
 
 
 def GetBookingVisitID():
-    transactionId = PatientsPathlabrecords.objects.filter(transactionid__isnull= False , bookingVisitID__isnull = False ,
-                                                          patientID__isnull = False  )
+    transactionId = PatientsPathlabrecords.objects.filter(transactionid__isnull= False , bookingVisitID__isnull = True ,
+                                                          patientID__isnull = True  )
     logger.warning(transactionId)
     logger.warning("transactionIds")
 
