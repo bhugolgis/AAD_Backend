@@ -774,13 +774,13 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
                 response_data = json.loads(response.content)
-                if response_data.get('result') == "true":
+                if response_data.get("result" , "true" ):
+                    print(response_data)
                     pathlab_serializer = PostResponseHomeLIMSAPISerialzier(data = {
                         "patientFamilyMember" : request.data["id"] , 
                         "transactionid" : response_data.get("transactionid") ,
                         "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
                         "puid": serializer.validated_data.get('PatientUid') 
-
                     }  )
                     if pathlab_serializer.is_valid():
                         instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"] ).first()
@@ -797,6 +797,10 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                         error_message = key+" , "+ value[0]
                         return Response({"status" : "error" ,
                                         "message" : pathlab_serializer.errors}, status= 400) 
+                else:
+                    message = json.loads(response.content)
+                    return Response({"status" : "error" ,
+                                    "message" : message},  status=response.status_code)
             else:
                 message = json.loads(response.content)
                 return Response({"status" : "error" ,

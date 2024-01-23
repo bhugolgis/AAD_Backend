@@ -19,7 +19,7 @@ urlpatterns = [
         path('GetGroupRequestList', GetGroupRequestList.as_view(), name='GetGroupRequestList'),
         path('GetGroupList', GetGroupList.as_view(), name='GetGroupRequestList'),
         
-
+        path('GetAllUserDetails', GetAllUserDetails, name='GetDataDashboard'),
         
         path('MOHDashboardExcelView', MOHDashboardExportView.as_view(), name='MOHDashboardExportView'),
         path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),

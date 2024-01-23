@@ -1956,3 +1956,63 @@ class  AdminDashboardView(generics.GenericAPIView):
             'vulnerabel_any_other_reason' : vulnerabel_any_other_reason , 
                 
                 } , status= 200)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.contrib.auth.models import Group   
+ 
+@api_view(['GET'])
+def GetAllUserDetails(request):
+    data = {'wards': []}
+ 
+    wards = ward.objects.all()
+ 
+    for w in wards:
+        wrd = {'ward': w.wardName, 'healthPosts': []}
+ 
+        health_posts = healthPost.objects.filter(ward=w)
+        for hp in health_posts:
+            areaData = area.objects.filter(healthPost_id = hp.id).values("areas")
+            areaList =  [item["areas"] for item in areaData]
+            health_post_info = {'healthPost': hp.healthPostName,'areaList':areaList, 'sections': []}
+ 
+            sections = section.objects.filter(healthPost=hp)
+            for sec in sections:
+                section_info = {'sectionName': sec.sectionName, 'anms': [],}
+ 
+                # ANMs
+                anms = CustomUser.objects.filter(section_id=sec.id, groups__name="healthworker")
+                for anm in anms:
+                    anm_info = {'anmName': anm.name, 'chvs': []}
+ 
+                    # CHVs under the ANM
+                    chvs = CustomUser.objects.filter(ANM_id = anm.id,groups__name="CHV-ASHA")
+                    for chv in chvs:
+                        chv_info = {'chvName': chv.name}
+                        anm_info['chvs'].append(chv_info)
+ 
+                    section_info['anms'].append(anm_info)
+ 
+                health_post_info['sections'].append(section_info)
+ 
+            wrd['healthPosts'].append(health_post_info)
+ 
+        data['wards'].append(wrd)
+ 
+    return Response({
+        'status': 'success',
+        'message': 'Successfully Fetched',
+        'data': data,
+    })
