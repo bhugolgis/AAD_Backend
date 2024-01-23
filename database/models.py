@@ -151,6 +151,7 @@ class familyMembers(models.Model):
          ("Mother" , "Mother"),
          ("Father" , "Father"),
          ("Spouse" , "Spouse"),
+         ("Son" , "Son"),
          ("Daughter" , "Daughter"),
          ("Grandson" , "Grandson"),
          ("Granddaughter" , "Granddaughter"),

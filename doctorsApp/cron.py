@@ -16,14 +16,13 @@ def getPdfUrl(response_string):
   
     report_url =""
 
-    # Use regular expression to extract the ReportURL
+    # Use regular expression to extract the ReportURL 
     match = re.search(r'ReportURL":"([^"]+)"', response_string)
     if match:
         report_url = match.group(1)
         return report_url
     else:
         print("ReportURL not found in the response.")
-
 
 def GetBookingVisitID():
     transactionId = PatientsPathlabrecords.objects.filter(transactionid__isnull= False , bookingVisitID__isnull = True ,
@@ -142,11 +141,12 @@ def AddTestReport():
         # print("Test Not Added or Test Sample not Added")
     # print("Cron Running")
 
-
 def GetHomePaitentReport():
     Paitents = PatientsPathlabrecords.objects.filter(patientFamilyMember__isLabTestAdded = True,
                                                       patientFamilyMember__isSampleCollected =True,
                                                       patientFamilyMember__isLabTestReportGenerated = False,
+                                                      bookingVisitID__isnull= False, puid__isnull = False ,  
+                                                      patientID__isnull = False , transactionid__isnull = False
                                                       )
     
     logger.warning(Paitents)

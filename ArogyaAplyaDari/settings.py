@@ -226,7 +226,7 @@ LOGGING = {
 
 CRONJOBS = [
     ('*/1 * * * *', 'doctorsApp.cron.AddTestReport'),
-    ('*/1 * * * *', 'doctorsApp.cron.GetBookingVisitID')
-
+    ('*/1 * * * *', 'doctorsApp.cron.GetBookingVisitID'),
+    ('*/1 * * * *', 'doctorsApp.cron.GetHomePaitentReport')
 
 ]
