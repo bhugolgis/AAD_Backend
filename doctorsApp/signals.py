@@ -8,6 +8,7 @@ def update_isLabTestAdded_check(sender, instance , created, **kwargs):
     if created:
         family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
         family.isLabTestAdded = True 
+        family.isSampleCollected = True 
         family.generalStatus = 'Tests Assigned' 
         family.save()
 

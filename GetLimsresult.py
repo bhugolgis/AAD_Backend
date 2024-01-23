@@ -2,7 +2,7 @@ import requests
 
 def send_sms(api_key, sender_id, mobile_number, message):
     # CDAC SMS Gateway API endpoint
-    api_url = "https://msdgweb.mgov.gov.in/esms/sendsmsrequest"
+    api_url = "https://msdgweb.mgov.gov.in/esms/sendsmsrequestDLT"
 
     # Prepare the request payload
     payload = {

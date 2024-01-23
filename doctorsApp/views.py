@@ -547,7 +547,8 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
                             'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
-            pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
+            pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"] , bookingVisitID__isnull = False ,
+                                                                    patientID__isnull = False  ).exists()
             if pathlab_instance:
                 return Response({'status': 'error', 
                                     'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
@@ -627,6 +628,16 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
+
+        try:
+            pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
+            if pathlab_instance:
+                return Response({'status': 'error', 
+                                'message': "patient already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'status': 'error',
+                            'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
+        
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             url = "https://kdl.techjivaaindia.in/api/LISMobileAPP_API/LIS_RegisterPatient"
@@ -689,7 +700,8 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
             error_message = key+" , "+ value[0]
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
-    
+
+
 class LIMSHomeBookPatientAPI(generics.GenericAPIView):
 
     serializer_class = HomeBookPatientSerializer
@@ -705,10 +717,13 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                             'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
-            pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
+            pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"] , transactionid__isnull = False , puid__isnull = False  ).first()
             if pathlab_instance:
                 return Response({'status': 'error', 
-                                    'message': "patient already book an appointment"}, status=status.HTTP_400_BAD_REQUEST)
+                                    'message': "patient already book an appointment",
+                                    "transactionid" : pathlab_instance.transactionid,
+                                    "puid" : pathlab_instance.puid,
+                                    }, status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response({'status': 'error',
                             'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
@@ -740,24 +755,6 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                 "TransactionStatus": "NAN",
                 "PromoCode": "",
 
-                # "authKey": serializer.validated_data.get('authKey'),
-                # "CentreID": serializer.validated_data.get('CentreID'),
-                # "BookingFrom":serializer.validated_data.get('BookingFrom'),
-                # "bookingVisitID":serializer.validated_data.get('bookingVisitID'),
-                # "deviceId":serializer.validated_data.get('deviceId'),
-                # "HomeCollectionflag":serializer.validated_data.get('HomeCollectionflag'),
-                # "OfferDiduction":serializer.validated_data.get('OfferDiduction'),
-                # "OfflinePaid":serializer.validated_data.get('OfflinePaid'),
-                # "OnlinePaid":serializer.validated_data.get('OnlinePaid'),
-                # "PatientId":serializer.validated_data.get('PatientId'),
-                # "PaymentType":serializer.validated_data.get('PaymentType'),
-                # "TotalFees":serializer.validated_data.get('TotalFees'),
-                # "Trans_String":serializer.validated_data.get('Trans_String'),
-                # "TransactionId":serializer.validated_data.get('TransactionId'),
-                # "TransactionreferenceID":serializer.validated_data.get('TransactionreferenceID'),
-                # "TransactionStatus":serializer.validated_data.get('TransactionStatus'),
-                # "PromoCode":serializer.validated_data.get('PromoCode'),
-
                 "BookingDate": serializer.validated_data.get('BookingDate'),
                 "slots": serializer.validated_data.get('slots'),
                 "CollectionAddress": serializer.validated_data.get('CollectionAddress'),
@@ -773,28 +770,37 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                 "PatientUid": serializer.validated_data.get('PatientUid'),
                 "pincode": serializer.validated_data.get('pincode'),
                 "Booking_TestDetails": serializer.validated_data.get('Booking_TestDetails'),
-                
                 })
-            print(payload)
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
                 response_data = json.loads(response.content)
-                pathlab_serializer = PostResponseHomeLIMSAPISerialzier(data = {
-                    "patientFamilyMember" : request.data["id"] , 
-                    "transactionid" : response_data.get("transactionid") ,
-                    "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
+                if response_data.get('result') == "true":
+                    pathlab_serializer = PostResponseHomeLIMSAPISerialzier(data = {
+                        "patientFamilyMember" : request.data["id"] , 
+                        "transactionid" : response_data.get("transactionid") ,
+                        "LabTestSuggested" : serializer.validated_data.get('Booking_TestDetails') , 
+                        "puid": serializer.validated_data.get('PatientUid') 
 
-                }  )
-                if pathlab_serializer.is_valid():
-                    pathlab_serializer.save()
-                    return Response(json.loads(response.content) , status=response.status_code)
-                else:
-                    # key, value =list(serializer.errors.items())[0]
-                    # error_message = key+" , "+ value[0]
-                    return Response({"status" : "error" ,
-                                    "message" : pathlab_serializer.errors}, status= 400) 
+                    }  )
+                    if pathlab_serializer.is_valid():
+                        instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"] ).first()
+                        instance.transactionid = pathlab_serializer.validated_data.get('transactionid')
+                        instance.LabTestSuggested = pathlab_serializer.validated_data.get('LabTestSuggested')
+                        instance.puid = pathlab_serializer.validated_data.get('puid')
+                        instance.save(update_fields=['transactionid', 'LabTestSuggested', 'puid'])
+
+                        return Response( {'status': 'success',
+                                        'message': 'appointment booked successfully',
+                                        'transactionid': response_data.get("transactionid")}, status=response.status_code)
+                    else:
+                        key, value =list(pathlab_serializer.errors.items())[0]
+                        error_message = key+" , "+ value[0]
+                        return Response({"status" : "error" ,
+                                        "message" : pathlab_serializer.errors}, status= 400) 
             else:
-                return Response(json.loads(response.content) , status=response.status_code) 
+                message = json.loads(response.content)
+                return Response({"status" : "error" ,
+                                "message" : message},  status=response.status_code) 
             
         else:
             key, value = list(serializer.errors.items())[0]
@@ -802,8 +808,6 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
             error_message = key+" , "+ value[0]
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)
-        
-
 
 
 @permission_classes((IsAuthenticated,))

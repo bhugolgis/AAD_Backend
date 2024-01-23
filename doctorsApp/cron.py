@@ -18,7 +18,6 @@ def getPdfUrl(response_string):
 
     # Use regular expression to extract the ReportURL
     match = re.search(r'ReportURL":"([^"]+)"', response_string)
-
     if match:
         report_url = match.group(1)
         return report_url
@@ -142,3 +141,59 @@ def AddTestReport():
         pass
         # print("Test Not Added or Test Sample not Added")
     # print("Cron Running")
+
+
+def GetHomePaitentReport():
+    Paitents = PatientsPathlabrecords.objects.filter(patientFamilyMember__isLabTestAdded = True,
+                                                      patientFamilyMember__isSampleCollected =True,
+                                                      patientFamilyMember__isLabTestReportGenerated = False,
+                                                      )
+    
+    logger.warning(Paitents)
+    for Paitent in Paitents:
+        # if checkLabTestAdded.exists():
+        url ="https://kdl.techjivaaindia.in/services/LISMobileAPPService.asmx/Get_LIS_PatientReportURL"
+
+        authKey = 'E0DE107A7CA04A6CA7FBB6DAE89B4F3A'
+        patientID = Paitent.patientID
+        lisVisitID = Paitent.bookingVisitID
+        puid = Paitent.puid
+
+        post_params = {
+            'authKey': authKey,
+            'puid': puid,
+            'lisVisitID': lisVisitID,
+            'patientID': patientID,
+        }
+        headers =  {
+            'Content-Type': 'application/json',
+        }
+
+        response = requests.post(url , headers=headers, data=post_params)
+        response_data = json.loads(response.content)
+        if response.status_code == 200 and response_data.get(("LISResult") == "True"):
+            # Specify the folder where you want to save the PDF file temporarily
+            temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')
+
+            # Extract the file name from the URL
+            file_name =str(Paitent.patientFamilyMember.name.replace(" ",""))+str(Paitent.patientID) + '.pdf'
+
+            # Save the PDF file temporarily
+            temp_file_path = os.path.join(temp_folder, file_name)
+            
+            #logger.warning(temp_file_path)
+            pdfurl  = getPdfUrl(response.text)
+            pdfResponse = requests.get(pdfurl)
+            with open(temp_file_path, 'wb') as temp_pdf_file:
+                temp_pdf_file.write(pdfResponse.content)
+                
+            # logger.warning(temp_file_path , "file path")
+            path = Path(temp_file_path)
+            parts = path.parts[-2:]
+            p2 = Path(*parts)
+            pdf_file_instance = PatientPathLabReports(patientPathLab_id =Paitent.id )
+            pdf_file_instance.pdfResult.save(file_name, File(open(temp_file_path, 'rb')))
+            pdf_file_instance.save()
+            updateLabTest = familyMembers.objects.filter(id=Paitent.patientFamilyMember_id).update(isLabTestReportGenerated=True , isSampleCollected = True)
+        else:
+            pass
