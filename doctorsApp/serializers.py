@@ -143,13 +143,12 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     ANM_number = serializers.SerializerMethodField()
     HOF_Number = serializers.SerializerMethodField()
     centerName = serializers.SerializerMethodField()
+    vulnerable_reason = serializers.SerializerMethodField()
 
 
     class Meta:
         model = familyMembers
         fields = '__all__'
-
-        # depth = 1
 
     def get_report(self , data):
         if data.isLabTestReportGenerated == True:
@@ -163,6 +162,22 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
             pdf_url = ''
 
         return pdf_url
+    
+    def get_vulnerable_reason(self , data):
+        if data.vulnerable == True:
+            vulnerable_reason = []
+            try:
+                
+                vulnerables = data.vulnerable_choices.all()
+                for i in vulnerables:
+                    vulnerable_reason.append(i.choice)
+            
+            except:
+                vulnerable_reason = []
+        else:
+            vulnerable_reason = []
+
+        return vulnerable_reason
     
     def get_centerName(self , data): 
         try:
