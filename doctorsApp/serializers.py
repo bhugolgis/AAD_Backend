@@ -140,6 +140,7 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     Healthpost = serializers.SerializerMethodField()
     ward = serializers.SerializerMethodField()
     ANM_coordinator = serializers.SerializerMethodField()
+    ANM_number = serializers.SerializerMethodField()
     HOF_Number = serializers.SerializerMethodField()
     centerName = serializers.SerializerMethodField()
 
@@ -170,6 +171,13 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
         except:
             centerName = ''
         return centerName
+    
+    def get_ANM_number(self , data): 
+        try:
+            ANM_number = data.familySurveyor.phoneNumber
+        except:
+            ANM_number = ''
+        return ANM_number
     
     def get_HOF_Number(self , data):
         try:

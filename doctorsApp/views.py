@@ -680,8 +680,10 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
                     if pathlab_serializer.is_valid():
                         pathlab_serializer.save()
                         mesaage = response_data.get("lisMessage")
+                        puid = response_data.get("puid")
                         return Response({"status" : "success" ,
-                                        "message" : mesaage},  status=response.status_code)
+                                        "message" : mesaage,
+                                        "puid" : puid},  status=response.status_code)
                     else:
                         key, value =list(pathlab_serializer.errors.items())[0]
                         error_message = key+" , "+ value[0]
@@ -738,17 +740,17 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
 
             payload = json.dumps({
                 "authKey": "E0DE107A7CA04A6CA7FBB6DAE89B4F3A",
-                "CentreID": "112084",
+                # "CentreID": "112084",
                 "BookingFrom": "ANDROID" , 
                 "bookingVisitID": "NAN",
                 "deviceId": "",
                 "HomeCollectionflag": "1",
                 "OfferDiduction": "0",
-                "OfflinePaid": "0",
+                "OfflinePaid": "100.00",
                 "OnlinePaid": "0",
                 "PatientId": "NAN",
                 "PaymentType": "offline",
-                "TotalFees": "0",
+                "TotalFees": "100.00",
                 "Trans_String": "NAN",
                 "TransactionId": "NAN",
                 "TransactionreferenceID": "NAN",
@@ -771,6 +773,7 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                 "pincode": serializer.validated_data.get('pincode'),
                 "Booking_TestDetails": serializer.validated_data.get('Booking_TestDetails'),
                 })
+            print(payload)
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
                 response_data = json.loads(response.content)
