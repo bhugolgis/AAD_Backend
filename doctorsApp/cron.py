@@ -25,36 +25,48 @@ def getPdfUrl(response_string):
         print("ReportURL not found in the response.")
 
 def GetBookingVisitID():
-    transactionId = PatientsPathlabrecords.objects.filter(transactionid__isnull= False , bookingVisitID__isnull = True ,
-                                                          patientID__isnull = True  )
-    logger.warning(transactionId)
-    logger.warning("transactionIds")
+    transactionId = PatientsPathlabrecords.objects.filter(transactionid__isnull=False, bookingVisitID__isnull=True,
+                                                          patientID__isnull=True)
 
     for id in transactionId:
         url = 'https://android.techjivaaindia.in/KRASNA/GetBookingVisitID'
 
         payload = json.dumps({
             "BookingId": id.transactionid
-            })
-        
+        })
+
         headers = {
             'accept': '*/*',
             'Accept-Language': 'en-US',
-            'Content-Type': 'application/json',}
-        
+            'Content-Type': 'application/json',
+        }
+
         response = requests.request("POST", url, headers=headers, data=payload)
         if response.status_code == 200:
             response_data = json.loads(response.content)
-            booking_visit_id = response_data.get("boobkingVisitID", {})  
-            patient_id = booking_visit_id.get("patientID", "")
-            booking_visit_id_value = booking_visit_id.get("BookingVisitID", "")
 
-            if patient_id.lower() != "nan" and booking_visit_id_value.lower() != "nan":
-                id.patientID = patient_id
-                id.bookingVisitID = booking_visit_id_value
-                id.save()
+            # Check if keys exist in the response_data dictionary
+            if "boobkingVisitID" in response_data and response_data["boobkingVisitID"]:
+                booking_visit_id = response_data["boobkingVisitID"]
+
+                # Validate if the values are "NAN" (as strings)
+                patient_id = booking_visit_id.get("patientID")
+                booking_visit_id_value = booking_visit_id.get("BookingVisitID")
+
+                if patient_id and booking_visit_id_value and patient_id.lower() != "nan" and booking_visit_id_value.lower() != "nan":
+                    id.patientID = patient_id
+                    id.bookingVisitID = booking_visit_id_value
+                    id.save()
+                else:
+                    # Handle the case where values are "NAN"
+                    pass
             else:
+                # Handle the case where "boobkingVisitID" is not present
                 pass
+        else:
+            # Handle other HTTP status codes
+            pass
+
 
  
 def AddTestReport():
@@ -65,7 +77,7 @@ def AddTestReport():
     checkLabTestAdded = PatientsPathlabrecords.objects.filter(patientFamilyMember__isLabTestAdded = True,
                                                       patientFamilyMember__isSampleCollected =True,
                                                       patientFamilyMember__isLabTestReportGenerated = False)
-    logger.warning(checkLabTestAdded)
+    
     for labTest in checkLabTestAdded:
         # if checkLabTestAdded.exists():
         url1 ="http://ilis.krsnaadiagnostics.com/services/KDL_LIS_Report_APPService.asmx"
@@ -106,7 +118,6 @@ def AddTestReport():
         response = requests.post(url1, headers=headers, data=payload)
         responseJson = requests.post(url2, headers=jsonheaders, data=post_params)
         # logger.warning(response.content , "1st logger") 
-        logger.warning(responseJson.content)
         if response.status_code == 200 and responseJson.status_code == 200:
             # Specify the folder where you want to save the PDF file temporarily
             temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')
@@ -119,27 +130,24 @@ def AddTestReport():
             
             #logger.warning(temp_file_path)
             pdfurl  = getPdfUrl(response.text)
-            pdfResponse = requests.get(pdfurl)
-            with open(temp_file_path, 'wb') as temp_pdf_file:
-                temp_pdf_file.write(pdfResponse.content)
-                
-            # logger.warning(temp_file_path , "file path")
-            path = Path(temp_file_path)
-            parts = path.parts[-2:]
-            p2 = Path(*parts)
-            pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id )
-            pdf_file_instance.pdfResult.save(file_name, File(open(temp_file_path, 'rb')))
-            pdf_file_instance.save()
-            updateLabTest = familyMembers.objects.filter(id=labTest.patientFamilyMember_id).update(isLabTestReportGenerated=True , isSampleCollected = True)
+            if pdfurl:
+                pdfResponse = requests.get(pdfurl)
+                with open(temp_file_path, 'wb') as temp_pdf_file:
+                    temp_pdf_file.write(pdfResponse.content)
+                    
+                path = Path(temp_file_path)
+                parts = path.parts[-2:]
+                p2 = Path(*parts)
+                pdf_file_instance = PatientPathLabReports(patientPathLab_id =labTest.id )
+                pdf_file_instance.pdfResult.save(file_name, File(open(temp_file_path, 'rb')))
+                pdf_file_instance.save()
+                updateLabTest = familyMembers.objects.filter(id=labTest.patientFamilyMember_id).update(isLabTestReportGenerated=True , isSampleCollected = True)
+            else:
+                pass
 
-            # Clean up: remove the temporary file
-            # os.remove(temp_file_path)
-         
-        # pass
-    else:
-        pass
-        # print("Test Not Added or Test Sample not Added")
-    # print("Cron Running")
+        else:
+            pass
+
 
 def GetHomePaitentReport():
     Paitents = PatientsPathlabrecords.objects.filter(patientFamilyMember__isLabTestAdded = True,
@@ -149,7 +157,7 @@ def GetHomePaitentReport():
                                                       patientID__isnull = False , transactionid__isnull = False
                                                       )
     
-    logger.warning(Paitents)
+
     for Paitent in Paitents:
         # if checkLabTestAdded.exists():
         url ="https://kdl.techjivaaindia.in/services/LISMobileAPPService.asmx/Get_LIS_PatientReportURL"
@@ -170,30 +178,35 @@ def GetHomePaitentReport():
         }
 
         response = requests.post(url , headers=headers, data=post_params)
-        response_data = json.loads(response.content)
-        if response.status_code == 200 and response_data.get(("LISResult") == "True"):
-            # Specify the folder where you want to save the PDF file temporarily
-            temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')
+        logger.warning(response)
+        if response.status_code == 200:
+            response_data = json.loads(response.content)
+            if response.status_code == 200 and response_data.get(("LISResult") == "True"):
+                # Specify the folder where you want to save the PDF file temporarily
+                temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')
 
-            # Extract the file name from the URL
-            file_name =str(Paitent.patientFamilyMember.name.replace(" ",""))+str(Paitent.patientID) + '.pdf'
+                # Extract the file name from the URL
+                file_name =str(Paitent.patientFamilyMember.name.replace(" ",""))+str(Paitent.patientID) + '.pdf'
 
-            # Save the PDF file temporarily
-            temp_file_path = os.path.join(temp_folder, file_name)
-            
-            #logger.warning(temp_file_path)
-            pdfurl  = getPdfUrl(response.text)
-            pdfResponse = requests.get(pdfurl)
-            with open(temp_file_path, 'wb') as temp_pdf_file:
-                temp_pdf_file.write(pdfResponse.content)
+                # Save the PDF file temporarily
+                temp_file_path = os.path.join(temp_folder, file_name)
                 
-            # logger.warning(temp_file_path , "file path")
-            path = Path(temp_file_path)
-            parts = path.parts[-2:]
-            p2 = Path(*parts)
-            pdf_file_instance = PatientPathLabReports(patientPathLab_id =Paitent.id )
-            pdf_file_instance.pdfResult.save(file_name, File(open(temp_file_path, 'rb')))
-            pdf_file_instance.save()
-            updateLabTest = familyMembers.objects.filter(id=Paitent.patientFamilyMember_id).update(isLabTestReportGenerated=True , isSampleCollected = True)
-        else:
-            pass
+                #logger.warning(temp_file_path)
+                pdfurl  = getPdfUrl(response.text)
+                if pdfurl:
+                    pdfResponse = requests.get(pdfurl)
+                    with open(temp_file_path, 'wb') as temp_pdf_file:
+                        temp_pdf_file.write(pdfResponse.content)
+                        
+                    # logger.warning(temp_file_path , "file path")
+                    path = Path(temp_file_path)
+                    parts = path.parts[-2:]
+                    p2 = Path(*parts)
+                    pdf_file_instance = PatientPathLabReports(patientPathLab_id =Paitent.id )
+                    pdf_file_instance.pdfResult.save(file_name, File(open(temp_file_path, 'rb')))
+                    pdf_file_instance.save()
+                    updateLabTest = familyMembers.objects.filter(id=Paitent.patientFamilyMember_id).update(isLabTestReportGenerated=True , isSampleCollected = True)
+                else:
+                    pass
+            else:
+                pass
