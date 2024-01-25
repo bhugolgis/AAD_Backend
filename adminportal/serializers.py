@@ -156,10 +156,11 @@ class AddUserByMOHSerializer(serializers.ModelSerializer):
 
 class UpdateUsersDetailsSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=200, required=False)
+    newpassword =serializers.CharField(max_length=16, required=False)
     class Meta:
         model = CustomUser
         fields = ("name", "username", "emailId", "phoneNumber", "created_by", 'ward',
-                  "section", "userSections", "health_Post", "area", "dispensary", 'is_active', 'ANM',)
+                  "section", "userSections", "health_Post", "area", "dispensary", 'is_active', 'ANM', 'newpassword')
 
     # def update(self, instance, validated_data):
     #     try:

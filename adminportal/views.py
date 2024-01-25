@@ -253,7 +253,9 @@ class UpdateUserDetails(generics.GenericAPIView):
         serializer = self.get_serializer(instance , data = request.data , partial = True )
         # print(serializer)
         if serializer.is_valid():
-            print(serializer.validated_data)
+            if "newpassword" in  serializer.validated_data:
+                instance.set_password(serializer.validated_data.get("newpassword"))
+                instance.save()
             serializer.save()
             return Response({"status" : "success" ,
                             "message" : "User details updated successfully"
@@ -909,6 +911,94 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
 
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("Ward_"+ward_name+"_data_"+today)
+        wb.save(response)
+        return response
+    
+class DownloadAllWardUserList(generics.GenericAPIView):
+    # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
+
+    def add_headers(self, sheet, *args):
+        for header in range(len(args)):
+            if isinstance(args[header],dict):
+                start_column = 1
+                for title,size in args[header].items():
+                    end_column = start_column + (size-1)
+                    sheet.merge_cells(start_row=header+1,start_column=start_column,
+                                      end_row=header+1, end_column=end_column)
+                    sheet.cell(row=header+1, column=start_column, value=title)
+                    start_column = end_column + 1
+            else:
+                sheet.append(args[header])
+        return sheet
+
+    def unpack_list(self, data):
+        val = ""
+        if len(data) == 1:
+            val = data[0]
+        elif len(data) > 1:
+            for i in data:
+                val = val + i + ", "
+        return val
+
+    def unpack_survey_data(self, survey_data):
+        collected_data = []
+
+        for data in survey_data.values():
+            for answers in data:
+                answer = answers.get("answer",None)
+                collected_data.append(self.unpack_list(answer))
+
+        return collected_data
+
+    def get(self, request, *args, **kwargs):
+       
+        ward_related_user = familyMembers.objects.all()
+        today = datetime.today().strftime('%d-%m-%Y')
+
+        familyMember = ward_related_user.last()
+        questionnaire = familyMember.Questionnaire
+        parts_dict = {}
+        questions_list = []
+        for part,questions in questionnaire.items():
+            parts_dict[part] = len(questions)
+            for question in questions:
+                questions_list.append(question.get("question",None))
+
+        column_list = ['Name', 'Gender', 'Age', 'Mobile No', 'Aadhar Card', 'Abha ID',
+                       'Blood Collection Location', 'Family Head', 'Family Surveyor', 'Survey Date',
+                       'BMI', 'Blood Pressure', 'Height', 'Pulse', 'Weight', 'Test Assigned',
+                       'Report', 'Area', 'General Status', 'ASHA CHV', 'Vulnerable',
+                       'Vulnerable Reason', 'Relationship', 'Random Blood Sugar']
+
+        header1 = {'Citizen Details':len(column_list),
+                   'Survey':len(questions_list)}
+        header2 = {'':len(column_list),**parts_dict}
+        header3 = column_list + questions_list
+
+        data_list = []
+        for family_member in  ward_related_user:
+            citizen_details = [family_member.name, family_member.gender, family_member.age, family_member.mobileNo,
+                               family_member.aadharCard, family_member.abhaId,
+                               family_member.bloodCollectionLocation, family_member.familyHead.name,
+                               family_member.familySurveyor.name, family_member.created_date.strftime('%d/%m/%Y %I:%M:%S %p'), family_member.BMI,
+                               family_member.bloodPressure, family_member.height, family_member.pulse,
+                               family_member.weight, family_member.isLabTestAdded,
+                               family_member.isLabTestReportGenerated, family_member.area.areas,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.vulnerable,
+                               family_member.vulnerable_reason, family_member.relationship,
+                               family_member.randomBloodSugar]
+            survey_data = self.unpack_survey_data(family_member.Questionnaire)
+            aggregated_data = citizen_details + survey_data
+            data_list.append(aggregated_data)
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        self.add_headers(ws, header1, header2, header3)
+        for row in data_list:
+            ws.append(row)
+
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("All_Ward_data_"+today)
         wb.save(response)
         return response
 
@@ -2210,14 +2300,6 @@ class  AdminDashboardView(generics.GenericAPIView):
             'vulnerabel_any_other_reason' : vulnerabel_any_other_reason ,
 
                 } , status= 200)
-
-
-
-
-
-
-
-
 
 
 from rest_framework.decorators import api_view

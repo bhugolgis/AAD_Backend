@@ -117,7 +117,7 @@ def AddTestReport():
         # Send a POST request to the URL to get the PDF file
         response = requests.post(url1, headers=headers, data=payload)
         responseJson = requests.post(url2, headers=jsonheaders, data=post_params)
-        # logger.warning(response.content , "1st logger") 
+        # logger.warning(response.content , "1st logger")
         if response.status_code == 200 and responseJson.status_code == 200:
             # Specify the folder where you want to save the PDF file temporarily
             temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')

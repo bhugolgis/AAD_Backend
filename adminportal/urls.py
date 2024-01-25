@@ -9,9 +9,11 @@ urlpatterns = [
         path('UpdateUserDetailsAPI/<int:pk>', UpdateUserDetails.as_view(), name='UpdateUserDetailsAPI'),
         path('deleteUserAPI/<int:id>', deleteUser.as_view(), name='deleteUserAPI'),
         path('AdminChangePasswordView/<int:id>', AdminChangePasswordView.as_view(), name='deleteUserAPI'),
+
         path('DownloadHealthpostwiseUserList/<int:id>', DownloadHealthpostwiseUserList.as_view(), name='DownloadHealthpostwiseUserList'),
         path('DownloadWardtwiseUserList/<int:id>', DownloadWardwiseUserList.as_view(), name='DownloadWardtwiseUserList'),
         path('DownloadDispensarywiseUserList/<int:id>', DownloadDispensarywiseUserList.as_view(), name='DownloadDispensarywiseUserList'),
+        path('DownloadAllWardUserList', DownloadAllWardUserList.as_view(), name='DownloadAllWardUserList'),
         path('UserCountsAPI', UserCountsAPI.as_view(), name='UserCountsAPI'),
         
         path('updateGroupResquest', PostUserGroupResquest.as_view(), name='updateGroupResquest'),
