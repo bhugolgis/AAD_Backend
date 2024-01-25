@@ -223,17 +223,23 @@ class CustomUserSerializer(serializers.ModelSerializer):
 		return attrs
 	
 	def get_chv_asha_list(self ,data ):
-		chv_asha_list = self.Meta.model.objects.filter( groups__name= 'CHV-ASHA' , userSections = data.userSections.all()[0] )
-		list = []
-		for i in chv_asha_list:
-			list.append(i.name)
+		try:
+			chv_asha_list = self.Meta.model.objects.filter( groups__name= 'CHV-ASHA' , userSections = data.userSections.all()[0] )
+			list = []
+			for i in chv_asha_list:
+				list.append(i.name)
+		except:
+			list = []
 		return list
 	
 	def get_ANM_list(self ,data ):
-		ANM_list = self.Meta.model.objects.filter( groups__name= 'healthworker' , userSections = data.userSections.all()[0] )
-		list = []
-		for i in ANM_list:
-			list.append(i.name)
+		try:
+			ANM_list = self.Meta.model.objects.filter( groups__name= 'healthworker' , userSections = data.userSections.all()[0] )
+			list = []
+			for i in ANM_list:
+				list.append(i.name)
+		except : 
+			list = [] 
 		return list
 
 	def get_areas(self , data):

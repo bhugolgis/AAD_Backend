@@ -776,9 +776,9 @@ class DownloadHealthpostwiseUserList(generics.GenericAPIView):
                 questions_list.append(question.get("question",None))
 
         column_list = ['Name', 'Gender', 'Age', 'Mobile No', 'Aadhar Card', 'Abha ID',
-                       'Blood Collection Location', 'Family Head', 'Family Surveyor', 'Survey Date',
+                       'Blood Collection Location', 'Family Head', 'ANM/Coordinator', 'ANM/Coordinator Mobile Number' , 'Survey Date',
                        'BMI', 'Blood Pressure', 'Height', 'Pulse', 'Weight', 'Test Assigned',
-                       'Report', 'Area', 'General Status', 'ASHA CHV', 'Vulnerable',
+                       'Report', 'Area', 'General Status', 'ASHA/CHV', 'ASHA/CHV Mobile Number' , 'Vulnerable',
                        'Vulnerable Reason', 'Relationship', 'Random Blood Sugar']
 
         header1 = {'Citizen Details':len(column_list),
@@ -791,11 +791,11 @@ class DownloadHealthpostwiseUserList(generics.GenericAPIView):
             citizen_details = [family_member.name, family_member.gender, family_member.age, family_member.mobileNo,
                                family_member.aadharCard, family_member.abhaId,
                                family_member.bloodCollectionLocation, family_member.familyHead.name,
-                               family_member.familySurveyor.name, family_member.created_date.strftime('%d/%m/%Y %I:%M:%S %p'), family_member.BMI,
+                               family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
                                family_member.weight, family_member.isLabTestAdded,
                                family_member.isLabTestReportGenerated, family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.vulnerable,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber , family_member.vulnerable,
                                family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
@@ -877,9 +877,9 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
                 questions_list.append(question.get("question",None))
 
         column_list = ['Name', 'Gender', 'Age', 'Mobile No', 'Aadhar Card', 'Abha ID',
-                       'Blood Collection Location', 'Family Head', 'Family Surveyor', 'Survey Date',
+                       'Blood Collection Location', 'Family Head', 'ANM/Coordinator', 'ANM/Coordinator Mobile Number' , 'Survey Date',
                        'BMI', 'Blood Pressure', 'Height', 'Pulse', 'Weight', 'Test Assigned',
-                       'Report', 'Area', 'General Status', 'ASHA CHV', 'Vulnerable',
+                       'Report', 'Area', 'General Status', 'ASHA/CHV', 'ASHA/CHV Mobile Number' , 'Vulnerable',
                        'Vulnerable Reason', 'Relationship', 'Random Blood Sugar']
 
         header1 = {'Citizen Details':len(column_list),
@@ -892,11 +892,11 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
             citizen_details = [family_member.name, family_member.gender, family_member.age, family_member.mobileNo,
                                family_member.aadharCard, family_member.abhaId,
                                family_member.bloodCollectionLocation, family_member.familyHead.name,
-                               family_member.familySurveyor.name, family_member.created_date.strftime('%d/%m/%Y %I:%M:%S %p'), family_member.BMI,
+                               family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
                                family_member.weight, family_member.isLabTestAdded,
                                family_member.isLabTestReportGenerated, family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.vulnerable,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber , family_member.vulnerable,
                                family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
@@ -965,9 +965,9 @@ class DownloadAllWardUserList(generics.GenericAPIView):
                 questions_list.append(question.get("question",None))
 
         column_list = ['Name', 'Gender', 'Age', 'Mobile No', 'Aadhar Card', 'Abha ID',
-                       'Blood Collection Location', 'Family Head', 'Family Surveyor', 'Survey Date',
+                       'Blood Collection Location', 'Family Head', 'ANM/Coordinator', 'ANM/Coordinator Mobile Number' , 'Survey Date',
                        'BMI', 'Blood Pressure', 'Height', 'Pulse', 'Weight', 'Test Assigned',
-                       'Report', 'Area', 'General Status', 'ASHA CHV', 'Vulnerable',
+                       'Report', 'Area', 'General Status', 'ASHA/CHV', 'ASHA/CHV Mobile Number' , 'Vulnerable',
                        'Vulnerable Reason', 'Relationship', 'Random Blood Sugar']
 
         header1 = {'Citizen Details':len(column_list),
@@ -980,11 +980,11 @@ class DownloadAllWardUserList(generics.GenericAPIView):
             citizen_details = [family_member.name, family_member.gender, family_member.age, family_member.mobileNo,
                                family_member.aadharCard, family_member.abhaId,
                                family_member.bloodCollectionLocation, family_member.familyHead.name,
-                               family_member.familySurveyor.name, family_member.created_date.strftime('%d/%m/%Y %I:%M:%S %p'), family_member.BMI,
+                               family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y %I:%M:%S %p'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
                                family_member.weight, family_member.isLabTestAdded,
                                family_member.isLabTestReportGenerated, family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.vulnerable,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber , family_member.vulnerable,
                                family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
@@ -1067,9 +1067,9 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
                 questions_list.append(question.get("question",None))
 
         column_list = ['Name', 'Gender', 'Age', 'Mobile No', 'Aadhar Card', 'Abha ID',
-                       'Blood Collection Location', 'Family Head', 'Family Surveyor', 'Survey Date',
+                       'Blood Collection Location', 'Family Head', 'ANM/Coordinator', 'ANM/Coordinator Mobile Number' , 'Survey Date',
                        'BMI', 'Blood Pressure', 'Height', 'Pulse', 'Weight', 'Test Assigned',
-                       'Report', 'Area', 'General Status', 'ASHA CHV', 'Vulnerable',
+                       'Report', 'Area', 'General Status', 'ASHA/CHV', 'ASHA/CHV Mobile Number' , 'Vulnerable',
                        'Vulnerable Reason', 'Relationship', 'Random Blood Sugar']
 
         header1 = {'Citizen Details':len(column_list),
@@ -1082,11 +1082,11 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
             citizen_details = [family_member.name, family_member.gender, family_member.age, family_member.mobileNo,
                                family_member.aadharCard, family_member.abhaId,
                                family_member.bloodCollectionLocation, family_member.familyHead.name,
-                               family_member.familySurveyor.name, family_member.created_date.strftime('%d/%m/%Y %I:%M:%S %p'), family_member.BMI,
+                               family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
                                family_member.weight, family_member.isLabTestAdded,
                                family_member.isLabTestReportGenerated, family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.vulnerable,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber , family_member.vulnerable,
                                family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
