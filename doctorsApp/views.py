@@ -230,7 +230,7 @@ class ViewFamilysDetails(generics.ListAPIView):
 
     def get_queryset(self , id ):
         # Filter the queryset based on the currently logged-in user
-        queryset = familyMembers.objects.filter(area__dispensary_id= self.request.user.dispensary_id , familyHead__id = id ).order_by("-created_date")
+        queryset = familyMembers.objects.filter(area__dispensary_id= self.request.user.dispensary_id , familyHead__id = id , cbacRequired = True  ).order_by("-created_date")
      
         search_terms = self.request.query_params.get('search', None )
         if search_terms:
@@ -267,7 +267,7 @@ class GetAllFamilysDetails(generics.ListAPIView):
 
     def get_queryset(self  ):
         # Filter the queryset based on the currently logged-in user
-        queryset = familyMembers.objects.filter(area__dispensary_id = self.request.user.dispensary_id ).order_by("-created_date")
+        queryset = familyMembers.objects.filter(area__dispensary_id = self.request.user.dispensary_id , cbacRequired = True  ).order_by("-created_date")
 
 
         search_terms = self.request.query_params.get('search', None )
