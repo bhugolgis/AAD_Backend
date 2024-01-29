@@ -1856,7 +1856,7 @@ class AdminDashboardExportView(generics.GenericAPIView):
             'Alzheimers' : 0 ,
             'TB' : total_tb_count ,
             'Breast cancer' : total_breast_cancer,
-            'Physician Communicable' : toatal_communicable ,
+            'Other Communicable' : toatal_communicable ,
             
             'Blood collected at home' : blood_collected_home ,
             'blood collected at center' : blood_collected_center ,
@@ -1866,11 +1866,12 @@ class AdminDashboardExportView(generics.GenericAPIView):
             'Tests Assigned' : total_LabTestAdded,
 
             'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment' : Referral_choice_Referral_to_Mun_Dispensary ,
-            'Referral to HBT polyclinic for physician consultation': Referral_choice_Referral_to_HBT_polyclinic ,
+            'Referral to HBT polyclinic for Physician consultation': Referral_choice_Referral_to_HBT_polyclinic ,
             'Referral to Peripheral Hospital / Special Hospital for management of Complication': Referral_choice_Referral_to_Peripheral_Hospital ,
             'Referral to Medical College for management of Complication': Referral_choice_Referral_to_Medical_College ,
             'Referral to Private facility': Referral_choice_Referral_to_Private_facility ,
             'Vulnerable Citizen' : total_vulnerabel ,
+
             # 'vulnerabel 70+ Years' : vulnerabel_70_Years ,
             # 'vulnerabel Physically Handicapped' : vulnerabel_Physically_handicapped ,
             # 'vulnerabel Completely Paralyzed or On bed' : vulnerabel_completely_paralyzed_or_on_bed ,
