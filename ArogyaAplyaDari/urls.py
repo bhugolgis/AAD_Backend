@@ -27,7 +27,7 @@ schema_view = get_schema_view(
    openapi.Info(
       title="Arogya Aaplya Daari API",
       default_version='v1',
-      description="description of MMRDA project",
+      description="description of Arogya Aplya Daari project",
    ),
    public=True,
    permission_classes=[permissions.AllowAny],

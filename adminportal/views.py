@@ -20,6 +20,8 @@ from django.utils import timezone
 from .permissions import IsSupervisor
 from excel_response import ExcelResponse
 from datetime import datetime
+from rest_framework.decorators import api_view
+
 
 class PostUserGroupResquest(generics.GenericAPIView):
     parser_classes = [MultiPartParser]
@@ -1150,6 +1152,10 @@ class MOHDashboardExportView(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
 
         healthpost_id = self.request.query_params.get('healthpost_id', None)
+        CHV_ASHA_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='CHV-ASHA').count()
+        MO_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id,groups__name='mo').count()
+        ANM_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='healthworker').count()
+
         if healthpost_id:
             today = timezone.now().date()
             total_citizen_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id =  request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id ).count()
@@ -1395,48 +1401,51 @@ class MOHDashboardExportView(generics.GenericAPIView):
 
         data = [
             {
-                'Total Count': total_citizen_count,
-                'Todays Count': todays_citizen_count,
-                'Partial Survey Count': partial_survey_count,
-                'Total Family Count': total_family_count,
-                'Today Family Count': today_family_count,
-                'Total CBAC Count': total_cbac_count,
-                'Citizen Above 60': citizen_above_60,
-                'Citizen Above 30': citizen_above_30,
-                'total LabTestAdded' : total_LabTestAdded,
-                'TestReportGenerated' : TestReportGenerated,
-                'Male': male,
-                'Female': female,
-                'Transgender': transgender,
-                'Diabetes': total_diabetes,
-                'Hypertension': hypertension,
-                'Oral Cancer': total_oral_cancer,
-                'Cervical Cancer': total_cervical_cancer,
-                'COPD': total_COPD_count,
-                'Eye Problem': total_eye_problem,
-                'Asthma': 0,
-                'Alzheimers': 0,
-                'TB': total_tb_count,
-                'Breast Cancer': total_breast_cancer,
-                'Communicable': toatal_communicable,
-                'Blood Collected Home': blood_collected_home,
-                'Blood Collected Center': blood_collected_center,
-                'Denied by MO Count': denieded_by_mo_count,
-                'Denied by MO Individual': denieded_by_mo_individual,
-                'Referral choice Referral to Mun Dispensary': Referral_choice_Referral_to_Mun_Dispensary,
-                'Referral_choice_Referral_to_HBT_polyclinic': Referral_choice_Referral_to_HBT_polyclinic,
-                'Referral_choice_Referral_to_Peripheral_Hospital': Referral_choice_Referral_to_Peripheral_Hospital,
-                'Referral_choice_Referral_to_Medical_College': Referral_choice_Referral_to_Medical_College,
-                'Referral_choice_Referral_to_Private_facility': Referral_choice_Referral_to_Private_facility,
-                'Total Vulnerable': total_vulnerabel,
-                'Vulnerable 70+ Years': vulnerabel_70_Years,
-                'Vulnerable Physically Handicapped': vulnerabel_Physically_handicapped,
-                'Vulnerable Completely Paralyzed or On Bed': vulnerabel_completely_paralyzed_or_on_bed,
-                'Vulnerable Elderly and Alone at Home': vulnerabel_elderly_and_alone_at_home,
-                'Vulnerable Any Other Reason': vulnerabel_any_other_reason,
+            'CHV/ASHA' : CHV_ASHA_count ,
+            'MO' : MO_count ,
+            'ANM' : ANM_count ,
+            'Total citizen count' : total_citizen_count ,
+            'Todays count' : todays_citizen_count ,
+            'partial survey count' : partial_survey_count ,
+            'total family count' : total_family_count ,
+            'today family count' : today_family_count,
+            'total cbac count' : total_cbac_count ,
+            'citizen above 60' : citizen_above_60,
+            'citizen above 30' : citizen_above_30,
+            'Report Received' : TestReportGenerated,
+            'total test Assigned' : total_LabTestAdded,
+            "Male" : male,
+            "Female" : female,
+            "Transgender" : transgender,
+            'Diabetes' : total_diabetes,
+            'Hypertension' : hypertension ,
+            'Oral Cancer' : total_oral_cancer ,
+            'Cervical cancer' : total_cervical_cancer ,
+            'COPD' : total_COPD_count,
+            'Eye Disorder' : total_eye_problem ,
+            'ENT Disorder' : total_ent_problem ,
+            'Asthma' : 0 ,
+            'Alzheimers' : 0 ,
+            'TB' : total_tb_count ,
+            'Breast cancer' : total_breast_cancer,
+            'Other communicable dieases' : toatal_communicable ,
+            'Blood collected at home' : blood_collected_home ,
+            'blood collected at center' : blood_collected_center ,
+            'denieded by MO count' : denieded_by_mo_count ,
+            'denieded by individual' : denieded_by_mo_individual ,
+            'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment' : Referral_choice_Referral_to_Mun_Dispensary ,
+            'Referral to HBT polyclinic for physician consultation': Referral_choice_Referral_to_HBT_polyclinic ,
+            'Referral to Peripheral Hospital / Special Hospital for management of Complication': Referral_choice_Referral_to_Peripheral_Hospital ,
+            'Referral to Medical College for management of Complication': Referral_choice_Referral_to_Medical_College ,
+            'Referral to Private facility': Referral_choice_Referral_to_Private_facility ,
+            'Total vulnerabel' : total_vulnerabel ,
+            'vulnerabel 70+ Years' : vulnerabel_70_Years ,
+            'vulnerabel Physically Handicapped' : vulnerabel_Physically_handicapped ,
+            'vulnerabel Completely Paralyzed or On bed' : vulnerabel_completely_paralyzed_or_on_bed ,
+            'vulnerabel Elderly and alone at home' : vulnerabel_elderly_and_alone_at_home ,
+            'vulnerabel Any other reason' : vulnerabel_any_other_reason ,
             }
         ]
-
 
         response = ExcelResponse(data, status=200)
         response['Content-Disposition'] = 'attachment; filename="moh_dashboard_data.xlsx"'
@@ -1454,9 +1463,9 @@ class AdminDashboardExportView(generics.GenericAPIView):
         healthpost_id = self.request.query_params.get('healthpost_id', None)
         wardId = self.request.query_params.get('wardId', None)
 
-        CHV_ASHA_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='CHV-ASHA').count()
-        MO_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id,groups__name='mo').count()
-        ANM_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='healthworker').count()
+        CHV_ASHA_count = self.CustomUser_queryset.filter(groups__name='CHV-ASHA').count()
+        MO_count = self.CustomUser_queryset.filter(groups__name='mo').count()
+        ANM_count = self.CustomUser_queryset.filter(groups__name='healthworker').count()
 
         if healthpost_id:
 
@@ -1700,25 +1709,24 @@ class AdminDashboardExportView(generics.GenericAPIView):
                 total_ent_problem += ent
         else:
             today = timezone.now().date()
-            ward = request.user.ward_id
-            total_citizen_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  ).count()
-            todays_citizen_count  = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id , created_date__day= today.day).count()
-            total_cbac_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , age__gte = 30 , cbacRequired = True).count()
-            partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user__userSections__healthPost__ward__id =  request.user.ward_id).count()
-            total_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__ward__id = request.user.ward_id).count()
-            male =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , gender = "M" ).count()
-            female =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , gender = "F" ).count()
-            transgender =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , gender = "O" ).count()
-            citizen_above_60 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , age__gte = 60 ).count()
-            citizen_above_30 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , age__gte = 30 ).count()
-            today_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__ward__id = request.user.ward_id , created_date__day = today.day ).count()
+            total_citizen_count = self.get_queryset().count()
+            todays_citizen_count  = self.get_queryset().filter(created_date__day= today.day).count()
+            total_cbac_count = self.get_queryset().filter( age__gte = 30 , cbacRequired = True).count()
+            partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True ).count()
+            total_family_count = self.FamilySurvey_count.count()
+            male =  self.get_queryset().filter( gender = "M" ).count()
+            female =  self.get_queryset().filter(gender = "F" ).count()
+            transgender =  self.get_queryset().filter( gender = "O" ).count()
+            citizen_above_60 =  self.get_queryset().filter( age__gte = 60 ).count()
+            citizen_above_30 =  self.get_queryset().filter( age__gte = 30 ).count()
+            today_family_count = self.FamilySurvey_count.filter( created_date__day = today.day ).count()
 
-            total_vulnerabel = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable = True).count()
-            vulnerabel_70_Years = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = '70+ Years').count()
-            vulnerabel_Physically_handicapped = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Physically Handicapped').count()
-            vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
-            vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Elderly and alone at home').count()
-            vulnerabel_any_other_reason = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id  = request.user.ward_id , vulnerable_choices__choice = 'Any other reason').count()
+            total_vulnerabel = self.get_queryset().filter(vulnerable = True).count()
+            vulnerabel_70_Years = self.get_queryset().filter( vulnerable_choices__choice = '70+ Years').count()
+            vulnerabel_Physically_handicapped = self.get_queryset().filter( vulnerable_choices__choice = 'Physically Handicapped').count()
+            vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter( vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter( vulnerable_choices__choice = 'Elderly and alone at home').count()
+            vulnerabel_any_other_reason = self.get_queryset().filter(vulnerable_choices__choice = 'Any other reason').count()
 
             blood_collected_home = self.get_queryset().filter(bloodCollectionLocation = 'Home').count()
             blood_collected_center = self.get_queryset().filter(bloodCollectionLocation = 'Center').count()
@@ -1821,49 +1829,50 @@ class AdminDashboardExportView(generics.GenericAPIView):
                 total_ent_problem += ent
         data = [
             {
-            'CHV_ASHA_count' : CHV_ASHA_count ,
-            'MO_count' : MO_count ,
-            'ANM_count' : ANM_count ,
-            'total_count' : total_citizen_count ,
-            'todays_count' : todays_citizen_count ,
-            'partial_survey_count' : partial_survey_count ,
-            'total_family_count' : total_family_count ,
-            'today_family_count' : today_family_count,
-            'total_cbac_count' : total_cbac_count ,
-            'citizen_above_60' : citizen_above_60,
-            'citizen_above_30' : citizen_above_30,
-            'TestReportGenerated' : TestReportGenerated,
-            'total_LabTestAdded' : total_LabTestAdded,
-            "male" : male,
-            "female" : female,
-            "transgender" : transgender,
-            'diabetes' : total_diabetes,
-            'hypertension' : hypertension ,
-            'oral_Cancer' : total_oral_cancer ,
-            'cervical_cancer' : total_cervical_cancer ,
-            'copd' : total_COPD_count,
-            'eye_disorder' : total_eye_problem ,
-            'ent_disorder' : total_ent_problem ,
-            'asthama' : 0 ,
+            'CHV/ASHA' : CHV_ASHA_count ,
+            'MO' : MO_count ,
+            'ANM' : ANM_count ,
+            'Families Enrolled' : total_citizen_count ,
+            'Todays count' : todays_citizen_count ,
+            'partial survey count' : partial_survey_count ,
+            'Citizens Enrolled' : total_family_count ,
+            'today family count' : today_family_count,
+            'CBAC Filled' : total_cbac_count ,
+            'Citizens 60 years + enrolled' : citizen_above_60,
+            'Citizens 30 years + enrolled' : citizen_above_30,
+            'Report Recived' : TestReportGenerated,
+            'total test Assigned' : total_LabTestAdded,
+            "Males Enrolled" : male,
+            "Females Enrolled" : female,
+            "Transgender Enrolled" : transgender,
+            "ABHA Id Generated" : 1, 
+            'Diabetes' : total_diabetes,
+            'Hypertension' : hypertension ,
+            'Oral Cancer' : total_oral_cancer ,
+            'Cervical cancer' : total_cervical_cancer ,
+            'COPD' : total_COPD_count,
+            'Eye Disorder' : total_eye_problem ,
+            'ENT Disorder' : total_ent_problem ,
+            'Asthma' : 0 ,
             'Alzheimers' : 0 ,
-            'tb' : total_tb_count ,
-            'breast_cancer' : total_breast_cancer,
-            'other_communicable_dieases' : toatal_communicable ,
-            'blood_collected_home' : blood_collected_home ,
-            'blood_collected_center' : blood_collected_center ,
-            'denieded_by_mo_count' : denieded_by_mo_count ,
-            'denieded_by_mo_individual' : denieded_by_mo_individual ,
-            'Referral_choice_Referral_to_Mun_Dispensary' : Referral_choice_Referral_to_Mun_Dispensary ,
-            'Referral_choice_Referral_to_HBT_polyclinic': Referral_choice_Referral_to_HBT_polyclinic ,
-            'Referral_choice_Referral_to_Peripheral_Hospital': Referral_choice_Referral_to_Peripheral_Hospital ,
-            'Referral_choice_Referral_to_Medical_College': Referral_choice_Referral_to_Medical_College ,
-            'Referral_choice_Referral_to_Private_facility': Referral_choice_Referral_to_Private_facility ,
-            'total_vulnerabel' : total_vulnerabel ,
-            'vulnerabel_70_Years' : vulnerabel_70_Years ,
-            'vulnerabel_Physically_handicapped' : vulnerabel_Physically_handicapped ,
-            'vulnerabel_completely_paralyzed_or_on_bed' : vulnerabel_completely_paralyzed_or_on_bed ,
-            'vulnerabel_elderly_and_alone_at_home' : vulnerabel_elderly_and_alone_at_home ,
-            'vulnerabel_any_other_reason' : vulnerabel_any_other_reason ,
+            'TB' : total_tb_count ,
+            'Breast cancer' : total_breast_cancer,
+            'Physician Communicable' : toatal_communicable ,
+            'Blood collected at home' : blood_collected_home ,
+            'blood collected at center' : blood_collected_center ,
+            'denieded by MO count' : denieded_by_mo_count ,
+            'denieded by individual' : denieded_by_mo_individual ,
+            'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment' : Referral_choice_Referral_to_Mun_Dispensary ,
+            'Referral to HBT polyclinic for physician consultation': Referral_choice_Referral_to_HBT_polyclinic ,
+            'Referral to Peripheral Hospital / Special Hospital for management of Complication': Referral_choice_Referral_to_Peripheral_Hospital ,
+            'Referral to Medical College for management of Complication': Referral_choice_Referral_to_Medical_College ,
+            'Referral to Private facility': Referral_choice_Referral_to_Private_facility ,
+            'Vulnerable Citizen' : total_vulnerabel ,
+            'vulnerabel 70+ Years' : vulnerabel_70_Years ,
+            'vulnerabel Physically Handicapped' : vulnerabel_Physically_handicapped ,
+            'vulnerabel Completely Paralyzed or On bed' : vulnerabel_completely_paralyzed_or_on_bed ,
+            'vulnerabel Elderly and alone at home' : vulnerabel_elderly_and_alone_at_home ,
+            'vulnerabel Any other reason' : vulnerabel_any_other_reason ,
 
                 }
 
@@ -1887,9 +1896,9 @@ class  AdminDashboardView(generics.GenericAPIView):
         wardId = self.request.query_params.get('wardId', None)
 
 
-        CHV_ASHA_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='CHV-ASHA').count()
-        MO_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id,groups__name='mo').count()
-        ANM_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='healthworker').count()
+        CHV_ASHA_count = self.CustomUser_queryset.filter(groups__name='CHV-ASHA').count()
+        MO_count = self.CustomUser_queryset.filter(groups__name='mo').count()
+        ANM_count = self.CustomUser_queryset.filter(groups__name='healthworker').count()
 
         if healthpost_id:
 
@@ -2302,9 +2311,6 @@ class  AdminDashboardView(generics.GenericAPIView):
                 } , status= 200)
 
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from django.contrib.auth.models import Group
 
 @api_view(['GET'])
 def GetAllUserDetails(request):

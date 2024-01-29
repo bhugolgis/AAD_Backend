@@ -3,12 +3,17 @@ from .models import *
 
 # Register your models here.
 
+class SearchUser(admin.ModelAdmin):
+    search_fields = ["name" ,"username" , "phoneNumber"  ]
+    list_display = ["phoneNumber" , "name"  ]
+
+
 
 admin.site.register(ward)
 admin.site.register(healthPost)
 admin.site.register(area)
 admin.site.register(section)
-admin.site.register(CustomUser)
+admin.site.register(CustomUser , SearchUser)
 admin.site.register(familyHeadDetails)
 admin.site.register(familyMembers)
 # admin.site.register(phlebotomist)

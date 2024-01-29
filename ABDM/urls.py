@@ -42,8 +42,6 @@ urlpatterns = [
         path('v1/auth/resendAuthOTP' , resendAuthOTP.as_view() , name = 'resendAuthOTP'),
 
       #  Download ABHA Card And Qrcode 
-
-  
         path('v1/account/getqrCode' , DownloadQrcodeAPI.as_view() , name = 'DownloadQrcodeAPI'),
         path('v1/account/getCard' , DownloadCardAPI.as_view() , name = 'DownloadCardAPI'),
 
