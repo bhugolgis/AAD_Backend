@@ -669,6 +669,7 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
             'accept': '*/*',
             'Accept-Language': 'en-US',
             'Content-Type': 'application/json',}
+            print(payload)
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
                 response_data = json.loads(response.content)

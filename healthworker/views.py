@@ -251,7 +251,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         blood_collected_home = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'Home').count()
         blood_collected_center = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'Center').count()
         denieded_by_mo_count = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'AMO').count()
-        denieded_by_mo_individual = self.get_queryset().filter(familySurveyor = request.user , bloodCollectionLocation = 'Individual Itself').count()
+        denieded_by_mo_individual = self.get_queryset().filter(familySurveyor = request.user , deniedBy = 'Individual Itself').count()
         Referral_choice_further_management = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
         Referral_choice_suspect_symptoms = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
         Referral_choice_diagnosis = self.get_queryset().filter(familySurveyor =request.user , referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
