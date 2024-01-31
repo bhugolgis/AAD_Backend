@@ -133,10 +133,15 @@ class GetFamilyHeadList(generics.ListAPIView):
     filter_backends = (filters.SearchFilter,)
     search_fields = ['mobileNo', 'name', 'familyId']
 
+
     def get_queryset(self):
+        print(self.request.user.userSections.all()[0])
+        print(self.request.user.groups.all()[0])
         # Filter the queryset based on the currently logged-in user
-        queryset = familyHeadDetails.objects.filter(user=self.request.user)
+        queryset = familyHeadDetails.objects.filter(user=self.request.user )
         return queryset
+
+
 
 class GetPartiallyInsertedRecord(generics.ListAPIView):
     permission_classes =(IsAuthenticated , IsHealthworker | IsCHV_ASHA)

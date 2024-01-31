@@ -25,6 +25,9 @@ urlpatterns = [
         
         path('MOHDashboardExcelView', MOHDashboardExportView.as_view(), name='MOHDashboardExportView'),
         path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
+
+
+        path('Admin_dashboard_data', Admin_dashboard_data.as_view(), name='Admin_dashboard_data'),
         
         path('AdminDashboardView', AdminDashboardView.as_view(), name='AdminDashboardView'),
         path('AdminDashboardExportView', AdminDashboardExportView.as_view(), name='AdminDashboardExportView'),

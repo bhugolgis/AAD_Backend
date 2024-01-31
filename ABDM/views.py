@@ -74,7 +74,7 @@ class generateAadharOtpAPI(generics.GenericAPIView):
     serializer_class = generateAadharOtpSerializer 
 
     def post(self, request, *args, **kwargs):
-        # print(request.META.get('HTTP_AUTHORIZATION'))
+        
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             url= "https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/generateOtp"
@@ -87,13 +87,14 @@ class generateAadharOtpAPI(generics.GenericAPIView):
             payload = json.dumps({
             "aadhaar": serializer.validated_data.get('aadhaar'),})
             response = requests.request("POST", url, headers=headers, data=payload)
+            print(response.content)
             if response.status_code == 200:
                 
                 return Response(json.loads(response.content) , status=response.status_code)
             elif response.status_code == 400:
                 return Response(json.loads(response.content) , status=response.status_code)
             elif response.status_code == range(500 , 599):
-                return Response(response.content , status=response.status_code)
+                return Response(json.loads(response.content), status=response.status_code)
 
         else:
             return Response({'message': serializer.errors , 
@@ -123,7 +124,7 @@ class verifyAadharOTP(generics.GenericAPIView):
             elif response.status_code == 400:
                 return Response(json.loads(response.content) , status=response.status_code)
             elif response.status_code == range(500 , 599):
-                return Response(response.content , status=response.status_code)
+                return Response(json.loads(response.content) , status=response.status_code)
         else:
             return Response({'message': serializer.errors , 
                              "status": "error" } , status=400)

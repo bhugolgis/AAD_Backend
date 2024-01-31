@@ -173,13 +173,14 @@ class familyMembers(models.Model):
     area = models.ForeignKey(area , related_name="familymembers_area" , on_delete=models.CASCADE, blank = True , null = True  )
     aadharCard = models.BigIntegerField(blank = True , null = True , default=0)
     abhaId = models.CharField(max_length=100 , blank= True , null = True )
+    isAbhaCreated = models.BooleanField(default=False)
     pulse = models.CharField(max_length=50 , blank = True , null = True)
     bloodPressure = models.CharField(max_length=50 , blank = True , null = True)
     weight = models.CharField(max_length=50 , blank = True , null = True)
     height = models.CharField(max_length=50 , blank = True , null = True)
     BMI = models.CharField(max_length=50 , blank = True , null = True)
     randomBloodSugar = models.CharField(max_length=50 , blank = True , null = True)
-
+    
     Questionnaire = models.JSONField(blank= True , null = True)
     bloodCollectionLocation = models.CharField(max_length= 20 , choices= bloodCollectionLocation_choices , blank= True , null = True  )
     questionsConsent = models.BooleanField(default= False)

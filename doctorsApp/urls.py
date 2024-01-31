@@ -18,17 +18,17 @@ urlpatterns = [
 
     # path('ViewFamilyDetails/<str:pk>/',views.ViewFamilyDetails),
     # path('ViewPatientsLabTestViewDetails/<str:pk>/',views.ViewPatientsLabTestViewDetails),
-    path('medicalOfficerAdviceView/<int:patients_id>/', views.medicalOfficerAdviceView, name='medicalOfficerAdviceView'),
-    path('medicalOfficerReferalAdviceView/<int:patients_id>/', views.medicalOfficerReferalAdviceView, name='medicalOfficerReferalAdviceView'),
-    path('ViewFamilyMemberView/<str:pk>/',views.ViewFamilyMemberView),
-    path('ViewMedicalOfficerConsaltancyView/<int:patients_id>/', views.ViewMedicalOfficerConsaltancyView, name='ViewMedicalOfficerConsaltancyView'),
-    path('ViewPrimaryConsultancyView/<int:patients_id>/', views.ViewPrimaryConsultancyView, name='ViewPrimaryConsultancyView'),
-    path('ViewSecondaryConsultancyView/<int:patients_id>/', views.ViewSecondaryConsultancyView, name='ViewSecondaryConsultancyView'),
-    path('ViewTertiaryConsultancyView/<int:patients_id>/', views.ViewTertiaryConsultancyView, name='ViewTertiaryConsultancyView'),
+    # path('medicalOfficerAdviceView/<int:patients_id>/', views.medicalOfficerAdviceView, name='medicalOfficerAdviceView'),
+    # path('medicalOfficerReferalAdviceView/<int:patients_id>/', views.medicalOfficerReferalAdviceView, name='medicalOfficerReferalAdviceView'),
+    # path('ViewFamilyMemberView/<str:pk>/',views.ViewFamilyMemberView),
+    # path('ViewMedicalOfficerConsaltancyView/<int:patients_id>/', views.ViewMedicalOfficerConsaltancyView, name='ViewMedicalOfficerConsaltancyView'),
+    # path('ViewPrimaryConsultancyView/<int:patients_id>/', views.ViewPrimaryConsultancyView, name='ViewPrimaryConsultancyView'),
+    # path('ViewSecondaryConsultancyView/<int:patients_id>/', views.ViewSecondaryConsultancyView, name='ViewSecondaryConsultancyView'),
+    # path('ViewTertiaryConsultancyView/<int:patients_id>/', views.ViewTertiaryConsultancyView, name='ViewTertiaryConsultancyView'),
 
-    path('PatientsForPrimaryDoctorList', views.PatientsForPrimaryDoctorList, name='PatientsForPrimaryDoctorList'),
-    path('PatientsForSecondaryDoctorList', views.PatientsForSecondaryDoctorList, name='PatientsForSecondaryDoctorList'),
-    path('PatientsForTertairyDoctorList', views.PatientsForTertairyDoctorList, name='PatientsForTertairyDoctorList'),
+    # path('PatientsForPrimaryDoctorList', views.PatientsForPrimaryDoctorList, name='PatientsForPrimaryDoctorList'),
+    # path('PatientsForSecondaryDoctorList', views.PatientsForSecondaryDoctorList, name='PatientsForSecondaryDoctorList'),
+    # path('PatientsForTertairyDoctorList', views.PatientsForTertairyDoctorList, name='PatientsForTertairyDoctorList'),
 
     path('labTestsList/', labTestsList, name='labTestsList'),
     

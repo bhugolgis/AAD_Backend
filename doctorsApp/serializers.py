@@ -144,16 +144,26 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     HOF_Number = serializers.SerializerMethodField()
     centerName = serializers.SerializerMethodField()
     vulnerable_reason = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
 
 
     class Meta:
         model = familyMembers
         fields = '__all__'
 
+    
+    def get_address(self , data):
+        try:
+            address = data.familyHead.address
+        except:
+            address = ""
+        
+        return address
+    
     def get_report(self , data):
         if data.isLabTestReportGenerated == True:
             try:
-                
+
                 pdf_url = str(data.patientFamilyMember.get().patientPathLabReports.get().pdfResult)
             
             except:
@@ -201,7 +211,6 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
             HOF_Number = ''
         return HOF_Number
     
-
     def get_ward(self , data ):
         try:
             userSections = data.familySurveyor.userSections.all()[0]
