@@ -34,7 +34,7 @@ class ward(models.Model):
          return self.wardName
 
 class dispensary(models.Model):
-    ward = models.ForeignKey(ward, related_name="ward_dispensary", on_delete=models.SET_NULL, blank = True, null = True ) 
+    ward = models.ForeignKey(ward, related_name="ward_dispensary", on_delete=models.SET_NULL, blank = True, null = True )
     dispensaryName = models.CharField(max_length=255 , blank = True , null = True )
 
 
@@ -45,7 +45,7 @@ class healthPost(models.Model):
 
     def __str__(self) -> str:
          return self.healthPostName
-    
+
 class area(models.Model):
     dispensary = models.ForeignKey(dispensary, related_name = "area_dispensarys_name", on_delete=models.SET_NULL , blank = True , null = True )
     healthPost = models.ForeignKey(healthPost , related_name="area_healthpost_name" , on_delete=models.SET_NULL , blank= True , null = True )
@@ -55,10 +55,10 @@ class area(models.Model):
 class section(models.Model):
     healthPost = models.ForeignKey(healthPost , related_name="healthPost_name" , on_delete=models.SET_NULL , blank = True , null = True )
     sectionName = models.CharField(max_length=255 , blank = True , null = True )
- 
+
     def __str__(self) -> str:
          return self.sectionName
-    
+
 
 
 
@@ -73,17 +73,17 @@ class CustomUser(AbstractUser, PermissionsMixin):
     section = models.ForeignKey( section , related_name="section_name" , on_delete=models.SET_NULL , blank = True , null = True )
     ward = models.ForeignKey(ward , related_name="wardAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
     health_Post = models.ForeignKey(healthPost , related_name="healthpostAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True )
-    area = models.ForeignKey(area , related_name="areaAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True ) # By area we can find the health post , dispensary and Ward 
+    area = models.ForeignKey(area , related_name="areaAmo_mo_name" , on_delete=models.SET_NULL , blank = True , null = True ) # By area we can find the health post , dispensary and Ward
     dispensary = models.ForeignKey(dispensary , related_name="dispensary_name" , on_delete=models.SET_NULL , blank = True , null = True )
     HealthCareCenters = models.ForeignKey(HealthCareCenters,related_name="HealthCareDoctor",on_delete=models.CASCADE,null=True,blank=True)
     ANM = models.ForeignKey('CustomUser',related_name="ANM_Id",on_delete=models.CASCADE,null=True,blank=True)
     is_active = models.BooleanField(default = False)
     created_date = models.DateTimeField(auto_now_add=True)
-    
+
 
     USERNAME_FIELD = 'phoneNumber'
     REQUIRED_FIELDS = []
- 
+
     objects = CustomUserManager()
 
     def __str__(self) -> str:
@@ -97,7 +97,7 @@ class UserApprovalRecords(models.Model):
     status = models.BooleanField( default=False)
     request_date = models.DateTimeField(blank = True , null= True)
     approve_date = models.DateTimeField(blank = True , null= True)
-    
+
 
 class sendOtp(models.Model):
     registerUser = models.ForeignKey(CustomUser,related_name="Registeruser",on_delete=models.CASCADE,null=True,blank=True)
@@ -135,8 +135,8 @@ class familyHeadDetails(models.Model):
     isSampleCollected = models.BooleanField(default=False)
     isLabTestReportGenerated = models.BooleanField(default=False)
 
-   
-    
+
+
 class familyMembers(models.Model):
     bloodCollectionLocation_choices = [
          ("Home" , "Home"),
@@ -180,7 +180,7 @@ class familyMembers(models.Model):
     height = models.CharField(max_length=50 , blank = True , null = True)
     BMI = models.CharField(max_length=50 , blank = True , null = True)
     randomBloodSugar = models.CharField(max_length=50 , blank = True , null = True)
-    
+
     Questionnaire = models.JSONField(blank= True , null = True)
     bloodCollectionLocation = models.CharField(max_length= 20 , choices= bloodCollectionLocation_choices , blank= True , null = True  )
     questionsConsent = models.BooleanField(default= False)
@@ -200,13 +200,20 @@ class familyMembers(models.Model):
     vulnerable_choices  = models.ManyToManyField(vulnerableOptions , related_name= 'vulnerability_choices', blank = True )
     vulnerable_reason = models.TextField(max_length=500 , blank  = True , null = True )
     relationship = models.CharField(max_length = 100 , choices = relationship_choices ,  blank = True , null = True )
-    
+
+    def bool_transform(self, field:str) -> str:
+        value = getattr(self,field,False)
+        if value:
+            return "YES"
+        else:
+            return "NO"
+
 
 class PatientsPathlabrecords(models.Model):
     patientFamilyMember = models.ForeignKey(familyMembers , related_name='patientFamilyMember' ,on_delete=models.SET_NULL , blank = True , null = True )
     suggested_by_doctor = models.ForeignKey(CustomUser , related_name='suggested_by_doctor' , on_delete=models.SET_NULL ,  blank = True , null = True  )
     suggested_date = models.DateTimeField(auto_now=True)
-    LabTestSuggested = models.JSONField(default=dict)  
+    LabTestSuggested = models.JSONField(default=dict)
     PatientSampleTaken = models.BooleanField(default=False)
     PathLab = models.ForeignKey(CustomUser,related_name="PathLab",on_delete=models.CASCADE,null=True,blank=True)
     ReportCheckByDoctor = models.ForeignKey(CustomUser,related_name="ReportCheckByDoctor",on_delete=models.CASCADE,null=True,blank=True)
@@ -236,7 +243,7 @@ class MedicalOfficerConsultancy(models.Model):
     MoPatientsPathReport = models.ForeignKey(PatientsPathlabrecords,related_name="moPatientsPathReport",on_delete=models.CASCADE,null=True,blank=True)
     MoPatientsConsultancy = models.ForeignKey(familyMembers,related_name="moPatientsConsultancy",on_delete=models.CASCADE,null=True,blank=True)
     MooassignedDoctor = models.ForeignKey(CustomUser,related_name="moassignedDoctor",on_delete=models.CASCADE,null=True,blank=True)
-    Moodoctor_name = models.CharField(max_length=500,blank=True,null=True) 
+    Moodoctor_name = models.CharField(max_length=500,blank=True,null=True)
     Mospecialization = models.CharField(max_length=500,blank=True,null=True)
     ModoctorRemarks = models.CharField(max_length=500,blank=True,null=True)
     MofileUpload = models.FileField(upload_to='doctorFolder',blank=True)
@@ -250,7 +257,7 @@ class PrimaryConsultancy(models.Model):
     PriPatientsPathReport = models.ForeignKey(PatientsPathlabrecords,related_name="PriPatientsPathReport",on_delete=models.CASCADE,null=True,blank=True)
     PriPatientsConsultancy = models.ForeignKey(familyMembers,related_name="PriPatientsConsultancy",on_delete=models.CASCADE,null=True,blank=True)
     PriassignedDoctor = models.ForeignKey(CustomUser,related_name="PriassignedDoctor",on_delete=models.CASCADE,null=True,blank=True)
-    PriDoctor_name = models.CharField(max_length=500,blank=True,null=True) 
+    PriDoctor_name = models.CharField(max_length=500,blank=True,null=True)
     Prispecialization = models.CharField(max_length=500,blank=True,null=True)
     PridoctorRemarks = models.CharField(max_length=500,blank=True,null=True)
     fileUpload = models.FileField(upload_to='doctorFolder',blank=True)
@@ -264,7 +271,7 @@ class SecondaryConsultancy(models.Model):
     SecPatientsPathReport = models.ForeignKey(PatientsPathlabrecords,related_name="SecPatientsPathReport",on_delete=models.CASCADE,null=True,blank=True)
     SecPatientsConsultancy = models.ForeignKey(familyMembers,related_name="SecPatientsConsultancy",on_delete=models.CASCADE,null=True,blank=True)
     SecSecassignedDoctor = models.ForeignKey(CustomUser,related_name="SecassignedDoctor",on_delete=models.CASCADE,null=True,blank=True)
-    Secdoctor_name = models.CharField(max_length=500,blank=True,null=True) 
+    Secdoctor_name = models.CharField(max_length=500,blank=True,null=True)
     Secspecialization = models.CharField(max_length=500,blank=True,null=True)
     SecdoctorRemarks = models.CharField(max_length=500,blank=True,null=True)
     SecfileUpload = models.FileField(upload_to='doctorFolder',blank=True)
@@ -277,7 +284,7 @@ class TertiaryConsultancy(models.Model):
     TerPatientsPathReport = models.ForeignKey(PatientsPathlabrecords,related_name="TerPatientsPathReport",on_delete=models.CASCADE,null=True,blank=True)
     TerPatientsConsultancy = models.ForeignKey(familyMembers,related_name="TerPatientsConsultancy",on_delete=models.CASCADE,null=True,blank=True)
     TerassignedDoctor = models.ForeignKey(CustomUser,related_name="TerassignedDoctor",on_delete=models.CASCADE,null=True,blank=True)
-    Terdoctor_name = models.CharField(max_length=500,blank=True,null=True) 
+    Terdoctor_name = models.CharField(max_length=500,blank=True,null=True)
     Terspecialization = models.CharField(max_length=500,blank=True,null=True)
     TerdoctorRemarks = models.CharField(max_length=500,blank=True,null=True)
     fileUpload = models.FileField(upload_to='doctorFolder',blank=True)
@@ -285,14 +292,14 @@ class TertiaryConsultancy(models.Model):
     referedToTertiaryConsultancy = models.BooleanField(default=False)
 
     isCompleted = models.BooleanField(default=False)
-    
-    
+
+
 class LabTests(models.Model):
-    testName = models.CharField(max_length=500,blank=True,null=True) 
+    testName = models.CharField(max_length=500,blank=True,null=True)
     testId = models.CharField(max_length=200 , unique= True ,  blank = True , null = True )
-    description = models.CharField(max_length=500,blank=True,null=True) 
+    description = models.CharField(max_length=500,blank=True,null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     isActive = models.BooleanField(default=True)
-    
+
     def __str__(self) -> str:
          return self.testName

@@ -21,6 +21,7 @@ from .permissions import IsSupervisor
 from excel_response import ExcelResponse
 from datetime import datetime
 from rest_framework.decorators import api_view
+from doctorsApp.permissions import IsMO
 
 
 class PostUserGroupResquest(generics.GenericAPIView):
@@ -795,10 +796,10 @@ class DownloadHealthpostwiseUserList(generics.GenericAPIView):
                                family_member.bloodCollectionLocation, family_member.familyHead.name,
                                family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
-                               family_member.weight, family_member.isLabTestAdded,
-                               family_member.isLabTestReportGenerated, family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber , family_member.vulnerable,
-                               family_member.vulnerable_reason, family_member.relationship,
+                               family_member.weight, family_member.bool_transform("isLabTestAdded"),
+                               family_member.bool_transform("isLabTestReportGenerated"), family_member.area.areas,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber,
+                               family_member.bool_transform("vulnerable"), family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
             aggregated_data = citizen_details + survey_data
@@ -896,13 +897,13 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
                                family_member.bloodCollectionLocation, family_member.familyHead.name,
                                family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
-                               family_member.weight, family_member.isLabTestAdded,
-                               family_member.isLabTestReportGenerated, family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber , family_member.vulnerable,
-                               family_member.vulnerable_reason, family_member.relationship,
+                               family_member.weight, family_member.bool_transform("isLabTestAdded"),
+                               family_member.bool_transform("isLabTestReportGenerated"), family_member.area.areas,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber,
+                               family_member.bool_transform("vulnerable"), family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
 
-    
+
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
             aggregated_data = citizen_details + survey_data
             data_list.append(aggregated_data)
@@ -917,7 +918,7 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
         response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("Ward_"+ward_name+"_data_"+today)
         wb.save(response)
         return response
-    
+
 class DownloadAllWardUserList(generics.GenericAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
 
@@ -955,7 +956,7 @@ class DownloadAllWardUserList(generics.GenericAPIView):
         return collected_data
 
     def get(self, request, *args, **kwargs):
-       
+
         ward_related_user = familyMembers.objects.all()
         today = datetime.today().strftime('%d-%m-%Y')
 
@@ -986,10 +987,10 @@ class DownloadAllWardUserList(generics.GenericAPIView):
                                family_member.bloodCollectionLocation, family_member.familyHead.name,
                                family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y %I:%M:%S %p'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
-                               family_member.weight, family_member.isLabTestAdded,
-                               family_member.isLabTestReportGenerated, family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber , family_member.vulnerable,
-                               family_member.vulnerable_reason, family_member.relationship,
+                               family_member.weight, family_member.bool_transform("isLabTestAdded"),
+                               family_member.bool_transform("isLabTestReportGenerated"), family_member.area.areas,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber ,
+                               family_member.bool_transform("vulnerable"), family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
             aggregated_data = citizen_details + survey_data
@@ -1008,14 +1009,14 @@ class DownloadAllWardUserList(generics.GenericAPIView):
 
 class DownloadDispensarywiseUserList(generics.GenericAPIView):
 
-    # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
+    # permission_classes = [IsAuthenticated , IsMO ]
 
     def add_headers(self, sheet, *args):
         for header in range(len(args)):
             if isinstance(args[header],dict):
                 start_column = 1
                 for title,size in args[header].items():
-              
+
                     end_column = start_column + (size-1)
                     sheet.merge_cells(start_row=header+1,start_column=start_column,
                                       end_row=header+1, end_column=end_column)
@@ -1044,7 +1045,7 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
 
         return collected_data
 
-    def get(self, request, id, *args, **kwargs):
+    def get(self, request ,id, *args, **kwargs):
         try:
             dispensary_obj = dispensary.objects.get(pk=id)
         except dispensary.DoesNotExist:
@@ -1052,7 +1053,7 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
                 "message":"No Dispensary exists with ID %d"%(id),
                 "status":"error"
             })
-        dispensary_related_user = familyMembers.objects.filter(familySurveyor__dispensary=dispensary_obj)
+        dispensary_related_user = familyMembers.objects.filter(area__dispensary=dispensary_obj)
         today = datetime.today().strftime('%d-%m-%Y')
         dispensary_name = dispensary_obj.dispensaryName
 
@@ -1089,10 +1090,10 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
                                family_member.bloodCollectionLocation, family_member.familyHead.name,
                                family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
-                               family_member.weight, family_member.isLabTestAdded,
-                               family_member.isLabTestReportGenerated, family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber , family_member.vulnerable,
-                               family_member.vulnerable_reason, family_member.relationship,
+                               family_member.weight, family_member.bool_transform("isLabTestAdded"),
+                               family_member.bool_transform("isLabTestReportGenerated"), family_member.area.areas,
+                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber ,
+                               family_member.bool_transform("vulnerable"), family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
             aggregated_data = citizen_details + survey_data
@@ -1421,7 +1422,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
            'CHV/ASHA' : CHV_ASHA_count ,
             'MO' : MO_count ,
             'ANM' : ANM_count ,
-            
+
             # 'Todays count' : todays_citizen_count ,
             # 'partial survey count' : partial_survey_count ,
             # 'today family count' : today_family_count,
@@ -1433,7 +1434,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
             "Males Enrolled" : male,
             "Females Enrolled" : female,
             "Transgender Enrolled" : transgender,
-            "ABHA ID Generated" : 1, 
+            "ABHA ID Generated" : 1,
 
             'Diabetes' : total_diabetes,
             'Hypertension' : hypertension ,
@@ -1447,7 +1448,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
             'TB' : total_tb_count ,
             'Breast cancer' : total_breast_cancer,
             'Other Communicable' : toatal_communicable ,
-            
+
             'Blood collected at home' : blood_collected_home ,
             'blood collected at center' : blood_collected_center ,
             'Blood Collection Denied By AMO' : denieded_by_mo_count ,
@@ -1850,7 +1851,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
 #                 total_eye_problem += eye_problem
 #                 total_ent_problem += ent
 
-        
+
 #         data = [
 #             {
 #             'CHV/ASHA' : CHV_ASHA_count ,
@@ -1867,7 +1868,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
 #             "Males Enrolled" : male,
 #             "Females Enrolled" : female,
 #             "Transgender Enrolled" : transgender,
-#             "ABHA ID Generated" : 1, 
+#             "ABHA ID Generated" : 1,
 
 #             'Diabetes' : total_diabetes,
 #             'Hypertension' : hypertension ,
@@ -1881,7 +1882,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
 #             'TB' : total_tb_count ,
 #             'Breast cancer' : total_breast_cancer,
 #             'Other Communicable' : toatal_communicable ,
-            
+
 #             'Blood collected at home' : blood_collected_home ,
 #             'blood collected at center' : blood_collected_center ,
 #             'Blood Collection Denied By AMO' : denieded_by_mo_count ,
@@ -2428,24 +2429,24 @@ class AdminDashboardExportView(generics.GenericAPIView):
             else:
                 sheet.append(args[header])
         return sheet
-    
+
     def get(self , request ):
         healthpost_id = self.request.query_params.get('healthpost_id', None)
         wardId = self.request.query_params.get('wardId', None)
-        
-        data_list = [['ward Name' , 'Health Post Name' , 'Families Enrolled'  , 'Citizens Enrolled' , 'CBAC Filled' , 
+
+        data_list = [['ward Name' , 'Health Post Name' , 'Families Enrolled'  , 'Citizens Enrolled' , 'CBAC Filled' ,
                     'Citizens 60 years + enrolled', 'Citizens 30 years + enrolled' , "Males Enrolled" ,  "Females Enrolled" ,  "Transgender Enrolled",
                     "ABHA ID Generated" , 'Diabetes' , 'Hypertension' ,  'Oral Cancer' , 'Cervical cancer' , 'COPD' , 'Eye Disorder' ,
-                    'ENT Disorder' ,  'Asthma' , 'Alzheimers' ,  'TB' , 'Breast cancer' , 'Other Communicable' , 
+                    'ENT Disorder' ,  'Asthma' , 'Alzheimers' ,  'TB' , 'Breast cancer' , 'Other Communicable' ,
                     'Blood collected at home' , 'blood collected at center' , 'Blood Collection Denied By AMO' ,  'Blood Collection Denied By Citizen',
-                    'Total Reports Generated' , 'Tests Assigned' , 
-                    'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment' , 
+                    'Total Reports Generated' , 'Tests Assigned' ,
+                    'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment' ,
                     'Referral to HBT polyclinic for Physician consultation',
                     'Referral to Peripheral Hospital / Special Hospital for management of Complication',
                     'Referral to Medical College for management of Complication',
                     'Referral to Private facility',
                     'Vulnerable Citizen' ]]
-        
+
         header1 = {'Citizen Details':len(data_list[0][0:11]) ,'Dieases Suspected': len(data_list[0][11:23]),
                    'Blood Collection' : len(data_list[0][23:29]) , 'Referrals' : len(data_list[0][29:]) }
 
@@ -2466,7 +2467,7 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     "message":"No data found for healthpost %s"%(healthpost_name),
                     "status":"error"
                 })
-                
+
             total_family_count = self.FamilySurvey_count.filter( user__userSections__healthPost__id = healthpost_id ).count()
             total_citizen_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id ).count()
             total_cbac_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id,age__gte = 30 , cbacRequired = True).count()
@@ -2479,7 +2480,7 @@ class AdminDashboardExportView(generics.GenericAPIView):
             # today_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__id = health_Post.id ,created_date__day = today.day ).count()
 
             total_vulnerabel = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , vulnerable = True).count()
-            
+
             blood_collected_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'Home').count()
             blood_collected_center = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'Center').count()
             denieded_by_mo_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, deniedBy = 'AMO').count()
@@ -2583,15 +2584,15 @@ class AdminDashboardExportView(generics.GenericAPIView):
             data_list.append([ healthpost.ward.wardName , healthpost.healthPostName ,
                             total_family_count ,
                             total_citizen_count ,
-                            total_cbac_count , 
+                            total_cbac_count ,
                             citizen_above_60 ,
                             citizen_above_30 ,
                             male ,
                             female ,
                             transgender ,
-                            0 , 
-                            total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem , 
-                            0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable , 
+                            0 ,
+                            total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem ,
+                            0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable ,
                             blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
                             Referral_choice_Referral_to_Mun_Dispensary ,
                             Referral_choice_Referral_to_HBT_polyclinic,
@@ -2607,12 +2608,12 @@ class AdminDashboardExportView(generics.GenericAPIView):
                 # print(row)
                 ws.append(row)
 
-        
+
             response = HttpResponse(content_type='application/vnd.ms-excel')
             response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format(healthpost_name+"_data_"+today)
             wb.save(response)
-            return response   
-         
+            return response
+
         elif wardId:
 
             try:
@@ -2634,13 +2635,13 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     "status":"error"
                 })
             for i in ward_related_user:
-                
-                
+
+
                 health__post = healthPost.objects.filter(ward__id = i.familySurveyor.userSections.all()[0].healthPost.ward.id )
-             
-              
+
+
                 for healthpost_id in health__post:
-           
+
                     total_family_count = self.FamilySurvey_count.filter( user__userSections__healthPost__id = healthpost_id.id ).count()
                     total_citizen_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id ).count()
                     total_cbac_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id,age__gte = 30 , cbacRequired = True).count()
@@ -2653,7 +2654,7 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     # today_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__id = health_Post.id ,created_date__day = today.day ).count()
 
                     total_vulnerabel = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id , vulnerable = True).count()
-                    
+
                     blood_collected_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, bloodCollectionLocation = 'Home').count()
                     blood_collected_center = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, bloodCollectionLocation = 'Center').count()
                     denieded_by_mo_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, deniedBy = 'AMO').count()
@@ -2758,15 +2759,15 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     data_list.append([ healthpost_id.ward.wardName , healthpost_id.healthPostName ,
                                     total_family_count ,
                                     total_citizen_count ,
-                                    total_cbac_count , 
+                                    total_cbac_count ,
                                     citizen_above_60 ,
                                     citizen_above_30 ,
                                     male ,
                                     female ,
                                     transgender ,
-                                    0 , 
-                                    total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem , 
-                                    0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable , 
+                                    0 ,
+                                    total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem ,
+                                    0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable ,
                                     blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
                                     Referral_choice_Referral_to_Mun_Dispensary ,
                                     Referral_choice_Referral_to_HBT_polyclinic,
@@ -2781,7 +2782,7 @@ class AdminDashboardExportView(generics.GenericAPIView):
                 for row in data_list:
                     ws.append(row)
 
-                
+
                 response = HttpResponse(content_type='application/vnd.ms-excel')
                 response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("Ward_"+ward_name.wardName+"_data_"+today)
                 wb.save(response)
@@ -2910,15 +2911,15 @@ class AdminDashboardExportView(generics.GenericAPIView):
                 data_list.append([ health_Post.ward.wardName , health_Post.healthPostName ,
                                 total_family_count ,
                                 total_citizen_count ,
-                                total_cbac_count , 
+                                total_cbac_count ,
                                 citizen_above_60 ,
                                 citizen_above_30 ,
                                 male ,
                                 female ,
                                 transgender ,
-                                0 , 
-                                total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem , 
-                                0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable , 
+                                0 ,
+                                total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem ,
+                                0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable ,
                                 blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
                                 Referral_choice_Referral_to_Mun_Dispensary ,
                                 Referral_choice_Referral_to_HBT_polyclinic,
@@ -2927,7 +2928,7 @@ class AdminDashboardExportView(generics.GenericAPIView):
                                 Referral_choice_Referral_to_Private_facility,
                                 total_vulnerabel
                                         ])
-        
+
             wb = openpyxl.Workbook()
             ws = wb.active
             self.add_headers(ws, header1 )
@@ -2941,5 +2942,5 @@ class AdminDashboardExportView(generics.GenericAPIView):
             wb.save(response)
             return response
 
-        
-            
+
+
