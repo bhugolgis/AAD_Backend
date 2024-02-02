@@ -145,6 +145,7 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
     centerName = serializers.SerializerMethodField()
     vulnerable_reason = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
+    puid = serializers.SerializerMethodField()
 
 
     class Meta:
@@ -188,6 +189,13 @@ class FamilyMemberDetailsSerializer(serializers.ModelSerializer):
             vulnerable_reason = []
 
         return vulnerable_reason
+    
+    def get_puid(self , data):
+        try:
+            puid = data.patientFamilyMember.get().puid
+        except:
+            puid = ""
+        return puid 
     
     def get_centerName(self , data): 
         try:

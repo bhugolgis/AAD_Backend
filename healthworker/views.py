@@ -280,6 +280,8 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         toatal_communicable  = 0 
         total_eye_problem = 0 
         total_Alzheimers = 0 
+        total_ent_disorder = 0 
+        total_asthama = 0 
         for record in Questionnaire_queryset:
             part_e = record.Questionnaire.get('part_e', []) 
             communicable = 0 
@@ -304,7 +306,15 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             oral_cancer = 0
             cervical_cancer = 0
             eye_problem = 0
-            for question in part_b[:10]:
+            ent_disorder = 0 
+            Alzheimers = 0 
+            asthama = 0 
+            for question in part_b[16:17]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    ent_disorder += 1
+                    break
+            for question in part_b[1:10]:
                 answer = question.get('answer', [])
                 if answer and len(answer) > 0:
                     tb_count += 1
@@ -336,6 +346,17 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
                     cervical_cancer += 1
                     break
 
+            for question in part_b[40:44]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    Alzheimers  += 1
+                    break
+            for question in part_b[:1]:
+                answer = question.get('answer', [])
+                if answer and len(answer) > 0:
+                    asthama += 1
+                    break
+
             total_tb_count += tb_count
             total_diabetes += diabetes
             total_breast_cancer += breast_cancer
@@ -344,6 +365,9 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             total_COPD_count += COPD
             toatal_communicable += communicable
             total_eye_problem += eye_problem
+            total_ent_disorder += ent_disorder
+            total_Alzheimers += Alzheimers
+            total_asthama += asthama
 
         return Response({
             'total_count' : total_citizen_count ,
@@ -359,10 +383,10 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'oral_Cancer' : total_oral_cancer ,
             'cervical_cancer' : total_cervical_cancer ,
             'copd' : total_COPD_count,
-            'ent_disorder' : 0 ,
+            'ent_disorder' : total_ent_disorder ,
             'eye_disorder' : total_eye_problem , 
-            'asthama' : 0 ,
-            'Alzheimers/Dementia' : 0 ,
+            'asthama' : total_asthama ,
+            'Alzheimers/Dementia' : total_Alzheimers ,
             'tb' : total_tb_count ,
             'breast_cancer' : total_breast_cancer , 
             'communicable' : toatal_communicable ,

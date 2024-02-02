@@ -3,14 +3,30 @@ from django.dispatch import receiver
 from database.models import *
 
   
+
 @receiver(post_save , sender=PatientsPathlabrecords)  
 def update_isLabTestAdded_check(sender, instance , created, **kwargs):
     if created:
-        family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
-        family.isLabTestAdded = True 
-        family.isSampleCollected = True 
-        family.generalStatus = 'Tests Assigned' 
-        family.save()
+        if instance.puid != None and instance.patientID == None and instance.bookingVisitID == None:
+        # print(instance.transactionid , "instace created")
+            family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)        
+            family.generalStatus = 'Patient register at LIMS' 
+            family.save()
+
+
+
+
+
+@receiver(post_save , sender=PatientsPathlabrecords)  
+def update_isLabTestAdded_check(sender, instance , created, **kwargs):
+    if created:
+        if instance.puid != None and instance.patientID != None and instance.bookingVisitID != None:
+        # print(instance.transactionid , "instace created")
+            family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
+            family.isLabTestAdded = True 
+            family.isSampleCollected = True 
+            family.generalStatus = 'Tests Assigned' 
+            family.save()
 
 
 
@@ -18,5 +34,6 @@ def update_isLabTestAdded_check(sender, instance , created, **kwargs):
 def update_general_status(sender, instance , created, **kwargs):
     if created:
         family = familyMembers.objects.get(pk=instance.patientPathLab.patientFamilyMember.id)
-        family.generalStatus = 'Reports received' 
+        family.generalStatus = 'Report received' 
         family.save()
+        

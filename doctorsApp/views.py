@@ -633,8 +633,8 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
             pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).exists()
             if pathlab_instance:
                 return Response({'status': 'error', 
-                                'message': "patient already exists"}, status=status.HTTP_400_BAD_REQUEST)
-        except:
+                                'message': "patient already register"}, status=status.HTTP_400_BAD_REQUEST)
+        except :
             return Response({'status': 'error',
                             'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -679,6 +679,9 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
                         "puid" : response_data.get("puid") 
                     } , partial = True  )
                     if pathlab_serializer.is_valid():
+                        # pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember=request.data["id"]).first()
+                        # pathlab_instance.puid = pathlab_serializer.validated_data.get('puid')
+                        # pathlab_serializer.save(update_fields=['puid'])
                         pathlab_serializer.save()
                         mesaage = response_data.get("lisMessage")
                         puid = response_data.get("puid")
@@ -695,7 +698,7 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
                     return Response({"status" : "error" ,
                                     "message" : mesaage}, status= 400)
             else:
-                return Response(json.loads(response.content) , status=response.status_code)
+                return Response(response.content , status=response.status_code)
         
         else:
             key, value = list(serializer.errors.items())[0]
