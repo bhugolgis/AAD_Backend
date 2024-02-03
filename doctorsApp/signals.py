@@ -20,13 +20,23 @@ def update_isLabTestAdded_check(sender, instance , created, **kwargs):
 @receiver(post_save , sender=PatientsPathlabrecords)  
 def update_isLabTestAdded_check(sender, instance , created, **kwargs):
     if created:
-        if instance.puid != None and instance.patientID != None and instance.bookingVisitID != None:
-        # print(instance.transactionid , "instace created")
+        if instance.puid != None and instance.bookingVisitID != None and instance.patientID != None:
             family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
             family.isLabTestAdded = True 
             family.isSampleCollected = True 
             family.generalStatus = 'Tests Assigned' 
             family.save()
+    else:
+        # for Home blood Collection
+        print(instance)
+        if instance.puid != None and instance.transactionid != None:
+            print(instance)
+            family = familyMembers.objects.get(pk=instance.patientFamilyMember.id)
+            family.isLabTestAdded = True 
+            family.isSampleCollected = True 
+            family.generalStatus = 'Tests Assigned' 
+            family.save()
+
 
 
 

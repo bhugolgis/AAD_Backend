@@ -269,7 +269,6 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         TestsAssigned = self.get_queryset().filter(familySurveyor = request.user , isLabTestAdded = True).count()
         TestReportGenerated = self.get_queryset().filter(familySurveyor = request.user , isLabTestReportGenerated = True).count()
 
-
         Questionnaire_queryset = self.get_queryset().filter(familySurveyor =request.user , Questionnaire__isnull=False)
         total_tb_count = 0
         total_diabetes = 0
@@ -386,7 +385,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'ent_disorder' : total_ent_disorder ,
             'eye_disorder' : total_eye_problem , 
             'asthama' : total_asthama ,
-            'Alzheimers/Dementia' : total_Alzheimers ,
+            'Alzheimers_Dementia' : total_Alzheimers ,
             'tb' : total_tb_count ,
             'breast_cancer' : total_breast_cancer , 
             'communicable' : toatal_communicable ,
@@ -409,12 +408,6 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             "TestsAssigned" : TestsAssigned, 
             } , status= status.HTTP_200_OK )
     
-
-
-
-
-
-
 
 class GetCitizenList(generics.ListAPIView):
     serializer_class = GetCitizenListSerializer

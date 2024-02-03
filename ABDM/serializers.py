@@ -63,7 +63,7 @@ class createHealthIdByAdhaarSerializer(serializers.Serializer):
 
 
 class verifyMobileOTPSerializer(serializers.Serializer):
-    otp = serializers.IntegerField(required=True)
+    otp = serializers.CharField(max_length = 1000 ,  required=True)
     txnId = serializers.CharField(max_length=1000, required=True)
 
     def validate(self, data):

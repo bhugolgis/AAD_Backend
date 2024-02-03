@@ -1,0 +1,557 @@
+Unauthorized: /adminportal/api/MOHDashboardExcelView
+[31;1mHTTP GET /adminportal/api/MOHDashboardExcelView?healthpost_id=11 401 [0.02, 127.0.0.1:55228][0m
+Internal Server Error: /adminportal/api/MOHDashboardExcelView
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 1245, in get
+    total_family_count = self.FamilySurvey_count.filter( user__userSections__healthPost__id = healthpost_id ,  familySurveyor = anm ).count()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1426, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1236, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1724, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'familySurveyor' into field. Choices are: ASHA_CHV, ASHA_CHV_id, address, area, area_id, created_date, familyId, family_head_member, id, isLabTestAdded, isLabTestReportGenerated, isSampleCollected, location, mobileNo, name, partialSubmit, pendingMembers, pincode, plotNo, totalFamilyMembers, user, user_id
+[35;1mHTTP GET /adminportal/api/MOHDashboardExcelView?healthpost_id=11 500 [0.56, 127.0.0.1:55927][0m
+Exception inside application: cannot schedule new futures after interpreter shutdown
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 284, in _get_response_async
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 167, in submit
+    raise RuntimeError('cannot schedule new futures after shutdown')
+RuntimeError: cannot schedule new futures after shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 288, in _get_response_async
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 167, in submit
+    raise RuntimeError('cannot schedule new futures after shutdown')
+RuntimeError: cannot schedule new futures after shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\deprecation.py", line 150, in __acall__
+    response = response or await self.get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\deprecation.py", line 150, in __acall__
+    response = response or await self.get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\deprecation.py", line 150, in __acall__
+    response = response or await self.get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\deprecation.py", line 150, in __acall__
+    response = response or await self.get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\deprecation.py", line 150, in __acall__
+    response = response or await self.get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\corsheaders\middleware.py", line 67, in __acall__
+    response = await result
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\deprecation.py", line 150, in __acall__
+    response = response or await self.get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\utils\deprecation.py", line 150, in __acall__
+    response = response or await self.get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\contrib\staticfiles\handlers.py", line 101, in __call__
+    return await self.application(scope, receive, send)
+  File "D:\Jafar\AAD\.env\lib\site-packages\channels\routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\asgi.py", line 160, in __call__
+    await self.handle(scope, receive, send)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\asgi.py", line 183, in handle
+    response = await self.get_response_async(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 162, in get_response_async
+    response = await self._middleware_chain(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 44, in inner
+    response = await sync_to_async(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\base_events.py", line 821, in run_in_executor
+    executor.submit(func, *args), loop=self)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 169, in submit
+    raise RuntimeError('cannot schedule new futures after '
+RuntimeError: cannot schedule new futures after interpreter shutdown
+[35;1mHTTP GET /doctor/api/ViewFamilysDetails/400/ 500 [0.84, 10.202.100.219:51789][0m
+Internal Server Error: /adminportal/api/MOHDashboardExcelView
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 1428, in get
+    ANM_list = CustomUser.objects.filter(groups__name = "healthworker" , userSections__healthPost__id = health__post.id)
+AttributeError: 'QuerySet' object has no attribute 'id'
+[35;1mHTTP GET /adminportal/api/MOHDashboardExcelView?wardId=6 500 [0.76, 127.0.0.1:57245][0m
+Internal Server Error: /adminportal/api/MOHDashboardExcelView
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 1428, in get
+    ANM_list = CustomUser.objects.filter(groups__name = "healthworker" , userSections__healthPost__id = health__post)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1436, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1454, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\query.py", line 1461, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1545, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1576, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\sql\query.py", line 1318, in build_lookup
+    lookup = lookup_class(lhs, rhs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\lookups.py", line 27, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\db\models\lookups.py", line 337, in get_prep_lookup
+    raise ValueError(
+ValueError: The QuerySet value for an exact lookup must be limited to one result using slicing.
+[35;1mHTTP GET /adminportal/api/MOHDashboardExcelView?wardId=6 500 [0.52, 127.0.0.1:57269][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.43, 10.202.100.219:51862][0m
+Internal Server Error: /adminportal/api/MOHDashboardExcelView
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 1583, in get
+    response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format(healthpost_name+"_data_"+today)
+UnboundLocalError: local variable 'healthpost_name' referenced before assignment
+[35;1mHTTP GET /adminportal/api/MOHDashboardExcelView?wardId=6 500 [53.42, 127.0.0.1:57335][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.14, 10.202.100.219:51947][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.35, 10.202.100.219:51988][0m
+Unauthorized: /doctor/api/GetAllFamilysDetails/
+[31;1mHTTP GET /doctor/api/GetAllFamilysDetails/ 401 [0.09, 10.202.100.219:55048][0m
+Unauthorized: /doctor/api/ViewFamilysDetails/401/
+[31;1mHTTP GET /doctor/api/ViewFamilysDetails/401/ 401 [0.08, 10.202.100.219:55127][0m
+Unauthorized: /doctor/api/GetAllFamilysDetails/
+[31;1mHTTP GET /doctor/api/GetAllFamilysDetails/ 401 [0.17, 10.202.100.219:55127][0m
+Unauthorized: /doctor/api/GetAllFamilysDetails/
+[31;1mHTTP GET /doctor/api/GetAllFamilysDetails/ 401 [0.18, 10.202.100.219:55048][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.24, 10.202.100.219:55421][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.86, 10.202.100.219:56709][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.41, 10.202.100.219:56709][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.44, 10.202.100.219:56778][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.28, 10.202.100.219:56873][0m
+view's UpdateUserDetails raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 63, in get_queryset
+    assert self.queryset is not None, (
+AssertionError: 'UpdateUserDetails' should either include a `queryset` attribute, or override the `get_queryset()` method.
+view's AdminDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's AdminDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'AdminDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadAllWardUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadAllWardUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadDispensarywiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadDispensarywiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadHealthpostwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadHealthpostwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's DownloadWardwiseUserList raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'DownloadWardwiseUserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardExportView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardExportView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+view's MOHDashboardView raised exception during schema generation; use `getattr(self, 'swagger_fake_view', False)` to detect and short-circuit this
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\drf_yasg\inspectors\base.py", line 42, in call_view_method
+    return view_method()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 108, in get_serializer
+    serializer_class = self.get_serializer_class()
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\generics.py", line 122, in get_serializer_class
+    assert self.serializer_class is not None, (
+AssertionError: 'MOHDashboardView' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [1.60, 127.0.0.1:61566][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [2.33, 127.0.0.1:61628][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [1.52, 127.0.0.1:61654][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.22, 10.202.100.219:57182][0m
+Bad Request: /doctor/api/HomeBookPatientAPI
+[31;1mHTTP POST /doctor/api/HomeBookPatientAPI 400 [0.12, 127.0.0.1:61755][0m
+Internal Server Error: /doctor/api/HomeBookPatientAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 794, in post
+    instance.transactionid = pathlab_serializer.validated_data.get('transactionid')
+AttributeError: 'NoneType' object has no attribute 'transactionid'
+[35;1mHTTP POST /doctor/api/HomeBookPatientAPI 500 [1.05, 127.0.0.1:62242][0m
+Internal Server Error: /doctor/api/HomeBookPatientAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 794, in post
+    instance.transactionid = response_data.get('transactionid')
+AttributeError: 'NoneType' object has no attribute 'transactionid'
+[35;1mHTTP POST /doctor/api/HomeBookPatientAPI 500 [7.83, 127.0.0.1:62312][0m
+Internal Server Error: /doctor/api/HomeBookPatientAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\doctorsApp\views.py", line 794, in post
+    instance.transactionid = pathlab_serializer.validated_data.get('transactionid')
+AttributeError: 'NoneType' object has no attribute 'transactionid'
+[35;1mHTTP POST /doctor/api/HomeBookPatientAPI 500 [1.37, 127.0.0.1:62364][0m
+Unauthorized: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 401 [0.22, 127.0.0.1:51008][0m
+Unauthorized: /doctor/api/GetAllFamilysDetails/
+[31;1mHTTP GET /doctor/api/GetAllFamilysDetails/ 401 [0.22, 10.202.100.219:56260][0m
+Bad Request: /allauth/api/login
+[31;1mHTTP POST /allauth/api/login 400 [0.35, 10.202.100.219:56260][0m
+Bad Request: /doctor/api/LIMSPatientRegisterAPI
+[31;1mHTTP POST /doctor/api/LIMSPatientRegisterAPI 400 [0.85, 127.0.0.1:51301][0m
+Unauthorized: /healthworker/api/GetSurveyorDashboard
+[31;1mHTTP GET /healthworker/api/GetSurveyorDashboard 401 [0.21, 10.202.100.195:52558][0m

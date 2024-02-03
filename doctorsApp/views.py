@@ -777,12 +777,12 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                 "pincode": serializer.validated_data.get('pincode'),
                 "Booking_TestDetails": serializer.validated_data.get('Booking_TestDetails'),
                 })
-            print(payload)
+            # print(payload)
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
                 response_data = json.loads(response.content)
-                if response_data.get("result" , "true" ):
-                    print(response_data)
+                if response_data.get("result" , "True") :
+                    # print(response_data)
                     pathlab_serializer = PostResponseHomeLIMSAPISerialzier(data = {
                         "patientFamilyMember" : request.data["id"] , 
                         "transactionid" : response_data.get("transactionid") ,
@@ -794,7 +794,8 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                         instance.transactionid = pathlab_serializer.validated_data.get('transactionid')
                         instance.LabTestSuggested = pathlab_serializer.validated_data.get('LabTestSuggested')
                         instance.puid = pathlab_serializer.validated_data.get('puid')
-                        instance.save(update_fields=['transactionid', 'LabTestSuggested', 'puid'])
+                        # instance.save(update_fields=['transactionid', 'LabTestSuggested', 'puid'])
+                        instance.save()
 
                         return Response( {'status': 'success',
                                         'message': 'appointment booked successfully',
@@ -805,9 +806,11 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                         return Response({"status" : "error" ,
                                         "message" : pathlab_serializer.errors}, status= 400) 
                 else:
-                    message = json.loads(response.content)
+                    data = json.loads(response.content)
+                    print(data)
+                    message = data.get("result")
                     return Response({"status" : "error" ,
-                                    "message" : message},  status=response.status_code)
+                                    "message" : message},  status=400)
             else:
                 message = json.loads(response.content)
                 return Response({"status" : "error" ,
