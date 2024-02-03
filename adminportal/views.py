@@ -452,8 +452,8 @@ class DownloadHealthpostwiseUserList(generics.GenericAPIView):
             return Response({
                 "message":"No Health post exists with ID %d"%(id),
                 "status":"error"
-            })
-        healthpost_related_user = familyMembers.objects.filter(familySurveyor__section__healthPost=healthpost)
+            } , status=404)
+        healthpost_related_user = familyMembers.objects.filter(area__healthPost=healthpost)
         today = datetime.today().strftime('%d-%m-%Y')
         healthpost_name = healthpost.healthPostName
 
@@ -461,7 +461,7 @@ class DownloadHealthpostwiseUserList(generics.GenericAPIView):
             return Response({
                 "message":"No data found for healthpost %s"%(healthpost_name),
                 "status":"error"
-            })
+            } , status=400)
 
         familyMember = healthpost_related_user.last()
         questionnaire = familyMember.Questionnaire
@@ -553,8 +553,9 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
             return Response({
                 "message":"No Ward exists with ID %d"%(id),
                 "status":"error"
-            })
-        ward_related_user = familyMembers.objects.filter(familySurveyor__userSections__healthPost__ward=ward_obj)
+            } , status=400)
+        # ward_related_user = familyMembers.objects.filter(familySurveyor__userSections__healthPost__ward=ward_obj)
+        ward_related_user = familyMembers.objects.filter(area__healthPost__ward=ward_obj)
         today = datetime.today().strftime('%d-%m-%Y')
         ward_name = ward_obj.wardName
 
@@ -562,7 +563,7 @@ class DownloadWardwiseUserList(generics.GenericAPIView):
             return Response({
                 "message":"No data found for ward %s"%(ward_name),
                 "status":"error"
-            })
+            } , status= 400)
 
         familyMember = ward_related_user.last()
         questionnaire = familyMember.Questionnaire
@@ -746,7 +747,7 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
             return Response({
                 "message":"No Dispensary exists with ID %d"%(id),
                 "status":"error"
-            })
+            } , status=400)
         dispensary_related_user = familyMembers.objects.filter(area__dispensary=dispensary_obj)
         today = datetime.today().strftime('%d-%m-%Y')
         dispensary_name = dispensary_obj.dispensaryName
@@ -755,7 +756,7 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
             return Response({
                 "message":"No data found for dispensary %s"%(dispensary_name),
                 "status":"error"
-            })
+            } , status=400)
 
         familyMember = dispensary_related_user.last()
         questionnaire = familyMember.Questionnaire
@@ -1202,7 +1203,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
         healthpost_id = self.request.query_params.get('healthpost_id', None)
         wardId = self.request.query_params.get('wardId', None)
         
-        data_list = [['ward Name' , 'Health Post Name' , "ANM/Co-ordinator" , "ANM Mobile number" , 'Families Enrolled'  , 'Citizens Enrolled' , 'CBAC Filled' , 
+        data_list = [['ward Name' , 'Health Post Name' , "ANM/Co-ordinator" , "ANM Mobile number" ,'Families Enrolled'  , 'Citizens Enrolled' , 'CBAC Filled' , 
                     'Citizens 60 years + enrolled', 'Citizens 30 years + enrolled' , "Males Enrolled" ,  "Females Enrolled" ,  "Transgender Enrolled",
                     "ABHA ID Generated" , 'Diabetes' , 'Hypertension' ,  'Oral Cancer' , 'Cervical cancer' , 'COPD' , 'Eye Disorder' ,
                     'ENT Disorder' ,  'Asthma' , 'Alzheimers' ,  'TB' , 'Breast cancer' , 'Other Communicable' , 
@@ -1215,8 +1216,8 @@ class MOHDashboardExportView(generics.GenericAPIView):
                     'Referral to Private facility',
                     'Vulnerable Citizen' ]]
         
-        header1 = {'Citizen Details':len(data_list[0][0:11]) ,'Dieases Suspected': len(data_list[0][11:23]),
-                   'Blood Collection' : len(data_list[0][23:29]) , 'Referrals' : len(data_list[0][29:]) }
+        header1 = {'Citizen Details':len(data_list[0][0:13]) ,'Dieases Suspected': len(data_list[0][13:25]),
+                   'Blood Collection' : len(data_list[0][25:31]) , 'Referrals' : len(data_list[0][31:]) }
 
 
         if healthpost_id:
@@ -1227,7 +1228,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
                     "message":"No Health post exists with ID %d"%(id),
                     "status":"error"
                 })
-            healthpost_related_user = familyMembers.objects.filter(familySurveyor__section__healthPost=healthpost)
+            healthpost_related_user = familyMembers.objects.filter(familySurveyor__userSections__healthPost=healthpost)
             today = datetime.today().strftime('%d-%m-%Y')
             healthpost_name = healthpost.healthPostName
 
@@ -1237,22 +1238,18 @@ class MOHDashboardExportView(generics.GenericAPIView):
                     "status":"error"})
             ANM_list = CustomUser.objects.filter(groups__name = "healthworker" , userSections__healthPost__id = healthpost_id)
             for anm in ANM_list:
-            
-            
-            
+
                 total_AbhaCreated = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , isAbhaCreated = True , familySurveyor = anm ).count()  
                 
                 total_family_count = self.FamilySurvey_count.filter( user__userSections__healthPost__id = healthpost_id ,  user = anm ).count()
           
                 total_citizen_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , familySurveyor = anm ).count()
                 total_cbac_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id,age__gte = 30 , cbacRequired = True , familySurveyor = anm).count()
-                partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user__userSections__healthPost__id = healthpost_id , user = anm).count()
                 male =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , gender = "M" , familySurveyor = anm ).count()
                 female =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , gender = "F" , familySurveyor = anm ).count()
                 transgender =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id, gender = "O" , familySurveyor = anm ).count()
                 citizen_above_60 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, age__gte = 60 , familySurveyor = anm).count()
                 citizen_above_30 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, age__gte = 30 , familySurveyor = anm).count()
-                # today_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__id = health_Post.id ,created_date__day = today.day ).count()
 
                 total_vulnerabel = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , vulnerable = True , familySurveyor = anm).count()
                 
@@ -1269,6 +1266,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
 
                 total_LabTestAdded = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id, familySurveyor = anm , isLabTestAdded = True).count()
                 TestReportGenerated = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, familySurveyor = anm ,  isLabTestReportGenerated = True).count()
+                
                 Questionnaire_queryset = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , familySurveyor = anm , Questionnaire__isnull=False)
                 total_tb_count = 0
                 total_diabetes = 0
@@ -1370,7 +1368,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
 
 
 
-                data_list.append([ healthpost.ward.wardName , healthpost.healthPostName , anm.name , anm.phoneNumber , 
+                data_list.append([ healthpost.ward.wardName , healthpost.healthPostName , anm.name , anm.phoneNumber ,
                                 total_family_count ,
                                 total_citizen_count ,
                                 total_cbac_count , 
@@ -1418,42 +1416,41 @@ class MOHDashboardExportView(generics.GenericAPIView):
                     "message":"No data found for ward %s"%(ward_name.wardName),
                     "status":"error"
                 })
-            for i in ward_related_user:
-                
-                
-                health__post = healthPost.objects.filter(ward__id = i.familySurveyor.userSections.all()[0].healthPost.ward.id )
-                print(health__post)
+        
+            health__post = healthPost.objects.filter(ward__id = wardId)
 
-                # ANM_list = CustomUser.objects.filter(groups__name = "healthworker" , userSections__healthPost__id = healthpost_id)
-                # print(ANM_list)
-                for healthpost_id in health__post:
-                   
-                    total_AbhaCreated = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id , isAbhaCreated = True ).count()
-                    total_family_count = self.FamilySurvey_count.filter( user__userSections__healthPost__id = healthpost_id.id ).count()
-                    total_citizen_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id ).count()
-                    total_cbac_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id,age__gte = 30 , cbacRequired = True).count()
-                    male =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id, gender = "M" ).count()
-                    female =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id , gender = "F" ).count()
-                    transgender =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id, gender = "O" ).count()
-                    citizen_above_60 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, age__gte = 60 ).count()
-                    citizen_above_30 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, age__gte = 30 ).count()
-
-                    total_vulnerabel = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id , vulnerable = True).count()
+            for healthpost_id in health__post:
+                ANM_list = CustomUser.objects.filter(groups__name = "healthworker" , userSections__healthPost__id = healthpost_id.id).order_by("name")
+                for anms in ANM_list:
                     
-                    blood_collected_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, bloodCollectionLocation = 'Home').count()
-                    blood_collected_center = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, bloodCollectionLocation = 'Center').count()
-                    denieded_by_mo_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, deniedBy = 'AMO').count()
-                    denieded_by_mo_individual = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id, deniedBy = 'Individual Itself').count()
-                    Referral_choice_Referral_to_Mun_Dispensary = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
-                    Referral_choice_Referral_to_HBT_polyclinic = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
-                    Referral_choice_Referral_to_Peripheral_Hospital = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id, referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
-                    Referral_choice_Referral_to_Medical_College = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id, referels__choice = 'Referral to Medical College for management of Complication').count()
-                    Referral_choice_Referral_to_Private_facility = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id, referels__choice = 'Referral to Private facility').count()
-                    hypertension = self.get_queryset().filter(  familySurveyor__userSections__healthPost__id = healthpost_id.id ,bloodPressure__gte = 140).count()
+                    total_AbhaCreated = self.get_queryset().filter( familySurveyor__id = anms.id  , isAbhaCreated = True ).count()
+                    
+                    total_family_count = self.FamilySurvey_count.filter( user__id = anms.id ).count()
+                    total_citizen_count = self.get_queryset().filter( familySurveyor__id = anms.id ).count()
+                    
+                    total_cbac_count = self.get_queryset().filter( familySurveyor__id = anms.id  ,age__gte = 30 , cbacRequired = True).count()
+                    male =  self.get_queryset().filter( familySurveyor__id = anms.id  , gender = "M" ).count()
+                    female =  self.get_queryset().filter( familySurveyor__id = anms.id   , gender = "F" ).count()
+                    transgender =  self.get_queryset().filter( familySurveyor__id = anms.id  , gender = "O" ).count()
+                    citizen_above_60 =  self.get_queryset().filter(familySurveyor__id = anms.id  , age__gte = 60 ).count()
+                    citizen_above_30 =  self.get_queryset().filter(familySurveyor__id = anms.id  , age__gte = 30 ).count()
 
-                    total_LabTestAdded = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id,isLabTestAdded = True).count()
-                    TestReportGenerated = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, isLabTestReportGenerated = True).count()
-                    Questionnaire_queryset = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id , Questionnaire__isnull=False)
+                    total_vulnerabel = self.get_queryset().filter( familySurveyor__id = anms.id   , vulnerable = True).count()
+                    
+                    blood_collected_home = self.get_queryset().filter(familySurveyor__id = anms.id  , bloodCollectionLocation = 'Home').count()
+                    blood_collected_center = self.get_queryset().filter(familySurveyor__id = anms.id  , bloodCollectionLocation = 'Center').count()
+                    denieded_by_mo_count = self.get_queryset().filter(familySurveyor__id = anms.id  , deniedBy = 'AMO').count()
+                    denieded_by_mo_individual = self.get_queryset().filter( familySurveyor__id = anms.id  , deniedBy = 'Individual Itself').count()
+                    Referral_choice_Referral_to_Mun_Dispensary = self.get_queryset().filter(familySurveyor__id = anms.id  , referels__choice = 'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment').count()
+                    Referral_choice_Referral_to_HBT_polyclinic = self.get_queryset().filter(familySurveyor__id = anms.id  , referels__choice = 'Referral to HBT polyclinic for physician consultation').count()
+                    Referral_choice_Referral_to_Peripheral_Hospital = self.get_queryset().filter( familySurveyor__id = anms.id  , referels__choice = 'Referral to Peripheral Hospital / Special Hospital for management of Complication').count()
+                    Referral_choice_Referral_to_Medical_College = self.get_queryset().filter( familySurveyor__id = anms.id  , referels__choice = 'Referral to Medical College for management of Complication').count()
+                    Referral_choice_Referral_to_Private_facility = self.get_queryset().filter( familySurveyor__id = anms.id  , referels__choice = 'Referral to Private facility').count()
+                    hypertension = self.get_queryset().filter(  familySurveyor__id = anms.id   ,bloodPressure__gte = 140).count()
+
+                    total_LabTestAdded = self.get_queryset().filter( familySurveyor__id = anms.id  ,isLabTestAdded = True).count()
+                    TestReportGenerated = self.get_queryset().filter(familySurveyor__id = anms.id  , isLabTestReportGenerated = True).count()
+                    Questionnaire_queryset = self.get_queryset().filter( familySurveyor__id = anms.id   , Questionnaire__isnull=False)
                     total_tb_count = 0
                     total_diabetes = 0
                     total_breast_cancer = 0 
@@ -1552,39 +1549,39 @@ class MOHDashboardExportView(generics.GenericAPIView):
                         total_Alzheimers += Alzheimers
                         total_asthama += asthama
 
-                        data_list.append([ healthpost_id.ward.wardName , healthpost_id.healthPostName , 
-                                total_family_count ,
-                                total_citizen_count ,
-                                total_cbac_count , 
-                                citizen_above_60 ,
-                                citizen_above_30 ,
-                                male ,
-                                female ,
-                                transgender ,
-                                total_AbhaCreated , 
-                                total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_disorder , 
-                                total_asthama, total_Alzheimers, total_tb_count ,total_breast_cancer , toatal_communicable , 
-                                blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
-                                Referral_choice_Referral_to_Mun_Dispensary ,
-                                Referral_choice_Referral_to_HBT_polyclinic,
-                                Referral_choice_Referral_to_Peripheral_Hospital,
-                                Referral_choice_Referral_to_Medical_College ,
-                                Referral_choice_Referral_to_Private_facility,
-                                total_vulnerabel
-                                            ])
-            wb = openpyxl.Workbook()
-            ws = wb.active
-            self.add_headers(ws, header1 )
-            for row in data_list:
-                # print(row)
-                ws.append(row)
+                    data_list.append([ healthpost_id.ward.wardName , healthpost_id.healthPostName ,  anms.name , anms.phoneNumber  ,  
+                            total_family_count ,
+                            total_citizen_count ,
+                            total_cbac_count , 
+                            citizen_above_60 ,
+                            citizen_above_30 ,
+                            male ,
+                            female ,
+                            transgender ,
+                            total_AbhaCreated , 
+                            total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_disorder , 
+                            total_asthama, total_Alzheimers, total_tb_count ,total_breast_cancer , toatal_communicable , 
+                            blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
+                            Referral_choice_Referral_to_Mun_Dispensary ,
+                            Referral_choice_Referral_to_HBT_polyclinic,
+                            Referral_choice_Referral_to_Peripheral_Hospital,
+                            Referral_choice_Referral_to_Medical_College ,
+                            Referral_choice_Referral_to_Private_facility,
+                            total_vulnerabel
+                                        ])
+                    
+                        
+                    wb = openpyxl.Workbook()
+                    ws = wb.active
+                    self.add_headers(ws, header1 )
+                    for row in data_list:
+                        ws.append(row)
 
         
             response = HttpResponse(content_type='application/vnd.ms-excel')
             response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format(ward_name.wardName+"_data_"+today)
             wb.save(response)
             return response 
-
 
 class  AdminDashboardView(generics.GenericAPIView):
     permission_classes= (IsAuthenticated , IsAdmin)
@@ -2062,9 +2059,9 @@ class  AdminDashboardView(generics.GenericAPIView):
 
 class AdminDashboardExportView(generics.GenericAPIView):
     # permission_classes= (IsAuthenticated , IsAdmin)
-    FamilySurvey_count = familyHeadDetails.objects.all()
+    FamilySurvey_count = familyHeadDetails.objects.all().order_by('user__userSections__healthPost__ward')
     queryset = familyMembers.objects.all()
-    health_Posts = healthPost.objects.all()
+    health_Posts = healthPost.objects.all().order_by('ward')
 
 
     def add_headers(self, sheet, *args):
@@ -2109,7 +2106,7 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     "message":"No Health post exists with ID %d"%(id),
                     "status":"error"
                 })
-            healthpost_related_user = familyMembers.objects.filter(familySurveyor__section__healthPost=healthpost)
+            healthpost_related_user = familyMembers.objects.filter(familySurveyor__userSections__healthPost=healthpost)
             today = datetime.today().strftime('%d-%m-%Y')
             healthpost_name = healthpost.healthPostName
 
@@ -2148,42 +2145,48 @@ class AdminDashboardExportView(generics.GenericAPIView):
             Questionnaire_queryset = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , Questionnaire__isnull=False)
             total_tb_count = 0
             total_diabetes = 0
-            total_breast_cancer = 0
-            total_oral_cancer = 0
+            total_breast_cancer = 0 
+            total_oral_cancer = 0 
             total_cervical_cancer =0
-            total_COPD_count = 0
-            toatal_communicable  = 0
-            total_eye_problem = 0
-            total_Alzheimers = 0
-            total_ent_problem = 0
-
+            total_COPD_count = 0 
+            toatal_communicable  = 0 
+            total_eye_problem = 0 
+            total_Alzheimers = 0 
+            total_ent_disorder = 0 
+            total_asthama = 0 
             for record in Questionnaire_queryset:
-                part_e = record.Questionnaire.get('part_e', [])
-                communicable = 0
+                part_e = record.Questionnaire.get('part_e', []) 
+                communicable = 0 
                 for question in part_e[0:]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
                         communicable += 1
                         break
-
             for record in Questionnaire_queryset:
-                part_c =  record.Questionnaire.get('part_c', [])
-                COPD = 0
+                part_c =  record.Questionnaire.get('part_c', []) 
+                COPD = 0 
                 for question in part_c[0:]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
                         COPD += 1
                         break
             for record in Questionnaire_queryset:
-                part_b = record.Questionnaire.get('part_b', [])
+                part_b = record.Questionnaire.get('part_b', []) 
                 tb_count = 0
-                diabetes = 0
-                breast_cancer = 0
+                diabetes = 0 
+                breast_cancer = 0 
                 oral_cancer = 0
                 cervical_cancer = 0
                 eye_problem = 0
-                ent =0
-                for question in part_b[:10]:
+                ent_disorder = 0 
+                Alzheimers = 0 
+                asthama = 0 
+                for question in part_b[16:17]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        ent_disorder += 1
+                        break
+                for question in part_b[1:10]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
                         tb_count += 1
@@ -2214,10 +2217,16 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     if answer and len(answer) > 0:
                         cervical_cancer += 1
                         break
-                for question in part_b[22:23]:
+
+                for question in part_b[40:44]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        ent += 1
+                        Alzheimers  += 1
+                        break
+                for question in part_b[:1]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        asthama += 1
                         break
 
                 total_tb_count += tb_count
@@ -2228,30 +2237,30 @@ class AdminDashboardExportView(generics.GenericAPIView):
                 total_COPD_count += COPD
                 toatal_communicable += communicable
                 total_eye_problem += eye_problem
-                total_ent_problem += ent
-
-
+                total_ent_disorder += ent_disorder
+                total_Alzheimers += Alzheimers
+                total_asthama += asthama
 
             data_list.append([ healthpost.ward.wardName , healthpost.healthPostName ,
-                            total_family_count ,
-                            total_citizen_count ,
-                            total_cbac_count ,
-                            citizen_above_60 ,
-                            citizen_above_30 ,
-                            male ,
-                            female ,
-                            transgender ,
-                            0 ,
-                            total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem ,
-                            0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable ,
-                            blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
-                            Referral_choice_Referral_to_Mun_Dispensary ,
-                            Referral_choice_Referral_to_HBT_polyclinic,
-                            Referral_choice_Referral_to_Peripheral_Hospital,
-                            Referral_choice_Referral_to_Medical_College ,
-                            Referral_choice_Referral_to_Private_facility,
-                            total_vulnerabel
-                                      ])
+                    total_family_count ,
+                    total_citizen_count ,
+                    total_cbac_count , 
+                    citizen_above_60 ,
+                    citizen_above_30 ,
+                    male ,
+                    female ,
+                    transgender ,
+                    total_AbhaCreated , 
+                    total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_disorder , 
+                    total_asthama, total_Alzheimers, total_tb_count ,total_breast_cancer , toatal_communicable , 
+                    blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
+                    Referral_choice_Referral_to_Mun_Dispensary ,
+                    Referral_choice_Referral_to_HBT_polyclinic,
+                    Referral_choice_Referral_to_Peripheral_Hospital,
+                    Referral_choice_Referral_to_Medical_College ,
+                    Referral_choice_Referral_to_Private_facility,
+                    total_vulnerabel
+                                ])
             wb = openpyxl.Workbook()
             ws = wb.active
             self.add_headers(ws, header1 )
@@ -2288,21 +2297,20 @@ class AdminDashboardExportView(generics.GenericAPIView):
             for i in ward_related_user:
 
 
-                health__post = healthPost.objects.filter(ward__id = i.familySurveyor.userSections.all()[0].healthPost.ward.id )
+                health__post = healthPost.objects.filter(ward__id = i.familySurveyor.userSections.all()[0].healthPost.ward.id ).order_by("ward")
              
               
                 for healthpost_id in health__post:
-
+                    
+                    total_AbhaCreated = self.get_queryset().filter( familySurveyor__userSections__healthPost__id= healthpost_id.id  , isAbhaCreated = True ).count()
                     total_family_count = self.FamilySurvey_count.filter( user__userSections__healthPost__id = healthpost_id.id ).count()
                     total_citizen_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id ).count()
                     total_cbac_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id,age__gte = 30 , cbacRequired = True).count()
-                    partial_survey_count = self.FamilySurvey_count.filter(partialSubmit = True , user__userSections__healthPost__id = healthpost_id.id).count()
                     male =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id, gender = "M" ).count()
                     female =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id , gender = "F" ).count()
                     transgender =  self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id, gender = "O" ).count()
                     citizen_above_60 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, age__gte = 60 ).count()
                     citizen_above_30 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id.id, age__gte = 30 ).count()
-                    # today_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__id = health_Post.id ,created_date__day = today.day ).count()
 
                     total_vulnerabel = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id , vulnerable = True).count()
 
@@ -2322,42 +2330,48 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     Questionnaire_queryset = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id.id , Questionnaire__isnull=False)
                     total_tb_count = 0
                     total_diabetes = 0
-                    total_breast_cancer = 0
-                    total_oral_cancer = 0
+                    total_breast_cancer = 0 
+                    total_oral_cancer = 0 
                     total_cervical_cancer =0
-                    total_COPD_count = 0
-                    toatal_communicable  = 0
-                    total_eye_problem = 0
-                    total_Alzheimers = 0
-                    total_ent_problem = 0
-
+                    total_COPD_count = 0 
+                    toatal_communicable  = 0 
+                    total_eye_problem = 0 
+                    total_Alzheimers = 0 
+                    total_ent_disorder = 0 
+                    total_asthama = 0 
                     for record in Questionnaire_queryset:
-                        part_e =  record.Questionnaire.get('part_c', [])
-                        communicable = 0
+                        part_e = record.Questionnaire.get('part_e', []) 
+                        communicable = 0 
                         for question in part_e[0:]:
                             answer = question.get('answer', [])
                             if answer and len(answer) > 0:
                                 communicable += 1
                                 break
-
                     for record in Questionnaire_queryset:
-                        part_c =  record.Questionnaire.get('part_c', [])
-                        COPD = 0
+                        part_c =  record.Questionnaire.get('part_c', []) 
+                        COPD = 0 
                         for question in part_c[0:]:
                             answer = question.get('answer', [])
                             if answer and len(answer) > 0:
                                 COPD += 1
                                 break
                     for record in Questionnaire_queryset:
-                        part_b = record.Questionnaire.get('part_b', [])
+                        part_b = record.Questionnaire.get('part_b', []) 
                         tb_count = 0
-                        diabetes = 0
-                        breast_cancer = 0
+                        diabetes = 0 
+                        breast_cancer = 0 
                         oral_cancer = 0
                         cervical_cancer = 0
                         eye_problem = 0
-                        ent = 0
-                        for question in part_b[:10]:
+                        ent_disorder = 0 
+                        Alzheimers = 0 
+                        asthama = 0 
+                        for question in part_b[16:17]:
+                            answer = question.get('answer', [])
+                            if answer and len(answer) > 0:
+                                ent_disorder += 1
+                                break
+                        for question in part_b[1:10]:
                             answer = question.get('answer', [])
                             if answer and len(answer) > 0:
                                 tb_count += 1
@@ -2389,10 +2403,15 @@ class AdminDashboardExportView(generics.GenericAPIView):
                                 cervical_cancer += 1
                                 break
 
-                        for question in part_b[22:23]:
+                        for question in part_b[40:44]:
                             answer = question.get('answer', [])
                             if answer and len(answer) > 0:
-                                ent += 1
+                                Alzheimers  += 1
+                                break
+                        for question in part_b[:1]:
+                            answer = question.get('answer', [])
+                            if answer and len(answer) > 0:
+                                asthama += 1
                                 break
 
                         total_tb_count += tb_count
@@ -2403,30 +2422,30 @@ class AdminDashboardExportView(generics.GenericAPIView):
                         total_COPD_count += COPD
                         toatal_communicable += communicable
                         total_eye_problem += eye_problem
-                        total_ent_problem += ent
-
-
+                        total_ent_disorder += ent_disorder
+                        total_Alzheimers += Alzheimers
+                        total_asthama += asthama
 
                     data_list.append([ healthpost_id.ward.wardName , healthpost_id.healthPostName ,
-                                    total_family_count ,
-                                    total_citizen_count ,
-                                    total_cbac_count ,
-                                    citizen_above_60 ,
-                                    citizen_above_30 ,
-                                    male ,
-                                    female ,
-                                    transgender ,
-                                    0 ,
-                                    total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem ,
-                                    0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable ,
-                                    blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
-                                    Referral_choice_Referral_to_Mun_Dispensary ,
-                                    Referral_choice_Referral_to_HBT_polyclinic,
-                                    Referral_choice_Referral_to_Peripheral_Hospital,
-                                    Referral_choice_Referral_to_Medical_College ,
-                                    Referral_choice_Referral_to_Private_facility,
-                                    total_vulnerabel
-                                            ])
+                            total_family_count ,
+                            total_citizen_count ,
+                            total_cbac_count , 
+                            citizen_above_60 ,
+                            citizen_above_30 ,
+                            male ,
+                            female ,
+                            transgender ,
+                            total_AbhaCreated , 
+                            total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_disorder , 
+                            total_asthama, total_Alzheimers, total_tb_count ,total_breast_cancer , toatal_communicable , 
+                            blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
+                            Referral_choice_Referral_to_Mun_Dispensary ,
+                            Referral_choice_Referral_to_HBT_polyclinic,
+                            Referral_choice_Referral_to_Peripheral_Hospital,
+                            Referral_choice_Referral_to_Medical_College ,
+                            Referral_choice_Referral_to_Private_facility,
+                            total_vulnerabel
+                                        ])
                 wb = openpyxl.Workbook()
                 ws = wb.active
                 self.add_headers(ws, header1 )
@@ -2441,6 +2460,8 @@ class AdminDashboardExportView(generics.GenericAPIView):
         else:
             for health_Post in self.health_Posts:
                 today = datetime.today().strftime('%d-%m-%Y')
+
+                total_AbhaCreated = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = health_Post.id , isAbhaCreated = True ).count()
                 total_family_count = self.FamilySurvey_count.filter( user__userSections__healthPost__id = health_Post.id ).count()
                 total_citizen_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = health_Post.id ).count()
                 total_cbac_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = health_Post.id,age__gte = 30 , cbacRequired = True).count()
@@ -2475,42 +2496,48 @@ class AdminDashboardExportView(generics.GenericAPIView):
                 Questionnaire_queryset = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = health_Post.id , Questionnaire__isnull=False)
                 total_tb_count = 0
                 total_diabetes = 0
-                total_breast_cancer = 0
-                total_oral_cancer = 0
+                total_breast_cancer = 0 
+                total_oral_cancer = 0 
                 total_cervical_cancer =0
-                total_COPD_count = 0
-                toatal_communicable  = 0
-                total_eye_problem = 0
-                total_Alzheimers = 0
-                total_ent_problem = 0
-
+                total_COPD_count = 0 
+                toatal_communicable  = 0 
+                total_eye_problem = 0 
+                total_Alzheimers = 0 
+                total_ent_disorder = 0 
+                total_asthama = 0 
                 for record in Questionnaire_queryset:
-                    part_e = record.Questionnaire.get('part_e', [])
-                    communicable = 0
+                    part_e = record.Questionnaire.get('part_e', []) 
+                    communicable = 0 
                     for question in part_e[0:]:
                         answer = question.get('answer', [])
                         if answer and len(answer) > 0:
                             communicable += 1
                             break
-
                 for record in Questionnaire_queryset:
-                    part_c =  record.Questionnaire.get('part_c', [])
-                    COPD = 0
+                    part_c =  record.Questionnaire.get('part_c', []) 
+                    COPD = 0 
                     for question in part_c[0:]:
                         answer = question.get('answer', [])
                         if answer and len(answer) > 0:
                             COPD += 1
                             break
                 for record in Questionnaire_queryset:
-                    part_b = record.Questionnaire.get('part_b', [])
+                    part_b = record.Questionnaire.get('part_b', []) 
                     tb_count = 0
-                    diabetes = 0
-                    breast_cancer = 0
+                    diabetes = 0 
+                    breast_cancer = 0 
                     oral_cancer = 0
                     cervical_cancer = 0
                     eye_problem = 0
-                    ent =0
-                    for question in part_b[:10]:
+                    ent_disorder = 0 
+                    Alzheimers = 0 
+                    asthama = 0 
+                    for question in part_b[16:17]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            ent_disorder += 1
+                            break
+                    for question in part_b[1:10]:
                         answer = question.get('answer', [])
                         if answer and len(answer) > 0:
                             tb_count += 1
@@ -2541,10 +2568,16 @@ class AdminDashboardExportView(generics.GenericAPIView):
                         if answer and len(answer) > 0:
                             cervical_cancer += 1
                             break
-                    for question in part_b[22:23]:
+
+                    for question in part_b[40:44]:
                         answer = question.get('answer', [])
                         if answer and len(answer) > 0:
-                            ent += 1
+                            Alzheimers  += 1
+                            break
+                    for question in part_b[:1]:
+                        answer = question.get('answer', [])
+                        if answer and len(answer) > 0:
+                            asthama += 1
                             break
 
                     total_tb_count += tb_count
@@ -2555,30 +2588,30 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     total_COPD_count += COPD
                     toatal_communicable += communicable
                     total_eye_problem += eye_problem
-                    total_ent_problem += ent
-
-
+                    total_ent_disorder += ent_disorder
+                    total_Alzheimers += Alzheimers
+                    total_asthama += asthama
 
                 data_list.append([ health_Post.ward.wardName , health_Post.healthPostName ,
-                                total_family_count ,
-                                total_citizen_count ,
-                                total_cbac_count ,
-                                citizen_above_60 ,
-                                citizen_above_30 ,
-                                male ,
-                                female ,
-                                transgender ,
-                                0 ,
-                                total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_problem ,
-                                0 , 0, total_tb_count ,total_breast_cancer , toatal_communicable ,
-                                blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
-                                Referral_choice_Referral_to_Mun_Dispensary ,
-                                Referral_choice_Referral_to_HBT_polyclinic,
-                                Referral_choice_Referral_to_Peripheral_Hospital,
-                                Referral_choice_Referral_to_Medical_College ,
-                                Referral_choice_Referral_to_Private_facility,
-                                total_vulnerabel
-                                        ])
+                        total_family_count ,
+                        total_citizen_count ,
+                        total_cbac_count , 
+                        citizen_above_60 ,
+                        citizen_above_30 ,
+                        male ,
+                        female ,
+                        transgender ,
+                        total_AbhaCreated , 
+                        total_diabetes , hypertension , total_oral_cancer , total_cervical_cancer , total_COPD_count , total_eye_problem , total_ent_disorder , 
+                        total_asthama, total_Alzheimers, total_tb_count ,total_breast_cancer , toatal_communicable , 
+                        blood_collected_home , blood_collected_center ,  denieded_by_mo_count  ,  denieded_by_mo_individual , TestReportGenerated , total_LabTestAdded,
+                        Referral_choice_Referral_to_Mun_Dispensary ,
+                        Referral_choice_Referral_to_HBT_polyclinic,
+                        Referral_choice_Referral_to_Peripheral_Hospital,
+                        Referral_choice_Referral_to_Medical_College ,
+                        Referral_choice_Referral_to_Private_facility,
+                        total_vulnerabel
+                                    ])
 
             wb = openpyxl.Workbook()
             ws = wb.active
@@ -2592,8 +2625,6 @@ class AdminDashboardExportView(generics.GenericAPIView):
             response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("All_Ward_data_"+today)
             wb.save(response)
             return response
-
-
 
 @api_view(['GET'])
 def GetAllUserDetails(request):
