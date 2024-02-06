@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y build-essential libcairo2-dev pkg-confi
 RUN apt-get update && apt-get -y install python3-pip --fix-missing
 
 RUN apt-get update && apt-get install -y postgresql-server-dev-all
-RUN pip install pycairo
+
 # Set the working directory to /app
 WORKDIR /app
 
