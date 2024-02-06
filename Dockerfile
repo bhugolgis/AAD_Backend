@@ -3,7 +3,7 @@ FROM python:3.10.6
 
 
 # Use an official Gdal as a base image
-FROM osgeo/gdal:ubuntu-small-latest
+FROM osgeo/gdal:ubuntu-small-3.0.4
 
 RUN apt-get update && apt-get install -y build-essential libcairo2-dev pkg-config
 RUN apt-get update && apt-get -y install python3-pip --fix-missing

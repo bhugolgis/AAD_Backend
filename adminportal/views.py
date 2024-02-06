@@ -472,7 +472,7 @@ class DownloadHealthpostwiseUserList(generics.GenericAPIView):
             for question in questions:
                 questions_list.append(question.get("question",None))
 
-        column_list = ['Name', 'Gender', 'Age', 'Mobile No', "Address" 'Aadhar Card', 'Abha ID',
+        column_list = ['Name', 'Gender', 'Age', 'Mobile No', "Address" ,'Aadhar Card', 'Abha ID',
                        'Blood Collection Location', 'Family Head', 'ANM/Coordinator', 'ANM/Coordinator Mobile Number' , 'Survey Date',
                        'BMI', 'Blood Pressure', 'Height', 'Pulse', 'Weight', 'Test Assigned',
                        'Report', 'Area', 'General Status', 'ASHA/CHV', 'ASHA/CHV Mobile Number' , 'Vulnerable',

@@ -20,6 +20,7 @@ urlpatterns = [
         
         path('getReferelOptionList' , getReferelOptionList.as_view() , name = 'getReferelOptionList'),
         path('getvulnerableOptionList' , getvulnerableOptionList.as_view() , name = 'getvulnerableOptionList'),
+        path('DownloadANM_CHV_UserList' , DownloadANM_CHV_UserList.as_view() , name = 'DownloadANM_CHV_UserList'),
 
 
 

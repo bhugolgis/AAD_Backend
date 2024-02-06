@@ -42,9 +42,23 @@ class getvulnerableOptionListSerialzier(serializers.ModelSerializer):
         fields = ('id', 'choice',)
 
 class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
+    report = serializers.SerializerMethodField()
     class Meta:
         model = familyMembers
         fields = '__all__'
+
+    def get_report(self , data):
+        if data.isLabTestReportGenerated == True:
+            try:
+
+                pdf_url = str(data.patientFamilyMember.get().patientPathLabReports.get().pdfResult)
+            
+            except:
+                pdf_url = ''
+        else:
+            pdf_url = ''
+
+        return pdf_url
         # depth = 1
         
 

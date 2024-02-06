@@ -123,7 +123,7 @@ class AddlabtestdeatilsAPI(generics.GenericAPIView):
 class GetWardListAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = WardSerialzier
-    queryset = ward.objects.all()
+    queryset = ward.objects.all().order_by('wardName')
     filter_backends = (filters.SearchFilter,)
     search_fields = ("wardName",)
 
@@ -136,7 +136,7 @@ class GethealthPostNameListAPI(generics.ListAPIView):
 
 
     def get(self, request ,id):
-        data = healthPost.objects.filter(ward__id= id )
+        data = healthPost.objects.filter(ward__id= id ).order_by('healthPostName')
         serializer = self.get_serializer(data , many = True).data
 
         return Response({ "status":"success",
