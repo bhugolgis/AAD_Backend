@@ -17,6 +17,7 @@ from django.contrib.auth.models import Group
 from datetime import datetime
 import openpyxl
 from django.http import HttpResponse
+from ArogyaAplyaDari.utils import error_simplifier
 
 
 class verifyMobileNumber(APIView):
@@ -106,7 +107,7 @@ class PostSurveyForm(generics.GenericAPIView):
                 location = None
 
             user =  request.user
-            ward =  (user.section.healthPost.ward.wardName).replace(" ","")
+            ward =  (user.userSections.all()[0].healthPost.ward.wardName).replace(" ","")
             familyId = 'F-{ward}-{num}'.format(ward = ward, num = random.randint(0000000 , 9999999))
             serializer.save(location = location , familyId = familyId ,user = user )
             return Response ({'status' : 'success' ,
@@ -192,8 +193,7 @@ class PostFamilyDetails(generics.GenericAPIView):
             return Response ({'status' : 'success' ,
                             'message' : 'data saved successfully' } , status= status.HTTP_200_OK)
         else:
-            key, value =list(serializer.errors.items())[0]
-            error_message = key+" , "+ value[0]
+            error_message = error_simplifier(serializer.errors)
             return Response({"status" : "error" ,
                              "message" : error_message} , status= status.HTTP_400_BAD_REQUEST)
         
@@ -210,11 +210,12 @@ class GetFamilyMembersDetails(generics.ListAPIView):
         usersection =  self.request.user.userSections.all()[0]
         user_group =self.request.user.groups.all()[0]
         if str(user_group) == 'CHV-ASHA':
-        # Filter the queryset based on the currently logged-in user
+            # Filter the queryset based on the currently logged-in user
             queryset = familyMembers.objects.filter( area__healthPost__ward = usersection.healthPost.ward , familySurveyor=self.request.user)
         elif str(user_group) == "healthworker":
             queryset = familyMembers.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection )  
         return queryset
+        
 
 class UpdateFamilyDetails(generics.GenericAPIView):
 
@@ -258,8 +259,10 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         usersection =  self.request.user.userSections.all()[0]
         user_group =self.request.user.groups.all()[0]
         today = timezone.now().date() 
+
         if str(user_group) == 'CHV-ASHA':
             total_citizen_count = self.get_queryset().filter( area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user).count()
+            print(total_citizen_count)
             todays_citizen_count  = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user , created_date__day= today.day).count()
             total_cbac_count = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user , age__gte = 30 , cbacRequired = True).count()
             partial_survey_count = self.FamilySurvey_count.filter(area__healthPost__ward = usersection.healthPost.ward , partialSubmit = True , user = request.user).count()
@@ -388,7 +391,9 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
                 total_asthama += asthama
                 
         elif str(user_group) == 'healthworker':
+            
             total_citizen_count = self.get_queryset().filter( area__healthPost__ward = usersection.healthPost.ward , area__healthPost__healthPost_name = usersection).count()
+            print(total_citizen_count , "kdg")
             todays_citizen_count  = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , area__healthPost__healthPost_name = usersection , created_date__day= today.day).count()
             total_cbac_count = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , area__healthPost__healthPost_name = usersection , age__gte = 30 , cbacRequired = True).count()
             partial_survey_count = self.FamilySurvey_count.filter(area__healthPost__ward = usersection.healthPost.ward , partialSubmit = True ,  area__healthPost__healthPost_name = usersection).count()

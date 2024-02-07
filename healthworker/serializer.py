@@ -50,7 +50,6 @@ class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
     def get_report(self , data):
         if data.isLabTestReportGenerated == True:
             try:
-
                 pdf_url = str(data.patientFamilyMember.get().patientPathLabReports.get().pdfResult)
             
             except:
@@ -59,7 +58,7 @@ class GetFamilyMemberDetailSerializer(serializers.ModelSerializer):
             pdf_url = ''
 
         return pdf_url
-        # depth = 1
+       
         
 
 class UpdateFamilyMemberDetailSerializer(serializers.ModelSerializer):
@@ -158,12 +157,24 @@ class GetFamilyHeadListSerialzier(serializers.ModelSerializer):
 
 
 class GetCitizenListSerializer(serializers.ModelSerializer):
+    report = serializers.SerializerMethodField()
     class Meta:
         model = familyMembers
         fields = ('id','name' , 'gender' , 'age' , 'mobileNo' , 'familyHead','ASHA_CHV' ,'area' ,'aadharAndAbhaConsent' ,'aadharCard' ,  'abhaId' ,'memberId',
                    'pulse', 'bloodPressure','weight' , 'height' , 'BMI' , 'cbacRequired', "randomBloodSugar" , 'isAbhaCreated' , 
-                  'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' , 'deniedBy' , 'vulnerable' , "relationship" )
+                  'questionsConsent','Questionnaire','bloodConsent' , 'bloodCollectionLocation' , 'created_date' , 'deniedBy' , 'vulnerable' , "relationship"  , "report")
 
+    def get_report(self , data):
+        if data.isLabTestReportGenerated == True:
+            try:
+                pdf_url = str(data.patientFamilyMember.get().patientPathLabReports.get().pdfResult)
+            
+            except:
+                pdf_url = ''
+        else:
+            pdf_url = ''
+
+        return pdf_url
 
 class DumpExcelSerializer(serializers.Serializer):
     excel_file = serializers.FileField(required=True) 

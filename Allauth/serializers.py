@@ -513,6 +513,16 @@ class AddSectionSerializer(serializers.ModelSerializer):
 		model = section
 		fields = '__all__'
 
+	def validate(self , data) :
+		if data["healthPost"] =="" or data["healthPost"] == None:
+				raise serializers.ValidationError("Health post Can not be empty")
+		
+		if data["sectionName"] == "" or data["sectionName"] == None:
+			raise serializers.ValidationError("Section Name can not be empty !!")
+		return data
+
+	
+
 
 class AddAreaSerializer(serializers.ModelSerializer):
 	class Meta:

@@ -1172,7 +1172,7 @@ class  MOHDashboardView(generics.GenericAPIView):
 
 class MOHDashboardExportView(generics.GenericAPIView):
 
-    # permission_classes = ( IsAuthenticated , IsMOH )
+    permission_classes = ( IsAuthenticated , IsMOH )
     FamilySurvey_count = familyHeadDetails.objects.all()
     CustomUser_queryset = CustomUser.objects.all()
 
@@ -1400,7 +1400,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
             response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format(healthpost_name+"_data_"+today)
             wb.save(response)
             return response 
-        else:
+        elif wardId:
             try:
                 ward_name = ward.objects.get(pk=wardId)
             except ward.DoesNotExist:
@@ -1582,15 +1582,15 @@ class MOHDashboardExportView(generics.GenericAPIView):
             response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format(ward_name.wardName+"_data_"+today)
             wb.save(response)
             return response 
-
+        else:
+            return Response({'status': 'error',
+                              'message': "please select Ward or Health Post"} , status = 400)
+        
 class  AdminDashboardView(generics.GenericAPIView):
     permission_classes= (IsAuthenticated , IsAdmin)
     queryset = familyMembers.objects.all()
     FamilySurvey_count = familyHeadDetails.objects.all()
     CustomUser_queryset = CustomUser.objects.all()
-
-
-
 
     def get(self, request ,  *args, **kwargs):
         healthpost_id = self.request.query_params.get('healthpost_id', None)
@@ -1635,8 +1635,8 @@ class  AdminDashboardView(generics.GenericAPIView):
             Referral_choice_Referral_to_Private_facility = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id, referels__choice = 'Referral to Private facility').count()
             hypertension = self.get_queryset().filter(  familySurveyor__userSections__healthPost__id = healthpost_id ,bloodPressure__gte = 140).count()
 
-            total_LabTestAdded = self.get_queryset().filter( isLabTestAdded = True).count()
-            TestReportGenerated = self.get_queryset().filter( isLabTestReportGenerated = True).count()
+            total_LabTestAdded = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id ,  isLabTestAdded = True).count()
+            TestReportGenerated = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , isLabTestReportGenerated = True).count()
 
             Questionnaire_queryset = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id , Questionnaire__isnull=False)
             total_tb_count = 0
@@ -2058,7 +2058,7 @@ class  AdminDashboardView(generics.GenericAPIView):
                 } , status= 200)
 
 class AdminDashboardExportView(generics.GenericAPIView):
-    # permission_classes= (IsAuthenticated , IsAdmin)
+    permission_classes= (IsAuthenticated , IsAdmin)
     FamilySurvey_count = familyHeadDetails.objects.all().order_by('user__userSections__healthPost__ward')
     queryset = familyMembers.objects.all()
     health_Posts = healthPost.objects.all().order_by('ward')
@@ -2626,48 +2626,97 @@ class AdminDashboardExportView(generics.GenericAPIView):
             wb.save(response)
             return response
 
-@api_view(['GET'])
-def GetAllUserDetails(request):
-    data = {'wards': []}
- 
-    wards = ward.objects.all().order_by("wardName")
- 
-    for w in wards:
-        wrd = {'ward': w.wardName, 'healthPosts': []}
- 
-        health_posts = healthPost.objects.filter(ward=w)
-        for hp in health_posts:
-            areaData = area.objects.filter(healthPost_id = hp.id).values("areas")
-            areaList =  [item["areas"] for item in areaData]
-            health_post_info = {'healthPost': hp.healthPostName,'areaList':areaList, 'sections': []}
- 
-            sections = section.objects.filter(healthPost=hp)
-            for sec in sections:
-                section_info = {'sectionName': sec.sectionName, 'anms': [],}
- 
-                # ANMs
-                # anms = CustomUser.objects.filter(section_id=sec.id, groups__name="healthworker")
-                anms = CustomUser.objects.filter(userSections__in=[sec], groups__name="healthworker")
- 
-                for anm in anms:
-                    anm_info = {'anmName': anm.name, 'chvs': []}
- 
-                    # CHVs under the ANM
-                    chvs = CustomUser.objects.filter(ANM_id = anm.id,groups__name="CHV-ASHA")
-                    for chv in chvs:
-                        chv_info = {'chvName': chv.name}
-                        anm_info['chvs'].append(chv_info)
- 
-                    section_info['anms'].append(anm_info)
- 
-                health_post_info['sections'].append(section_info)
- 
-            wrd['healthPosts'].append(health_post_info)
- 
-        data['wards'].append(wrd)
- 
-    return Response({
-        'status': 'success',
-        'message': 'Successfully Fetched',
-        'data': data,
-    })
+
+
+# class GetAllUserDetails(generics.GenericAPIView):
+#     def get(self , request , id  ):
+#         data = {'wards': []}
+    
+#         wards = ward.objects.filter(pk = id ).order_by("wardName")
+    
+#         for w in wards:
+#             wrd = {'ward': w.wardName, 'healthPosts': []}
+    
+#             health_posts = healthPost.objects.filter(ward=w)
+#             for hp in health_posts:
+#                 areaData = area.objects.filter(healthPost_id = hp.id).values("areas")
+#                 areaList =  [item["areas"] for item in areaData]
+#                 health_post_info = {'healthPost': hp.healthPostName,'areaList':areaList, 'sections': []}
+    
+#                 sections = section.objects.filter(healthPost=hp)
+#                 for sec in sections:
+#                     section_info = {'sectionName': sec.sectionName, 'anms': [],}
+    
+#                     # ANMs
+#                     # anms = CustomUser.objects.filter(section_id=sec.id, groups__name="healthworker")
+#                     anms = CustomUser.objects.filter(userSections__in=[sec], groups__name="healthworker")
+    
+#                     for anm in anms:
+#                         anm_info = {'anmName': anm.name, 'chvs': []}
+    
+#                         # CHVs under the ANM
+#                         chvs = CustomUser.objects.filter(ANM_id = anm.id,groups__name="CHV-ASHA")
+#                         for chv in chvs:
+#                             chv_info = {'chvName': chv.name}
+#                             anm_info['chvs'].append(chv_info)
+    
+#                         section_info['anms'].append(anm_info)
+    
+#                     health_post_info['sections'].append(section_info)
+    
+#                 wrd['healthPosts'].append(health_post_info)
+    
+#             data['wards'].append(wrd)
+    
+#         return Response({
+#             'status': 'success',
+#             'message': 'Successfully Fetched',
+#             'data': data,
+#         })
+    
+
+class GetAllUserDetails(generics.GenericAPIView):
+    def get(self , request  ):
+        data = {'wards': []}
+    
+        wards = ward.objects.all().order_by("wardName")
+    
+        for w in wards:
+            wrd = {'ward': w.wardName, 'healthPosts': []}
+    
+            health_posts = healthPost.objects.filter(ward=w)
+            for hp in health_posts:
+                areaData = area.objects.filter(healthPost_id = hp.id).values("areas")
+                areaList =  [item["areas"] for item in areaData]
+                health_post_info = {'healthPost': hp.healthPostName,'areaList':areaList, 'sections': []}
+    
+                sections = section.objects.filter(healthPost=hp)
+                for sec in sections:
+                    section_info = {'sectionName': sec.sectionName, 'anms': [],}
+    
+                    # ANMs
+                    # anms = CustomUser.objects.filter(section_id=sec.id, groups__name="healthworker")
+                    anms = CustomUser.objects.filter(userSections__in=[sec], groups__name="healthworker")
+    
+                    for anm in anms:
+                        anm_info = {'anmName': anm.name, 'chvs': []}
+    
+                        # CHVs under the ANM
+                        chvs = CustomUser.objects.filter(ANM_id = anm.id,groups__name="CHV-ASHA")
+                        for chv in chvs:
+                            chv_info = {'chvName': chv.name}
+                            anm_info['chvs'].append(chv_info)
+    
+                        section_info['anms'].append(anm_info)
+    
+                    health_post_info['sections'].append(section_info)
+    
+                wrd['healthPosts'].append(health_post_info)
+    
+            data['wards'].append(wrd)
+    
+        return Response({
+            'status': 'success',
+            'message': 'Successfully Fetched',
+            'data': data,
+        })
