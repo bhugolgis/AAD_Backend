@@ -2528,3 +2528,5 @@ Traceback (most recent call last):
 AssertionError: 'DownloadANM_CHV_UserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
 Not Found: /favicon.ico
 [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:50377][0m
+Unauthorized: /healthworker/api/GetSurveyorDashboard
+[31;1mHTTP GET /healthworker/api/GetSurveyorDashboard 401 [0.10, 127.0.0.1:54601][0m

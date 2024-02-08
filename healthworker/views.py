@@ -197,7 +197,6 @@ class PostFamilyDetails(generics.GenericAPIView):
             return Response({"status" : "error" ,
                              "message" : error_message} , status= status.HTTP_400_BAD_REQUEST)
         
-
 # The class `GetFamilyMembersDetails` is a generic ListAPIView that retrieves details of family
 # members and allows filtering based on family ID, mobile number, and name.
 class GetFamilyMembersDetails(generics.ListAPIView):
@@ -261,8 +260,8 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
         today = timezone.now().date() 
 
         if str(user_group) == 'CHV-ASHA':
+            total_AbhaCreated = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user , isAbhaCreated = True ).count()
             total_citizen_count = self.get_queryset().filter( area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user).count()
-            print(total_citizen_count)
             todays_citizen_count  = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user , created_date__day= today.day).count()
             total_cbac_count = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user , age__gte = 30 , cbacRequired = True).count()
             partial_survey_count = self.FamilySurvey_count.filter(area__healthPost__ward = usersection.healthPost.ward , partialSubmit = True , user = request.user).count()
@@ -391,9 +390,8 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
                 total_asthama += asthama
                 
         elif str(user_group) == 'healthworker':
-            
+            total_AbhaCreated = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , area__healthPost__healthPost_name = usersection , isAbhaCreated = True ).count()
             total_citizen_count = self.get_queryset().filter( area__healthPost__ward = usersection.healthPost.ward , area__healthPost__healthPost_name = usersection).count()
-            print(total_citizen_count , "kdg")
             todays_citizen_count  = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , area__healthPost__healthPost_name = usersection , created_date__day= today.day).count()
             total_cbac_count = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , area__healthPost__healthPost_name = usersection , age__gte = 30 , cbacRequired = True).count()
             partial_survey_count = self.FamilySurvey_count.filter(area__healthPost__ward = usersection.healthPost.ward , partialSubmit = True ,  area__healthPost__healthPost_name = usersection).count()
@@ -537,9 +535,9 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'oral_Cancer' : total_oral_cancer ,
             'cervical_cancer' : total_cervical_cancer ,
             'copd' : total_COPD_count,
-            'ent_disorder' : total_ent_disorder ,
-            'eye_disorder' : total_eye_problem , 
-            'asthama' : total_asthama ,
+            'ent_disorder' : total_ent_disorder,
+            'eye_disorder' : total_eye_problem, 
+            'asthama' : total_asthama,
             'Alzheimers_Dementia' : total_Alzheimers ,
             'tb' : total_tb_count ,
             'breast_cancer' : total_breast_cancer , 
@@ -561,6 +559,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'vulnerabel_any_other_reason' : vulnerabel_any_other_reason , 
             "TestReportGenerated" : TestReportGenerated , 
             "TestsAssigned" : TestsAssigned, 
+            'total_AbhaCreated' : total_AbhaCreated , 
             } , status= status.HTTP_200_OK )
     
 
@@ -679,18 +678,14 @@ class GetFamilyList(generics.ListAPIView):
             serializer = self.get_serializer(total_list , many = True ).data
             return Response( serializer , status= status.HTTP_200_OK)
         
-# The above class is a generic ListAPIView that retrieves blood collection details for family members,
-# with search functionality based on the blood collection location.
+
 class GetBloodCollectionDetail(generics.ListAPIView):
     queryset = familyMembers.objects.all()
     serializer_class = GetCitizenListSerializer
     permission_classes =(IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     filter_backends = (filters.SearchFilter,)
     search_fields = ['bloodCollectionLocation']
-# The `DumpExcelInsertxlsx` class is a view in a Django REST framework API that handles the uploading
-# of an Excel file, parses the data, and creates users in the database based on the data in the Excel
-# file.
-    
+
 class DumpExcelInsertxlsx(generics.GenericAPIView):
     parser_classes = [MultiPartParser]
     serializer_class = DumpExcelSerializer
