@@ -702,7 +702,6 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
         
         else:
             key, value = list(serializer.errors.items())[0]
-            print(key , value)
             error_message = key+" , "+ value[0]
             return Response({'message': error_message, 
                             'status' : 'error'}, status=400)

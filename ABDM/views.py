@@ -87,24 +87,32 @@ class generateAadharOtpAPI(generics.GenericAPIView):
             payload = json.dumps({
             "aadhaar": serializer.validated_data.get('aadhaar'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            print(response.content)
+            
             if response.status_code == 200:
                 
                 return Response(json.loads(response.content) , status=response.status_code)
-            elif response.status_code == 400:
-                return Response(json.loads(response.content) , status=response.status_code)
-            elif response.status_code == range(500 , 599):
-                return Response(json.loads(response.content), status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
 
         else:
-            return Response({'message': serializer.errors , 
-                             "status": "error" } , status=400)
+            key, value = list(serializer.errors.items())[0]
+            error_message = key+" , "+ value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
         
 class verifyAadharOTP(generics.GenericAPIView):
     serializer_class = verifyAadharOTPSerializer 
 
     def post(self, request, *args, **kwargs):
-        # print(request.META.get('HTTP_AUTHORIZATION'))
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             url= "https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/verifyOTP"
@@ -121,20 +129,28 @@ class verifyAadharOTP(generics.GenericAPIView):
 
             if response.status_code == 200:
                 return Response(json.loads(response.content) , status=response.status_code)
-            elif response.status_code == 400:
-                return Response(json.loads(response.content) , status=response.status_code)
-            elif response.status_code == range(500 , 599):
-                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
-                             "status": "error" } , status=400)
+            key, value = list(serializer.errors.items())[0]
+            error_message = key+" , "+ value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
         
 
 class checkAndGenerateMobileOTP(generics.GenericAPIView):
     serializer_class = checkAndGenerateMobileOTPSerializer 
 
     def post(self, request, *args, **kwargs):
-        # print(request.META.get('HTTP_AUTHORIZATION'))
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             url= "https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/checkAndGenerateMobileOTP"
@@ -148,10 +164,24 @@ class checkAndGenerateMobileOTP(generics.GenericAPIView):
             "mobile": serializer.validated_data.get('mobile'),
             "txnId": serializer.validated_data.get('txnId'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            print(response.content)
-            return Response(json.loads(response.content) , status=response.status_code)
+
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
 
 
@@ -159,7 +189,7 @@ class createHealthIdByAdhaarAPI(generics.GenericAPIView):
     serializer_class = createHealthIdByAdhaarSerializer    
 
     def post(self, request, *args, **kwargs):
-        # print(request.META.get('HTTP_AUTHORIZATION'))
+        
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             url= "https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/createHealthIdByAdhaar"
@@ -174,10 +204,23 @@ class createHealthIdByAdhaarAPI(generics.GenericAPIView):
             "consentVersion" : serializer.validated_data.get('consentVersion'),
             "txnId": serializer.validated_data.get('txnId'),})
             response = requests.request("POST", url, headers=headers, data=payload)
-            print(response.content)
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
 
 
@@ -185,7 +228,6 @@ class verifyMobileOTP(generics.GenericAPIView):
     serializer_class = verifyMobileOTPSerializer
 
     def post(self, request, *args, **kwargs):
-        # print(request.META.get('HTTP_AUTHORIZATION'))
         serializer = self.get_serializer(data = request.data)
         if serializer.is_valid():
             url= "https://healthidsbx.abdm.gov.in/api/v2/registration/aadhaar/verifyMobileOTP"
@@ -200,10 +242,23 @@ class verifyMobileOTP(generics.GenericAPIView):
             "txnId": serializer.validated_data.get('txnId'),})
             
             response = requests.request("POST", url, headers=headers, data=payload)
-            print(response.content)
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -229,9 +284,23 @@ class SearchAuthMethodsAPI(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -255,9 +324,23 @@ class AuthMethodAPI(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -280,9 +363,23 @@ class resendOtp(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -307,9 +404,23 @@ class VerifyOTP(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -332,9 +443,23 @@ class Abha_Adress_suggestions(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -355,9 +480,18 @@ class abha_adress_search_isExist(APIView):
         response = requests.get(url, headers=headers, params=params)
 
         if response.status_code == 200:
-            return Response(json.loads(response.content), status=200)
+                return Response(json.loads(response.content) , status=response.status_code)
+        elif response.status_code == 504:
+            return Response({'message': "The server didn't respond in time." , 
+                            "status": "error" } , status=504)
         else:
-            return Response("Failed to fetch data", status=response.status_code)
+            json_response= json.loads(response.content) 
+            try:
+                return Response({"message" : json_response.get("details")[0]["message"],
+                                "status" : "error"} , status=response.status_code)
+            except:
+                return Response({"message" : json_response.get("message") , 
+                                "status" : "error"} , status=response.status_code)
         
 class CreatePhrAddress(generics.GenericAPIView):
     serializer_class = CreatePhrAddressSerializer
@@ -380,9 +514,23 @@ class CreatePhrAddress(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 # LINK TO HEALTH ADDRESS TO HEALTH ID 
@@ -407,9 +555,23 @@ class GenerateOTP(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -433,9 +595,23 @@ class VerifymobileAadharOTP(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
 
 
@@ -459,9 +635,23 @@ class LinkHID_to_Address(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
 
 
@@ -491,9 +681,23 @@ class AuthByAadhar(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -518,9 +722,23 @@ class confirmWithAadhaarOtp(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -544,9 +762,23 @@ class resendAuthOTP(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
 
 
@@ -574,10 +806,20 @@ class DownloadQrcodeAPI(APIView):
             response = HttpResponse(pdf_content, content_type='image/png')
             response['Content-Disposition'] = 'inline; filename="Qrcode.png"'
             return response
-        else:
-            return Response("Failed to fetch data", status=response.status_code)
         
-
+        
+        elif response.status_code == 504:
+            return Response({'message': "The server didn't respond in time." , 
+                            "status": "error" } , status=504)
+        else:
+            json_response= json.loads(response.content) 
+            try:
+                return Response({"message" : json_response.get("details")[0]["message"],
+                                "status" : "error"} , status=response.status_code)
+            except:
+                return Response({"message" : json_response.get("message") , 
+                                "status" : "error"} , status=response.status_code)
+        
 class DownloadCardAPI(APIView):
     def get(self, request):
         url = "https://healthidsbx.abdm.gov.in/api/v1/account/getCard"
@@ -596,8 +838,17 @@ class DownloadCardAPI(APIView):
             response = HttpResponse(pdf_content, content_type='application/pdf')
             response['Content-Disposition'] = 'inline; filename="downloaded_card.pdf"'
             return response
+        elif response.status_code == 504:
+            return Response({'message': "The server didn't respond in time." , 
+                            "status": "error" } , status=504)
         else:
-            return Response("Failed to fetch data", status=response.status_code)
+            json_response= json.loads(response.content) 
+            try:
+                return Response({"message" : json_response.get("details")[0]["message"],
+                                "status" : "error"} , status=response.status_code)
+            except:
+                return Response({"message" : json_response.get("message") , 
+                                "status" : "error"} , status=response.status_code)
 
 
 # Search API's 
@@ -622,9 +873,23 @@ class searchByHealthId(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(response.content, status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
 
 
@@ -652,9 +917,23 @@ class searchByMobile(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
         
 
@@ -684,11 +963,24 @@ class prfileLogin(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
-
 
 
 class confirmWithAadhaarOtp(generics.GenericAPIView):
@@ -713,11 +1005,24 @@ class confirmWithAadhaarOtp(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
-
 
 class authWithMobile(generics.GenericAPIView):
     serializer_class = AuthByAadharSerializer
@@ -740,9 +1045,23 @@ class authWithMobile(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)
 
 
@@ -769,7 +1088,21 @@ class confirmWithMobileOTP(generics.GenericAPIView):
             
             response = requests.request("POST", url, headers=headers, data=payload)
             
-            return Response(json.loads(response.content) , status=response.status_code)
+            if response.status_code == 200:
+                return Response(json.loads(response.content) , status=response.status_code)
+            elif response.status_code == 504:
+                return Response({'message': "The server didn't respond in time." , 
+                             "status": "error" } , status=504)
+            else:
+                json_response= json.loads(response.content) 
+                try:
+                    return Response({"message" : json_response.get("details")[0]["message"],
+                                    "status" : "error"} , status=response.status_code)
+                except:
+                    return Response({"message" : json_response.get("message") , 
+                                    "status" : "error"} , status=response.status_code)
         else:
-            return Response({'message': serializer.errors , 
+            key, value = list(serializer.errors.items())[0]
+            error_message = str(key) + " ," +str(value[0])
+            return Response({'message': error_message , 
                              "status": "error" } , status=400)

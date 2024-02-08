@@ -805,35 +805,6 @@ class DownloadDispensarywiseUserList(generics.GenericAPIView):
         wb.save(response)
         return response
 
-
-
-    # permission_classes = [IsAuthenticated , IsAdmin | IsSupervisor ]
-
-    # def get(self, request, id ,  *args, **kwargs ,):
-    #     data_list = [['name','memberId', 'mobileNo','gender' , 'Age', 'familyHead', 'familySurveyor',
-    #                   'aadharCard', 'abhaId' , 'bloodCollectionLocation' , 'CBAC_Score' , 'Survey Date' , 'Status' , 'DeniedBy' ]]
-
-    #     healthpost_related_user = familyMembers.objects.filter(familySurveyor__dispensary__id = id)
-    #     dispensary_name = dispensary.objects.get(id = id )
-
-    #     for i in  healthpost_related_user:
-    #         dispensary_name = i.familySurveyor.dispensary.dispensaryName
-    #         data_list.append([
-    #             i.name , i.memberId ,  i.mobileNo, i.gender , i.age , i.familyHead.name , i.familySurveyor.name ,
-    #              i.aadharCard , i.abhaId , i.bloodCollectionLocation , i.cbacScore , i.created_date.strftime('%d/%m/%Y %I:%M:%S %p'),
-    #             i.generalStatus , i.deniedBy ,
-    #         ])
-
-    #     wb = openpyxl.Workbook()
-    #     ws = wb.active
-    #     for row in data_list:
-    #         ws.append(row)
-
-    #     response = HttpResponse(content_type='application/vnd.ms-excel')
-    #     response['Content-Disposition'] = f'attachment; filename="{dispensary_name.dispensaryName}.xlsx"'
-    #     wb.save(response)
-    #     return response
-
 class  MOHDashboardView(generics.GenericAPIView):
     permission_classes= (IsAuthenticated , IsMOH)
     queryset = familyMembers.objects.all()
@@ -1586,7 +1557,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
             return Response({'status': 'error',
                               'message': "please select Ward or Health Post"} , status = 400)
         
-class  AdminDashboardView(generics.GenericAPIView):
+class  AdminDashboardView(generics.GenericAPIView): 
     permission_classes= (IsAuthenticated , IsAdmin)
     queryset = familyMembers.objects.all()
     FamilySurvey_count = familyHeadDetails.objects.all()
@@ -1595,7 +1566,6 @@ class  AdminDashboardView(generics.GenericAPIView):
     def get(self, request ,  *args, **kwargs):
         healthpost_id = self.request.query_params.get('healthpost_id', None)
         wardId = self.request.query_params.get('wardId', None)
-
 
         CHV_ASHA_count = self.CustomUser_queryset.filter(groups__name='CHV-ASHA').count()
         MO_count = self.CustomUser_queryset.filter(groups__name='mo').count()

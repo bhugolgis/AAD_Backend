@@ -2530,3 +2530,240 @@ Not Found: /favicon.ico
 [33mHTTP GET /favicon.ico 404 [0.02, 127.0.0.1:50377][0m
 Unauthorized: /healthworker/api/GetSurveyorDashboard
 [31;1mHTTP GET /healthworker/api/GetSurveyorDashboard 401 [0.10, 127.0.0.1:54601][0m
+Internal Server Error: /abdm/api/checkAndGenerateMobileOTP
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\ABDM\views.py", line 153, in post
+    return Response(json.loads(response.content) , status=response.status_code)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[35;1mHTTP POST /abdm/api/checkAndGenerateMobileOTP 500 [60.32, 10.202.100.195:54875][0m
+Internal Server Error: /abdm/api/generateAadharOtpAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 500 [60.50, 10.202.100.195:54935][0m
+Internal Server Error: /abdm/api/generateAadharOtpAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 500 [0.29, 10.202.100.195:55342][0m
+Gateway Timeout: /abdm/api/generateAadharOtpAPI
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 504 [60.24, 10.202.100.195:55497][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.01, 127.0.0.1:58497][0m
+Internal Server Error: /abdm/api/generateAadharOtpAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 500 [0.28, 127.0.0.1:58497][0m
+Application instance <Task pending name='Task-1' coro=<ASGIStaticFilesHandler.__call__() running at D:\Jafar\AAD\.env\lib\site-packages\django\contrib\staticfiles\handlers.py:101> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\asyncio\futures.py:385, Task.task_wakeup()]>> for connection <WebRequest at 0x1990bbeb340 method=POST uri=/abdm/api/generateAadharOtpAPI clientproto=HTTP/1.1> took too long to shut down and was killed.
+Gateway Timeout: /abdm/api/generateAadharOtpAPI
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 504 [60.19, 127.0.0.1:58728][0m
+Unauthorized: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 401 [0.19, 127.0.0.1:58728][0m
+Gateway Timeout: /abdm/api/generateAadharOtpAPI
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 504 [60.16, 10.202.100.195:56530][0m
+Gateway Timeout: /abdm/api/generateAadharOtpAPI
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 504 [60.15, 10.202.100.219:56701][0m
+Gateway Timeout: /abdm/api/generateAadharOtpAPI
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 504 [60.28, 10.202.100.219:56707][0m
+Internal Server Error: /abdm/api/checkAndGenerateMobileOTP
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\ABDM\views.py", line 167, in post
+    json_response= json.loads(response.content)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[35;1mHTTP POST /abdm/api/checkAndGenerateMobileOTP 500 [0.23, 10.202.100.219:56713][0m
+Method Not Allowed: /abdm/api/checkAndGenerateMobileOTP
+[31;1mHTTP GET /abdm/api/checkAndGenerateMobileOTP 405 [0.14, 10.202.100.219:56731][0m
+Not Found: /favicon.ico
+[33mHTTP GET /favicon.ico 404 [0.04, 10.202.100.219:56734][0m
+Unauthorized: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 401 [0.25, 127.0.0.1:60108][0m
+Unauthorized: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 401 [0.19, 127.0.0.1:60108][0m
+Unauthorized: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 401 [0.22, 127.0.0.1:60108][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.18, 127.0.0.1:60108][0m
+Unprocessable Entity: /abdm/api/checkAndGenerateMobileOTP
+[31;1mHTTP POST /abdm/api/checkAndGenerateMobileOTP 422 [0.22, 10.202.100.195:57495][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.21, 127.0.0.1:60602][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.28, 127.0.0.1:60633][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.19, 127.0.0.1:60838][0m
+Unauthorized: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 401 [0.22, 127.0.0.1:60878][0m
+Unauthorized: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 401 [0.19, 127.0.0.1:60878][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.16, 127.0.0.1:60878][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.20, 127.0.0.1:60911][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.19, 127.0.0.1:60965][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.21, 127.0.0.1:61038][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.24, 10.202.100.195:57908][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.17, 10.202.100.219:57008][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.18, 10.202.100.195:58029][0m
+Unprocessable Entity: /abdm/api/verifyAadharOTP
+[31;1mHTTP POST /abdm/api/verifyAadharOTP 422 [0.72, 10.202.100.195:58061][0m
+Internal Server Error: /abdm/api/generateAadharOtpAPI
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\ABDM\views.py", line 107, in post
+    key , value = list(value[1].items())[0]
+UnboundLocalError: local variable 'value' referenced before assignment
+[35;1mHTTP POST /abdm/api/generateAadharOtpAPI 500 [0.05, 127.0.0.1:61895][0m
+Bad Request: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 400 [0.01, 127.0.0.1:62298][0m
+Unprocessable Entity: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 422 [0.20, 10.202.100.195:60715][0m
+Unauthorized: /abdm/api/generateAadharOtpAPI
+[31;1mHTTP POST /abdm/api/generateAadharOtpAPI 401 [0.21, 10.202.100.195:61624][0m
+Unprocessable Entity: /abdm/api/verifyMobileOTP
+[31;1mHTTP POST /abdm/api/verifyMobileOTP 422 [0.30, 10.202.100.195:61646][0m
