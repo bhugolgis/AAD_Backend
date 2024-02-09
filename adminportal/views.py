@@ -1198,7 +1198,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
                 return Response({
                     "message":"No Health post exists with ID %d"%(id),
                     "status":"error"
-                })
+                } , status= 400 )
             healthpost_related_user = familyMembers.objects.filter(familySurveyor__userSections__healthPost=healthpost)
             today = datetime.today().strftime('%d-%m-%Y')
             healthpost_name = healthpost.healthPostName
@@ -1206,7 +1206,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
             if not healthpost_related_user:
                 return Response({
                     "message":"No data found for healthpost %s"%(healthpost_name),
-                    "status":"error"})
+                    "status":"error"} , status = 400)
             ANM_list = CustomUser.objects.filter(groups__name = "healthworker" , userSections__healthPost__id = healthpost_id)
             for anm in ANM_list:
 
