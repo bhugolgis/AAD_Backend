@@ -2085,7 +2085,7 @@ class AdminDashboardExportView(generics.GenericAPIView):
                     "message":"No data found for healthpost %s"%(healthpost_name),
                     "status":"error"
                 })
-
+            total_AbhaCreated = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id  , isAbhaCreated = True ).count()
             total_family_count = self.FamilySurvey_count.filter( user__userSections__healthPost__id = healthpost_id ).count()
             total_citizen_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id ).count()
             total_cbac_count = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id,age__gte = 30 , cbacRequired = True).count()

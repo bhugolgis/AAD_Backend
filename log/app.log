@@ -2767,3 +2767,41 @@ Unauthorized: /abdm/api/generateAadharOtpAPI
 [31;1mHTTP POST /abdm/api/generateAadharOtpAPI 401 [0.21, 10.202.100.195:61624][0m
 Unprocessable Entity: /abdm/api/verifyMobileOTP
 [31;1mHTTP POST /abdm/api/verifyMobileOTP 422 [0.30, 10.202.100.195:61646][0m
+Unauthorized: /adminportal/api/MOHDashboardExcelView
+[31;1mHTTP GET /adminportal/api/MOHDashboardExcelView 401 [0.13, 127.0.0.1:57244][0m
+Unauthorized: /allauth/api/login
+[31;1mHTTP POST /allauth/api/login 401 [0.15, 127.0.0.1:57261][0m
+Bad Request: /adminportal/api/MOHDashboardExcelView
+[31;1mHTTP GET /adminportal/api/MOHDashboardExcelView 400 [0.16, 127.0.0.1:57244][0m
+Unauthorized: /adminportal/api/AdminDashboardExportView
+[31;1mHTTP GET /adminportal/api/AdminDashboardExportView?wardId=6 401 [0.01, 10.202.100.224:57434][0m
+Internal Server Error: /adminportal/api/AdminDashboardExportView
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Jafar\AAD\adminportal\views.py", line 2223, in get
+    total_AbhaCreated ,
+UnboundLocalError: local variable 'total_AbhaCreated' referenced before assignment
+[35;1mHTTP GET /adminportal/api/AdminDashboardExportView?healthpost_id=12&wardId=6 500 [0.54, 10.202.100.224:57434][0m
