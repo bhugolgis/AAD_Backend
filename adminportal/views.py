@@ -1378,7 +1378,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
                 return Response({
                     "message":"No ward exists with ID %d"%(wardId),
                     "status":"error"
-                })
+                } , status = 400)
             ward_related_user = familyMembers.objects.filter(familySurveyor__userSections__healthPost__ward__id=wardId)
             today = datetime.today().strftime('%d-%m-%Y')
 
@@ -1386,7 +1386,7 @@ class MOHDashboardExportView(generics.GenericAPIView):
                 return Response({
                     "message":"No data found for ward %s"%(ward_name.wardName),
                     "status":"error"
-                })
+                } , status = 400)
         
             health__post = healthPost.objects.filter(ward__id = wardId)
 
