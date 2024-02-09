@@ -452,7 +452,7 @@ class DownloadHealthpostwiseUserList(generics.GenericAPIView):
             return Response({
                 "message":"No Health post exists with ID %d"%(id),
                 "status":"error"
-            } , status=404)
+            } , status=400)
         healthpost_related_user = familyMembers.objects.filter(area__healthPost=healthpost)
         today = datetime.today().strftime('%d-%m-%Y')
         healthpost_name = healthpost.healthPostName
@@ -822,7 +822,7 @@ class  MOHDashboardView(generics.GenericAPIView):
         if healthpost_id:
             
             today = timezone.now().date()
-            total_AbhaCreated = self.get_queryset().filter( familySurveyor__userSections__healthPost__ward__id = request.user.ward_id , amilySurveyor__userSections__healthPost__id = healthpost_id ,  isAbhaCreated = True ).count()
+            total_AbhaCreated = self.get_queryset().filter( familySurveyor__userSections__healthPost__ward__id = request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id ,  isAbhaCreated = True ).count()
             total_citizen_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id =  request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id ).count()
             todays_citizen_count  = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id , familySurveyor__userSections__healthPost__id = healthpost_id , created_date__day= today.day).count()
             total_cbac_count = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id = request.user.ward_id  , familySurveyor__userSections__healthPost__id = healthpost_id,age__gte = 30 , cbacRequired = True).count()
