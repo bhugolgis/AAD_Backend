@@ -17,6 +17,10 @@ class postFamilyMemberDetailSerializer(serializers.ModelSerializer):
     
 
     def validate(self, data):
+        if 'area' not in data or data['area'] == '':
+            raise serializers.ValidationError('area can not be empty !!')
+        if 'ASHA_CHV' not in data or data['ASHA_CHV'] == '':
+            raise serializers.ValidationError('ASHA-CHV can not be empty !!')
         if 'name' not in data or data["name"] == '':
             raise serializers.ValidationError('name can not be empty !!')
         if 'aadharCard' not in data or data["aadharCard"] == '':
@@ -109,6 +113,10 @@ class PostSurveyFormSerializer(serializers.ModelSerializer):
 
         if 'mobileNo' not in data or data['mobileNo'] == '' :
             raise serializers.ValidationError('mobileNo can not be empty !!')
+        if 'area' not in data or data['area'] == '':
+            raise serializers.ValidationError('area can not be empty !!')
+        if 'ASHA_CHV' not in data or data['ASHA_CHV'] == '':
+            raise serializers.ValidationError('ASHA-CHV can not be empty !!')
         
         return data
     

@@ -295,99 +295,79 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             total_diabetes = 0
             total_breast_cancer = 0 
             total_oral_cancer = 0 
-            total_cervical_cancer =0
+            total_cervical_cancer = 0
             total_COPD_count = 0 
-            toatal_communicable  = 0 
+            total_communicable = 0 
             total_eye_problem = 0 
             total_Alzheimers = 0 
             total_ent_disorder = 0 
-            total_asthama = 0 
+            total_asthma = 0 
+
             for record in Questionnaire_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                part_c = record.Questionnaire.get('part_c', []) 
                 part_e = record.Questionnaire.get('part_e', []) 
-                communicable = 0 
+                
+                # Check for part E
                 for question in part_e[0:]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        communicable += 1
+                        total_communicable += 1
                         break
-            for record in Questionnaire_queryset:
-                part_c =  record.Questionnaire.get('part_c', []) 
-                COPD = 0 
+
+                # Check for part C
                 for question in part_c[0:]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        COPD += 1
+                        total_COPD_count += 1
                         break
-            for record in Questionnaire_queryset:
-                part_b = record.Questionnaire.get('part_b', []) 
-                tb_count = 0
-                diabetes = 0 
-                breast_cancer = 0 
-                oral_cancer = 0
-                cervical_cancer = 0
-                eye_problem = 0
-                ent_disorder = 0 
-                Alzheimers = 0 
-                asthama = 0 
+
+                # Check for part B
                 for question in part_b[16:17]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        ent_disorder += 1
+                        total_ent_disorder += 1
                         break
                 for question in part_b[1:10]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        tb_count += 1
+                        total_tb_count += 1
                         break
                 for question in part_b[12:16]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        eye_problem += 1
+                        total_eye_problem += 1
                         break
                 for question in part_b[10:12]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        diabetes += 1
+                        total_diabetes += 1
                         break
                 for question in part_b[33:36]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        breast_cancer += 1
+                        total_breast_cancer += 1
                         break
                 for question in part_b[18:25]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        oral_cancer += 1
+                        total_oral_cancer += 1
                         break
-
                 for question in part_b[36:40]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        cervical_cancer += 1
+                        total_cervical_cancer += 1
                         break
-
                 for question in part_b[40:44]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        Alzheimers  += 1
+                        total_Alzheimers += 1
                         break
                 for question in part_b[:1]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        asthama += 1
+                        total_asthma += 1
                         break
-
-                total_tb_count += tb_count
-                total_diabetes += diabetes
-                total_breast_cancer += breast_cancer
-                total_oral_cancer += oral_cancer
-                total_cervical_cancer += cervical_cancer
-                total_COPD_count += COPD
-                toatal_communicable += communicable
-                total_eye_problem += eye_problem
-                total_ent_disorder += ent_disorder
-                total_Alzheimers += Alzheimers
-                total_asthama += asthama
                 
         elif str(user_group) == 'healthworker':
             total_AbhaCreated = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward , area__healthPost__healthPost_name = usersection , isAbhaCreated = True ).count()
@@ -425,99 +405,79 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             total_diabetes = 0
             total_breast_cancer = 0 
             total_oral_cancer = 0 
-            total_cervical_cancer =0
+            total_cervical_cancer = 0
             total_COPD_count = 0 
-            toatal_communicable  = 0 
+            total_communicable = 0 
             total_eye_problem = 0 
             total_Alzheimers = 0 
             total_ent_disorder = 0 
-            total_asthama = 0 
+            total_asthma = 0 
+
             for record in Questionnaire_queryset:
+                part_b = record.Questionnaire.get('part_b', []) 
+                part_c = record.Questionnaire.get('part_c', []) 
                 part_e = record.Questionnaire.get('part_e', []) 
-                communicable = 0 
+                
+                # Check for part E
                 for question in part_e[0:]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        communicable += 1
+                        total_communicable += 1
                         break
-            for record in Questionnaire_queryset:
-                part_c =  record.Questionnaire.get('part_c', []) 
-                COPD = 0 
+
+                # Check for part C
                 for question in part_c[0:]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        COPD += 1
+                        total_COPD_count += 1
                         break
-            for record in Questionnaire_queryset:
-                part_b = record.Questionnaire.get('part_b', []) 
-                tb_count = 0
-                diabetes = 0 
-                breast_cancer = 0 
-                oral_cancer = 0
-                cervical_cancer = 0
-                eye_problem = 0
-                ent_disorder = 0 
-                Alzheimers = 0 
-                asthama = 0 
+
+                # Check for part B
                 for question in part_b[16:17]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        ent_disorder += 1
+                        total_ent_disorder += 1
                         break
                 for question in part_b[1:10]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        tb_count += 1
+                        total_tb_count += 1
                         break
                 for question in part_b[12:16]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        eye_problem += 1
+                        total_eye_problem += 1
                         break
                 for question in part_b[10:12]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        diabetes += 1
+                        total_diabetes += 1
                         break
                 for question in part_b[33:36]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        breast_cancer += 1
+                        total_breast_cancer += 1
                         break
                 for question in part_b[18:25]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        oral_cancer += 1
+                        total_oral_cancer += 1
                         break
-
                 for question in part_b[36:40]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        cervical_cancer += 1
+                        total_cervical_cancer += 1
                         break
-
                 for question in part_b[40:44]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        Alzheimers  += 1
+                        total_Alzheimers += 1
                         break
                 for question in part_b[:1]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
-                        asthama += 1
+                        total_asthma += 1
                         break
-
-                total_tb_count += tb_count
-                total_diabetes += diabetes
-                total_breast_cancer += breast_cancer
-                total_oral_cancer += oral_cancer
-                total_cervical_cancer += cervical_cancer
-                total_COPD_count += COPD
-                toatal_communicable += communicable
-                total_eye_problem += eye_problem
-                total_ent_disorder += ent_disorder
-                total_Alzheimers += Alzheimers
-                total_asthama += asthama
 
             
 
@@ -537,11 +497,11 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'copd' : total_COPD_count,
             'ent_disorder' : total_ent_disorder,
             'eye_disorder' : total_eye_problem, 
-            'asthama' : total_asthama,
+            'asthama' : total_asthma,
             'Alzheimers_Dementia' : total_Alzheimers ,
             'tb' : total_tb_count ,
             'breast_cancer' : total_breast_cancer , 
-            'communicable' : toatal_communicable ,
+            'communicable' : total_communicable ,
             'blood_collected_home' : blood_collected_home , 
             'blood_collected_center' : blood_collected_center ,
             'denieded_by_mo_count' : denieded_by_mo_count , 
@@ -785,7 +745,7 @@ class DownloadANM_CHV_UserList(generics.GenericAPIView):
                 related_user = familyMembers.objects.filter( area__healthPost__ward = usersection.healthPost.ward , familySurveyor=self.request.user)
         except familyMembers.DoesNotExist:
             return Response({
-                "message":"No Health post exists with ID %d"%(id),
+                "message":"No data found",
                 "status":"error"
             } , status=400)
         
@@ -807,7 +767,7 @@ class DownloadANM_CHV_UserList(generics.GenericAPIView):
             for question in questions:
                 questions_list.append(question.get("question",None))
 
-        column_list = ['Name', 'Gender', 'Age', 'Mobile No', "Address" ,  'Aadhar Card', 'Abha ID',
+        column_list = ['Name', 'Gender', 'Age', 'Mobile No', "Address" ,  'Aadhar Card', 'ABHA ID',
                        'Blood Collection Location', 'Family Head', 'ANM/Coordinator', 'ANM/Coordinator Mobile Number' , 'Survey Date',
                        'BMI', 'Blood Pressure', 'Height', 'Pulse', 'Weight', 'Test Assigned',
                        'Report', 'Area', 'General Status', 'ASHA/CHV', 'ASHA/CHV Mobile Number' , 'Vulnerable',
@@ -826,8 +786,9 @@ class DownloadANM_CHV_UserList(generics.GenericAPIView):
                                family_member.familySurveyor.name, family_member.familySurveyor.phoneNumber , family_member.created_date.strftime('%d/%m/%Y'), family_member.BMI,
                                family_member.bloodPressure, family_member.height, family_member.pulse,
                                family_member.weight, family_member.bool_transform("isLabTestAdded"),
-                               family_member.bool_transform("isLabTestReportGenerated"), family_member.area.areas,
-                               family_member.generalStatus, family_member.ASHA_CHV.name, family_member.ASHA_CHV.phoneNumber,
+                               family_member.bool_transform("isLabTestReportGenerated"),
+                               family_member.area.areas if family_member.area else None,
+                               family_member.generalStatus, family_member.ASHA_CHV.name if family_member.ASHA_CHV else None , family_member.ASHA_CHV.phoneNumber if family_member.ASHA_CHV else None ,
                                family_member.bool_transform("vulnerable"), family_member.vulnerable_reason, family_member.relationship,
                                family_member.randomBloodSugar]
             survey_data = self.unpack_survey_data(family_member.Questionnaire)
@@ -841,6 +802,6 @@ class DownloadANM_CHV_UserList(generics.GenericAPIView):
             ws.append(row)
 
         response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("_data_"+today)
+        response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("data_"+today)
         wb.save(response)
         return response
