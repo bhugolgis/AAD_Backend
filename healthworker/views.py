@@ -302,6 +302,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             total_Alzheimers = 0 
             total_ent_disorder = 0 
             total_asthma = 0 
+            total_leprosy = 0 
 
             for record in Questionnaire_queryset:
                 part_b = record.Questionnaire.get('part_b', []) 
@@ -343,6 +344,11 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
                     if answer and len(answer) > 0:
                         total_diabetes += 1
                         break
+                for question in part_b[25:33]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        total_leprosy += 1
+                        break 
                 for question in part_b[33:36]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
@@ -412,6 +418,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             total_Alzheimers = 0 
             total_ent_disorder = 0 
             total_asthma = 0 
+            total_leprosy = 0 
 
             for record in Questionnaire_queryset:
                 part_b = record.Questionnaire.get('part_b', []) 
@@ -438,6 +445,13 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
                     if answer and len(answer) > 0:
                         total_ent_disorder += 1
                         break
+                
+                for question in part_b[25:33]:
+                    answer = question.get('answer', [])
+                    if answer and len(answer) > 0:
+                        total_leprosy += 1
+                        break 
+
                 for question in part_b[1:10]:
                     answer = question.get('answer', [])
                     if answer and len(answer) > 0:
@@ -499,6 +513,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView):
             'eye_disorder' : total_eye_problem, 
             'asthama' : total_asthma,
             'Alzheimers_Dementia' : total_Alzheimers ,
+            'leprosy' : total_leprosy,
             'tb' : total_tb_count ,
             'breast_cancer' : total_breast_cancer , 
             'communicable' : total_communicable ,

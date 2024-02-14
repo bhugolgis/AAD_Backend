@@ -1002,9 +1002,9 @@ class confirmWithAadhaarOtp(generics.GenericAPIView):
             "otp": serializer.validated_data.get('otp'),
             "txnId": serializer.validated_data.get('txnId'),
             })
-            
+            print(payload)
             response = requests.request("POST", url, headers=headers, data=payload)
-            
+            print(response.content)
             if response.status_code == 200:
                 return Response(json.loads(response.content) , status=response.status_code)
             elif response.status_code == 504:
@@ -1085,8 +1085,11 @@ class confirmWithMobileOTP(generics.GenericAPIView):
             "otp": serializer.validated_data.get('otp'),
             "txnId": serializer.validated_data.get('txnId'),
             })
+
+            print(payload)
             
             response = requests.request("POST", url, headers=headers, data=payload)
+            print(response.content)
             
             if response.status_code == 200:
                 return Response(json.loads(response.content) , status=response.status_code)
