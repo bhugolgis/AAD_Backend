@@ -121,7 +121,7 @@ DATABASES = {
        'ENGINE': 'django.contrib.gis.db.backends.postgis',
     #    'NAME': 'DemoNbr',
     #    'NAME':'Arogya_Aplya_Daari',
-       'NAME':'AAD_local',
+       'NAME':'AAD_local_11_01_24',
        'USER': 'postgres',
        'PASSWORD':'admin',
     #   'HOST' : '10.202.100.7',    
