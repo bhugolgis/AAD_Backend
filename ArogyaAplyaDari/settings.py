@@ -134,6 +134,18 @@ DATABASES = {
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_HEADERS = [
+'accept',
+'accept-encoding',
+'authorization',
+'content-type',
+'dnt',
+'origin',
+'user-agent',
+'x-csrftoken',
+'x-requested-with',
+'x-Token',
+]
 AUTH_USER_MODEL = 'database.CustomUser'
 
 SWAGGER_SETTINGS = {
