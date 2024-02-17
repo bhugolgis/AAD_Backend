@@ -1003,19 +1003,24 @@ class confirmWithAadhaarOtp(generics.GenericAPIView):
             "txnId": serializer.validated_data.get('txnId'),
             })
             response = requests.request("POST", url, headers=headers, data=payload)
-            if response.status_code == 200:
-                return Response(json.loads(response.content) , status=response.status_code)
-            elif response.status_code == 504:
-                return Response({'message': "The server didn't respond in time." , 
-                             "status": "error" } , status=504)
-            else:
-                json_response= json.loads(response.content) 
-                try:
-                    return Response({"message" : json_response.get("details")[0]["message"],
-                                    "status" : "error"} , status=response.status_code)
-                except:
-                    return Response({"message" : json_response.get("message") , 
-                                    "status" : "error"} , status=response.status_code)
+            try:
+                if response.status_code == 200:
+                    print(response.content)
+                    return Response(json.loads(response.content) , status=response.status_code)
+                elif response.status_code == 504:
+                    return Response({'message': "The server didn't respond in time." , 
+                                "status": "error" } , status=504)
+                else:
+                    json_response= json.loads(response.content) 
+                    try:
+                        return Response({"message" : json_response.get("details")[0]["message"],
+                                        "status" : "error"} , status=response.status_code)
+                    except:
+                        return Response({"message" : json_response.get("message") , 
+                                        "status" : "error"} , status=response.status_code)
+            except: 
+                return Response({"message" : "Oops! Something went wrong",
+                                    "status" : "error"} , status=400)
         else:
             key, value = list(serializer.errors.items())[0]
             error_message = str(key) + " ," +str(value[0])
