@@ -1395,10 +1395,10 @@ class LoginView(generics.GenericAPIView):
                                 'name' : user_data.name,         
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                'section_id' : user_data.section_id,
-                                'ward' : user_data.section.healthPost.ward.wardName ,
-                                'healthPostName' : user_data.section.healthPost.healthPostName,
-                                'healthPostID' : user_data.section.healthPost.id,
+                                'section_id' : sections,
+                                'ward' : ward ,
+                                'healthPostName' : healthPostName,
+                                'healthPostID' :healthPostID,
                                 'userSections' :sections,
                                 'Group': group
                             
