@@ -261,7 +261,7 @@ class FamilyHeadDetailsSerializer(serializers.ModelSerializer):
 
 
 class ListFamilyHeadDetailsSerializer(serializers.ModelSerializer):
-    # family_head_member = FamilyMemberDetailsSerializer(many=True, read_only=True)
+    # family_head_member = FamilyMemberDetailsSerializer(many=True, read_only=True)                       
     HealthPostName = serializers.CharField(source='familyhealthPost.healthPostName', read_only=True)
 
 

@@ -5412,3 +5412,33 @@ Traceback (most recent call last):
 AssertionError: 'DownloadANM_CHV_UserList' should either include a `serializer_class` attribute, or override the `get_serializer_class()` method.
 Unauthorized: /doctor/api/UpdateCaseCompletion/551
 [31;1mHTTP PATCH /doctor/api/UpdateCaseCompletion/551 401 [0.00, 127.0.0.1:51336][0m
+Unauthorized: /doctor/api/MoDashboard
+[31;1mHTTP GET /doctor/api/MoDashboard 401 [0.08, 127.0.0.1:53408][0m
+Unauthorized: /allauth/api/login
+[31;1mHTTP POST /allauth/api/login 401 [0.09, 127.0.0.1:53408][0m
+Internal Server Error: /doctor/api/MoDashboard
+Traceback (most recent call last):
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 534, in thread_handler
+    raise exc_info[1]
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 479, in __call__
+    ret: _R = await loop.run_in_executor(
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\asgiref\sync.py", line 538, in thread_handler
+    return func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "D:\Jafar\AAD\.env\lib\site-packages\rest_framework\views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+[35;1mHTTP GET /doctor/api/MoDashboard 500 [0.12, 127.0.0.1:53509][0m
+Unauthorized: /doctor/api/MoDashboard
+[31;1mHTTP GET /doctor/api/MoDashboard 401 [0.01, 127.0.0.1:53672][0m

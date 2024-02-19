@@ -37,7 +37,7 @@ urlpatterns = [
     path('labTestsList/', labTestsList, name='labTestsList'),
     
     
-    path('MoDashboard', MoDashboard, name='MoDashboard'),
+    path('MoDashboard', MoDashboard.as_view(), name='MoDashboard'),
 
 
     
