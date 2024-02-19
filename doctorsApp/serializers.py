@@ -7,7 +7,10 @@ class PatientsPathlabSerializer(serializers.ModelSerializer):
         fields = ['patientFamilyMember','LabTestSuggested']
         
         
-        
+class UpdateCaseCompletionSerilizer(serializers.ModelSerializer):
+    class Meta:
+        model = familyMembers
+        fields = ('caseCompletion' , )     
 
 
 class ListPatientsPathlabSerializer(serializers.ModelSerializer):

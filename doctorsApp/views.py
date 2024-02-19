@@ -823,6 +823,34 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                             'status' : 'error'}, status=400)
 
 
+
+class UpdateCaseCompletion(generics.GenericAPIView):
+    serializer_class = UpdateCaseCompletionSerilizer
+    permission_classes = [IsAuthenticated , IsMO]
+    model = serializer_class.Meta.model
+
+    def patch(self, request, id , *args, **kwargs):
+        data = request.data
+        try:
+            family_object = self.model.objects.get( pk = id )
+        except familyMembers.DoesNotExist:
+            return Response ({'message': 'family member details not found' ,
+                            'status': 'error'} , status= 400)
+        serializer = self.get_serializer( family_object  , data = data , partial = True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': 'success' , 
+                             'message': "Case completed"} , status= 201)
+        else:
+            key, value = list(serializer.errors.items())[0]
+            error_message = key+" , "+ value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
+
+
+        
+        
+        
 @permission_classes((IsAuthenticated,))
 @api_view(['GET'])
 def MoDashboard(request):

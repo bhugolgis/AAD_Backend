@@ -13,6 +13,8 @@ urlpatterns = [
     path('ViewFamilysDetails/<int:id>/', ViewFamilysDetails.as_view(), name='ViewFamilysDetails'),
     path('GetAllFamilysDetails/', GetAllFamilysDetails.as_view(), name='ViewFamilysDetails'),
 
+    path('UpdateCaseCompletion/<int:id>' , UpdateCaseCompletion.as_view(), name='UpdateCaseCompletion'),
+
     
     # path('FamilyHeadList/', FamilyHeadList.as_view(), name='FamilyHeadList'),
     # path('ViewFamilyDetails/<str:pk>/', ViewFamilyDetails.as_view(), name='ViewFamilyDetails'),

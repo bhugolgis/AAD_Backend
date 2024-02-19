@@ -162,6 +162,11 @@ class familyMembers(models.Model):
          ("Nephew" , "Nephew"),
          ("Niece" , "Niece"),
     ]
+    caseCompletion_Choices = [
+        ("Referral" , "Referral"),
+        ("Diagnosis/Treatment" , "Diagnosis/Treatment"),
+    ]
+    
     memberId = models.CharField(max_length=255 , blank = True , null = True )
     name = models.CharField(max_length=900,blank=True,null=True)
     gender = models.CharField(max_length=15,blank=True,null=True)
@@ -200,6 +205,7 @@ class familyMembers(models.Model):
     vulnerable_choices  = models.ManyToManyField(vulnerableOptions , related_name= 'vulnerability_choices', blank = True )
     vulnerable_reason = models.TextField(max_length=500 , blank  = True , null = True )
     relationship = models.CharField(max_length = 100 , choices = relationship_choices ,  blank = True , null = True )
+    caseCompletion = models.CharField(max_length = 100 , choices = caseCompletion_Choices , blank = True)
 
     def bool_transform(self, field:str) -> str:
         value = getattr(self,field,False)
