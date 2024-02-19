@@ -1275,7 +1275,7 @@ class LoginView(generics.GenericAPIView):
                                 healthPostID = i.healthPost.id 
                                 healthPostName = i.healthPost.healthPostName 
                                 ward = i.healthPost.ward.wardName 
-                            sections.append(i.pk)
+                                sections.append(i.pk)
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,
@@ -1285,7 +1285,7 @@ class LoginView(generics.GenericAPIView):
                                 'name' : user_data.name,         
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                'section_id' : user_data.section_id,
+                                # 'section_id' : sections,
                                 'ward' : ward ,
                                 'healthPostName' : healthPostName,
                                 'healthPostID' : healthPostID,
@@ -1386,16 +1386,16 @@ class LoginView(generics.GenericAPIView):
                                 healthPostID = i.healthPost.id 
                                 healthPostName = i.healthPost.healthPostName 
                                 ward = i.healthPost.ward.wardName 
-                            sections.append(i.pk)
+                                sections.append(i.pk)
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,
                                 'status': 'success',
-                                'id': user_data.id,
+                                'id': user_data.id  ,
                                 'name' : user_data.name,         
                                 'username': user_data.username,
-                                'phoneNumber' : user_data.phoneNumber,
-                                'section_id' : sections,
+                                'phoneNumber' : user_data.phoneNumber ,
+                                # 'section_id' : sections,
                                 'ward' : ward ,
                                 'healthPostName' : healthPostName,
                                 'healthPostID' :healthPostID,
