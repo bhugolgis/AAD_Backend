@@ -1434,7 +1434,7 @@ class GetCoordPassword(generics.GenericAPIView):
         # print(lis)
         return Response(None)     
             
-            
+        
 # class PrimaryHealthCareCentersView(generics.ListCreateAPIView):
 #     queryset = PrimaryHealthCareCenters.objects.all()
 #     serializer_class = PrimaryHealthCareCentersSerializer

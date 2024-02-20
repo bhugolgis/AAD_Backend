@@ -143,9 +143,9 @@ class GetFamilyHeadList(generics.ListAPIView):
         
         if str(user_group) == 'CHV-ASHA':
         # Filter the queryset based on the currently logged-in user
-            queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward, user=self.request.user )
+            queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward, user=self.request.user ).order_by('-created_date')
         elif str(user_group) == "healthworker":
-            queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection )  
+            queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection ).order_by('-created_date')  
         return queryset
 
 
@@ -161,9 +161,9 @@ class GetPartiallyInsertedRecord(generics.ListAPIView):
         user_group =self.request.user.groups.all()[0]
         if str(user_group) == 'CHV-ASHA':
         # Filter the queryset based on the currently logged-in user
-            queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward, user=self.request.user , partialSubmit = True )
+            queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward, user=self.request.user , partialSubmit = True ).order_by('-created_date')
         elif str(user_group) == "healthworker":
-            queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward , partialSubmit = True ,   area__healthPost__healthPost_name = usersection ) 
+            queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward , partialSubmit = True ,   area__healthPost__healthPost_name = usersection ).order_by('-created_date') 
             print(queryset) 
         return queryset
 
@@ -210,9 +210,9 @@ class GetFamilyMembersDetails(generics.ListAPIView):
         user_group =self.request.user.groups.all()[0]
         if str(user_group) == 'CHV-ASHA':
             # Filter the queryset based on the currently logged-in user
-            queryset = familyMembers.objects.filter( area__healthPost__ward = usersection.healthPost.ward , familySurveyor=self.request.user)
+            queryset = familyMembers.objects.filter( area__healthPost__ward = usersection.healthPost.ward , familySurveyor=self.request.user).order_by('-created_date')
         elif str(user_group) == "healthworker":
-            queryset = familyMembers.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection )  
+            queryset = familyMembers.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection ).order_by('-created_date')
         return queryset
         
 
@@ -570,26 +570,26 @@ class GetCitizenList(generics.ListAPIView):
         if choice == 'Today':
             today = timezone.now().date() 
             if str(user_group) == 'CHV-ASHA':
-                queryset = self.model.objects.filter(area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user , created_date__day = today.day)
+                queryset = self.model.objects.filter(area__healthPost__ward = usersection.healthPost.ward , familySurveyor = request.user , created_date__day = today.day).order_by('-created_date')
             elif str(user_group) == "healthworker":
-                 queryset = self.model.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection , created_date__day = today.day )  
+                 queryset = self.model.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection , created_date__day = today.day ).order_by('-created_date')  
             serializer = self.get_serializer(queryset , many = True ).data
             return Response(serializer , status= status.HTTP_200_OK)
     
         elif choice == 'All':
             if str(user_group) == 'CHV-ASHA':
-                total_list = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward ,familySurveyor = request.user)
+                total_list = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward ,familySurveyor = request.user).order_by('-created_date')
             elif str(user_group) == "healthworker":
-                total_list = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection )  
+                total_list = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection ).order_by('-created_date')  
        
             serializer = self.get_serializer(total_list , many = True ).data
             return Response(serializer  , status= status.HTTP_200_OK)
         
         elif choice == 'Partially':
             if str(user_group) == 'CHV-ASHA':
-                queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,partialSubmit = True , user = request.user)
+                queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,partialSubmit = True , user = request.user).order_by('-created_date')
             elif str(user_group) == "healthworker":
-                queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,partialSubmit = True , area__healthPost__healthPost_name = usersection )
+                queryset = familyHeadDetails.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,partialSubmit = True , area__healthPost__healthPost_name = usersection ).order_by('-created_date')
             serializer = GetFamilyHeadListSerialzier(queryset , many = True ).data
             return Response({ serializer } , status= status.HTTP_200_OK)
         
@@ -637,25 +637,25 @@ class GetFamilyList(generics.ListAPIView):
             usersection =  self.request.user.userSections.all()[0]
             user_group =self.request.user.groups.all()[0]
             if str(user_group) == 'CHV-ASHA':
-                queryset = self.model.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,user = request.user , created_date__day = today.day)
+                queryset = self.model.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,user = request.user , created_date__day = today.day).order_by('-created_date')
             elif str(user_group) == "healthworker":
-                queryset = self.model.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection )  
+                queryset = self.model.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection ).order_by('-created_date')  
         
             serializer = self.get_serializer(queryset , many = True ).data
             return Response( serializer  , status= status.HTTP_200_OK)
     
         elif choice == 'All':
             if str(user_group) == 'CHV-ASHA':
-                total_list = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward ,user = request.user)
+                total_list = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward ,user = request.user).order_by('-created_date')
             elif str(user_group) == "healthworker":
-                total_list = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection )  
+                total_list = self.get_queryset().filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection ).order_by('-created_date')  
        
             serializer = self.get_serializer(total_list , many = True ).data
             return Response( serializer , status= status.HTTP_200_OK)
         
 
 class GetBloodCollectionDetail(generics.ListAPIView):
-    queryset = familyMembers.objects.all()
+    queryset = familyMembers.objects.all().order_by('-created_date')
     serializer_class = GetCitizenListSerializer
     permission_classes =(IsAuthenticated , IsHealthworker | IsCHV_ASHA)
     filter_backends = (filters.SearchFilter,)
@@ -755,9 +755,9 @@ class DownloadANM_CHV_UserList(generics.GenericAPIView):
             usersection =  request.user.userSections.all()[0]
             user_group =request.user.groups.all()[0]
             if str(user_group) == "healthworker":
-                related_user = familyMembers.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection)
+                related_user = familyMembers.objects.filter(area__healthPost__ward = usersection.healthPost.ward ,  area__healthPost__healthPost_name = usersection).order_by('-created_date')
             elif str(user_group) == 'CHV-ASHA':
-                related_user = familyMembers.objects.filter( area__healthPost__ward = usersection.healthPost.ward , familySurveyor=self.request.user)
+                related_user = familyMembers.objects.filter( area__healthPost__ward = usersection.healthPost.ward , familySurveyor=self.request.user).order_by('-created_date')
         except familyMembers.DoesNotExist:
             return Response({
                 "message":"No data found",
