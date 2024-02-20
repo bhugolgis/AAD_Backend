@@ -16,7 +16,7 @@ urlpatterns = [
         path('verifyMobileNumber/<int:mobileNo>' , verifyMobileNumber.as_view() , name = 'verifyMobileNumber'),
         path('veirfyaadharCard/<int:aadharCard>' , veirfyaadharCard.as_view() , name = 'aadharCard'),
         path('verifyabhaId/<str:abhaId>' , verifyabhaId.as_view() , name = 'aadharCard'),
-        path('DumpExcelInsertxlsx' , DumpExcelInsertxlsx.as_view() , name = 'DumpExcelInsertxlsx'),
+        path('DumpExcelInsertxlsx' , UserInsertxlsx.as_view() , name = 'DumpExcelInsertxlsx'),
         
         path('getReferelOptionList' , getReferelOptionList.as_view() , name = 'getReferelOptionList'),
         path('getvulnerableOptionList' , getvulnerableOptionList.as_view() , name = 'getvulnerableOptionList'),

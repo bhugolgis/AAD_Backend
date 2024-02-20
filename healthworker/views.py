@@ -661,7 +661,7 @@ class GetBloodCollectionDetail(generics.ListAPIView):
     filter_backends = (filters.SearchFilter,)
     search_fields = ['bloodCollectionLocation']
 
-class DumpExcelInsertxlsx(generics.GenericAPIView):
+class UserInsertxlsx(generics.GenericAPIView):
     parser_classes = [MultiPartParser]
     serializer_class = DumpExcelSerializer
 
@@ -820,3 +820,7 @@ class DownloadANM_CHV_UserList(generics.GenericAPIView):
         response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("data_"+today)
         wb.save(response)
         return response
+
+
+
+

@@ -1271,27 +1271,36 @@ class LoginView(generics.GenericAPIView):
                         if group == 'healthworker':
                             sections = []
                             sect = user_data.userSections.all()
-                            for i in sect:
-                                healthPostID = i.healthPost.id 
-                                healthPostName = i.healthPost.healthPostName 
-                                ward = i.healthPost.ward.wardName 
-                                sections.append(i.pk)
-                            return Response({
-                                'message': 'Login successful',
-                                'Token': token,
-                                'status': 'success',
-                                'id': user_data.id,
-                                'email': user_data.emailId,
-                                'name' : user_data.name,         
-                                'username': user_data.username,
-                                'phoneNumber' : user_data.phoneNumber,
-                                # 'section_id' : sections,
-                                'ward' : ward ,
-                                'healthPostName' : healthPostName,
-                                'healthPostID' : healthPostID,
-                                'userSections' :sections,
-                                'Group': group
-                            }, status=200)                 
+                            if len(sect) != 0 :
+                                for i in sect:
+                                    healthPostID = i.healthPost.id 
+                                    healthPostName = i.healthPost.healthPostName 
+                                    ward = i.healthPost.ward.wardName 
+                                    sections.append(i.pk)
+                                return Response({
+                                    'message': 'Login successful',
+                                    'Token': token,
+                                    'status': 'success',
+                                    'id': user_data.id,
+                                    'email': user_data.emailId,
+                                    'name' : user_data.name,         
+                                    'username': user_data.username,
+                                    'phoneNumber' : user_data.phoneNumber,
+                                    # 'section_id' : sections,
+                                    'ward' : ward ,
+                                    'healthPostName' : healthPostName,
+                                    'healthPostID' : healthPostID,
+                                    'userSections' :sections,
+                                    'Group': group
+                                }, status=200)
+                            else:
+                                return Response({"message": "user section not found" ,
+                                                 "status" : "error" , } , status= 400 )
+                                                # 'id': user_data.id,
+                                                # 'email': user_data.emailId,
+                                                # 'name' : user_data.name,         
+                                                # 'username': user_data.username,
+                                                # 'phoneNumber' : user_data.phoneNumber,  } , status= 400 )                 
                         elif group == "phlebotomist":
                             return Response({
                                 'message': 'Login successful',
