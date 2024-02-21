@@ -1300,7 +1300,7 @@ class LoginView(generics.GenericAPIView):
                                                 # 'email': user_data.emailId,
                                                 # 'name' : user_data.name,         
                                                 # 'username': user_data.username,
-                                                # 'phoneNumber' : user_data.phoneNumber,  } , status= 400 )                 
+                                                # 'phoneNumber' : user_data.phoneNumber,} , status= 400 )                 
                         elif group == "phlebotomist":
                             return Response({
                                 'message': 'Login successful',
