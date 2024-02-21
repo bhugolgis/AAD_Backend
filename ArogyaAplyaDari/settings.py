@@ -31,7 +31,7 @@ if os.name == 'nt':
 SECRET_KEY = 'django-insecure-fjhhj#4^)vc1^21e@wd^6it$+4%fmxrn^8p@xn)t)ej4ndm2pr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
