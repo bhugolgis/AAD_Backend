@@ -430,7 +430,7 @@ class CoordPasswordSerializer(serializers.ModelSerializer):
 		fields = ("id" , "phoneNumber")
 
 class LoginSerializer(serializers.Serializer):
-	phoneNumber = serializers.IntegerField()
+	phoneNumber = serializers.CharField()
 	password = serializers.CharField()
 	class Meta:
 		# model = CustomUser

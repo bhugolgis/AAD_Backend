@@ -26,12 +26,17 @@ urlpatterns = [
         
         path('MOHDashboardExcelView', MOHDashboardExportView.as_view(), name='MOHDashboardExportView'),
         path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
+        path('MOHDashboardTabView', MOHDashboardTabView.as_view(), name='MOHDashboardTabView'),
 
 
         # path('Admin_dashboard_data', Admin_dashboard_data.as_view(), name='Admin_dashboard_data'),
         
         path('AdminDashboardView', AdminDashboardView.as_view(), name='AdminDashboardView'),
         path('AdminDashboardExportView', AdminDashboardExportView.as_view(), name='AdminDashboardExportView'),
+        path('AdminDashboardTabView', AdminDashboardTabView.as_view(), name='AdminDashboardTabView'),
+
+
+
 
         re_path(r'^GetuserListAPI/(?P<ward_name>.+)/(?P<group>.+)$', userListAPI.as_view(), name='user-list'),
         re_path(r'^GetDeactivatedUserList/(?P<ward_name>.+)/(?P<group>.+)$', GetDeactivatedUserList.as_view(), name='GetDeactivatedUserList'),

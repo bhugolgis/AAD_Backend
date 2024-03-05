@@ -29,7 +29,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
-from adminportal.permissions import IsMOH
+from adminportal.permissions import IsMOH,IsViewAdmin
 from django.contrib.auth.hashers import check_password
 from rest_framework.pagination import LimitOffsetPagination
 from django.db.models import Q
@@ -121,14 +121,14 @@ class AddlabtestdeatilsAPI(generics.GenericAPIView):
 
 
 class GetWardListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA|IsViewAdmin]
     serializer_class = WardSerialzier
     queryset = ward.objects.all().order_by('wardName')
     filter_backends = (filters.SearchFilter,)
     search_fields = ("wardName",)
 
 class GethealthPostNameListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA|IsViewAdmin]
     serializer_class = healthPostSerializer
     # queryset = healthPost.objects.all()
     # filter_backends = (DjangoFilterBackend,)
@@ -147,7 +147,7 @@ class GethealthPostNameListAPI(generics.ListAPIView):
 class GetHealthPostAreasAPI(generics.GenericAPIView):
     serializer_class = AreaSerialzier
     
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA |IsViewAdmin]
 
     def get(self, request ,id):
         data = area.objects.filter(healthPost__id = id )
@@ -189,7 +189,7 @@ class GetWardAreasAPI(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
     model = serializer_class.Meta.model
     filter_backends = (filters.SearchFilter,)
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA|IsViewAdmin]
 
 
     def get_queryset(self ):
@@ -307,7 +307,7 @@ class updateSectionAPI(generics.GenericAPIView):
     
 
 class GetWardSectionListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA|IsViewAdmin]
     serializer_class = sectionSerializer
     pagination_class = LimitOffsetPagination
     model = serializer_class.Meta.model
@@ -352,7 +352,7 @@ class GetWardSectionListAPI(generics.ListAPIView):
 
 
 class GetDispensaryListAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker ]
+    permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker |IsViewAdmin]
     serializer_class = getDispensarySerializer
     # queryset = dispensary.objects.filter()
     model = serializer_class.Meta.model
@@ -1247,6 +1247,24 @@ class AddAreaAPI(generics.GenericAPIView):
             } , status=400)  
 
 
+
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+from Crypto.Util.strxor import strxor
+from base64 import b64decode
+
+def decrypt_aes_password(username):
+    ciphertext = b64decode(username)
+    key = 'd73b3572d4b6e4df6c5b0efb0616e9a8c9266ba6d6a10abdc78a11485d002fd8'
+    iv = b'\x00' * 16  # Use a valid 16-byte IV, for example, all zeros
+    iv = iv[:16]
+    key = bytes.fromhex(key)  # Convert the hexadecimal key to bytes
+    cipher = AES.new(key, AES.MODE_CBC, iv[:16])  # Ensure IV is 16 bytes
+    
+    # Explicitly specify PKCS7 padding removal
+    decrypted_data = unpad(cipher.decrypt(ciphertext), AES.block_size, style='pkcs7')
+    
+    return decrypted_data.decode('utf-8')
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     parser_classes = [MultiPartParser]
@@ -1254,7 +1272,9 @@ class LoginView(generics.GenericAPIView):
 
     def post(self, request):
         # try:
-            serializer = LoginSerializer(data=request.data)
+            # serializer = LoginSerializer(data=request.data)
+            serializer = LoginSerializer(data={'phoneNumber': decrypt_aes_password(request.data.get('phoneNumber')), 'password': decrypt_aes_password(request.data.get('password'))})
+
             if serializer.is_valid():
                 user_data = serializer.validated_data
                 group = user_data.groups.values_list("name", flat=True)[0]
@@ -1363,6 +1383,19 @@ class LoginView(generics.GenericAPIView):
                                 
                             })
                         elif group == "admin":
+                            return Response({
+                                'message': 'Login successful',
+                                'Token': token,
+                                'status': 'success',
+                                'id': user_data.id,
+                                'name' : user_data.name,         
+                                'username': user_data.username,
+                                'phoneNumber' : user_data.phoneNumber,
+                                'Group': group
+             
+                            })
+                        
+                        elif group == "ViewAdmin":
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,

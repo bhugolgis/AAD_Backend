@@ -56,3 +56,16 @@ class IsMOH(BasePermission):
         has_group_permission = _has_group_permission(
             request.user, self.required_group)
         return request.user and has_group_permission
+    
+
+class IsViewAdmin(BasePermission):
+    required_group = ["ViewAdmin"]
+    """
+    The function checks if the user has the required group permission.
+
+    """
+
+    def has_permission(self, request, view):
+        has_group_permission = _has_group_permission(
+            request.user, self.required_group)
+        return request.user and has_group_permission
