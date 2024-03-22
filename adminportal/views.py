@@ -1550,12 +1550,12 @@ class  AdminDashboardView(generics.GenericAPIView):
             citizen_above_30 =  self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, age__gte = 30 ).count()
             today_family_count = self.FamilySurvey_count.filter(user__userSections__healthPost__id = healthpost_id ,created_date__day = today.day ).count()
 
-            total_vulnerabel = self.get_queryset().filter( vulnerable = True).count()
-            vulnerabel_70_Years = self.get_queryset().filter( vulnerable_choices__choice = '70+ Years').count()
-            vulnerabel_Physically_handicapped = self.get_queryset().filter( vulnerable_choices__choice = 'Physically Handicapped').count()
-            vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
-            vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter( vulnerable_choices__choice = 'Elderly and alone at home').count()
-            vulnerabel_any_other_reason = self.get_queryset().filter( vulnerable_choices__choice = 'Any other reason').count()
+            total_vulnerabel = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id ,  vulnerable = True).count()
+            vulnerabel_70_Years = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id , vulnerable_choices__choice = '70+ Years').count()
+            vulnerabel_Physically_handicapped = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id ,vulnerable_choices__choice = 'Physically Handicapped').count()
+            vulnerabel_completely_paralyzed_or_on_bed = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id ,vulnerable_choices__choice = 'Completely Paralyzed or On bed').count()
+            vulnerabel_elderly_and_alone_at_home = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id ,vulnerable_choices__choice = 'Elderly and alone at home').count()
+            vulnerabel_any_other_reason = self.get_queryset().filter( familySurveyor__userSections__healthPost__id = healthpost_id ,vulnerable_choices__choice = 'Any other reason').count()
 
             blood_collected_home = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'Home').count()
             blood_collected_center = self.get_queryset().filter(familySurveyor__userSections__healthPost__id = healthpost_id, bloodCollectionLocation = 'Center').count()
