@@ -113,6 +113,7 @@ class PostSurveyForm(generics.GenericAPIView):
             return Response ({'status' : 'success' ,
                             'message' : 'data saved successfully' } , status= status.HTTP_200_OK)
         else:
+            print(serializer.errors)
             key, value =list(serializer.errors.items())[0]
             try:
                 key , value = list(value[0].items())[0]
