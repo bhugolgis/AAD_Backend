@@ -1265,6 +1265,7 @@ def decrypt_aes_password(username):
     decrypted_data = unpad(cipher.decrypt(ciphertext), AES.block_size, style='pkcs7')
     
     return decrypted_data.decode('utf-8')
+
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     parser_classes = [MultiPartParser]

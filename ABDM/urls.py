@@ -30,7 +30,6 @@ urlpatterns = [
         path('v1/phr/registration/hid/create-phr-address' , CreatePhrAddress.as_view() , name = 'abha_adress_search_isExist'),
 
         # Linking of abha_adress to Abha ID 
-        
         path('v1/phr/login/init/transaction' , GenerateOTP.as_view() , name = 'GenrateOTP'),
         path('v1/phr/login/mobileEmail/preVerification' , VerifymobileAadharOTP.as_view() , name = 'GenrateOTP'),
         path('v1/phr/profile/link/hid' , LinkHID_to_Address.as_view() , name = 'GenrateOTP'),

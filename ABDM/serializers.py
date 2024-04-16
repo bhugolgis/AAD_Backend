@@ -73,7 +73,7 @@ class verifyMobileOTPSerializer(serializers.Serializer):
                 raise serializers.ValidationError('txnId can not be empty !!')
         return data
 
-class SearchAuthMethodsSerializer(serializers.Serializer):
+class   SearchAuthMethodsSerializer(serializers.Serializer):
     healhtIdNumber = serializers.CharField(max_length=17, required=True)
 
 
