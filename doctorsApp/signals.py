@@ -72,7 +72,28 @@ def send_msg(sender, instance , created, **kwargs):
         
         response = requests.request("POST", url, headers=headers, data=payload)
 
- 
+
+
+@receiver(post_save , sender=familyMembers) 
+def send_msgNew(sender, instance , created, **kwargs):
+    if instance.generalStatus == "Survey Completed": 
+        user_name = "MCGMSEVA-HEALTH"
+        sender_id = "MCGMTA"
+        message = '''मुख्यमंत्री आरोग्य आपल्या दारी" योजनेत सहभागासाठी धन्यवाद. पुढील तपासणी करीता जवळच्या  बृमुमपा / एचबीटी दवाखान्याला भेट द्या.'''
+        content = ConvertMsg(message)
+        secure_key = "881da998-3880-4c18-b921-0fdc9427f8d8"
+        result = hash_generator(user_name, sender_id, content, secure_key)
+
+        password = 'MCGMHEALTH@SMS123'
+        mobile_number = str(instance.familyHead.mobileNo)
+        
+        url = "https://msdgweb.mgov.gov.in/esms/sendsmsrequestDLT"
+        
+        payload = 'key='+result+'&username=MCGMSEVA-HEALTH&password=MCGMHEALTH@SMS123'+'&smsservicetype=unicodemsg&content='+urllib.parse.quote(content)+'&mobileno='+mobile_number+'&senderid=MCGMTA&templateid=1007494286496479236'
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        
+        response = requests.request("POST", url, headers=headers, data=payload)
+
 
 
 
