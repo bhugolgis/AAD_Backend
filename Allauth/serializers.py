@@ -487,7 +487,7 @@ class LoginWithOtpSerializer(serializers.Serializer):
 class CHV_ASHA_Serializer(serializers.ModelSerializer):
 	class Meta:
 		model = CustomUser
-		fields = ['id','name' , 'username' , 'phoneNumber' , 'section']
+		fields = ['id','name' , 'username' , 'phoneNumber' , 'userSections']
 		depth = 1
 
 

@@ -7,6 +7,10 @@ urlpatterns = [
     path('BookPatientAPI', LIMSBookPatientAPI.as_view(), name='BookPatientAPI'),
 
     path('HomeBookPatientAPI', LIMSHomeBookPatientAPI.as_view(), name='LIMSHomeBookPatientAPI'),
+    path('NewHomeBookPatientAPI', NewLIMSHomeBookPatientAPI.as_view(), name='NewLIMSHomeBookPatientAPI'),
+
+
+    
     path('LIMSPatientRegisterAPI', LIMSPatientRegisterAPI.as_view(), name='LIMSPatientRegisterAPI'),
     # path('LIMSPatientRegisterAPI', LIMSPatientRegisterAPI.as_view(), name='LIMSPatientRegisterAPI'),
 

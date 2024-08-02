@@ -317,6 +317,34 @@ class HomeBookPatientSerializer(serializers.Serializer):
     Booking_TestDetails = serializers.JSONField(write_only=True , required = True)
 
 
+class NewHomeBookPatientSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    # BookingDate= serializers.CharField(max_length=100)
+    # slots= serializers.CharField(max_length=250)
+    # CollectionAddress= serializers.CharField(max_length=500)
+    # labaddress= serializers.CharField(max_length=500)
+    # TransactionForId= serializers.CharField(max_length=500)
+    # latitude= serializers.CharField(max_length=100)
+    # UserId = serializers.CharField(max_length=100)
+    # longitude= serializers.CharField(max_length=100)
+    # note= serializers.CharField(max_length=500 , required = False)
+
+    RefDrCode= serializers.CharField(max_length=100 , required = False)
+    refDrName= serializers.CharField(max_length=100 , required = False)
+    RefLabCode= serializers.CharField(max_length=100 , required = False)
+
+    PatientAge= serializers.CharField(max_length=100)
+    PatientDoB= serializers.DateField(format='%d/%m/%Y')
+    PatientAddress= serializers.CharField(max_length=500)
+
+    patientMobile= serializers.CharField(max_length=100 , required = False)
+    patientname = serializers.CharField(max_length=100)
+    PatientUid= serializers.CharField(max_length=100)
+    # pincode= serializers.CharField(max_length=100)
+    Booking_TestDetails = serializers.JSONField(write_only=True , required = True)
+
+
+
 class LIMSPatientRegisterSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     adharcard = serializers.CharField(max_length=250)

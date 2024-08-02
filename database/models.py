@@ -161,6 +161,11 @@ class familyMembers(models.Model):
          ("Aunty" , "Aunty"),
          ("Nephew" , "Nephew"),
          ("Niece" , "Niece"),
+         ("Sibling" , "Sibling"),
+         ("SonInLaw","SonInLaw"),
+         ("DaughterInLaw","DaughterInLaw")
+         
+
     ]
     caseCompletion_Choices = [
         ("Referral" , "Referral"),

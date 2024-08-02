@@ -51,6 +51,13 @@ class PostResponseHomeLIMSAPISerialzier(serializers.ModelSerializer):
         model = PatientsPathlabrecords
         fields = ( 'patientFamilyMember' , 'transactionid', 'LabTestSuggested' , 'puid' )
 
+class NewPostResponseHomeLIMSAPISerialzier(serializers.ModelSerializer):
+    # LabTestSuggested = serializers.ListField(write_only=True , required = True)
+    class Meta:
+        model = PatientsPathlabrecords
+        fields = ( 'patientFamilyMember' ,'LabTestSuggested', 'bookingVisitID', 'patientID' , 'puid' )
+
+
 
 class GetPatientsDetailsAPISerialzier(serializers.ModelSerializer):
     class Meta:

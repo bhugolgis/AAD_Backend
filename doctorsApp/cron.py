@@ -210,3 +210,41 @@ def GetHomePaitentReport():
                     pass
             else:
                 pass
+            
+            
+
+def GetHomePaitentStatus():
+    Paitents = PatientsPathlabrecords.objects.filter(patientFamilyMember__isLabTestAdded = True,
+                                                      patientFamilyMember__isSampleCollected =True,
+                                                      patientFamilyMember__bloodCollectionLocation="Home",
+                                                      bookingVisitID__isnull= False, puid__isnull = False ,  
+                                                      patientID__isnull = False 
+                                                      )
+    
+
+    for Paitent in Paitents:
+        # if checkLabTestAdded.exists():
+        url ="https://kdl.techjivaaindia.in/api/KDL_LIS_APP_API/Patient_Current_Status"
+
+        authKey = 'E0DE107A7CA04A6CA7FBB6DAE89B4F3A'
+        BookingVisitID = Paitent.BookingVisitID
+
+
+        post_params = {
+            'authKey': authKey,
+            'BookingVisitID': BookingVisitID
+
+        }
+        headers =  {
+            'Content-Type': 'application/json',
+        }
+
+        response = requests.post(url , headers=headers, data=post_params)
+        logger.warning(response)
+        if response.status_code == 200:
+            response_data = json.loads(response.content)
+            if response.status_code == 200 and response_data.get(("LISResult") == "True"):
+                updtStatus = PatientsPathlabrecords.objects.filter(bookingVisitID=BookingVisitID).update(patientFamilyMember__generalStatus=response_data["patientStatus"][0]["status"])
+
+            else:
+                pass            

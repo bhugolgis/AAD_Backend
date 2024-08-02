@@ -19,6 +19,13 @@ from .permissions import IsMO
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from rest_framework.pagination import LimitOffsetPagination
+from datetime import datetime
+
+# Get current date and time
+now = datetime.now()
+
+# Format the date and time as required
+formatted_current_date_time = now.strftime("%m-%d-%Y %I:%M:%S %p")
 
 
 
@@ -516,9 +523,9 @@ def labTestsList(request):
 
     # Filter lab tests based on the provided 'testName'
     if test_name:
-        lab_tests = LabTests.objects.filter(testName__icontains=test_name)
+        lab_tests = LabTests.objects.filter(isActive = True,testName__icontains=test_name)
     else:
-        lab_tests = LabTests.objects.all()
+        lab_tests = LabTests.objects.filter(isActive = True)
 
     # Serialize the queryset
     serializer = LabTestsSerializer(lab_tests, many=True)
@@ -567,6 +574,7 @@ class LIMSBookPatientAPI(generics.GenericAPIView):
             payload = json.dumps({
                 "authKey": "05436EFE3826447DBE720525F78A9EEDBMC",
                 "CentreID": "112084",
+                # "CentreID":serializer.validated_data.get('RefLabCode'),
                 "RegisteredDate": serializer.validated_data.get('RegisteredDate'),
                 "PRNNo": serializer.validated_data.get('PRNNo'),
                 "PatientCategory": serializer.validated_data.get('PatientCategory'),
@@ -707,6 +715,10 @@ class LIMSPatientRegisterAPI(generics.GenericAPIView):
                             'status' : 'error'}, status=400)
 
 
+
+
+
+
 class LIMSHomeBookPatientAPI(generics.GenericAPIView):
 
     serializer_class = HomeBookPatientSerializer
@@ -799,6 +811,156 @@ class LIMSHomeBookPatientAPI(generics.GenericAPIView):
                         return Response( {'status': 'success',
                                         'message': 'appointment booked successfully',
                                         'transactionid': response_data.get("transactionid")}, status=response.status_code)
+                    else:
+                        key, value =list(pathlab_serializer.errors.items())[0]
+                        error_message = key+" , "+ value[0]
+                        return Response({"status" : "error" ,
+                                        "message" : pathlab_serializer.errors}, status= 400) 
+                else:
+                    data = json.loads(response.content)
+                    print(data)
+                    message = data.get("result")
+                    return Response({"status" : "error" ,
+                                    "message" : message},  status=400)
+            else:
+                message = json.loads(response.content)
+                return Response({"status" : "error" ,
+                                "message" : message},  status=response.status_code) 
+            
+        else:
+            key, value = list(serializer.errors.items())[0]
+            print(key , value)
+            error_message = key+" , "+ value[0]
+            return Response({'message': error_message, 
+                            'status' : 'error'}, status=400)
+
+
+
+
+class NewLIMSHomeBookPatientAPI(generics.GenericAPIView):
+
+    serializer_class = NewHomeBookPatientSerializer
+    # parser_classes = [MultiPartParser]
+    permission_classes = [IsAuthenticated ,IsMO]
+
+    def post(self, request):
+        serializer = self.get_serializer(data = request.data)
+        try:
+            instance = familyMembers.objects.get(pk=request.data["id"])
+        except:
+            return Response({'status': 'error',
+                            'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            pathlab_instance = PatientsPathlabrecords.objects.filter(patientFamilyMember_id=request.data["id"] , puid__isnull = False,bookingVisitID__isnull=False,patientID__isnull=False  ).first()
+            print(pathlab_instance,"888888888888888")
+            if pathlab_instance:
+                return Response({'status': 'error', 
+                                    'message': "patient already book an appointment",
+                                    # "transactionid" : pathlab_instance.transactionid,
+                                    "puid" : pathlab_instance.puid,
+                                    "bookingVisitID":pathlab_instance.bookingVisitID,
+                                    "patientID":pathlab_instance.patientID
+
+                                    }, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'status': 'error',
+                            'message': 'Family Member details not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        if serializer.is_valid():
+            url= "https://kdl.techjivaaindia.in/api/KDL_LIS_APP_API/BookPatientBMC"
+            headers = {
+            'accept': '*/*',
+            'Accept-Language': 'en-US',
+            'Content-Type': 'application/json'}
+
+            payload = json.dumps({
+                "authKey": "05436EFE3826447DBE720525F78A9EEDBMC",
+                "CentreID": "112084",
+                "RegisteredDate": formatted_current_date_time,#current Date and time
+                "PRNNo": "8788713270",
+                "PatientCategory": "CREDIT",
+                "PatientType": "IPD",
+                "RefDrCode": serializer.validated_data.get('RefDrCode'),
+                "refDrName": serializer.validated_data.get('refDrName'),
+                "RefLabCode": serializer.validated_data.get('RefLabCode'),
+                "PatientName": serializer.validated_data.get('patientname'),
+                "Age": serializer.validated_data.get('PatientAge'),
+                "BirthDate":serializer.validated_data.get('PatientDob'),
+                "PaymentAmount":0,
+                "CreatedBy":"BMC",
+                "AgeUnit": "Y",
+                "Gender": "M",
+                "PatientAddress": serializer.validated_data.get('PatientAddress'),
+                "IdentityNumber":serializer.validated_data.get('PatientUid'),
+                "MobileNumber":serializer.validated_data.get('patientMobile'),
+                "HisUniquePatientCode": serializer.validated_data.get('PatientUid'),
+                "HisHospitalRefNo": "0123",
+                "Booking_TestDetailsBMC": serializer.validated_data.get('Booking_TestDetails')
+                })
+                # "BookingFrom": "ANDROID" , 
+                # "bookingVisitID": "NAN",
+                # "deviceId": "",
+                # "HomeCollectionflag": "1",
+                # "OfferDiduction": "0",
+                # "OfflinePaid": "100.00",
+                # "OnlinePaid": "0",
+                # "PatientId": "NAN",
+                # "PaymentType": "offline",
+                # "TotalFees": "100.00",
+                # "Trans_String": "NAN",
+                # "TransactionId": "NAN",
+                # "TransactionreferenceID": "NAN",
+                # "TransactionStatus": "NAN",
+                # "PromoCode": "",
+
+                # "BookingDate": serializer.validated_data.get('BookingDate'),
+                # "slots": serializer.validated_data.get('slots'),
+                # "CollectionAddress": serializer.validated_data.get('CollectionAddress'),
+                # "labaddress": serializer.validated_data.get('labaddress'),
+                # "TransactionForId": serializer.validated_data.get('TransactionForId'),
+                # "latitude": serializer.validated_data.get('latitude'),
+                # "UserId" : serializer.validated_data.get('UserId'),
+                # "longitude":serializer.validated_data.get('longitude'),
+                # "note": serializer.validated_data.get('CreatedBy'),
+                # "PatientAge": serializer.validated_data.get('PatientAge'),
+                # "patientMobile": serializer.validated_data.get('patientMobile'),
+                # "patientname": serializer.validated_data.get('patientname'),
+                # "PatientUid": serializer.validated_data.get('PatientUid'),
+                # "pincode": serializer.validated_data.get('pincode'),
+                # "Booking_TestDetails": serializer.validated_data.get('Booking_TestDetails'),
+                # })
+            # print(payload)
+            response = requests.request("POST", url, headers=headers, data=payload)
+            if response.status_code == 200:
+                response_data = json.loads(response.content)
+                print(response_data)
+                if response_data.get("result" , "True") :
+                    # print(response_data)
+                    pathlab_serializer = NewPostResponseHomeLIMSAPISerialzier(data = {
+                        "patientFamilyMember" : request.data["id"] , 
+                        "bookingVisitID" : response_data.get("bookingVisitID") ,
+                        "patientID" : response_data.get('patientID') , 
+                        "puid": response_data.get('puid')
+                        # "puid": serializer.validated_data.get('PatientUid')  
+
+                    }  )
+                    if pathlab_serializer.is_valid():
+                        instance = PatientsPathlabrecords.objects.create(patientFamilyMember_id=request.data["id"] )
+                        instance.bookingVisitID = pathlab_serializer.validated_data.get('bookingVisitID')
+                        instance.patientID = pathlab_serializer.validated_data.get('patientID')
+                        instance.puid = pathlab_serializer.validated_data.get('puid')
+                        instance.LabTestSuggested = serializer.validated_data.get('Booking_TestDetails')
+                        instance.CentreID= "112084"
+                        # instance.save(update_fields=['transactionid', 'LabTestSuggested', 'puid'])
+                        instance.save()
+                        updateFamilyDetails = familyMembers.objects.filter(pk = request.data["id"]).update(isLabTestAdded=True,isSampleCollected=True,generalStatus = 'Tests Assigned')
+
+
+                        return Response( {'status': 'success',
+                                        'message': 'appointment booked successfully',
+                                        'bookingVisitID': response_data.get("bookingVisitID")}, status=response.status_code)
                     else:
                         key, value =list(pathlab_serializer.errors.items())[0]
                         error_message = key+" , "+ value[0]
