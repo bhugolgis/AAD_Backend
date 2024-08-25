@@ -1,2 +1,5 @@
+#ignore all the media files
+media/
+
 __pycache__/
 log/

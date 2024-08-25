@@ -42,7 +42,10 @@ def GetBookingVisitID():
         }
 
         response = requests.request("POST", url, headers=headers, data=payload)
+        logger.warning(id.transactionid)
+        logger.warning(response.status_code)        
         if response.status_code == 200:
+            logger.warning(response.content)
             response_data = json.loads(response.content)
 
             # Check if keys exist in the response_data dictionary
@@ -57,6 +60,8 @@ def GetBookingVisitID():
                     id.patientID = patient_id
                     id.bookingVisitID = booking_visit_id_value
                     id.save()
+                    logger.warning("From Herer")        
+
                 else:
                     # Handle the case where values are "NAN"
                     pass
@@ -70,15 +75,16 @@ def GetBookingVisitID():
 
  
 def AddTestReport():
-    # logger.warning("add test report running")
+    logger.warning("add test report running")
 
     # print("add test report running")
     #Check for FamilyMember LabTest Added
     checkLabTestAdded = PatientsPathlabrecords.objects.filter(patientFamilyMember__isLabTestAdded = True,
                                                       patientFamilyMember__isSampleCollected =True,
                                                       patientFamilyMember__isLabTestReportGenerated = False)
-    
+    logger.warning("From First")
     for labTest in checkLabTestAdded:
+        logger.warning("From Herer start")
         # if checkLabTestAdded.exists():
         url1 ="http://ilis.krsnaadiagnostics.com/services/KDL_LIS_Report_APPService.asmx"
         url2 = "http://ilis.krsnaadiagnostics.com/api/KDL_LIS_APP_API/Patient_Results_Data"
@@ -116,8 +122,12 @@ def AddTestReport():
         }
         # Send a POST request to the URL to get the PDF file
         response = requests.post(url1, headers=headers, data=payload)
+        logger.warning("From Herer")
         responseJson = requests.post(url2, headers=jsonheaders, data=post_params)
-        # logger.warning(response.content , "1st logger")
+        logger.warning("From Herer1")
+        logger.warning(response.content , "1st logger")
+        logger.warning(response.status_code)
+        logger.warning(responseJson.status_code)
         if response.status_code == 200 and responseJson.status_code == 200:
             # Specify the folder where you want to save the PDF file temporarily
             temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')
@@ -142,6 +152,7 @@ def AddTestReport():
                 pdf_file_instance.pdfResult.save(file_name, File(open(temp_file_path, 'rb')))
                 pdf_file_instance.save()
                 updateLabTest = familyMembers.objects.filter(id=labTest.patientFamilyMember_id).update(isLabTestReportGenerated=True , isSampleCollected = True)
+                logger.warning("Successfully")
             else:
                 pass
 
@@ -160,12 +171,13 @@ def GetHomePaitentReport():
 
     for Paitent in Paitents:
         # if checkLabTestAdded.exists():
-        url ="https://kdl.techjivaaindia.in/services/LISMobileAPPService.asmx/Get_LIS_PatientReportURL"
+        # url ="https://kdl.techjivaaindia.in/services/LISMobileAPPService.asmx/Get_LIS_PatientReportURL"
 
-        authKey = 'E0DE107A7CA04A6CA7FBB6DAE89B4F3A'
+        authKey = "E0DE107A7CA04A6CA7FBB6DAE89B4F3A"
         patientID = Paitent.patientID
         lisVisitID = Paitent.bookingVisitID
         puid = Paitent.puid
+        url = f"https://kdl.techjivaaindia.in/services/LISMobileAPPService.asmx/Get_LIS_PatientReportURL?authKey={authKey}&puid={puid}&lisVisitID={lisVisitID}&patientID={patientID}"
 
         post_params = {
             'authKey': authKey,
@@ -176,12 +188,20 @@ def GetHomePaitentReport():
         headers =  {
             'Content-Type': 'application/json',
         }
+        # data = json.dumps(post_params)
+        # logger.warning(data)
+        # response = requests.post(url , headers=headers, data=data)
+        payload={}
+        headers = {}
 
-        response = requests.post(url , headers=headers, data=post_params)
+        response = requests.request("GET", url, headers=headers, data=payload)
+
         logger.warning(response)
         if response.status_code == 200:
+            logger.warning("from here 1")
             response_data = json.loads(response.content)
-            if response.status_code == 200 and response_data.get(("LISResult") == "True"):
+            if response.status_code == 200 and response_data["LISResult"] == "True":
+                logger.warning("from here 2")
                 # Specify the folder where you want to save the PDF file temporarily
                 temp_folder = os.path.join(MEDIA_ROOT, 'patientPathLabResults')
 
@@ -206,6 +226,7 @@ def GetHomePaitentReport():
                     pdf_file_instance.pdfResult.save(file_name, File(open(temp_file_path, 'rb')))
                     pdf_file_instance.save()
                     updateLabTest = familyMembers.objects.filter(id=Paitent.patientFamilyMember_id).update(isLabTestReportGenerated=True , isSampleCollected = True)
+                    logger.warning("Done Report")
                 else:
                     pass
             else:
@@ -223,28 +244,38 @@ def GetHomePaitentStatus():
     
 
     for Paitent in Paitents:
+        logger.warning(Paitent)
+        logger.warning("from here1")
         # if checkLabTestAdded.exists():
-        url ="https://kdl.techjivaaindia.in/api/KDL_LIS_APP_API/Patient_Current_Status"
-
-        authKey = 'E0DE107A7CA04A6CA7FBB6DAE89B4F3A'
-        BookingVisitID = Paitent.BookingVisitID
+        # url ="https://kdl.techjivaaindia.in/api/KDL_LIS_APP_API/Patient_Current_Status"
+        url = "https://kdl.techjivaaindia.in/api/KDL_LIS_APP_API/Patient_Current_Status"
+        authKey = "E0DE107A7CA04A6CA7FBB6DAE89B4F3A"
+        BookingVisitID = Paitent.bookingVisitID
 
 
         post_params = {
-            'authKey': authKey,
-            'BookingVisitID': BookingVisitID
+            "authKey": authKey,
+            "BookingVisitID": BookingVisitID
 
         }
-        headers =  {
-            'Content-Type': 'application/json',
+        headers = {
+        'Content-Type': 'application/json'
         }
-
-        response = requests.post(url , headers=headers, data=post_params)
-        logger.warning(response)
+        data = json.dumps(post_params)
+        logger.warning(post_params)
+        response = requests.request("POST",url , headers=headers, data=data)
+        logger.warning(response.status_code)
+        logger.warning(response.content,"**************")
+        logger.warning(BookingVisitID)
         if response.status_code == 200:
+            
             response_data = json.loads(response.content)
-            if response.status_code == 200 and response_data.get(("LISResult") == "True"):
-                updtStatus = PatientsPathlabrecords.objects.filter(bookingVisitID=BookingVisitID).update(patientFamilyMember__generalStatus=response_data["patientStatus"][0]["status"])
-
+            logger.warning(response_data)
+            if response.status_code == 200 and response_data["lisResult"] == "True":
+                logger.warning("rom here")
+                # updtStatus = PatientsPathlabrecords.objects.filter(bookingVisitID=BookingVisitID)
+                updateFamily = familyMembers.objects.filter(id = Paitent.patientFamilyMember_id).update(generalStatus=response_data["patientStatus"][0]["status"])
             else:
-                pass            
+                pass
+        else:
+            logger.warning("From last")
