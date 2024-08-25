@@ -6,7 +6,7 @@ from .serializers import *
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 from rest_framework import generics,permissions
-from django_filters.rest_framework import DjangoFilterBackend 
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from datetime import datetime
 from rest_framework.parsers import JSONParser,MultiPartParser,FileUploadParser,FormParser
@@ -146,17 +146,16 @@ class GethealthPostNameListAPI(generics.ListAPIView):
 
 class GetHealthPostAreasAPI(generics.GenericAPIView):
     serializer_class = AreaSerialzier
-    
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA |IsViewAdmin]
 
     def get(self, request ,id):
-        data = area.objects.filter(healthPost__id = id )
+        data = area.objects.filter(healthPost_id=id)
         serializer = self.get_serializer(data , many = True).data
 
         return Response({ "status":"success",
                 "message" : 'data feteched successfully',
                 "data":serializer,} , status= 200)
-    
+
 
 
 class updateAreaAPI(generics.GenericAPIView):
@@ -177,13 +176,13 @@ class updateAreaAPI(generics.GenericAPIView):
 
             return Response({ "status":"success",
                     "message" : 'data updated successfully',} , status= 200)
-        
+
         else:
             key, value = list(serializer.errors.items())[0]
             error_message = value[0]
-            return Response({'message': error_message, 
+            return Response({'message': error_message,
                             'status' : 'error'}, status=400)
-    
+
 class GetWardAreasAPI(generics.ListAPIView):
     serializer_class = AreaSerialzier
     pagination_class = LimitOffsetPagination
@@ -204,14 +203,14 @@ class GetWardAreasAPI(generics.ListAPIView):
                 Q(healthPost__healthPostName__icontains=search_terms)|
                 Q(areas__icontains = search_terms)
             )
-                                       
+
 
         return queryset
-    
+
     def get(self, request, *args, **kwargs):
 
         queryset = self.get_queryset()
-     
+
         page = self.paginate_queryset(queryset)
 
         if page is not None:
@@ -221,12 +220,12 @@ class GetWardAreasAPI(generics.ListAPIView):
                                                 'data': serializer.data})
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response({'status': 'success', 
-                        'message': 'Data fetched successfully', 
+        return Response({'status': 'success',
+                        'message': 'Data fetched successfully',
                         'data': serializer.data})
 
-     
-    
+
+
 class GetSectionListAPI(generics.ListAPIView):
     # permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA]
     serializer_class = sectionSerializer
@@ -241,7 +240,7 @@ class GetSectionListAPI(generics.ListAPIView):
     #     return Response({ "status":"success",
     #             "message" : 'data feteched successfully',
     #             "data":serializer,} , status= 200)
-    
+
     def get_queryset(self ):
         """
         The function returns a queryset of all objects ordered by their created date in descending order.
@@ -252,18 +251,18 @@ class GetSectionListAPI(generics.ListAPIView):
         # ward_id= self.request.user.ward.id
         # section.objects.filter(healthPost__id= id )
         queryset = self.model.objects.filter(healthPost__id= id)
-   
+
         search_terms = self.request.query_params.get('search', None)
         if search_terms:
             queryset = queryset.filter(healthPost__healthPostName__icontains=search_terms)
-                                       
+
 
         return queryset
 
     def get(self, request, *args, **kwargs):
 
         queryset = self.get_queryset()
-     
+
         page = self.paginate_queryset(queryset)
 
         if page is not None:
@@ -274,10 +273,10 @@ class GetSectionListAPI(generics.ListAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response({'status': 'success',
-                        'message': 'Data fetched successfully', 
+                        'message': 'Data fetched successfully',
                         'data': serializer.data})
 
-    
+
 
 
 class updateSectionAPI(generics.GenericAPIView):
@@ -298,13 +297,13 @@ class updateSectionAPI(generics.GenericAPIView):
 
             return Response({ "status":"success",
                     "message" : 'data updated successfully',} , status= 200)
-        
+
         else:
             key, value = list(serializer.errors.items())[0]
             error_message = value[0]
-            return Response({'message': error_message, 
+            return Response({'message': error_message,
                             'status' : 'error'}, status=400)
-    
+
 
 class GetWardSectionListAPI(generics.ListAPIView):
     permission_classes = [IsAuthenticated , IsAdmin | IsHealthworker | IsMOH | IsCHV_ASHA|IsViewAdmin]
@@ -312,8 +311,8 @@ class GetWardSectionListAPI(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
     model = serializer_class.Meta.model
     filter_backends = (filters.SearchFilter,)
-  
-    
+
+
 
     def get_queryset(self ):
         """
@@ -324,18 +323,18 @@ class GetWardSectionListAPI(generics.ListAPIView):
         # print(group , wardName)
         # ward_id= self.request.user.ward.id
         queryset = self.model.objects.filter(healthPost__ward__wardName= wardName )
-   
+
         search_terms = self.request.query_params.get('search', None)
         if search_terms:
             queryset = queryset.filter(healthPost__healthPostName__icontains=search_terms)
-                                       
+
 
         return queryset
-    
+
     def get(self, request, *args, **kwargs):
 
         queryset = self.get_queryset()
-     
+
         page = self.paginate_queryset(queryset)
 
         if page is not None:
@@ -346,7 +345,7 @@ class GetWardSectionListAPI(generics.ListAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response({'status': 'success',
-                        'message': 'Data fetched successfully', 
+                        'message': 'Data fetched successfully',
                         'data': serializer.data})
 
 
@@ -374,7 +373,7 @@ class InsertAmoAPI(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -410,7 +409,7 @@ class InsertPrimaryHealthCareDoctorAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -445,7 +444,7 @@ class InsertSpecialityHealthCareDoctorAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -480,7 +479,7 @@ class InsertMedicalCollegeHealthCareDoctorAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -515,7 +514,7 @@ class InsertMoAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -550,7 +549,7 @@ class InsertphccAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -585,7 +584,7 @@ class InsertshccAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -620,7 +619,7 @@ class InsertthccAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -655,7 +654,7 @@ class InsertSupervisorAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -691,7 +690,7 @@ class InsertHealthWorkerAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -719,7 +718,7 @@ class InsertHealthWorkerAPI(generics.GenericAPIView):
                 "status": "error",
                 "message": "Error in Field " + str(ex),
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
 class InsertCHV_ASHA_API(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated,]
     serializer_class = RegisterSerializer
@@ -728,7 +727,7 @@ class InsertCHV_ASHA_API(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -765,7 +764,7 @@ class InsertPhlebotomistAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         # print(request.data["name"], request.data)
-        
+
         try:
             if serializer.is_valid():
                 user = serializer.save()
@@ -803,16 +802,16 @@ class InsertPhlebotomistAPI(generics.GenericAPIView):
 #     def post(self, request, *args, **kwargs):
 #         serializer = self.get_serializer(data=request.data)
 #         # print(request.data["name"], request.data)
-        
+
 #         try:
 #             if serializer.is_valid():
 #                 group = Group.objects.get(name=serializer.validated_data.get("group"))
-                
+
 #                 user = serializer.save()
 #                 customuser = serializer.validated_data
 #                 data = RegisterSerializer(customuser, context=self.get_serializer_context()).data
 #                 user.groups.add(group)
-                
+
 #                 addSupervisor = CustomUser.objects.filter(id= user.id).update(supervisor_id = request.user.id)
 
 #                 return Response({
@@ -840,7 +839,7 @@ phoneregex = r'^[6-9]\d{9}$'
 emailregex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 import re
 def checkemail(email):
- 
+
     # pass the regular expression
     # and the string into the fullmatch() method
     if(re.fullmatch(emailregex, email)):
@@ -851,13 +850,13 @@ def checkemail(email):
         return False
 
 def checkphone(phone):
- 
+
     # pass the regular expression
     # and the string into the fullmatch() method
     if(re.fullmatch(phoneregex, phone)):
         # print("Valid Phonenumber")
         return True
- 
+
     else:
         # print("Invalid Email")
         return False
@@ -876,7 +875,7 @@ def SendOtp(request):
             userdata["name"] = chkemailExist[0].name
             userdata["phoneNumber"] = chkemailExist[0].phoneNumber
             import string
-           
+
 
             random = "0000"
             # random =  ''.join(choice(chars) for _ in range(4))
@@ -921,7 +920,7 @@ class CheckOtp(generics.GenericAPIView):
                 _, token = AuthToken.objects.create(userExists)
                 checkOtp  = sendOtp.objects.filter(registerUser_id =checkUserExists[0].id,otp = request.data["otp"])
                 if checkOtp:
-                        
+
                     return Response({
                         "status":"success",
                         "message" : "User is Valid ,Please Set Your Password",
@@ -931,7 +930,7 @@ class CheckOtp(generics.GenericAPIView):
                     return Response({
                     "status":"error",
                     "message":"Invalid Otp."
-                
+
                     })
 
             else:
@@ -944,8 +943,8 @@ class CheckOtp(generics.GenericAPIView):
             return Response({
                 "status":"error",
                 "message":serializer.errors
-             
-                })              
+
+                })
 
 
 
@@ -992,8 +991,8 @@ class LoginWithOtp(generics.GenericAPIView):
             return Response({
                 "status":"error",
                 "message":serializer.errors
-             
-                })              
+
+                })
 
 
 
@@ -1041,7 +1040,7 @@ class UserGroupFilterView(generics.ListAPIView):
         type: string
     """
     serializer_class = ViewSupervisorSerializer
-    
+
     def get_queryset(self):
         group_name = self.request.query_params.get('group')
         if group_name:
@@ -1057,7 +1056,7 @@ class UserGroupFilterView(generics.ListAPIView):
 # Create your views here.
 class CustomLoginAPI(generics.GenericAPIView):
 
-    
+
     serializer_class = LoginSerializer
     parser_classes = [MultiPartParser]
 
@@ -1067,7 +1066,7 @@ class CustomLoginAPI(generics.GenericAPIView):
             customuser = serializer.validated_data
             _, token = AuthToken.objects.create(customuser)
             status = CustomUser.objects.filter(id=customuser.id)
- 
+
             groups=customuser.groups.values_list('name',flat = True)
             data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
             # print(groups)
@@ -1079,12 +1078,12 @@ class CustomLoginAPI(generics.GenericAPIView):
                     return Response({
                     "status":"error",
                     "message":"Phone Number not Verified"
-                
+
                     })
-                    
+
                 data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
                 data["user_group"] = "healthworker"
-                
+
             elif groups[0] =="amo":
                 data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
                 data["user_group"] = "amo"
@@ -1095,7 +1094,7 @@ class CustomLoginAPI(generics.GenericAPIView):
             elif groups[0] =="PrimaryHealthCareDoctor":
                 data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
                 data["user_group"] = "PrimaryHealthCareDoctor"
-                
+
             elif groups[0] =="SpecialityHealthCareDoctor":
                 data = ViewSupervisorSerializer(customuser,context=self.get_serializer_context()).data
                 data["user_group"] = "SpecialityHealthCareDoctor"
@@ -1110,7 +1109,7 @@ class CustomLoginAPI(generics.GenericAPIView):
                 data["user_group"] = "admin"
 
 
-  
+
             return Response({
                 "status":"success",
                 "message" : "Login Successfully",
@@ -1122,9 +1121,9 @@ class CustomLoginAPI(generics.GenericAPIView):
             return Response({
                 "status":"error",
                 "message":serializer.errors["non_field_errors"][0]
-             
+
                 } , status=400 )
-        
+
 class AddWardAPI(generics.GenericAPIView):
     serializer_class = AddwardSerializer
     parser_classes = [MultiPartParser]
@@ -1141,7 +1140,7 @@ class AddWardAPI(generics.GenericAPIView):
                 'message': serializer.errors,
                 'status': 'error' ,
             } , status=400)
-        
+
 
 class AddDispensaryAPI(generics.GenericAPIView):
     serializer_class = AddDispensarySerializer
@@ -1176,14 +1175,14 @@ class AddHealthPostAPI(generics.GenericAPIView):
                 'message': serializer.errors,
                 'status': 'error' ,
             } , status=400)
-        
+
 class AddsectionAPI(generics.GenericAPIView):
     serializer_class = AddSectionSerializer
     parser_classes = [MultiPartParser]
     def post(self , request):
-        
+
         serializer = self.get_serializer(data = request.data)
-        
+
         if serializer.is_valid():
             healthPost = serializer.validated_data.get("healthPost")
             sectionName =serializer.validated_data.get("sectionName")
@@ -1227,10 +1226,10 @@ class AddAreaAPI(generics.GenericAPIView):
 
             instance = area.objects.filter(areas = area_name , healthPost = request.data.get["healthPost"] , dispensary = request.data.get["dispensary"]).exists()
             if instance:
-                return Response({"status" : "error" , 
+                return Response({"status" : "error" ,
                                  "message" : "Duplicate area" } , status= status.HTTP_400_BAD_REQUEST)
         except:
-            return Response({"status" : "error" , 
+            return Response({"status" : "error" ,
             "message" : "Duplicate area" } , status= status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(data = request.data)
@@ -1244,11 +1243,11 @@ class AddAreaAPI(generics.GenericAPIView):
             return Response({
                 'message': serializer.errors,
                 'status': 'error' ,
-            } , status=400)  
+            } , status=400)
 
 
 
-from Crypto.Cipher import AES          
+from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
 from Crypto.Util.strxor import strxor
 from base64 import b64decode
@@ -1260,10 +1259,10 @@ def decrypt_aes_password(username):
     iv = iv[:16]
     key = bytes.fromhex(key)  # Convert the hexadecimal key to bytes
     cipher = AES.new(key, AES.MODE_CBC, iv[:16])  # Ensure IV is 16 bytes
-    
+
     # Explicitly specify PKCS7 padding removal
     decrypted_data = unpad(cipher.decrypt(ciphertext), AES.block_size, style='pkcs7')
-    
+
     return decrypted_data.decode('utf-8')
 
 class LoginView(generics.GenericAPIView):
@@ -1288,15 +1287,15 @@ class LoginView(generics.GenericAPIView):
                         pass
                     _, token = AuthToken.objects.create(serializer.validated_data)
                     if user_data.is_active:
-                        
+
                         if group == 'healthworker':
                             sections = []
                             sect = user_data.userSections.all()
                             if len(sect) != 0 :
                                 for i in sect:
-                                    healthPostID = i.healthPost.id 
-                                    healthPostName = i.healthPost.healthPostName 
-                                    ward = i.healthPost.ward.wardName 
+                                    healthPostID = i.healthPost.id
+                                    healthPostName = i.healthPost.healthPostName
+                                    ward = i.healthPost.ward.wardName
                                     sections.append(i.pk)
                                 return Response({
                                     'message': 'Login successful',
@@ -1304,7 +1303,7 @@ class LoginView(generics.GenericAPIView):
                                     'status': 'success',
                                     'id': user_data.id,
                                     'email': user_data.emailId,
-                                    'name' : user_data.name,         
+                                    'name' : user_data.name,
                                     'username': user_data.username,
                                     'phoneNumber' : user_data.phoneNumber,
                                     # 'section_id' : sections,
@@ -1319,9 +1318,9 @@ class LoginView(generics.GenericAPIView):
                                                  "status" : "error" , } , status= 400 )
                                                 # 'id': user_data.id,
                                                 # 'email': user_data.emailId,
-                                                # 'name' : user_data.name,         
+                                                # 'name' : user_data.name,
                                                 # 'username': user_data.username,
-                                                # 'phoneNumber' : user_data.phoneNumber,} , status= 400 )                 
+                                                # 'phoneNumber' : user_data.phoneNumber,} , status= 400 )
                         elif group == "phlebotomist":
                             return Response({
                                 'message': 'Login successful',
@@ -1329,10 +1328,10 @@ class LoginView(generics.GenericAPIView):
                                 'status': 'success',
                                 'id': user_data.id,
                                 'email': user_data.emailId,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                'Group': group}, status=200)                   
+                                'Group': group}, status=200)
                         elif group == "supervisor":
                             return Response({
                                 'message': 'Login successful',
@@ -1340,10 +1339,10 @@ class LoginView(generics.GenericAPIView):
                                 'status': 'success',
                                 'id': user_data.id,
                                 'email': user_data.emailId,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
-                                'Group': group}, status=200)                     
+                                'Group': group}, status=200)
                         elif group == "amo":
                             return Response({
                                 'message': 'Login successful',
@@ -1351,12 +1350,12 @@ class LoginView(generics.GenericAPIView):
                                 'status': 'success',
                                 'id': user_data.id,
                                 'email': user_data.emailId,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
                                 'healthPostName' : user_data.health_Post.healthPostName,
                                 'healthPostID' : user_data.health_Post.id,
-                            
+
 
                                 'Group': group}, status=200)
                         elif group == "mo":
@@ -1365,23 +1364,23 @@ class LoginView(generics.GenericAPIView):
                                 'Token': token,
                                 'status': 'success',
                                 'id': user_data.id,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
                                 'dispensaryId':user_data.dispensary.id,
                                 'dispensaryName':user_data.dispensary.dispensaryName,
-                                'Group': group}, status=200)                      
+                                'Group': group}, status=200)
                         elif group == "Family Head":
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,
                                 'status': 'success',
                                 'id': user_data.id,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
                                 'Group': group
-                                
+
                             })
                         elif group == "admin":
                             return Response({
@@ -1389,24 +1388,24 @@ class LoginView(generics.GenericAPIView):
                                 'Token': token,
                                 'status': 'success',
                                 'id': user_data.id,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
                                 'Group': group
-             
+
                             })
-                        
+
                         elif group == "ViewAdmin":
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,
                                 'status': 'success',
                                 'id': user_data.id,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
                                 'Group': group
-             
+
                             })
                         elif group == "MOH":
                             return Response({
@@ -1414,28 +1413,28 @@ class LoginView(generics.GenericAPIView):
                                 'Token': token,
                                 'status': 'success',
                                 'id': user_data.id,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber,
                                 'ward_id' : user_data.ward.id ,
                                 'ward_name' : user_data.ward.wardName,
                                 'Group': group
-                            
+
                         })
                         elif group == "CHV-ASHA":
                             sections = []
                             sect = user_data.userSections.all()
                             for i in sect:
-                                healthPostID = i.healthPost.id 
-                                healthPostName = i.healthPost.healthPostName 
-                                ward = i.healthPost.ward.wardName 
+                                healthPostID = i.healthPost.id
+                                healthPostName = i.healthPost.healthPostName
+                                ward = i.healthPost.ward.wardName
                                 sections.append(i.pk)
                             return Response({
                                 'message': 'Login successful',
                                 'Token': token,
                                 'status': 'success',
                                 'id': user_data.id  ,
-                                'name' : user_data.name,         
+                                'name' : user_data.name,
                                 'username': user_data.username,
                                 'phoneNumber' : user_data.phoneNumber ,
                                 # 'section_id' : sections,
@@ -1444,7 +1443,7 @@ class LoginView(generics.GenericAPIView):
                                 'healthPostID' :healthPostID,
                                 'userSections' :sections,
                                 'Group': group
-                            
+
                         })
                     else:
                         return Response({'status': 'error' ,
@@ -1453,31 +1452,31 @@ class LoginView(generics.GenericAPIView):
             else:
                 key, value = list(serializer.errors.items())[0]
                 error_message = value[0]
-                return Response({'message': error_message, 
+                return Response({'message': error_message,
                                 'status' : 'error'}, status=400)
         # except:
         #     return Response({
         #         'message': 'Invalid Credentials',
         #         'status': 'failed'}, status=400)
-            
-            
-            
+
+
+
 class GetCoordPassword(generics.GenericAPIView):
     serializer_class = CoordPasswordSerializer
     def get(self, request, *args, **kwargs):
-        
-        query = CustomUser.objects.filter(groups__name = 'healthworker')  
-        lis = [] 
+
+        query = CustomUser.objects.filter(groups__name = 'healthworker')
+        lis = []
         for i in query:
             if check_password('Ncdcoord@123' , i.password):
                 # i.set_password('Ncdanm@123')
-                var = lis.append(i.phoneNumber) 
+                var = lis.append(i.phoneNumber)
 
                 # serializer = self.get_serializer( i , many = True ).data
         # print(lis)
-        return Response(None)     
-            
-        
+        return Response(None)
+
+
 # class PrimaryHealthCareCentersView(generics.ListCreateAPIView):
 #     queryset = PrimaryHealthCareCenters.objects.all()
 #     serializer_class = PrimaryHealthCareCentersSerializer
@@ -1508,8 +1507,8 @@ class GetCoordPassword(generics.GenericAPIView):
 #     serializer_class = MedicalCollegeHealthCareCentersSerializer
 #     permission_classes = [IsAdminUser]
 
-         
-            
+
+
 
 class HealthCareCentersList(APIView):
     # @swagger_auto_schema(
@@ -1538,7 +1537,7 @@ class HealthCareCentersList(APIView):
 #             return HealthCareCenters.objects.get(pk=pk)
 #         except HealthCareCenters.DoesNotExist:
 #             raise Http404
-        
+
 
     def get(self, request, pk):
         healthcare_center = self.get_object(pk)
@@ -1556,8 +1555,8 @@ class HealthCareCentersList(APIView):
     def delete(self, request, pk):
         healthcare_center = self.get_object(pk)
         healthcare_center.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT) 
-            
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 # Admin Portal API's
@@ -1576,12 +1575,12 @@ class GetCHV_ASHA_list(generics.GenericAPIView):
                 'status': 'success' ,
                 'message' : 'data fetched successfully',
                 'data': serializer} , status=status.HTTP_200_OK)
-    
+
 
 class GetMultipleCHV_ASHA_list(generics.GenericAPIView):
     serializer_class = CHV_ASHA_Serializer
-    def get(self , request , id ): 
-        
+    def get(self , request , id ):
+
         try:
             ids = id.split(',')
             users_list = []

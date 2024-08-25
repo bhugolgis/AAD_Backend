@@ -1,4 +1,5 @@
 from email.policy import default
+import re
 from django.db import models
 from django.contrib.gis.db import models
 from django.contrib.auth.models import AbstractUser,BaseUserManager,PermissionsMixin ,AbstractBaseUser
@@ -57,7 +58,7 @@ class section(models.Model):
     sectionName = models.CharField(max_length=255 , blank = True , null = True )
 
     def __str__(self) -> str:
-         return self.sectionName
+        return self.sectionName
 
 
 
@@ -164,14 +165,14 @@ class familyMembers(models.Model):
          ("Sibling" , "Sibling"),
          ("SonInLaw","SonInLaw"),
          ("DaughterInLaw","DaughterInLaw")
-         
+
 
     ]
     caseCompletion_Choices = [
         ("Referral" , "Referral"),
         ("Diagnosis/Treatment" , "Diagnosis/Treatment"),
     ]
-    
+
     memberId = models.CharField(max_length=255 , blank = True , null = True )
     name = models.CharField(max_length=900,blank=True,null=True)
     gender = models.CharField(max_length=15,blank=True,null=True)
@@ -218,6 +219,14 @@ class familyMembers(models.Model):
             return "YES"
         else:
             return "NO"
+
+    def get_systolic_pressure(self):
+        """This function will return the systolic value of bloodPressure."""
+        systolic_pressure = self.bloodPressure.split("/")
+        try:
+            return int(systolic_pressure[0])
+        except Exception:
+            return 0
 
 
 class PatientsPathlabrecords(models.Model):

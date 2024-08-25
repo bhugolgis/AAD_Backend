@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'django_crontab',
     'django.contrib.gis',
     'rest_framework_gis',
- 
+
 
 ]
 
@@ -124,7 +124,7 @@ DATABASES = {
        'NAME':'AAD',
        'USER': 'postgres',
        'PASSWORD':'admin',
-      'HOST' : '172.16.0.40',    
+      'HOST' : '172.16.0.40',
     #    'HOST' : '10.202.100.224',
        'PORT': '5432',
    }
@@ -150,7 +150,7 @@ AUTH_USER_MODEL = 'database.CustomUser'
 
 SWAGGER_SETTINGS = {
    'SECURITY_DEFINITIONS': {
-  
+
       'Bearer': {
             'type': 'apiKey',
             'name': 'Authorization',
@@ -241,8 +241,8 @@ CRONJOBS = [
     # ('*/1 * * * *', 'doctorsApp.cron.GetBookingVisitID'),
     ('*/1 * * * *', 'doctorsApp.cron.GetHomePaitentReport'),
     # ('*/1 * * * *', 'doctorsApp.cron.GetHomePaitentStatus')
-    
-    
-    
+
+
+
 
 ]
