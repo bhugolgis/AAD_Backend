@@ -187,6 +187,7 @@ class familyMembers(models.Model):
     isAbhaCreated = models.BooleanField(default=False)
     pulse = models.CharField(max_length=50 , blank = True , null = True)
     bloodPressure = models.CharField(max_length=50 , blank = True , null = True)
+    is_hypertensive = models.BooleanField(null=True, blank=True)
     weight = models.CharField(max_length=50 , blank = True , null = True)
     height = models.CharField(max_length=50 , blank = True , null = True)
     BMI = models.CharField(max_length=50 , blank = True , null = True)
@@ -220,13 +221,29 @@ class familyMembers(models.Model):
         else:
             return "NO"
 
-    def get_systolic_pressure(self):
-        """This function will return the systolic value of bloodPressure."""
-        systolic_pressure = self.bloodPressure.split("/")
+    def save(self, *args, **kwargs):
+        self.is_hypertensive = self.calculate_hypertension_status()
+        super(familyMembers, self).save(*args, **kwargs)
+
+    def calculate_hypertension_status(self):
+        if not self.bloodPressure:  # If the blood pressure field is empty
+            return None
+
         try:
-            return int(systolic_pressure[0])
-        except Exception:
-            return 0
+            parts = self.bloodPressure.split('/')
+            if len(parts) > 1:
+                systolic = int(parts[0])
+                diastolic = int(parts[1])
+            else:
+                systolic = int(parts[0])
+                diastolic = None
+
+            if systolic >= 140:
+                return True
+
+            return False
+        except ValueError:
+            return None
 
 
 class PatientsPathlabrecords(models.Model):

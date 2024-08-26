@@ -864,7 +864,7 @@ class MOHDashboardView(generics.GenericAPIView): #Modified
                 Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                 total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                 TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
             )
@@ -912,7 +912,7 @@ class MOHDashboardView(generics.GenericAPIView): #Modified
                 Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                 total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                 TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
             )
@@ -951,19 +951,19 @@ class MOHDashboardView(generics.GenericAPIView): #Modified
             **suspected_disease_counts,
             'blood_collected_home' : combined_survey_data["blood_collected_home"],
             'blood_collected_center' : combined_survey_data["blood_collected_center"],
-            'denieded_by_mo_count' : combined_survey_data["denied_by_mo_count"],
-            'denieded_by_mo_individual' : combined_survey_data["denied_by_mo_individual"],
+            'denied_by_mo_count' : combined_survey_data["denied_by_mo_count"],
+            'denied_by_mo_individual' : combined_survey_data["denied_by_mo_individual"],
             'Referral_choice_Referral_to_Mun_Dispensary' : combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
             'Referral_choice_Referral_to_HBT_polyclinic': combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
             'Referral_choice_Referral_to_Peripheral_Hospital': combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
             'Referral_choice_Referral_to_Medical_College': combined_survey_data["Referral_choice_Referral_to_Medical_College"],
             'Referral_choice_Referral_to_Private_facility': combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-            'total_vulnerabel' : combined_survey_data["total_vulnerable"],
-            'vulnerabel_70_Years' : combined_survey_data["vulnerable_70_Years"],
-            'vulnerabel_Physically_handicapped' : combined_survey_data["vulnerable_Physically_handicapped"],
-            'vulnerabel_completely_paralyzed_or_on_bed' : combined_survey_data["vulnerable_completely_paralyzed_or_on_bed"],
-            'vulnerabel_elderly_and_alone_at_home' : combined_survey_data["vulnerable_elderly_and_alone_at_home"],
-            'vulnerabel_any_other_reason' : combined_survey_data["vulnerable_any_other_reason"]}, status= 200)
+            'total_vulnerable' : combined_survey_data["total_vulnerable"],
+            'vulnerable_70_Years' : combined_survey_data["vulnerable_70_Years"],
+            'vulnerable_Physically_handicapped' : combined_survey_data["vulnerable_Physically_handicapped"],
+            'vulnerable_completely_paralyzed_or_on_bed' : combined_survey_data["vulnerable_completely_paralyzed_or_on_bed"],
+            'vulnerable_elderly_and_alone_at_home' : combined_survey_data["vulnerable_elderly_and_alone_at_home"],
+            'vulnerable_any_other_reason' : combined_survey_data["vulnerable_any_other_reason"]}, status= 200)
 
 #need to recheck
 class MOHDashboardExportView(generics.GenericAPIView): #Modified
@@ -1086,7 +1086,7 @@ class MOHDashboardExportView(generics.GenericAPIView): #Modified
                     Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                    hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                    hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                     total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                     TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
                 )
@@ -1184,7 +1184,7 @@ class MOHDashboardExportView(generics.GenericAPIView): #Modified
                         Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                         Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                         Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                        hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                        hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                         total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                         TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
                     )
@@ -1287,7 +1287,7 @@ class AdminDashboardView(generics.GenericAPIView): #Modified
                 Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                 total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                 TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
             )
@@ -1336,7 +1336,7 @@ class AdminDashboardView(generics.GenericAPIView): #Modified
                 Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                 total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                 TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
             )
@@ -1380,7 +1380,7 @@ class AdminDashboardView(generics.GenericAPIView): #Modified
                 Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                 total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                 TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
             )
@@ -1419,19 +1419,19 @@ class AdminDashboardView(generics.GenericAPIView): #Modified
             **suspected_disease_counts,
             'blood_collected_home' : combined_survey_data["blood_collected_home"],
             'blood_collected_center' : combined_survey_data["blood_collected_center"],
-            'denieded_by_mo_count' : combined_survey_data["denied_by_mo_count"],
-            'denieded_by_mo_individual' : combined_survey_data["denied_by_mo_individual"],
+            'denied_by_mo_count' : combined_survey_data["denied_by_mo_count"],
+            'denied_by_mo_individual' : combined_survey_data["denied_by_mo_individual"],
             'Referral_choice_Referral_to_Mun_Dispensary' : combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
             'Referral_choice_Referral_to_HBT_polyclinic': combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
             'Referral_choice_Referral_to_Peripheral_Hospital': combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
             'Referral_choice_Referral_to_Medical_College': combined_survey_data["Referral_choice_Referral_to_Medical_College"],
             'Referral_choice_Referral_to_Private_facility': combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-            'total_vulnerabel' : combined_survey_data["total_vulnerable"],
-            'vulnerabel_70_Years' : combined_survey_data["vulnerable_70_Years"],
-            'vulnerabel_Physically_handicapped' : combined_survey_data["vulnerable_Physically_handicapped"],
-            'vulnerabel_completely_paralyzed_or_on_bed' : combined_survey_data["vulnerable_completely_paralyzed_or_on_bed"],
-            'vulnerabel_elderly_and_alone_at_home' : combined_survey_data["vulnerable_elderly_and_alone_at_home"],
-            'vulnerabel_any_other_reason' : combined_survey_data["vulnerable_any_other_reason"]}, status= 200)
+            'total_vulnerable' : combined_survey_data["total_vulnerable"],
+            'vulnerable_70_Years' : combined_survey_data["vulnerable_70_Years"],
+            'vulnerable_Physically_handicapped' : combined_survey_data["vulnerable_Physically_handicapped"],
+            'vulnerable_completely_paralyzed_or_on_bed' : combined_survey_data["vulnerable_completely_paralyzed_or_on_bed"],
+            'vulnerable_elderly_and_alone_at_home' : combined_survey_data["vulnerable_elderly_and_alone_at_home"],
+            'vulnerable_any_other_reason' : combined_survey_data["vulnerable_any_other_reason"]}, status= 200)
 
 class AdminDashboardExportView(generics.GenericAPIView): #Modified
     permission_classes= (IsAuthenticated , IsAdmin|IsViewAdmin)
@@ -1517,7 +1517,7 @@ class AdminDashboardExportView(generics.GenericAPIView): #Modified
                 Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                 total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                 TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
             )
@@ -1610,7 +1610,7 @@ class AdminDashboardExportView(generics.GenericAPIView): #Modified
                     Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                    hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                    hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                     total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                     TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
                 )
@@ -1683,7 +1683,7 @@ class AdminDashboardExportView(generics.GenericAPIView): #Modified
                     Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                    hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                    hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                     total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                     TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
                 )
@@ -1763,13 +1763,13 @@ class MOHDashboardTabView(generics.GenericAPIView): #Modified
                 "citizen_above_30":0 , "male":0 , "female":0 ,"transgender":0 ,"total_AbhaCreated":0 ,
                 "total_diabetes":0 , "hypertension":0 , "total_oral_cancer":0 , "total_cervical_cancer":0 , "total_COPD_count":0 , "total_eye_problem":0 ,
                 "total_ent_disorder":0 , "total_asthma":0, "total_Alzheimers":0, "total_tb_count":0 ,"total_leprosy":0 , "total_breast_cancer":0 , "total_communicable":0 ,
-                "blood_collected_home":0 , "blood_collected_center":0 ,  "denieded_by_mo_count":0  ,  "denieded_by_mo_individual":0 , "TestReportGenerated":0 , "total_LabTestAdded":0,
+                "blood_collected_home":0 , "blood_collected_center":0 ,  "denied_by_mo_count":0  ,  "denied_by_mo_individual":0 , "TestReportGenerated":0 , "total_LabTestAdded":0,
                 "Referral_choice_Referral_to_Mun_Dispensary":0 ,
                 "Referral_choice_Referral_to_HBT_polyclinic":0,
                 "Referral_choice_Referral_to_Peripheral_Hospital":0,
                 "Referral_choice_Referral_to_Medical_College":0 ,
                 "Referral_choice_Referral_to_Private_facility":0,
-                "total_vulnerabel":0})
+                "total_vulnerable":0})
 
                 return Response({
                     "message":"Successfully Fetched",
@@ -1798,7 +1798,7 @@ class MOHDashboardTabView(generics.GenericAPIView): #Modified
                 Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                 total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                 TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
             )
@@ -1825,14 +1825,14 @@ class MOHDashboardTabView(generics.GenericAPIView): #Modified
                             "total_tb_count":suspected_disease_counts["tb"], "total_leprosy":suspected_disease_counts["leprosy"],
                             "total_breast_cancer":suspected_disease_counts["breast_cancer"], "total_communicable":suspected_disease_counts["other_communicable_dieases"],
                             "blood_collected_home":combined_survey_data["blood_collected_home"], "blood_collected_center":combined_survey_data["blood_collected_center"],
-                            "denieded_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denieded_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
+                            "denied_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denied_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
                             "TestReportGenerated":combined_survey_data["TestReportGenerated"], "total_LabTestAdded":combined_survey_data["total_LabTestAdded"],
                             "Referral_choice_Referral_to_Mun_Dispensary":combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
                             "Referral_choice_Referral_to_HBT_polyclinic":combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
                             "Referral_choice_Referral_to_Peripheral_Hospital":combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
                             "Referral_choice_Referral_to_Medical_College":combined_survey_data["Referral_choice_Referral_to_Medical_College"],
                             "Referral_choice_Referral_to_Private_facility":combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-                            "total_vulnerabel":combined_survey_data["total_vulnerable"]})
+                            "total_vulnerable":combined_survey_data["total_vulnerable"]})
 
             page = self.paginate_queryset(data_list)
             if page is not None:
@@ -1871,7 +1871,7 @@ class MOHDashboardTabView(generics.GenericAPIView): #Modified
                     Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                    hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                    hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                     total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                     TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
                 )
@@ -1898,14 +1898,14 @@ class MOHDashboardTabView(generics.GenericAPIView): #Modified
                                 "total_tb_count":suspected_disease_counts["tb"], "total_leprosy":suspected_disease_counts["leprosy"],
                                 "total_breast_cancer":suspected_disease_counts["breast_cancer"], "total_communicable":suspected_disease_counts["other_communicable_dieases"],
                                 "blood_collected_home":combined_survey_data["blood_collected_home"], "blood_collected_center":combined_survey_data["blood_collected_center"],
-                                "denieded_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denieded_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
+                                "denied_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denied_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
                                 "TestReportGenerated":combined_survey_data["TestReportGenerated"], "total_LabTestAdded":combined_survey_data["total_LabTestAdded"],
                                 "Referral_choice_Referral_to_Mun_Dispensary":combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
                                 "Referral_choice_Referral_to_HBT_polyclinic":combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
                                 "Referral_choice_Referral_to_Peripheral_Hospital":combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
                                 "Referral_choice_Referral_to_Medical_College":combined_survey_data["Referral_choice_Referral_to_Medical_College"],
                                 "Referral_choice_Referral_to_Private_facility":combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-                                "total_vulnerabel":combined_survey_data["total_vulnerable"]})
+                                "total_vulnerable":combined_survey_data["total_vulnerable"]})
 
             page = self.paginate_queryset(data_list)
             if page is not None:
@@ -1956,13 +1956,13 @@ class AdminDashboardTabView(generics.GenericAPIView): #Modified
                 "total_AbhaCreated":0 ,
                 "total_diabetes":0 , "hypertension":0 , "total_oral_cancer":0 , "total_cervical_cancer":0 , "total_COPD_count":0 , "total_eye_problem":0 ,
                 "total_ent_disorder":0 , "total_asthma":0, "total_Alzheimers":0, "total_tb_count":0 ,"total_leprosy":0 , "total_breast_cancer":0 , "total_communicable":0 ,
-                "blood_collected_home":0 , "blood_collected_center":0 ,  "denieded_by_mo_count":0  ,  "denieded_by_mo_individual":0 , "TestReportGenerated":0 , "total_LabTestAdded":0,
+                "blood_collected_home":0 , "blood_collected_center":0 ,  "denied_by_mo_count":0  ,  "denied_by_mo_individual":0 , "TestReportGenerated":0 , "total_LabTestAdded":0,
                 "Referral_choice_Referral_to_Mun_Dispensary":0 ,
                 "Referral_choice_Referral_to_HBT_polyclinic":0,
                 "Referral_choice_Referral_to_Peripheral_Hospital":0,
                 "Referral_choice_Referral_to_Medical_College":0 ,
                 "Referral_choice_Referral_to_Private_facility":0,
-                "total_vulnerabel":0})
+                "total_vulnerable":0})
 
                 return Response({
                     "message":"Successfully Fetched",
@@ -1995,7 +1995,7 @@ class AdminDashboardTabView(generics.GenericAPIView): #Modified
                     Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                    hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                    hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                     total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                     TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
                 )
@@ -2022,14 +2022,14 @@ class AdminDashboardTabView(generics.GenericAPIView): #Modified
                                 "total_tb_count":suspected_disease_counts["tb"], "total_leprosy":suspected_disease_counts["leprosy"],
                                 "total_breast_cancer":suspected_disease_counts["breast_cancer"], "total_communicable":suspected_disease_counts["other_communicable_dieases"],
                                 "blood_collected_home":combined_survey_data["blood_collected_home"], "blood_collected_center":combined_survey_data["blood_collected_center"],
-                                "denieded_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denieded_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
+                                "denied_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denied_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
                                 "TestReportGenerated":combined_survey_data["TestReportGenerated"], "total_LabTestAdded":combined_survey_data["total_LabTestAdded"],
                                 "Referral_choice_Referral_to_Mun_Dispensary":combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
                                 "Referral_choice_Referral_to_HBT_polyclinic":combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
                                 "Referral_choice_Referral_to_Peripheral_Hospital":combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
                                 "Referral_choice_Referral_to_Medical_College":combined_survey_data["Referral_choice_Referral_to_Medical_College"],
                                 "Referral_choice_Referral_to_Private_facility":combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-                                "total_vulnerabel":combined_survey_data["total_vulnerable"]})
+                                "total_vulnerable":combined_survey_data["total_vulnerable"]})
 
             page = self.paginate_queryset(data_list)
             if page is not None:
@@ -2065,13 +2065,13 @@ class AdminDashboardTabView(generics.GenericAPIView): #Modified
                 "total_AbhaCreated":0 ,
                 "total_diabetes":0 , "hypertension":0 , "total_oral_cancer":0 , "total_cervical_cancer":0 , "total_COPD_count":0 , "total_eye_problem":0 ,
                 "total_ent_disorder":0 , "total_asthma":0, "total_Alzheimers":0, "total_tb_count":0 ,"total_leprosy":0 , "total_breast_cancer":0 , "total_communicable":0 ,
-                "blood_collected_home":0 , "blood_collected_center":0 ,  "denieded_by_mo_count":0  ,  "denieded_by_mo_individual":0 , "TestReportGenerated":0 , "total_LabTestAdded":0,
+                "blood_collected_home":0 , "blood_collected_center":0 ,  "denied_by_mo_count":0  ,  "denied_by_mo_individual":0 , "TestReportGenerated":0 , "total_LabTestAdded":0,
                 "Referral_choice_Referral_to_Mun_Dispensary":0 ,
                 "Referral_choice_Referral_to_HBT_polyclinic":0,
                 "Referral_choice_Referral_to_Peripheral_Hospital":0,
                 "Referral_choice_Referral_to_Medical_College":0 ,
                 "Referral_choice_Referral_to_Private_facility":0,
-                "total_vulnerabel":0})
+                "total_vulnerable":0})
 
                 return Response({
                     "message":"Successfully Fetched",
@@ -2100,7 +2100,7 @@ class AdminDashboardTabView(generics.GenericAPIView): #Modified
                 Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                 Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                 total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                 TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
             )
@@ -2127,14 +2127,14 @@ class AdminDashboardTabView(generics.GenericAPIView): #Modified
                             "total_tb_count":suspected_disease_counts["tb"], "total_leprosy":suspected_disease_counts["leprosy"],
                             "total_breast_cancer":suspected_disease_counts["breast_cancer"], "total_communicable":suspected_disease_counts["other_communicable_dieases"],
                             "blood_collected_home":combined_survey_data["blood_collected_home"], "blood_collected_center":combined_survey_data["blood_collected_center"],
-                            "denieded_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denieded_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
+                            "denied_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denied_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
                             "TestReportGenerated":combined_survey_data["TestReportGenerated"], "total_LabTestAdded":combined_survey_data["total_LabTestAdded"],
                             "Referral_choice_Referral_to_Mun_Dispensary":combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
                             "Referral_choice_Referral_to_HBT_polyclinic":combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
                             "Referral_choice_Referral_to_Peripheral_Hospital":combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
                             "Referral_choice_Referral_to_Medical_College":combined_survey_data["Referral_choice_Referral_to_Medical_College"],
                             "Referral_choice_Referral_to_Private_facility":combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-                            "total_vulnerabel":combined_survey_data["total_vulnerable"]})
+                            "total_vulnerable":combined_survey_data["total_vulnerable"]})
 
             page = self.paginate_queryset(data_list)
             if page is not None:
@@ -2173,7 +2173,7 @@ class AdminDashboardTabView(generics.GenericAPIView): #Modified
                     Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
                     Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                    hypertension=Count('id', filter=Q(bloodPressure__gte=140), distinct=True),
+                    hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
                     total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
                     TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
                 )
@@ -2200,14 +2200,14 @@ class AdminDashboardTabView(generics.GenericAPIView): #Modified
                                 "total_tb_count":suspected_disease_counts["tb"], "total_leprosy":suspected_disease_counts["leprosy"],
                                 "total_breast_cancer":suspected_disease_counts["breast_cancer"], "total_communicable":suspected_disease_counts["other_communicable_dieases"],
                                 "blood_collected_home":combined_survey_data["blood_collected_home"], "blood_collected_center":combined_survey_data["blood_collected_center"],
-                                "denieded_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denieded_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
+                                "denied_by_mo_count":combined_survey_data["denied_by_mo_count"] , "denied_by_mo_individual":combined_survey_data["denied_by_mo_individual"],
                                 "TestReportGenerated":combined_survey_data["TestReportGenerated"], "total_LabTestAdded":combined_survey_data["total_LabTestAdded"],
                                 "Referral_choice_Referral_to_Mun_Dispensary":combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
                                 "Referral_choice_Referral_to_HBT_polyclinic":combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
                                 "Referral_choice_Referral_to_Peripheral_Hospital":combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
                                 "Referral_choice_Referral_to_Medical_College":combined_survey_data["Referral_choice_Referral_to_Medical_College"],
                                 "Referral_choice_Referral_to_Private_facility":combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-                                "total_vulnerabel":combined_survey_data["total_vulnerable"]})
+                                "total_vulnerable":combined_survey_data["total_vulnerable"]})
 
             page = self.paginate_queryset(data_list)
             if page is not None:
