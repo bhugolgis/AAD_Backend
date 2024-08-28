@@ -22,10 +22,11 @@ from django.utils import timezone
 # Create your views here.
 from .permissions import IsSupervisor
 from excel_response import ExcelResponse
-from datetime import datetime
+from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
 from doctorsApp.permissions import IsMO
 from adminportal.utils import get_suspected_disease_counts
+from knox.models import AuthToken
 
 class CustomPageNumberPagination(PageNumberPagination):
     page_size = 10  # You can adjust this value based on your requirements
@@ -825,12 +826,19 @@ class MOHDashboardView(generics.GenericAPIView): #Modified
 
     def get(self, request ,  *args, **kwargs):
 
-        healthpost_id = request.query_params.get('healthpost_id', None)
-        CHV_ASHA_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='CHV-ASHA').distinct().count()
-        MO_count = self.CustomUser_queryset.filter(dispensary__ward__id = request.user.ward_id, groups__name='mo').count()
-        ANM_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = request.user.ward_id ,groups__name='healthworker').distinct().count()
-        today = timezone.now().date()
         ward_id = request.user.ward_id
+        healthpost_id = request.query_params.get('healthpost_id', None)
+        CHV_ASHA_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = ward_id ,groups__name='CHV-ASHA').distinct().count()
+        MO_count = self.CustomUser_queryset.filter(dispensary__ward__id = ward_id, groups__name='mo').count()
+        ANM_count = self.CustomUser_queryset.filter(userSections__healthPost__ward__id = ward_id ,groups__name='healthworker').distinct().count()
+        today = timezone.now().date()
+        # Get the date 7 days ago
+        seven_days_ago = timezone.now() - timedelta(days=7)
+        # Get users who have logged in within the last 7 days
+        active_ANMs = AuthToken.objects.filter(created__gte=seven_days_ago,
+                                                user__userSections__healthPost__ward__id=ward_id,
+                                                user__groups__name='healthworker').distinct().count()
+        inactive_ANMs = ANM_count - active_ANMs
 
         if healthpost_id:
 
@@ -930,6 +938,8 @@ class MOHDashboardView(generics.GenericAPIView): #Modified
             suspected_disease_counts = get_suspected_disease_counts(Questionnaire_queryset)
 
         return Response({
+            'active_ANMs': active_ANMs,
+            'inactive_ANMs': inactive_ANMs,
             'CHV_ASHA_count' : CHV_ASHA_count,
             'MO_count' : MO_count,
             'ANM_count' : ANM_count,
@@ -1254,6 +1264,11 @@ class AdminDashboardView(generics.GenericAPIView): #Modified
         MO_count = self.CustomUser_queryset.filter(groups__name='mo').count()
         ANM_count = self.CustomUser_queryset.filter(groups__name='healthworker').count()
         today = timezone.now().date()
+        # Get the date 7 days ago
+        seven_days_ago = timezone.now() - timedelta(days=7)
+        # Get users who have logged in within the last 7 days
+        active_ANMs = AuthToken.objects.filter(created__gte=seven_days_ago, user__groups__name='healthworker').distinct().count()
+        inactive_ANMs = ANM_count - active_ANMs
 
         if healthpost_id:
 
@@ -1398,6 +1413,8 @@ class AdminDashboardView(generics.GenericAPIView): #Modified
             suspected_disease_counts = get_suspected_disease_counts(Questionnaire_queryset)
 
         return Response({
+            'active_ANMs': active_ANMs,
+            'inactive_ANMs': inactive_ANMs,
             'CHV_ASHA_count' : CHV_ASHA_count,
             'MO_count' : MO_count,
             'ANM_count' : ANM_count,
