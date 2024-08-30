@@ -15,22 +15,22 @@ urlpatterns = [
         path('DownloadDispensarywiseUserList/<int:id>', DownloadDispensarywiseUserList.as_view(), name='DownloadDispensarywiseUserList'),
         path('DownloadAllWardUserList', DownloadAllWardUserList.as_view(), name='DownloadAllWardUserList'),
         path('UserCountsAPI', UserCountsAPI.as_view(), name='UserCountsAPI'),
-        
+
         path('updateGroupResquest', PostUserGroupResquest.as_view(), name='updateGroupResquest'),
         path('updateUserGroupRequest/<int:id>', updateUserGroupRequest.as_view(), name='updateUserGroupRequest'),
         path('GetGroupRequestList', GetGroupRequestList.as_view(), name='GetGroupRequestList'),
         path('GetGroupList', GetGroupList.as_view(), name='GetGroupRequestList'),
-        
+
         # path('GetAllUserDetails<int:id>', GetAllUserDetails.as_view(), name='GetDataDashboard'),
         path('GetAllUserDetails', GetAllUserDetails.as_view(), name='GetDataDashboard'),
-        
+
         path('MOHDashboardExcelView', MOHDashboardExportView.as_view(), name='MOHDashboardExportView'),
         path('MOHDashboardView', MOHDashboardView.as_view(), name='MOHDashboardView'),
         path('MOHDashboardTabView', MOHDashboardTabView.as_view(), name='MOHDashboardTabView'),
 
 
         # path('Admin_dashboard_data', Admin_dashboard_data.as_view(), name='Admin_dashboard_data'),
-        
+
         path('AdminDashboardView', AdminDashboardView.as_view(), name='AdminDashboardView'),
         path('AdminDashboardExportView', AdminDashboardExportView.as_view(), name='AdminDashboardExportView'),
         path('AdminDashboardTabView', AdminDashboardTabView.as_view(), name='AdminDashboardTabView'),

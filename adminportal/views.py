@@ -1,3 +1,5 @@
+from csv import excel
+from pkg_resources import working_set
 from rest_framework import generics
 from rest_framework.parsers import MultiPartParser
 from django.contrib.auth.models import Group
@@ -25,7 +27,7 @@ from excel_response import ExcelResponse
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
 from doctorsApp.permissions import IsMO
-from adminportal.utils import get_suspected_disease_counts
+from adminportal.utils import get_suspected_disease_counts, get_aggregated_data
 from knox.models import AuthToken
 
 class CustomPageNumberPagination(PageNumberPagination):
@@ -36,7 +38,7 @@ class CustomPageNumberPagination(PageNumberPagination):
 class PostUserGroupResquest(generics.GenericAPIView):
     parser_classes = [MultiPartParser]
     serializer_class = UpdateSerializer
-    def post(self, request ,  *args, **kwargs):
+    def post(self, request , *args, **kwargs):
         serializer = self.get_serializer(data = request.data )
         if serializer.is_valid():
             serializer.save()
@@ -1452,10 +1454,8 @@ class AdminDashboardView(generics.GenericAPIView): #Modified
 
 class AdminDashboardExportView(generics.GenericAPIView): #Modified
     permission_classes= (IsAuthenticated , IsAdmin|IsViewAdmin)
-    FamilySurvey_count = familyHeadDetails.objects.all().order_by('user__userSections__healthPost__ward')
+    FamilySurvey_count = familyHeadDetails.objects.all()
     queryset = familyMembers.objects.all()
-    healthposts = healthPost.objects.all().order_by('ward__wardName')
-
 
     def add_headers(self, sheet, *args):
         """This function takes the sheet and add merged headers to that sheet"""
@@ -1473,280 +1473,201 @@ class AdminDashboardExportView(generics.GenericAPIView): #Modified
         return sheet
 
     def get(self, request):
+        # aggregate query param to determine whether to return all data or partial data.
+        aggregate = request.query_params.get('aggregate', 'false').lower() in ['true', 'yes']
+
+        ward_id = request.query_params.get('ward_id', None)
         healthpost_id = request.query_params.get('healthpost_id', None)
-        wardId = request.query_params.get('wardId', None)
+
+        # filter_by query param to filter the aggregated counts either by "ward" or "healthpost".
+        filter_by = request.query_params.get('filter_by', None)
+
         today = datetime.today().strftime('%d-%m-%Y')
+        # Name of the excel file to be exported.
+        excel_name = ""
 
-        data_list = [['ward Name' , 'Health Post Name' , 'Families Enrolled'  , 'Citizens Enrolled' , 'CBAC Filled' ,
-                    'Citizens 60 years + enrolled', 'Citizens 30 years + enrolled' , "Males Enrolled" ,  "Females Enrolled" ,  "Transgender Enrolled",
-                    "ABHA ID Generated" , 'Diabetes' , 'Hypertension' ,  'Oral Cancer' , 'Cervical cancer' , 'COPD' , 'Eye Disorder' ,
-                    'ENT Disorder' ,  'Asthma' , 'Alzheimers' ,  'TB' , 'Leprosy', 'Breast cancer' , 'Other Communicable' ,
-                    'Blood collected at home' , 'blood collected at center' , 'Blood Collection Denied By AMO' ,  'Blood Collection Denied By Citizen',
-                    'Total Reports Generated' , 'Tests Assigned' ,
-                    'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment' ,
-                    'Referral to HBT polyclinic for Physician consultation',
-                    'Referral to Peripheral Hospital / Special Hospital for management of Complication',
-                    'Referral to Medical College for management of Complication',
-                    'Referral to Private facility',
-                    'Vulnerable Citizen' ]]
+        if filter_by == "healthpost":
+            excel_data = [['Ward Name', 'Health Post Name', 'Families Enrolled', 'Citizens Enrolled', 'CBAC Filled',
+                        'Citizens 60 years + enrolled', 'Citizens 30 years + enrolled', 'Males Enrolled',
+                        'Females Enrolled', 'Transgender Enrolled', 'ABHA ID Generated', 'Vulnerable Citizen',
+                        'Diabetes', 'Hypertension', 'Oral Cancer', 'Cervical cancer', 'COPD', 'Eye Disorder',
+                        'ENT Disorder', 'Asthma', 'Alzheimers', 'TB', 'Leprosy', 'Breast cancer', 'Other Communicable',
+                        'Blood collected at home', 'blood collected at center', 'Blood Collection Denied By AMO',
+                        'Blood Collection Denied By Citizen', 'Total Reports Generated', 'Tests Assigned',
+                        'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment',
+                        'Referral to HBT polyclinic for Physician consultation',
+                        'Referral to Peripheral Hospital / Special Hospital for management of Complication',
+                        'Referral to Medical College for management of Complication',
+                        'Referral to Private facility']]
 
-        header1 = {'Citizen Details':len(data_list[0][0:11]) ,'Dieases Suspected': len(data_list[0][12:24]),
-                   'Blood Collection' : len(data_list[0][24:30]) , 'Referrals' : len(data_list[0][30:]) }
-
-        if healthpost_id:
-            try:
-                healthpost = healthPost.objects.get(pk=healthpost_id)
-            except healthPost.DoesNotExist:
-                return Response({
-                    "message":"No Health post exists with ID %d"%(id),
-                    "status":"error"
-                } , status = 400)
-
-            healthpost_related_user = self.get_queryset().filter(familySurveyor__userSections__healthPost__id=healthpost_id).distinct()
-            healthpost_name = healthpost.healthPostName
-
-            if not healthpost_related_user:
-                return Response({
-                    "message":"No data found for healthpost %s"%(healthpost_name),
-                    "status":"error"
-                } , status = 400)
-
-            # Distinct and common queries of survey data
-            familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__healthPost__id=healthpost_id)
-
-            # Healthppost related survey data
-            healthpost_data = healthpost_related_user.aggregate(
-                total_AbhaCreated=Count('id', filter=Q(isAbhaCreated=True), distinct=True),
-                total_citizen_count=Count('id', distinct=True),
-                total_cbac_count=Count('id', filter=Q(age__gte=30, cbacRequired=True), distinct=True),
-                male=Count('id', filter=Q(gender="M"), distinct=True),
-                female=Count('id', filter=Q(gender="F"), distinct=True),
-                transgender=Count('id', filter=Q(gender="O"), distinct=True),
-                citizen_above_60=Count('id', filter=Q(age__gte=60), distinct=True),
-                citizen_above_30=Count('id', filter=Q(age__gte=30), distinct=True),
-                total_vulnerable=Count('id', filter=Q(vulnerable=True), distinct=True),
-                blood_collected_home=Count('id', filter=Q(bloodCollectionLocation='Home'), distinct=True),
-                blood_collected_center=Count('id', filter=Q(bloodCollectionLocation='Center'), distinct=True),
-                denied_by_mo_count=Count('id', filter=Q(bloodCollectionLocation='AMO'), distinct=True),
-                denied_by_mo_individual=Count('id', filter=Q(bloodCollectionLocation='Individual Itself'), distinct=True),
-                Referral_choice_Referral_to_Mun_Dispensary=Count('id', filter=Q(referels__choice='Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment'), distinct=True),
-                Referral_choice_Referral_to_HBT_polyclinic=Count('id', filter=Q(referels__choice='Referral to HBT polyclinic for physician consultation'), distinct=True),
-                Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
-                Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
-                Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
-                total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
-                TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
-            )
-
-            # Aggregate counts for familySurvey_queryset
-            familySurvey_data = familySurvey_queryset.aggregate(
-                total_family_count=Count('id', distinct=True),
-            )
-
-            combined_survey_data = {**healthpost_data, **familySurvey_data}
-
-            Questionnaire_queryset = healthpost_related_user.filter(Questionnaire__isnull=False)
-            suspected_disease_counts = get_suspected_disease_counts(Questionnaire_queryset)
-
-            data_list.append([healthpost.ward.wardName, healthpost.healthPostName,
-                            combined_survey_data["total_family_count"], combined_survey_data["total_citizen_count"],
-                            combined_survey_data["total_cbac_count"], combined_survey_data["citizen_above_60"],
-                            combined_survey_data["citizen_above_30"], combined_survey_data["male"],
-                            combined_survey_data["female"], combined_survey_data["transgender"], combined_survey_data["total_AbhaCreated"],
-                            suspected_disease_counts["diabetes"], combined_survey_data["hypertension"],
-                            suspected_disease_counts["oral_Cancer"], suspected_disease_counts["cervical_cancer"],
-                            suspected_disease_counts["copd"], suspected_disease_counts["eye_disorder"],
-                            suspected_disease_counts["ent_disorder"], suspected_disease_counts["asthama"],
-                            suspected_disease_counts["Alzheimers"], suspected_disease_counts["tb"],
-                            suspected_disease_counts["leprosy"], suspected_disease_counts["breast_cancer"],
-                            suspected_disease_counts["other_communicable_dieases"],
-                            combined_survey_data["blood_collected_home"], combined_survey_data["blood_collected_center"],
-                            combined_survey_data["denied_by_mo_count"] ,  combined_survey_data["denied_by_mo_individual"],
-                            combined_survey_data["TestReportGenerated"], combined_survey_data["total_LabTestAdded"],
-                            combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
-                            combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
-                            combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
-                            combined_survey_data["Referral_choice_Referral_to_Medical_College"],
-                            combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-                            combined_survey_data["total_vulnerable"]])
-
-            wb = openpyxl.Workbook()
-            ws = wb.active
-            self.add_headers(ws, header1 )
-            for row in data_list:
-                # print(row)
-                ws.append(row)
-
-            response = HttpResponse(content_type='application/vnd.ms-excel')
-            response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format(healthpost_name+"_data_"+today)
-            wb.save(response)
-            return response
-
-        elif wardId:
-            try:
-                ward_name = ward.objects.get(pk=wardId)
-            except ward.DoesNotExist:
-                return Response({
-                    "message":"No ward exists with ID %s"%(wardId),
-                    "status":"error"
-                } , status = 400)
-
-            ward_related_user = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id=wardId).exists()
-
-            if not ward_related_user:
-                return Response({
-                    "message":"No data found for ward %s"%(ward_name.wardName),
-                    "status":"error"
-                } , status = 400)
-
-            healthposts = self.healthposts.filter(ward__id=wardId)
-
-            for healthpost in healthposts:
-                # Common querysets of survey
-                healthpost_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost__id=healthpost.id).distinct()
-                familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__healthPost__id=healthpost.id)
-
-                # Healthpost related survey data
-                healthpost_data = healthpost_queryset.aggregate(
-                    total_AbhaCreated=Count('id', filter=Q(isAbhaCreated=True), distinct=True),
-                    total_citizen_count=Count('id', distinct=True),
-                    total_cbac_count=Count('id', filter=Q(age__gte=30, cbacRequired=True), distinct=True),
-                    male=Count('id', filter=Q(gender="M"), distinct=True),
-                    female=Count('id', filter=Q(gender="F"), distinct=True),
-                    transgender=Count('id', filter=Q(gender="O"), distinct=True),
-                    citizen_above_60=Count('id', filter=Q(age__gte=60), distinct=True),
-                    citizen_above_30=Count('id', filter=Q(age__gte=30), distinct=True),
-                    total_vulnerable=Count('id', filter=Q(vulnerable=True), distinct=True),
-                    blood_collected_home=Count('id', filter=Q(bloodCollectionLocation='Home'), distinct=True),
-                    blood_collected_center=Count('id', filter=Q(bloodCollectionLocation='Center'), distinct=True),
-                    denied_by_mo_count=Count('id', filter=Q(bloodCollectionLocation='AMO'), distinct=True),
-                    denied_by_mo_individual=Count('id', filter=Q(bloodCollectionLocation='Individual Itself'), distinct=True),
-                    Referral_choice_Referral_to_Mun_Dispensary=Count('id', filter=Q(referels__choice='Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment'), distinct=True),
-                    Referral_choice_Referral_to_HBT_polyclinic=Count('id', filter=Q(referels__choice='Referral to HBT polyclinic for physician consultation'), distinct=True),
-                    Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
-                    Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
-                    Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                    hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
-                    total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
-                    TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
-                )
-
-                # Aggregate counts for familySurvey_queryset
-                familySurvey_data = familySurvey_queryset.aggregate(
-                    total_family_count=Count('id', distinct=True),
-                )
-
-                combined_survey_data = {**healthpost_data, **familySurvey_data}
-
-                Questionnaire_queryset = healthpost_queryset.filter(Questionnaire__isnull=False)
-                suspected_disease_counts = get_suspected_disease_counts(Questionnaire_queryset)
-
-                data_list.append([healthpost.ward.wardName, healthpost.healthPostName,
-                                combined_survey_data["total_family_count"], combined_survey_data["total_citizen_count"],
-                                combined_survey_data["total_cbac_count"], combined_survey_data["citizen_above_60"],
-                                combined_survey_data["citizen_above_30"], combined_survey_data["male"],
-                                combined_survey_data["female"], combined_survey_data["transgender"], combined_survey_data["total_AbhaCreated"],
-                                suspected_disease_counts["diabetes"], combined_survey_data["hypertension"],
-                                suspected_disease_counts["oral_Cancer"], suspected_disease_counts["cervical_cancer"],
-                                suspected_disease_counts["copd"], suspected_disease_counts["eye_disorder"],
-                                suspected_disease_counts["ent_disorder"], suspected_disease_counts["asthama"],
-                                suspected_disease_counts["Alzheimers"], suspected_disease_counts["tb"],
-                                suspected_disease_counts["leprosy"], suspected_disease_counts["breast_cancer"],
-                                suspected_disease_counts["other_communicable_dieases"],
-                                combined_survey_data["blood_collected_home"], combined_survey_data["blood_collected_center"],
-                                combined_survey_data["denied_by_mo_count"] ,  combined_survey_data["denied_by_mo_individual"],
-                                combined_survey_data["TestReportGenerated"], combined_survey_data["total_LabTestAdded"],
-                                combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
-                                combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
-                                combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
-                                combined_survey_data["Referral_choice_Referral_to_Medical_College"],
-                                combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-                                combined_survey_data["total_vulnerable"]])
-
-            wb = openpyxl.Workbook()
-            ws = wb.active
-            self.add_headers(ws, header1 )
-            for row in data_list:
-                ws.append(row)
-
-            response = HttpResponse(content_type='application/vnd.ms-excel')
-            response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("Ward_"+ward_name.wardName+"_data_"+today)
-            wb.save(response)
-            return response
+            header1 = {'Citizen Details':len(excel_data[0][0:12]),'Dieases Suspected': len(excel_data[0][12:25]),
+                    'Blood Collection' : len(excel_data[0][25:31]), 'Referrals' : len(excel_data[0][31:])}
         else:
-            for healthpost in self.healthposts:
+            excel_data = [['Ward Name', 'Families Enrolled', 'Citizens Enrolled', 'CBAC Filled',
+                        'Citizens 60 years + enrolled', 'Citizens 30 years + enrolled', 'Males Enrolled',
+                        'Females Enrolled', 'Transgender Enrolled', 'ABHA ID Generated', 'Vulnerable Citizen',
+                        'Diabetes', 'Hypertension', 'Oral Cancer', 'Cervical cancer', 'COPD', 'Eye Disorder',
+                        'ENT Disorder', 'Asthma', 'Alzheimers', 'TB', 'Leprosy', 'Breast cancer', 'Other Communicable',
+                        'Blood collected at home', 'blood collected at center', 'Blood Collection Denied By AMO',
+                        'Blood Collection Denied By Citizen', 'Total Reports Generated', 'Tests Assigned',
+                        'Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment',
+                        'Referral to HBT polyclinic for Physician consultation',
+                        'Referral to Peripheral Hospital / Special Hospital for management of Complication',
+                        'Referral to Medical College for management of Complication',
+                        'Referral to Private facility']]
+
+            header1 = {'Citizen Details':len(excel_data[0][0:11]),'Dieases Suspected': len(excel_data[0][11:24]),
+                    'Blood Collection' : len(excel_data[0][24:30]), 'Referrals' : len(excel_data[0][30:])}
+
+        if filter_by == "healthpost":
+            if healthpost_id:
+                try:
+                    healthpost = healthPost.objects.get(pk=healthpost_id)
+                except healthPost.DoesNotExist:
+                    return Response({
+                        "message":"No Health post exists with ID %d"%(id),
+                        "status":"error"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+                healthpost_related_user = self.get_queryset().filter(familySurveyor__userSections__healthPost__id=healthpost_id).distinct()
+                healthpost_name = healthpost.healthPostName
+
+                if not healthpost_related_user:
+                    return Response({
+                        "message":"No data found for healthpost %s"%(healthpost_name),
+                        "status":"error"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+                excel_name = "healthpost_" + healthpost_name + "_summary_"
+
                 # Distinct and common queries of survey data
-                healthpost_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost__id=healthpost.id).distinct()
-                familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__healthPost__id=healthpost.id)
+                familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__healthPost__id=healthpost_id)
 
-                # Healthppost related survey data
-                healthpost_data = healthpost_queryset.aggregate(
-                    total_AbhaCreated=Count('id', filter=Q(isAbhaCreated=True), distinct=True),
-                    total_citizen_count=Count('id', distinct=True),
-                    total_cbac_count=Count('id', filter=Q(age__gte=30, cbacRequired=True), distinct=True),
-                    male=Count('id', filter=Q(gender="M"), distinct=True),
-                    female=Count('id', filter=Q(gender="F"), distinct=True),
-                    transgender=Count('id', filter=Q(gender="O"), distinct=True),
-                    citizen_above_60=Count('id', filter=Q(age__gte=60), distinct=True),
-                    citizen_above_30=Count('id', filter=Q(age__gte=30), distinct=True),
-                    total_vulnerable=Count('id', filter=Q(vulnerable=True), distinct=True),
-                    blood_collected_home=Count('id', filter=Q(bloodCollectionLocation='Home'), distinct=True),
-                    blood_collected_center=Count('id', filter=Q(bloodCollectionLocation='Center'), distinct=True),
-                    denied_by_mo_count=Count('id', filter=Q(bloodCollectionLocation='AMO'), distinct=True),
-                    denied_by_mo_individual=Count('id', filter=Q(bloodCollectionLocation='Individual Itself'), distinct=True),
-                    Referral_choice_Referral_to_Mun_Dispensary=Count('id', filter=Q(referels__choice='Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment'), distinct=True),
-                    Referral_choice_Referral_to_HBT_polyclinic=Count('id', filter=Q(referels__choice='Referral to HBT polyclinic for physician consultation'), distinct=True),
-                    Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
-                    Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
-                    Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                    hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
-                    total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
-                    TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
-                )
+                # healthpost related survey data
+                aggregated_data = get_aggregated_data(healthpost_related_user, familySurvey_queryset, aggregate_type="export")
 
-                # Aggregate counts for familySurvey_queryset
-                familySurvey_data = familySurvey_queryset.aggregate(
-                    total_family_count=Count('id', distinct=True),
-                )
+                export_data = [healthpost.ward.wardName, healthpost_name] + aggregated_data
+                excel_data.append(export_data)
+            elif ward_id:
+                try:
+                    ward_obj = ward.objects.get(pk=ward_id)
+                except ward.DoesNotExist:
+                    return Response({
+                        "message":"No ward exists with ID %s"%(ward_id),
+                        "status":"error"
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
-                combined_survey_data = {**healthpost_data, **familySurvey_data}
+                ward_related_user = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward__id=ward_id).exists()
+                ward_name = ward_obj.wardName
 
-                Questionnaire_queryset = healthpost_queryset.filter(Questionnaire__isnull=False)
-                suspected_disease_counts = get_suspected_disease_counts(Questionnaire_queryset)
+                if not ward_related_user:
+                    return Response({
+                        "message":"No data found for ward %s"%(ward_name),
+                        "status":"error"
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
-                data_list.append([healthpost.ward.wardName, healthpost.healthPostName,
-                                combined_survey_data["total_family_count"], combined_survey_data["total_citizen_count"],
-                                combined_survey_data["total_cbac_count"], combined_survey_data["citizen_above_60"],
-                                combined_survey_data["citizen_above_30"], combined_survey_data["male"],
-                                combined_survey_data["female"], combined_survey_data["transgender"], combined_survey_data["total_AbhaCreated"],
-                                suspected_disease_counts["diabetes"], combined_survey_data["hypertension"],
-                                suspected_disease_counts["oral_Cancer"], suspected_disease_counts["cervical_cancer"],
-                                suspected_disease_counts["copd"], suspected_disease_counts["eye_disorder"],
-                                suspected_disease_counts["ent_disorder"], suspected_disease_counts["asthama"],
-                                suspected_disease_counts["Alzheimers"], suspected_disease_counts["tb"],
-                                suspected_disease_counts["leprosy"], suspected_disease_counts["breast_cancer"],
-                                suspected_disease_counts["other_communicable_dieases"],
-                                combined_survey_data["blood_collected_home"], combined_survey_data["blood_collected_center"],
-                                combined_survey_data["denied_by_mo_count"] ,  combined_survey_data["denied_by_mo_individual"],
-                                combined_survey_data["TestReportGenerated"], combined_survey_data["total_LabTestAdded"],
-                                combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
-                                combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
-                                combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
-                                combined_survey_data["Referral_choice_Referral_to_Medical_College"],
-                                combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-                                combined_survey_data["total_vulnerable"]])
+                excel_name = "ward_" + ward_name + "_healthposts_summary_"
 
-            wb = openpyxl.Workbook()
-            ws = wb.active
-            self.add_headers(ws, header1)
-            for row in data_list:
-                ws.append(row)
+                healthposts = healthPost.objects.filter(ward_id=ward_id)
 
-            response = HttpResponse(content_type='application/vnd.ms-excel')
-            response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format("All_Ward_data_"+today)
-            wb.save(response)
-            return response
+                for healthpost in healthposts:
+                    # Common querysets of survey
+                    healthpost_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost_id=healthpost.id).distinct()
+                    familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__healthPost_id=healthpost.id)
+
+                    # healthpost related survey data
+                    aggregated_data = get_aggregated_data(healthpost_queryset, familySurvey_queryset, aggregate_type="export")
+
+                    export_data = [ward_name, healthpost.healthPostName] + aggregated_data
+                    excel_data.append(export_data)
+            elif aggregate:
+                excel_name = "healthposts_summary_"
+                healthposts = healthPost.objects.all().order_by('ward__wardName')
+                for healthpost in healthposts:
+                    # Distinct and common queries of survey data
+                    healthpost_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost_id=healthpost.id).distinct()
+                    familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__healthPost_id=healthpost.id)
+
+                    # healthpost related survey data
+                    aggregated_data = get_aggregated_data(healthpost_queryset, familySurvey_queryset, aggregate_type="export")
+
+                    export_data = [healthpost.ward.wardName, healthpost.healthPostName] + aggregated_data
+                    excel_data.append(export_data)
+            else:
+                return Response({
+                    "message":"Please Provide either aggregate, ward_id or healthpost_id.",
+                    "status":"error"
+                }, status=status.HTTP_400_BAD_REQUEST)
+        elif filter_by == "ward":
+            if ward_id:
+                try:
+                    ward_obj = ward.objects.get(pk=ward_id)
+                except ward.DoesNotExist:
+                    return Response({
+                        "message":"No ward exists with ID %s"%(ward_id),
+                        "status":"error"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+                ward_related_user = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward_id=ward_id).distinct()
+                ward_name = ward_obj.wardName
+
+                if not ward_related_user:
+                    return Response({
+                        "message":"No data found for ward %s"%(ward_name),
+                        "status":"error"
+                    }, status=status.HTTP_400_BAD_REQUEST)
+
+                excel_name = "ward_" + ward_name + "_summary_"
+
+                # Distinct and common queries of survey data
+                familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__healthPost__ward_id=ward_id)
+
+                # Ward related survey data
+                aggregated_data = get_aggregated_data(ward_related_user, familySurvey_queryset, aggregate_type="export")
+
+                export_data = [ward_name] + aggregated_data
+                excel_data.append(export_data)
+            elif aggregate:
+                excel_name = "wards_summary_"
+                wards = ward.objects.all().order_by("wardName")
+                for ward_obj in wards:
+                    # Distinct and common queries of survey data
+                    ward_queryset = self.get_queryset().filter(familySurveyor__userSections__healthPost__ward_id=ward_obj.id).distinct()
+                    familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__healthPost__ward_id=ward_obj.id)
+
+                    # Ward related survey data
+                    aggregated_data = get_aggregated_data(ward_queryset, familySurvey_queryset, aggregate_type="export")
+
+                    export_data = [ward_obj.wardName] + aggregated_data
+                    excel_data.append(export_data)
+            else:
+                return Response({
+                    "message":"Please Provide either aggregate, ward_id or healthpost_id.",
+                    "status":"error"
+                }, status=status.HTTP_400_BAD_REQUEST)
+        elif aggregate:
+            excel_name = "dashboard_data_summary_"
+            # Aggregated survey data
+            aggregated_data = get_aggregated_data(self.get_queryset(), self.FamilySurvey_count, aggregate_type="export")
+
+            export_data = ["All"] + aggregated_data
+            excel_data.append(export_data)
+        else:
+            return Response({
+                "message":"Please Provide either aggregate or filter_by.",
+                "status":"error"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        workbook = openpyxl.Workbook()
+        working_sheet = workbook.active
+        self.add_headers(working_sheet, header1)
+        for row in excel_data:
+            working_sheet.append(row)
+
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="{}.xlsx"'.format(excel_name + today)
+        workbook.save(response)
+        return response
 
 class MOHDashboardTabView(generics.GenericAPIView): #Modified
 
