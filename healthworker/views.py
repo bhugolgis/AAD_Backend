@@ -21,7 +21,7 @@ from django.db.models.expressions import Func
 import openpyxl
 from django.http import HttpResponse
 from ArogyaAplyaDari.utils import error_simplifier
-from adminportal.utils import get_suspected_disease_counts
+from adminportal.utils import get_aggregated_data
 
 
 class verifyMobileNumber(APIView):
@@ -273,47 +273,7 @@ class GetSurveyorCountDashboard(generics.GenericAPIView): # Modified
             familySurvey_queryset = self.FamilySurvey_count.filter(user=request.user)
 
             # Healthppost related survey data
-            survey_data = survey_queryset.aggregate(
-                total_AbhaCreated=Count('id', filter=Q(isAbhaCreated=True), distinct=True),
-                total_citizen_count=Count('id', distinct=True),
-                todays_citizen_count=Count('id', filter=Q(created_date__date=today), distinct=True),
-                total_cbac_count=Count('id', filter=Q(age__gte=30, cbacRequired=True), distinct=True),
-                male=Count('id', filter=Q(gender="M"), distinct=True),
-                female=Count('id', filter=Q(gender="F"), distinct=True),
-                transgender=Count('id', filter=Q(gender="O"), distinct=True),
-                citizen_above_60=Count('id', filter=Q(age__gte=60), distinct=True),
-                citizen_above_30=Count('id', filter=Q(age__gte=30), distinct=True),
-                total_vulnerable=Count('id', filter=Q(vulnerable=True), distinct=True),
-                vulnerable_70_Years=Count('id', filter=Q(vulnerable_choices__choice='70+ Years'), distinct=True),
-                vulnerable_Physically_handicapped=Count('id', filter=Q(vulnerable_choices__choice='Physically Handicapped'), distinct=True),
-                vulnerable_completely_paralyzed_or_on_bed=Count('id', filter=Q(vulnerable_choices__choice='Completely Paralyzed or On bed'), distinct=True),
-                vulnerable_elderly_and_alone_at_home=Count('id', filter=Q(vulnerable_choices__choice='Elderly and alone at home'), distinct=True),
-                vulnerable_any_other_reason=Count('id', filter=Q(vulnerable_choices__choice='Any other reason'), distinct=True),
-                blood_collected_home=Count('id', filter=Q(bloodCollectionLocation='Home'), distinct=True),
-                blood_collected_center=Count('id', filter=Q(bloodCollectionLocation='Center'), distinct=True),
-                denied_by_mo_count=Count('id', filter=Q(bloodCollectionLocation='AMO'), distinct=True),
-                denied_by_mo_individual=Count('id', filter=Q(bloodCollectionLocation='Individual Itself'), distinct=True),
-                Referral_choice_Referral_to_Mun_Dispensary=Count('id', filter=Q(referels__choice='Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment'), distinct=True),
-                Referral_choice_Referral_to_HBT_polyclinic=Count('id', filter=Q(referels__choice='Referral to HBT polyclinic for physician consultation'), distinct=True),
-                Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
-                Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
-                Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
-                total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
-                TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
-            )
-
-            # Aggregate counts for familySurvey_queryset
-            familySurvey_data = familySurvey_queryset.aggregate(
-                partial_survey_count=Count('id', filter=Q(partialSubmit=True), distinct=True),
-                total_family_count=Count('id', distinct=True),
-                today_family_count=Count('id', filter=Q(created_date__date=today), distinct=True)
-            )
-
-            combined_survey_data = {**survey_data, **familySurvey_data}
-
-            Questionnaire_queryset = survey_queryset.filter(Questionnaire__isnull=False)
-            suspected_disease_counts = get_suspected_disease_counts(Questionnaire_queryset)
+            aggregated_data = get_aggregated_data(survey_queryset, familySurvey_queryset)
 
         elif str(user_group) == 'healthworker':
             # Distinct and common queries of survey data
@@ -321,77 +281,9 @@ class GetSurveyorCountDashboard(generics.GenericAPIView): # Modified
             familySurvey_queryset = self.FamilySurvey_count.filter(user__userSections__id__in=section_ids)
 
             # Healthppost related survey data
-            survey_data = survey_queryset.aggregate(
-                total_AbhaCreated=Count('id', filter=Q(isAbhaCreated=True), distinct=True),
-                total_citizen_count=Count('id', distinct=True),
-                todays_citizen_count=Count('id', filter=Q(created_date__date=today), distinct=True),
-                total_cbac_count=Count('id', filter=Q(age__gte=30, cbacRequired=True), distinct=True),
-                male=Count('id', filter=Q(gender="M"), distinct=True),
-                female=Count('id', filter=Q(gender="F"), distinct=True),
-                transgender=Count('id', filter=Q(gender="O"), distinct=True),
-                citizen_above_60=Count('id', filter=Q(age__gte=60), distinct=True),
-                citizen_above_30=Count('id', filter=Q(age__gte=30), distinct=True),
-                total_vulnerable=Count('id', filter=Q(vulnerable=True), distinct=True),
-                vulnerable_70_Years=Count('id', filter=Q(vulnerable_choices__choice='70+ Years'), distinct=True),
-                vulnerable_Physically_handicapped=Count('id', filter=Q(vulnerable_choices__choice='Physically Handicapped'), distinct=True),
-                vulnerable_completely_paralyzed_or_on_bed=Count('id', filter=Q(vulnerable_choices__choice='Completely Paralyzed or On bed'), distinct=True),
-                vulnerable_elderly_and_alone_at_home=Count('id', filter=Q(vulnerable_choices__choice='Elderly and alone at home'), distinct=True),
-                vulnerable_any_other_reason=Count('id', filter=Q(vulnerable_choices__choice='Any other reason'), distinct=True),
-                blood_collected_home=Count('id', filter=Q(bloodCollectionLocation='Home'), distinct=True),
-                blood_collected_center=Count('id', filter=Q(bloodCollectionLocation='Center'), distinct=True),
-                denied_by_mo_count=Count('id', filter=Q(bloodCollectionLocation='AMO'), distinct=True),
-                denied_by_mo_individual=Count('id', filter=Q(bloodCollectionLocation='Individual Itself'), distinct=True),
-                Referral_choice_Referral_to_Mun_Dispensary=Count('id', filter=Q(referels__choice='Referral to Mun. Dispensary / HBT for Blood Test / Confirmation / Treatment'), distinct=True),
-                Referral_choice_Referral_to_HBT_polyclinic=Count('id', filter=Q(referels__choice='Referral to HBT polyclinic for physician consultation'), distinct=True),
-                Referral_choice_Referral_to_Peripheral_Hospital=Count('id', filter=Q(referels__choice='Referral to Peripheral Hospital / Special Hospital for management of Complication'), distinct=True),
-                Referral_choice_Referral_to_Medical_College=Count('id', filter=Q(referels__choice='Referral to Medical College for management of Complication'), distinct=True),
-                Referral_choice_Referral_to_Private_facility=Count('id', filter=Q(referels__choice='Referral to Private facility'), distinct=True),
-                hypertension=Count('id', filter=Q(is_hypertensive=True), distinct=True),
-                total_LabTestAdded=Count('id', filter=Q(isLabTestAdded=True), distinct=True),
-                TestReportGenerated=Count('id', filter=Q(isLabTestReportGenerated=True), distinct=True)
-            )
+            aggregated_data = get_aggregated_data(survey_queryset, familySurvey_queryset)
 
-            # Aggregate counts for familySurvey_queryset
-            familySurvey_data = familySurvey_queryset.aggregate(
-                partial_survey_count=Count('id', filter=Q(partialSubmit=True), distinct=True),
-                total_family_count=Count('id', distinct=True),
-                today_family_count=Count('id', filter=Q(created_date__date=today), distinct=True)
-            )
-
-            combined_survey_data = {**survey_data, **familySurvey_data}
-
-            Questionnaire_queryset = survey_queryset.filter(Questionnaire__isnull=False)
-            suspected_disease_counts = get_suspected_disease_counts(Questionnaire_queryset)
-
-        return Response({
-            'total_count' : combined_survey_data["total_citizen_count"],
-            'todays_count' : combined_survey_data["todays_citizen_count"],
-            'partial_survey_count' : combined_survey_data["partial_survey_count"],
-            'total_family_count' : combined_survey_data["total_family_count"],
-            'today_family_count' : combined_survey_data["today_family_count"],
-            'total_cbac_count' : combined_survey_data["total_cbac_count"],
-            'citizen_above_60' : combined_survey_data["citizen_above_60"],
-            'citizen_above_30' : combined_survey_data["citizen_above_30"],
-            'TestReportGenerated' : combined_survey_data["TestReportGenerated"],
-            'total_LabTestAdded' : combined_survey_data["total_LabTestAdded"],
-            'total_AbhaCreated' : combined_survey_data["total_AbhaCreated"],
-            'hypertension' : combined_survey_data["hypertension"],
-            **suspected_disease_counts,
-            'blood_collected_home' : combined_survey_data["blood_collected_home"],
-            'blood_collected_center' : combined_survey_data["blood_collected_center"],
-            'denied_by_mo_count' : combined_survey_data["denied_by_mo_count"],
-            'denied_by_mo_individual' : combined_survey_data["denied_by_mo_individual"],
-            'Referral_choice_Referral_to_Mun_Dispensary' : combined_survey_data["Referral_choice_Referral_to_Mun_Dispensary"],
-            'Referral_choice_Referral_to_HBT_polyclinic': combined_survey_data["Referral_choice_Referral_to_HBT_polyclinic"],
-            'Referral_choice_Referral_to_Peripheral_Hospital': combined_survey_data["Referral_choice_Referral_to_Peripheral_Hospital"],
-            'Referral_choice_Referral_to_Medical_College': combined_survey_data["Referral_choice_Referral_to_Medical_College"],
-            'Referral_choice_Referral_to_Private_facility': combined_survey_data["Referral_choice_Referral_to_Private_facility"],
-            'total_vulnerable' : combined_survey_data["total_vulnerable"],
-            'vulnerable_70_Years' : combined_survey_data["vulnerable_70_Years"],
-            'vulnerable_Physically_handicapped' : combined_survey_data["vulnerable_Physically_handicapped"],
-            'vulnerable_completely_paralyzed_or_on_bed' : combined_survey_data["vulnerable_completely_paralyzed_or_on_bed"],
-            'vulnerable_elderly_and_alone_at_home' : combined_survey_data["vulnerable_elderly_and_alone_at_home"],
-            'vulnerable_any_other_reason' : combined_survey_data["vulnerable_any_other_reason"]}, status= 200)
+        return Response(aggregated_data, status=status.HTTP_200_OK)
 
 
 class GetCitizenList(generics.ListAPIView):
