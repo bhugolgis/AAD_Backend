@@ -23,11 +23,11 @@ from django.http import HttpResponse
 from django.utils import timezone
 # Create your views here.
 from .permissions import IsSupervisor
-from excel_response import ExcelResponse
+# from excel_response import ExcelResponse
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
 from doctorsApp.permissions import IsMO
-from adminportal.utils import get_suspected_disease_counts, get_aggregated_data
+from adminportal.utils import get_aggregated_data
 from knox.models import AuthToken
 
 class CustomPageNumberPagination(PageNumberPagination):
